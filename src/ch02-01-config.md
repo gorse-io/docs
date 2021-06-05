@@ -1,109 +1,109 @@
-# 配置介绍
+# Configuration
 
-## 数据库配置
+## Database Configuration
 
-数据库配置位于`[database]`之下：
+The database configuration is located under `[database]`.
 
-| 配置项 | 类型 | 说明 | 默认值 |
+| Key | Type | Description | Default |
 |-|-|-|-|
-| `cache_store` | string | 数据存储数据库（支持MySQL/MongoDB） | redis://127.0.0.1:6379 |
-| `data_store` | string | 缓存存储数据库（支持Redis） | mysql://root@tcp(127.0.0.1:3306)/gorse |
-| `auto_insert_user` | bool | 在插入新反馈的时候自动插入新用户 | true |
-| `auto_insert_item` | bool | 在插入新反馈的时候自动插入新物品 | true |
+| `cache_store` | string | Database for data (supports MySQL/MongoDB) | redis://127.0.0.1:6379 |
+| `data_store` | string | Database for cache (supports Redis) | mysql://root@tcp(127.0.0.1:3306)/gorse |
+| `auto_insert_user` | bool | Automatically insert new users when inserting new feedback | true |
+| `auto_insert_item` | bool | Automatically insert new items when inserting new feedback | true |
 
-`data_store`和`cache_store`设置数据库的DSN（Database Source Name）格式如下：
+The DSN (Database Source Name) format of the `data_store` and `cache_store` is as follows.
 
-- Redis：`redis://主机名:端口`
-- MySQL：`mysql://[用户名[:密码]@][协议[(地址)]]/数据库[?配置项1=值1&...¶配置项N=值N]`
-- MongoDB：`mongodb://[用户名:密码@]主机名1[:端口1][,...主机名N[:端口N]]][/[数据库][?选项]]`
+- Redis: `redis://hostname:port`
+- MySQL: `mysql://[username[:password]@][protocol[(hostname:port)]]/database[?config1=value1&...configN=valueN]`
+- MongoDB: `mongodb://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[database][?options]]`
 
-## 相似物品更新配置
+## Similar Item Configuration
 
-相似物品召回配置位于`[similar]`之下：
+Similar item configurations are located under `[similar]`.
 
-| 配置项 | 类型 | 说明 | 默认值 |
+| Key | Type | Description | Default |
 |-|-|-|-|
-| `n_similar` | int | 缓存相似物品的数量，0表示禁用 | 100 |
-| `update_period` | int | 更新相似物品时间间隔（分钟） | 60 |
+| `n_similar` | int | Number of similar items to cache, 0 means disabled | 100 |
+| `update_period` | int | Time interval (in minutes) to update similar items | 60 |
 
-## 最新物品召回配置
+## Latest Item Configuration
 
-最新物品召回配置位于`[latest]`之下：
+The latest item configuration is located under `[latest]`.
 
-| 配置项 | 类型 | 说明 | 默认值 |
+| Key | Type | Description | Default |
 |-|-|-|-|
-| `n_latest` | int | 召回最新物品的数量，0表示禁用 | 100 |
-| `update_period` | int | 更新最新物品时间间隔（分钟） | 10 |
+| `n_latest` | int | Number of latest items to cache, 0 means disabled | 100 |
+| `update_period` | int | Time interval to update the latest items (in minutes) | 10 |
 
-## 热门物品召回配置
+## Popular Item Configuration
 
-热门物品召回配置位于`[popular]`之下：
+The popular item configuration is located under `[popular]`.
 
-| 配置项 | 类型 | 说明 | 默认值 |
+| Key | Type | Description | Default |
 |-|-|-|-|
-| `n_popular` | int | 召回热门物品的数量，0表示禁用 | 100 |
-| `update_period` | int | 更新热门物品时间间隔（分钟） | 1440 |
-| `time_window` | int | 召回前N天之内的热门物品 | 365 |
+| `n_popular` | int | Number of popular items to cache, 0 means disabled | 100 |
+| `update_period` | int | Time interval to update popular items (in minutes) | 1440 |
+| `time_window` | int | Popular items within the previous N days | 365 |
 
-## 协同过滤召回配置
+## Collaborative Filtering Configuration
 
-协同过滤召回配置位于`[cf]`之下：
+The collaborative filtering configuration is located under `[cf]`.
 
-| 配置项 | 类型 | 说明 | 默认值 |
+| Key | Type | Description | Default |
 |-|-|-|-|
-| `n_cf` | int | 协同过滤召回物品的数量，0表示禁用 | 800 |
-| `cf_model` | string | 协同过滤模型（从`als`、`bpr`和`ccd`选择） | als |
-| `fit_period` | int | 更新协同过滤推荐模型时间间隔（分钟） | 1440 |
-| `predict_period` | int | 更新协同过滤推荐物品时间间隔（分钟） | 60 |
-| `feedback_types` | int | 协同过滤推荐使用的反馈类型 | [""] |
-| `fit_jobs` | int | 模型训练线程数 | 1 |
-| `verbose` | int | 报告损失函数值和推荐准确率的迭代间隔 | 10 |
-| `n_candidates` | int | 计算推荐准确率使用候选物品数量 | 100 |
-| `top_k` | int | 计算推荐准确率的推荐列表长度，也就是NDCG@N中的N | 10 |
-| `n_test_users` | int | 测试集用户数量（0表示使用全体用户测试） | 0 |
+| `n_cf` | int | Number of collaborative filtering matched items, 0 means disabled | 800 |
+| `cf_model` | string | Collaborative filtering model (select from `als`, `bpr` and `ccd`) | als |
+| `fit_period` | int | Interval (in minutes) to update the collaborative filtering model | 1440 |
+| `predict_period` | int | Update collaborative filtering matched items interval (in minutes) | 60 |
+| `feedback_types` | int | Feedback types used by collaborative filtering model | [""] |
+| `fit_jobs` | int | Number of model training threads | 1 |
+| `verbose` | int | Iteration interval for reporting costs and recommendation accuracy | 10 |
+| `n_candidates` | int | Number of candidates used to estimate the recommendation accuracy | 100 |
+| `top_k` | int | Length of the recommendation list to estimate the recommendation accuracy, i.e. N in NDCG@N | 10 |
+| `n_test_users` | int | Number of users in the test set (0 means use all users to test) | 0 |
 
-模型参数相关的配置如下，模型参数的默认值取决于具体的模型设定：
+The configurations related to the model hyper-parameters are as follows. The default values of hyper-parameters depend on the corresponding model settings.
 
-| 配置项 | 类型 | 说明 | 对应模型 |
+| Key | Type | Description | Corresponding model |
+| -|-|-|-|
+| `lr` | float | Learning rate | BPR |
+| `reg` | float | Regularization coefficient | BPR/ALS/CCD |
+| `n_epochs` | int | Number of iterations | BPR/ALS/CCD |
+| `n_factors` | int | Number of latent factors | BPR/ALS/CCD |
+| `init_mean` | float | Mean of gaussian random initializer | BPR/ALS/CCD |
+| `init_std` | float | Standard deviation of gaussian random initializer | BPR/ALS/CCD |
+| `alpha` | float | Weight for negative samples | ALS/CCD |
+
+## Ranking Configuration
+
+The ranking configuration is located under `[rank]`.
+
+| Key | Type | Description | Default |
 |-|-|-|-|
-| `lr` | float | 学习率 | BPR |
-| `reg` | float | 正则化系数 | BPR/ALS/CCD |
-| `n_epochs` | int | 迭代次数 | BPR/ALS/CCD |
-| `n_factors` | int | 隐向量维度 | BPR/ALS/CCD |
-| `init_mean` | float | 高斯随机初始化平均 | BPR/ALS/CCD |
-| `init_std` | float | 高斯随机初始化方差 | BPR/ALS/CCD |
-| `alpha` | float | 负样本权重 | ALS/CCD |
+| `task` | int | Task type (`r` for regression, `c` for classification) | `r` |
+| `feedback_types` | int | Types of feedback used for ranking | [""] |
+| `fit_period` | int | Time interval to update the ranking model (in minutes) | 1440 |
+| `fit_jobs` | int | Number of threads for model training | 1 |
+| `verbose` | int | Iteration interval for reporting costs and prediction accuracies | 10 |
 
-## 个性化排序模型配置
+The configurations related to the model hyper-parameters are as follows.
 
-个性化排序模型配置位于`[rank]`之下：
-
-| 配置项 | 类型 | 说明 | 默认值 |
-|-|-|-|-|
-| `task` | int | 排序任务类型（r表示回归，c表示分类） | r |
-| `feedback_types` | int | 排序使用的反馈类型 | [""] |
-| `fit_period` | int | 更新排序模型时间间隔（分钟） | 1440 |
-| `fit_jobs` | int | 模型训练线程数 | 1 |
-| `verbose` | int | 报告损失函数值和预测准确率的迭代间隔 | 10 |
-
-模型参数相关的配置如下：
-
-| 配置项 | 类型 | 说明 |
+| Key | Type | Description |
 |-|-|-|
-| `lr` | float | 学习率 |
-| `reg` | float | 正则化系数 |
-| `n_epochs` | int | 迭代次数 |
-| `n_factors` | int | 隐向量维度 |
-| `init_mean` | float | 高斯随机初始化平均 |
-| `init_std` | float | 高斯随机初始化方差 |
+| `lr` | float | Learning rate |
+| `reg` | float | Regularization coefficient |
+| `n_epochs` | int | Number of iterations |
+| `n_factors` | int | Number of latent factors |
+| `init_mean` | float | Mean of gaussian random initializer |
+| `init_std` | float | Standard deviation of gaussian random initializer |
 
-## 主节点配置
+## Master Configuration
 
-主节点配置位于`[cf]`之下：
+The master configuration is located under `[cf]`.
 
-| 配置项 | 类型 | 说明 | 默认值 |
+| Key | Type | Description | Default |
 |-|-|-|-|
-| `host` | string | 主节点监听地址 | 127.0.0.1 |
-| `port` | int | 主节点监听端口 | 8086 |
-| `jobs` | int | 主节点工作线程数量 | 1 |
-| `cluster_meta_timeout` | int | 元数据超时时间 | 60 |
+| `host` | string | Master node listening host | 127.0.0.1 |
+| `port` | int | Master node listening port | 8086 |
+| `jobs` | int | Number of working threads | 1 |
+| `cluster_meta_timeout` | int | Metadata timeout | 60 |

@@ -1,6 +1,6 @@
-# 命令介绍
+# Commands
 
-## 主节点程序
+## Master Node Commands
 
 ```
 $ gorse-master -h
@@ -17,9 +17,9 @@ Flags:
   -v, --version         gorse version
 ```
 
-主节点程序需要指定配置文件路径，另外可以使用命令行设置监听的地址和端口，命令行中指定的地址和端口会覆盖配置文件中的地址和端口设置。
+The master node needs to specify the configuration file path, in addition, you can use the command line to set the listening host and port, the host and port specified in the command line will override the host and port settings in the configuration file.
 
-## 服务节点程序
+## Service Node Commands
 
 ```
 $ gorse-server -h
@@ -37,10 +37,9 @@ Flags:
   -v, --version               gorse version
 ```
 
-服务节点程序需要指定主节点的地址和端口，以及开启HTTP服务的地址和端口。
+The server node needs to specify the host and port of the master node, as well as the host and port to open the HTTP service.
 
-## 工作节点程序
-
+## Work Node Commands
 
 ```
 $ gorse-worker -h
@@ -56,9 +55,9 @@ Flags:
       --master-port int      port of master node (default 8086)
 ```
 
-工作节点程序需要指定主节点的地址和端口，以及工作线程数量。
+The worker node needs to specify the host and port of the master node, and the number of working threads.
 
-## 控制台程序
+## CLI Tools
 
 ```
 $ gorse-cli -h
@@ -83,4 +82,4 @@ Flags:
 Use "gorse-cli [command] --help" for more information about a command.
 ```
 
-控制台程序能够列出集群成员、查看系统状态、导入/导出数据、测试模型推荐准去率以及随即搜索模型最佳参数。
+The CLI tools can list cluster members, view system status, import/export data, test model, and search for model optimal hyper-parameters.

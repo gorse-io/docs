@@ -1,6 +1,6 @@
 [book]
 authors = ["zhenghaoz"]
-language = "zh"
+language = "en"
 multilingual = false
 src = "src"
-title = "Gorse推荐系统文档"
+title = "Gorse Document"

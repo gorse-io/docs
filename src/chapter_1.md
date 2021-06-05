@@ -1,15 +1,15 @@
-# 第一章：系统介绍
+# Chapter 1: Introduction
 
-推荐系统本身是非常成熟的技术，网络上已经有很多的推荐算法工具包、各种各样的推荐算法在各个顶级会议上发表。即便推荐系统相关的公开资料非常多，但是却缺少一个开箱即用的开源推荐系统。这样的现象其实是推荐系统本身的特性造成，推荐系统的构建过程涉及了不同的技术包括存储、计算、业务。推荐系统一般捆绑了技术选型和业务知识，这导致推荐系统很难被解耦出来形成一套具有普适性的开源系统。Gorse就是希望成为一个具有普适性开源推荐系统，可以方便地引入到各种各样的在线服务中。
+Recommender systems are mature technologies, and there are already many recommender system toolkits on the web and various recommenders published in various top conferences. Even though there is a lot of public information about recommender systems, there is a lack of an open source recommender system that works out of the box. Such a phenomenon is actually caused by the nature of the recommender system itself, which involves different technologies including storage, computation, and business. Gorse aims to be a universal open source recommender system that can be easily introduced into online services.
 
-## [推荐原理](ch01-01-principle.md)
+## [Recommendation Principles](ch01-01-principle.md)
 
-Gorse推荐物品的过程由**召回**和**排序**两个阶段构成。召回阶段从全体物品中寻找出一个候选物品集合用于后续排序。由于物品的数量庞大，推荐系统无法完成对全体物品进行排序的计算量，因此召回阶段主要使用一些简单的策略或者模型去搜集候选物品。目前，系统已经实现了“最近热门物品”、“最新物品”和“协同过滤”三种召回方式。排序阶段将召回物品去掉重复物品和历史物品之后进行排序，排序阶段会结合物品和用户的特征进行推荐，通过更加精准。
+The process of recommending items consists of two phases, **matching** and **ranking**. The matching phase finds a collection of candidate items from all items for subsequent ranking. Due to the large number of items, the recommender system is unable to perform the computational workload of ranking all items, so the matching phase uses simple strategies or models to collect the candidate items. At present, the system has implemented three matching strategies, namely "recent popular items", "latest items" and "collaborative filtering". The ranking phase ranks the matched items after removing duplicate items and historical items. The ranking model exploits the items and user features to improve recommendation accuracy.
 
-<center><img src="img/dataflow.png" height="150"></center>
+<center><img src="img/dataflow.png" height="180"></center>
 
-## [系统架构](ch01-02-architect.md)
+## [System Architecture](ch01-02-architect.md)
 
-Gorse是一个单机训练分布式预测的推荐系统。Gorse将数据存储在MySQL或者MongoDB中，中间数据缓存在Redis中。集群又一个主节点、多个工作节点和服务节点构成。主节点负责排序模型训练、协同过滤模型训练、非个性化物品召回、配置管理和成员管理。服务节点负责暴露系统的HTTP接口，以及负责在线实时推荐。工作节点负责为每个用户进行个性化召回——目前仅支持协同过滤召回。另外，运维人员可以通过CLI进行模型调参、数据导入导出和系统状态查看。
+Gorse is a single node training and distributed prediction recommender system. Gorse stores data in MySQL or MongoDB, with intermediate data cached in Redis. The cluster consists of a master node, multiple worker nodes, and server nodes. The master node is responsible for ranking model training, collaborative filtering model training, non-personalized item matching, configuration management, and membership management. The server node is responsible for exposing the RESTful APIs and online real-time recommendations. Worker nodes are responsible for personalized matching for each user - currently only collaborative filtering is supported. In addition, administrator can perform model tuning, data import and export, and system status checking via the CLI.
 
 <center><img src="img/arch.png" height="200"></center>
