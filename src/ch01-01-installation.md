@@ -1,5 +1,7 @@
 # Installation
 
+Gorse can be setup via Docker Compose or maually.
+
 ## Setup Gorse with Docker Compose
 
 The best practice to manage Gorse nodes is using orchestration tools such as Docker Compose, etc.. There are Docker images of the master node, the server node and the worker node.
@@ -70,8 +72,10 @@ Create a configuration file [config.toml](https://github.com/zhenghaoz/gorse/blo
 ```toml
 # This section declares settings for the database.
 [database]
+
 # database for caching (support Redis only)
 cache_store = "redis://localhost:6379"
+
 # database for persist data (support MySQL/MongoDB)
 data_store = "mysql://root@tcp(localhost:3306)/gorse?parseTime=true"
 ```
