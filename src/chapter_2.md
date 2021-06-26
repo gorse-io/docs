@@ -1,4 +1,4 @@
-# Chapter 2: User Guide
+# Chapter 2: Gorse Development
 
 This chapter introduces how to use the Gorse recommender system, including writing configuration files, starting the system, and using the exposed HTTP interface.
 
