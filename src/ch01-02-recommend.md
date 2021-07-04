@@ -16,9 +16,9 @@ There are currently three matching strategies in the system: latest items, recen
 
 | Model | Paper |
 | ---- | ------------------------------------------------------------ |
-| ALS  | Hu, Yifan, Yehuda Koren, and Chris Volinsky. "Collaborative filtering for implicit feedback datasets." *2008 Eighth IEEE International Conference on Data Mining*. Ieee, 2008. |
+| ALS  |  |
 | BPR  | Rendle, Steffen, et al. "BPR: Bayesian personalized ranking from implicit feedback." arXiv preprint arXiv:1205.2618 (2012). |
-| CCD | He, Xiangnan, et al. "Fast matrix factorization for online recommendation with implicit feedback." Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016. |
+| CCD |  |
 
 ## Ranking Mechanism
 
@@ -26,4 +26,48 @@ The ranking model takes into account labels of the items, especially for new ite
 
 | Model | Paper |
 | - | - |
-| FM | Rendle, Steffen. "Factorization machines." *2010 IEEE International Conference on Data Mining*. IEEE, 2010. |
+| FM | |
+
+## Recommendation
+
+### Popular Items
+
+### Latest Items
+
+### Offline Recommendation
+
+### Online Recommendation
+
+## Model Update
+
+There are two kinds of models in Gorse, but the training and hyperparameters optimization procedures are quite the same. 
+
+### Model Training
+
+Model training are done by the master node, as well as model search. The master node pull data from database and fit ranking model and CTR model periodically.
+
+> - For every `fit_jobs` minutes:
+>   - Pull data from database.
+>       - Train model with hyperparameters found by model search using `fit_jobs` jobs.
+
+### Model Search
+
+There are many hyperparameters for each recommendation model in Gorse. However, it is hard to configuare these hyperparameters manually even for machine learning experts. To help users get rid of hyperparameters tuning, Gorse integrates random search[^1] for hyperparameters optimization. The procedure of model search is as following:
+
+> - For every `search_period` minutes:
+>   - Pull data from database.
+>   - For every recommender models:
+>       - For `search_trials` trials:
+>           - Sample a hyperparameter combination.
+>           - Train model with sampled hyperparameters by `search_epoch` epoches and `search_jobs` jobs.
+>           - Update best model.
+
+[^1]: Bergstra, James, and Yoshua Bengio. "Random search for hyper-parameter optimization." Journal of machine learning research 13.2 (2012).
+
+[^2]: Rendle, Steffen. "Factorization machines." *2010 IEEE International Conference on Data Mining*. IEEE, 2010. 
+
+[^3]: Hu, Yifan, Yehuda Koren, and Chris Volinsky. "Collaborative filtering for implicit feedback datasets." *2008 Eighth IEEE International Conference on Data Mining*. Ieee, 2008.
+
+[^4]: He, Xiangnan, et al. "Fast matrix factorization for online recommendation with implicit feedback." Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016.
+
+[^5]: Rendle, Steffen, et al. "BPR: Bayesian personalized ranking from implicit feedback." Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.
