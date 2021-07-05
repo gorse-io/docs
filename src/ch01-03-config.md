@@ -52,11 +52,11 @@ Configuratios under `[server]` are used to define behaviors of the server node.
 
 | Key | Type | Default | Description |
 |-|-|-|-|
-| `popular_window` | integer | `180` | |
+| `popular_window` | integer | `180` | Time window of popular items in days |
 | `fit_period` | integer | `60` | Period of model trainig in minutes |
 | `search_period` | integer | `180` | Period of model search in minutes |
 | `search_epoch` | integer | `100` | Number of training epoches for each model in model search |
 | `search_trials` | integer | `10` | Number of trials for each model in model search |
 | `refresh_recommend_period` | integer | `10` | |
-| `fallback_recommend` | integer | `10` | |
+| `fallback_recommend` | integer | `latest` | Source of recommendation when personalized recommendation exhausted |
 | `explore_latest_num` | integer | `10` | |
