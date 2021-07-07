@@ -50,6 +50,8 @@ Configuratios under `[server]` are used to define behaviors of the server node.
 
 ## `[recommend]`
 
+Configuratios under `[recommend]` are used to define behaviors of recommendation.
+
 | Key | Type | Default | Description |
 |-|-|-|-|
 | `popular_window` | integer | `180` | Time window of popular items in days |
@@ -57,6 +59,6 @@ Configuratios under `[server]` are used to define behaviors of the server node.
 | `search_period` | integer | `180` | Period of model search in minutes |
 | `search_epoch` | integer | `100` | Number of training epoches for each model in model search |
 | `search_trials` | integer | `10` | Number of trials for each model in model search |
-| `refresh_recommend_period` | integer | `10` | |
+| `refresh_recommend_period` | integer | `5` | Period to refresh offline recommendation cache in days |
 | `fallback_recommend` | integer | `latest` | Source of recommendation when personalized recommendation exhausted |
-| `explore_latest_num` | integer | `10` | |
+| `explore_latest_num` | integer | `10` | Number of latest items add to offline recommendation to address cold-start problem |

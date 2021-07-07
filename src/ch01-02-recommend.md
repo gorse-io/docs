@@ -46,6 +46,24 @@ For each item, top n (n equals `cache_size`) similar items are collected. In cur
 
 ### Offline Recommendation
 
+Worker nodes collect top n items from all items and save them to cache. Besides, latest items are added to address the cold-start problem in recommender system. When labels of items exists, the CTR prediction model is enabled, vice versa. The procedure of offline recommendatin is different depend on whether the CTR model is enabled.
+
+**If the CTR model is enabled:**
+
+1. Collect top `cache_size` items from unseen items of currrent user using ranking model.
+2. Append `explore_latest_num` latest items to the collection.
+3. Rerank collected items using the CTR prediction model.
+
+**If the CTR model is disabled:**
+
+1. Collect top `cache_size` items from unseen items of currrent user using ranking model.
+2. Insert `explore_latest_num` latest items to random positions in the collection.
+
+Offline recommendation cache will be consumed by users and fashion will change. Offline recommendation will be refreshed under one of these two conditions:
+
+- The timestamp of offline recommendation has been `refresh_recommend_period` days ago.
+- New feedbacks have been inserted since the timestamp of offline recommendation.
+
 ### Online Recommendation
 
 The online recommendation in the server node consists of three stages:
