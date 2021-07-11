@@ -1,32 +1,53 @@
 # Recommend using Gorse
 
-Recommendation consists of two phases: matching and ranking. The number of items in a recommender system is usually very large, and it is not practical to ranking all items. Therefore, the matching phase is needed to filter out candidate items from all items, and then the ranking model utilizes the item and user labels for more accurate ranking.
+## Users, Items and Feedback
 
-<center><img src="img/dataflow.png" height="180"></center>
+A recommender system is expected to recommend items to users. To learn the peference of each user, feedbacks between users and items are feed to recommender system. In Gorse, there are three types of entities.
 
-## Matching Strategies
+- **User:** A user is identified by a string identifier.
 
-There are currently three matching strategies in the system: latest items, recently popular items and collaborative filtering. In fact, recall strategies are not limited to these three, but can also be based on the user's interested tags, items similar to the user's favorite items, etc. Feel free to discuss in [issues](https://github.com/zhenghaoz/gorse/issues).
+```go
+type User struct {
+	UserId    string
+}
+```
 
-- **Latest Items:** Add the latest items directly to the ranking phase so that new items are given the opportunity to be exposed.
+- **Item:** A item is identified by a string identifier. A timestamp is used to record the freshness of this item. The timestamp could be last update time, release time, etc. Labels are used to describe characters of this item, eg., tags of a movie.
 
-- **Recent Popular Items:** Users are more likely to like popular items, but we need to set a time limit to avoid recommending "outdated" popular items.
+```go
+type Item struct {
+	ItemId    string
+	Timestamp time.Time
+	Labels    []string
+}
+```
 
-- **Collaborative Filtering:** Use collaborative filtering to filter candidate items from the entire item pool. Since collaborative filtering does not use item labels, it is less computationally intensive and suitable for matching scenarios. Three collaborative filtering models, BPR, ALS and CCD, are implemented in the system.
+- **Feedback:** A feedback is identified a triple: feedback type, user ID and item ID. The type of feedback can be positive (like), negative (dislike) or neutural (read). The timestamp record the time that this feedback happened.
 
-| Model | Paper |
-| ---- | ------------------------------------------------------------ |
-| ALS  |  |
-| BPR  | Rendle, Steffen, et al. "BPR: Bayesian personalized ranking from implicit feedback." arXiv preprint arXiv:1205.2618 (2012). |
-| CCD |  |
+```go
+type Feedback struct {
+	FeedbackType string
+	UserId       string
+	ItemId       string
+	Timestamp   time.Time
+}
+```
 
-## Ranking Mechanism
+> There might be extra field in the defined structure. They are preserved for future usage.
 
-The ranking model takes into account labels of the items, especially for new items, where the label is the basis for deciding whether to push the new item to the user or not. The ranking model for this system is factorization machines.
+## Workflow
 
-| Model | Paper |
-| - | - |
-| FM | |
+## Data Storage
+
+There are two types of storage used in Gorse: data store and cache store.
+
+### Data Store
+
+The data store is used to store items, users, feedbacks and measurements. Currently, MySQL and MongoDB are supprted as data store. Other database will be avaiable once its interface is implemented.
+
+### Cache Store
+
+The cache store is used to store offline recommendation and temp variables. Only Redis is supported.
 
 ## Recommendation
 
@@ -95,6 +116,10 @@ There are many hyperparameters for each recommendation model in Gorse. However, 
 >           - Sample a hyperparameter combination.
 >           - Train model with sampled hyperparameters by `search_epoch` epoches and `search_jobs` jobs.
 >           - Update best model.
+
+
+## Online Evaluation
+
 
 
 [^6]: Zhang, Zhenghao, et al. "SANS: Setwise Attentional Neural Similarity Method for Few-Shot Recommendation." DASFAA (3). 2021.
