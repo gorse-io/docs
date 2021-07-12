@@ -1,5 +1,7 @@
 # Recommend using Gorse
 
+Each components and concepts of Gorse will be introduced in this section.
+
 ## Users, Items and Feedback
 
 A recommender system is expected to recommend items to users. To learn the peference of each user, feedbacks between users and items are feed to recommender system. In Gorse, there are three types of entities.
@@ -33,9 +35,19 @@ type Feedback struct {
 }
 ```
 
+Types of feedbacks are classified to three categories: 
+
+1. `positive_feedback_types` mean a user favors a item. 
+2. `click_feedback_types` mean a user favors a recommended item. This item must be recommended by Gorse.
+3. `read_feedback_type` means a user read a item. However, the real feedback this user has in his/her mind is never known.
+
+The difference between `positive_feedback_types` and `click_feedback_types` is that the item of `click_feedback_types` must come from recommendations of Gorse. The item of `positive_feedback_types` could be found by a user through other approaches such as search, direct access, etc. `read_feedback_type` is a neutral event. Negative feedback can be conduct by \{`read_feedback_type` items\} - \{`positive_feedback_types` items\}.
+
 > There might be extra field in the defined structure. They are preserved for future usage.
 
 ## Workflow
+
+<center><img width=480 src="img/workflow.png"/></center>
 
 ## Data Storage
 
@@ -43,11 +55,17 @@ There are two types of storage used in Gorse: data store and cache store.
 
 ### Data Store
 
-The data store is used to store items, users, feedbacks and measurements. Currently, MySQL and MongoDB are supprted as data store. Other database will be avaiable once its interface is implemented.
+The `data_store` is used to store items, users, feedbacks and measurements. Currently, MySQL and MongoDB are supprted as data store. Other database will be avaiable once its interface is implemented. 
+
+Unfortunately, there are two challenges in data storage:
+
+1. What if a feedback with unknown user or item is inserted? There are two options `auto_insert_user` and `auto_insert_item` to control feedback insertion. If new users or items insertion is forbided, a feedback with new user or item will be ignored.
+
+2. How to address stale feedback and items? Some items and its feedbacks are short-lived such as news. `positive_feedback_ttl` and `item_ttl` are used to ignore stale feedback and items when pulling dataset from data store.
 
 ### Cache Store
 
-The cache store is used to store offline recommendation and temp variables. Only Redis is supported.
+The `cache_store` is used to store offline recommendation and temp variables. Only Redis is supported. Latest items, popular items, similar items and recommended items are cached in Redis. The length of each cached list is `cache_size`.
 
 ## Recommendation
 
@@ -120,7 +138,7 @@ There are many hyperparameters for each recommendation model in Gorse. However, 
 
 ## Online Evaluation
 
-
+The only method to estimate recommendation performance is online evaluation. The metric of online evaluation in Gorse is click-through-rate: `click feedback` / `read feedback`.
 
 [^6]: Zhang, Zhenghao, et al. "SANS: Setwise Attentional Neural Similarity Method for Few-Shot Recommendation." DASFAA (3). 2021.
 

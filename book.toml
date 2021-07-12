@@ -4,3 +4,6 @@ language = "en"
 multilingual = false
 src = "src"
 title = "Gorse Document"
+
+[output.html]
+mathjax-support = true

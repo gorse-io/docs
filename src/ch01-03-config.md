@@ -1,6 +1,6 @@
 # Configuration
 
-Previous section *[Recommend using Gorse](ch01-02-recommend.md)* is helpful to understand configurations introduced in this section.
+Previous section *[Recommend using Gorse](ch01-02-recommend.md)* is helpful to understand configurations introduced in this section. These configuration items without default values must be filled. It's highly recommended to create new config file based on [`config.toml.template`](https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template).
 
 ## `[database]`
 
@@ -12,12 +12,12 @@ Configuratios under `[database]` are used to define behaviors on database and da
 | `cache_store` | string |  | Database for cache store (supports Redis) |
 | `auto_insert_user` | boolean | `true` | Automatically insert new users when inserting new feedback |
 | `auto_insert_item` | boolean | `true` | Automatically insert new items when inserting new feedback |
-| `ache_size` | string |  | |
-| `positive_feedback_types` | string | `[]` | |
-| `click_feedback_types` | string | `[]` | |
-| `read_feedback_type` | string |  | |
-| `positive_feedback_ttl` | string |  | |
-| `item_ttl` | string |  | |
+| `cache_size` | string | `100` | Number of cached elements in cache store |
+| `positive_feedback_types` | string | | Types of positive feedback |
+| `click_feedback_types` | string | | Types of feedback for click events |
+| `read_feedback_type` | string |  | Type of feedback for read events |
+| `positive_feedback_ttl` | string | `0` | Time-to-live of positive feedback |
+| `item_ttl` | string | `0` | Time-to-live of items |
 
 The DSN (Database Source Name) format of the `data_store` and `cache_store` is as follows.
 

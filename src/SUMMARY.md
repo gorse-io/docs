@@ -5,3 +5,4 @@
   - [Recommend using Gorse](ch01-02-recommend.md)
   - [Configuration](ch01-03-config.md)
   - [GitRec, The Live Demo](ch01-04-demo.md)
+  - [Questions & Answers](ch01-05-q&a.md)
