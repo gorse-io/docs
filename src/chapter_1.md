@@ -1,4 +1,4 @@
-# Chapter 1: Gorse Usage
+# Chapter 1: Quick Start
 
 Gorse is an open source recommendation system written in Go. Gorse aims to be an universal open source recommender system that can be easily introduced into a wide variety of online services. By importing items, users and interaction data into Gorse, the system will automatically train models to generate recommendations for each user. Project features are as follows.
 
