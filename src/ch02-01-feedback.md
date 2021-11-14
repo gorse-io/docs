@@ -6,7 +6,7 @@ In a recommender system, data is the foundation of all recommendation results, a
 
 Recommender system is complex, but to maximize reusability, Gorse has abstracted the data used in a recommender system as a collection of three entities: users, items, and feedback.
 
-- **User:** A user entity consists of a user ID and tags describing the user. The user tags can be empty, but these tags helps to improve the recommendation accuracy of the recommender system.
+- **User:** A user entity consists of a user ID and labels describing the user. The user labels can be empty, but these labels helps to improve the recommendation accuracy of the recommender system.
 
 ```go
 type User struct {
