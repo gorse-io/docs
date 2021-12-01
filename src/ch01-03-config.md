@@ -1,10 +1,10 @@
 # Configuration
 
-Previous section *[Recommend using Gorse](ch01-02-recommend.md)* is helpful to understand configurations introduced in this section. These configuration items without default values must be filled. It's highly recommended to create new config file based on [`config.toml.template`](https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template).
+Previous section *[Recommend using Gorse](ch01-02-recommend.md)* is helpful to understand configurations introduced in this section. These configuration items without default values must be filled. It's highly recommended to create a new config file based on [`config.toml.template`](https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template).
 
 ## `[database]`
 
-Configuratios under `[database]` are used to define behaviors on database and data.
+Configurations under `[database]` are used to define behaviors on the database and data.
 
 | Key | Type | Default | Description |
 |-|-|-|-|
@@ -27,7 +27,7 @@ The DSN (Database Source Name) format of the `data_store` and `cache_store` is a
 
 ## `[master]`
 
-Configuratios under `[master]` are used to define behaviors of the master node.
+Configurations under `[master]` are used to define behaviors of the master node.
 
 | Key | Type | Default | Description |
 |-|-|-|-|
@@ -41,7 +41,7 @@ Configuratios under `[master]` are used to define behaviors of the master node.
 
 ## `[server]`
 
-Configuratios under `[server]` are used to define behaviors of the server node.
+Configurations under `[server]` are used to define behaviors of the server node.
 
 | Key | Type | Default | Description |
 |-|-|-|-|
@@ -50,7 +50,7 @@ Configuratios under `[server]` are used to define behaviors of the server node.
 
 ## `[recommend]`
 
-Configuratios under `[recommend]` are used to define behaviors of recommendation.
+Configurations under `[recommend]` are used to define behaviors of recommendation.
 
 | Key | Type | Default | Description |
 |-|-|-|-|

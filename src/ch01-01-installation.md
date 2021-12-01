@@ -1,16 +1,16 @@
 # Installation
 
-Gorse can be setup via Docker Compose or maually.
+Gorse can be set up via Docker Compose or manually.
 
 ## Setup Gorse with Docker Compose
 
-The best practice to manage Gorse nodes is using orchestration tools such as Docker Compose, etc.. There are Docker images of the master node, the server node and the worker node.
+The best practice to manage Gorse nodes is using orchestration tools such as Docker Compose, etc. There are Docker images of the master node, the server node, and the worker node.
 
 | Docker Image         | Image Size |
 | ------------ | -------- |
-| gorse-master | [![](https://img.shields.io/docker/image-size/zhenghaoz/gorse-master)](https://hub.docker.com/repository/docker/zhenghaoz/gorse-master) |
-| gorse-server | [![](https://img.shields.io/docker/image-size/zhenghaoz/gorse-server)](https://hub.docker.com/repository/docker/zhenghaoz/gorse-server) |
-| gorse-worker | [![](https://img.shields.io/docker/image-size/zhenghaoz/gorse-worker)](https://hub.docker.com/repository/docker/zhenghaoz/gorse-worker) |
+| gorse-master | [![gorse-master](https://img.shields.io/docker/image-size/zhenghaoz/gorse-master)](https://hub.docker.com/repository/docker/zhenghaoz/gorse-master) |
+| gorse-server | [![gorse-server](https://img.shields.io/docker/image-size/zhenghaoz/gorse-server)](https://hub.docker.com/repository/docker/zhenghaoz/gorse-server) |
+| gorse-worker | [![gorse-worker](https://img.shields.io/docker/image-size/zhenghaoz/gorse-worker)](https://hub.docker.com/repository/docker/zhenghaoz/gorse-worker) |
 
 There is an example [docker-compose.yml](https://github.com/zhenghaoz/gorse/blob/master/docker/docker-compose.yml) consists of a master node, a server node and a worker node, a Redis instance, and a MySQL instance.
 
@@ -21,9 +21,9 @@ There is an example [docker-compose.yml](https://github.com/zhenghaoz/gorse/blob
 docker-compose up -d
 ```
 
-- Download the SQL file [github.sql](https://cdn.gorse.io/example/github.sql) and import to the MySQL instance.
+- Download the SQL file [github.sql](https://cdn.gorse.io/example/github.sql) and import it to the MySQL instance.
 
-```
+```bash
 mysql -h 127.0.0.1 -u root -proot_pass gorse < github.sql
 ```
 
@@ -33,13 +33,13 @@ mysql -h 127.0.0.1 -u root -proot_pass gorse < github.sql
 docker-compose restart
 ```
 
-These images tagged with `latest` tag are built from the master branch. The `tag` should be fixed to a specified version in production.
+These images tagged with the `latest` tag are built from the master branch. The `tag` should be fixed to a specified version in production.
 
 ## Setup Gorse Manually
 
-Binary distributions have been provided for 64-bit Windows/Linux/Mac OS on the [release](https://github.com/zhenghaoz/gorse/releases) page. Due to the demand on large memories, 64-bit machines are highly recommended to deploy Gorse.
+Binary distributions have been provided for 64-bit Windows/Linux/Mac OS on the [release](https://github.com/zhenghaoz/gorse/releases) page. Due to the demand for large memories, 64-bit machines are highly recommended to deploy Gorse.
 
-Gorse depends on following softwares:
+Gorse depends on the following software:
 
 | Software | Role |
 |-|-|
@@ -67,7 +67,7 @@ Built binaries locate at `$(go env GOPATH)/bin`.
 
 - Configuration
 
-Create a configuration file [config.toml](https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template) in the working directory. Set `cache_store` and `data_store` in the configuration file [config.toml](https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template). 
+Create a configuration file [config.toml](https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template) in the working directory. Set `cache_store` and `data_store` in the configuration file [config.toml](https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template).
 
 ```toml
 # This section declares settings for the database.
@@ -80,7 +80,7 @@ cache_store = "redis://localhost:6379"
 data_store = "mysql://root@tcp(localhost:3306)/gorse?parseTime=true"
 ```
 
-- Download the SQL file [github.sql](https://cdn.gorse.io/example/github.sql) and import to the MySQL instance.
+- Download the SQL file [github.sql](https://cdn.gorse.io/example/github.sql) and import it to the MySQL instance.
 
 ```bash
 mysql -h 127.0.0.1 -u root gorse < github.sql
@@ -92,7 +92,7 @@ mysql -h 127.0.0.1 -u root gorse < github.sql
 ./gorse-master -c config.toml
 ```
 
-`-c` specify the path of the configuration file.
+`-c` specifies the path of the configuration file.
 
 - Start the server node and worker node
 
@@ -110,7 +110,7 @@ mysql -h 127.0.0.1 -u root gorse < github.sql
 
 `--master-host` and `--master-port` are the RPC host and port of the master node. `--http-host` and `--http-port` are the HTTP host and port for metrics reporting of this worker node. `-j` is the number of working threads.
 
-## Play with Gorse: 
+## Play with Gorse
 
 There are HTTP entries provided by Gorse:
 
@@ -123,8 +123,8 @@ There are HTTP entries provided by Gorse:
 
 ### Master Dashboard
 
-![](img/dashboard.jpg)
+![dashboard](img/dashboard.jpg)
 
 ### Server RESTful API
 
-![](img/swagger.png)
+![swagger](img/swagger.png)
