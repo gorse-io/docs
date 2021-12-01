@@ -10,7 +10,7 @@
 
 - [Chapter 2: Build Recommender](chapter_2.md)
   - [Feedback Collection](ch02-01-feedback.md)
-  - [Recommendation Strategy](ch02-02-strategy.md)
+  - [Recommendation Strategies](ch02-02-strategy.md)
 
 - [Chapter 3: Monitoring](chapter_3.md)
   - [Log Monitoring](ch03-01-logging.md)

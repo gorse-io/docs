@@ -2,11 +2,11 @@
 
 The mainstream log monitoring solutions are ELK and Loki. Loki is chosen in this section because it is more lightweight compared to ELK. The log collection and monitoring process is as follows.
 
-- Gorse nodes writes the logs to a file.
+- Gorse nodes write the logs to a file.
 - Promtail reads the logs from the file and pushes them to Loki.
 - Grafana reads the logs from Loki for visualization.
 
-First, you need to set each node to write logs to a file in `docker-compose.yml`, as well as add Promtail, Loki and Grafana.
+First, you need to set each node to write logs to a file in `docker-compose.yml`, as well as add Promtail, Loki, and Grafana.
 
 ```yaml
 version: "3"
@@ -165,7 +165,7 @@ After deploying `docker-compose.yml`, login to Grafana and add Loki as a data so
 
 <img src="img/ch3/loki.png" width="500">
 
-Finally, import the logs dashboard provided in the demo project GitRec to monitor warnings, errors, and fatal logs in the recommender system in real time.
+Finally, import the logs dashboard provided in the demo project GitRec to monitor warnings, errors, and fatal logs in the recommender system in real-time.
 
 <img src="img/ch3/dashboard-logs-json.png" width="500">
 
@@ -177,4 +177,4 @@ The logs dashboard filters warning, error, and fatal logs.
 
 Log entries such as database temporarily connection lost, network temporarily timeout, etc. are expected. If an error log is generated that is not expected, welcome to paste it on [GitHub Issues](https://github.com/zhenghaoz/gorse/issues).
 
-![](/img/ch3/dashboard-logs-preview.jpeg)
+![dashboard-logs-preview](/img/ch3/dashboard-logs-preview.jpeg)

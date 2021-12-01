@@ -1,6 +1,6 @@
-# Recommendation Strategy
+# Recommendation Strategies
 
-Gorse recommender system implements different types of recommenders, both non-personalized and personalized. In fact, no single recommender is a panacea, and only a combination of them can be used to achieve the best recommendation results.
+Gorse recommender system implements different types of recommenders, both non-personalized and personalized. No single recommender is a panacea, and only a combination of them can be used to achieve the best recommendation results.
 
 ## Recommenders
 
@@ -8,7 +8,7 @@ First, this section introduces the various types of recommenders in Gorse, each 
 
 ### Latest Recommender
 
-Latest recommender shows the latest items to users according to timestamps, which allows new item to be exposed to users in time. However, the downside of latest recommender is that it does not consider the quality (or popularity) of items. To enable latest recommender in Gorse, you need to set timestamp information for the items. Without timestamps, Gorse will not generate a list of latest items.
+The latest recommender shows the latest items to users according to timestamps, which allows a new item to be exposed to users in time. However, the downside of the latest recommender is that it does not consider the quality (or popularity) of items. To enable the latest recommender in Gorse, you need to set timestamp information for the items. Without timestamps, Gorse will not generate a list of the latest items.
 
 ```go
 type Item struct {
@@ -27,11 +27,11 @@ Popular recommender shows the recent popular items to users, most typically Twit
 popular_window = 365
 ```
 
-Popular recommender is obviously not suitable to be used alone, otherwise it would result in new items not being exposed. Many sites display content with a combination of popular and latest recommendations, such as calculating a score based on popularity and freshness, and finally sorting by score.
+A popular recommender is not suitable to be used alone, otherwise, it would result in new items not being exposed. Many sites display content with a combination of popular and latest recommendations, such as calculating a score based on popularity and freshness and finally sorting by score.
 
 ### Item-based Similarity Recommender
 
-In some scenarios, users like specific types of items, for example, gamers like to solve puzzles, or users of a video platform like to watch dancing girls. Based on the user's history and the similarity between items, item-based similarity recommender recommends items to users. The critical step of item-based similarity recommender is to calculate the similarity between items.
+In some scenarios, users like specific types of items, for example, gamers like to solve puzzles or users of a video platform like to watch dancing girls. Based on the user's history and the similarity between items, an item-based similarity recommender recommends items to users. The critical step of an item-based similarity recommender is to calculate the similarity between items.
 
 Gorse calculates item similarity in three modes, which can be set in the configuration file.
 
@@ -41,11 +41,11 @@ Gorse calculates item similarity in three modes, which can be set in the configu
 
 ```toml
 # The type of neighbors for items. There are three types:
-#   similar: Neighbors are found by number of common labels.
-#   related: Neighbors are found by number of common users.
-#   auto: If a item have labels, neighbors are found by number of common labels.
-#         If this item have no labels, neighbors are found by number of common users.
-# The default values is "auto".
+#   similar: Neighbors are found by some common labels.
+#   related: Neighbors are found by some common users.
+#   auto: If an item has labels, neighbors are found by some common labels.
+#         If this item has no labels, neighbors are found by some common users.
+# The default value is "auto".
 item_neighbor_type = "similar"
 ```
 
@@ -63,11 +63,11 @@ Gorse calculates the similarity between users in three modes, which can be set i
 
 ```toml
 # The type of neighbors for users. There are three types:
-#   similar: Neighbors are found by number of common labels.
-#   related: Neighbors are found by number of common liked items.
-#   auto: If a user have labels, neighbors are found by number of common labels.
-#         If this user have no labels, neighbors are found by number of common liked items.
-# The default values is "auto".
+#   similar: Neighbors are found by some common labels.
+#   related: Neighbors are found by some common liked items.
+#   auto: If a user has labels, neighbors are found by some common labels.
+#         If this user has no labels, neighbors are found by some common liked items.
+# The default value is "auto".
 user_neighbor_type = "similar"
 ```
 
@@ -79,19 +79,19 @@ Recommenders based on similar items and similar users require that the recommend
 
 ### Click-through Rate Prediction
 
-Is there a recommender that combines advantages of similarity recommender and collaborative filtering recommender? Then it is the click-through rate prediction model. The click-through rate prediction model in Gorse is a factorization machine that generates embedding vectors for each user label and item label in addition to embedding vectors for each user and item. Although the factorization machine model is effective, it is not generally used as a recommender for collecting recommended items over all items. Compared with collaborative filtering recommender and similarity recommender, its computational complexity is large. Gorse's click-through prediction model is used to fuse and rank the results of the above recommenders.
+Is there a recommender that combines the advantages of similarity recommender and collaborative filtering recommender? Then it is the click-through rate, prediction model. The click-through rate prediction model in Gorse is a factorization machine that generates embedding vectors for each user label and item label in addition to embedding vectors for each user and item. Although the factorization machine model is effective, it is not generally used as a recommender for collecting recommended items over all items. Compared with collaborative filtering recommender and similarity recommender, its computational complexity is large. Gorse's click-through prediction model is used to fuse and rank the results of the above recommenders.
 
 The original meaning of "click-through rate prediction" is to predict the probability that users will click on the recommended content or ads, but it should be noted that the click-through rate prediction in Gorse refers more to the probability that users will give positive feedback to the recommended results. For example, suppose we set in Gorse that positive feedback means the user has watched 50% of the video, then the "click-through rate" is the probability that the user has watched more than 50% of the video.
 
 ## Recommendation Strategy
 
-Individual recommenders cannot perform the recommendation task well, and multiple recommenders need to be combined. Gorse provides a workflow for generating recommendation results, under which we can draft recommendation strategies that are suitable for specific scenarios. The recommendation process consists of two main components: offline recommendation and online recommendation. The offline recommendation collects recommendations for each user from the full set of items and caches them in Redis. The online recommendation pulls the cached recommendation results, then removes the read content from the recommendation results, and if the cached recommendation results are exhausted, then the recommendation content is generated in real time using the fallback recommenders.
+Individual recommenders cannot perform the recommendation task well, and multiple recommenders need to be combined. Gorse provides a workflow for generating recommendation results, under which we can draft recommendation strategies that are suitable for specific scenarios. The recommendation process consists of two main components: offline recommendation and online recommendation. The offline recommendation collects recommendations for each user from the full set of items and caches them in Redis. The online recommendation pulls the cached recommendation results, then removes the read content from the recommendation results, and if the cached recommendation results are exhausted, then the recommendation content is generated in real-time using the fallback recommenders.
 
 ### Offline Strategy
 
 Offline recommendation consists of three phases.
 
-- **Matching:** Use different full-set recommenders to collect recommended items from all items. There are five types of full-set recommenders: popular recommender, latest recommender, item-based similarity recommender, user based similarity recommender and collaborative filtering recommender, which can be set on or off in the configuration file.
+- **Matching:** Use different full-set recommenders to collect recommended items from all items. There are five types of full-set recommenders: popular recommender, latest recommender, item-based similarity recommender, user-based similarity recommender, and collaborative filtering recommender, which can be set on or off in the configuration file.
 - **Ranking:** Use the factorization machine model to rank the items collected by the matching phase, currently you can also turn off the click-through rate prediction in the configuration and use random merge.
 - **Exploration:** Recommend content based on user history can be a good idea for users, but it also limits the possibility of users seeing more diverse content. It is also a kind of "exploration and exploitation" problem, where exploitation refers to recommending content based on users' historical behavior, while exploration refers to exposing users to more content beyond their awareness. One of the easiest ways to expose users to content beyond the information cocoon is to insert random items into the recommendation list, and Gorse can be configured to randomly insert the newest or recent popular items into the recommendation list, with their proportion set in the configuration file.
 
@@ -116,20 +116,20 @@ enable_click_through_prediction = true
 explore_recommend = { popular = 0.1, latest = 0.2 }
 ```
 
-Perhaps the introduction of various recommenders is not intuitive enough, you can actually preview the recommendation results in the dashboard. The popular items and the latest items can be seen on the landing page of dashboard.
+Perhaps the introduction of various recommenders is not intuitive enough, you can preview the recommendation results in the dashboard. The popular items and the latest items can be seen on the landing page of the dashboard.
 
-![](img/ch2/latest-and-popular.png)
+![latest-and-popular](img/ch2/latest-and-popular.png)
 
-The results of offline recommendation, item-based similarity recommendation, user-based similarity recommendation and collaborative filtering recommendation can be viewed on the user page by clicking *Insight*:
+The results of offline recommendation, item-based similarity recommendation, user-based similarity recommendation, and collaborative filtering recommendation can be viewed on the user page by clicking *Insight*:
 
 - Click *Users* in the navigation bar
 - Click *Insight* in the user row
 
-You can choose to show offline recommendation results, similarity item recommendation, similar user recommendation and collaborative filtering recommendation results from the drop-down menu on the right side
+You can choose to show offline recommendation results, similarity item recommendation, similar user recommendation, and collaborative filtering recommendation results from the drop-down menu on the right side
 
-![](img/ch2/users.png)
+![users](img/ch2/users.png)
 
-![](img/ch2/user-insight.png)
+![user-insight](img/ch2/user-insight.png)
 
 Since Gorse does not yet offer A/B testing, the preview is needed to sensitively draft a recommendation strategy.
 
@@ -138,7 +138,7 @@ Since Gorse does not yet offer A/B testing, the preview is needed to sensitively
 Online recommendations have two tasks.
 
 - **Remove reads:** The read items in the recommendation result cache need to be removed.
-- **Fallback recommendation:** There might be a situation that the cached recommendation results are drain out but new offline recommendations haven't been generated, then the fallback recommenders are needed to generate the recommendation content in real time. The fallback recommenders can be configured in the configuration file with priority from head to tail, and if the front recommender is no longer able to generate recommendation, then continue to try the backward recommender.
+- **Fallback recommendation:** There might be a situation where the cached recommendation results are drained out but new offline recommendations haven't been generated, then the fallback recommenders are needed to generate the recommendation content in real-time. The fallback recommenders can be configured in the configuration file with priority from head to tail, and if the front recommender is no longer able to generate a recommendation, then continue to try the backward recommender.
 
 ```toml
 # The fallback recommendation method for cold-start users:

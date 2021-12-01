@@ -6,20 +6,23 @@ These frequent asked questions are collected from issues, emails and chats. Feel
 
 ### 1. How to address the cold-start problem?
 
-Use `explore_latest_num` to inject latest items into recommendation. Also, item labels are helpful to rank new items in recommendation. For example:
+Use `explore_latest_num` to inject the latest items into a recommendation. Also, item labels are helpful to rank new items in a recommendation. For example:
 
 ```toml
 explore_latest_num = 10
 ```
 
-It means 10 latest items are inserted to recommended items list.
+It means 10 latest items are inserted into recommended items list.
 
 ### 2. How to keep track of items recommended to each user?
 
 There are two options:
-1. Insert a read type feedback to Gorse when a item is showed to a user. This is the way the official demo [zhenghaoz/gitrec](https://github.com/zhenghaoz/gitrec) tracks user seen recommendations.
+
+1. Insert read-type feedback to Gorse when an item is shown to a user. This is the way the official demo [zhenghaoz/gitrec](https://github.com/zhenghaoz/gitrec) tracks user-seen recommendations.
 2. Use `write-back` parameter to write back recommendations as read feedbacks to Gorse, eg:
+
 ```bash
 curl -i -H "Accept: application/json" -X GET http://127.0.0.1:8088//api/recommend/0?write-back=read
 ```
-The 1st option is more accurate since it is done by front end but the 2rd option is more convenient.
+
+The 1st option is more accurate since it is done by the front end but the 2nd option is more convenient.
