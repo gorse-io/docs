@@ -9,8 +9,9 @@
   - [GitRec, The Live Demo](ch01-04-demo.md)
 
 - [Chapter 2: Build Recommender](chapter_2.md)
-  - [Feedback Collection](ch02-01-feedback.md)
-  - [Recommendation Strategies](ch02-02-strategy.md)
+  - [Item Management](ch02-01-items.md)
+  - [Feedback Collection](ch02-02-feedback.md)
+  - [Recommendation Strategies](ch02-03-strategy.md)
 
 - [Chapter 3: Monitoring](chapter_3.md)
   - [Log Monitoring](ch03-01-logging.md)

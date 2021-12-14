@@ -15,13 +15,16 @@ type User struct {
 }
 ```
 
-- **Item:** A item entity consists of an item ID, an item timestamp, and labels describing the item. The timestamp and labels can be empty, and similarly based on labels information helps to improve the recommendation accuracy of the recommender system, while the timestamp is used to estimate the freshness of the item.
+- **Item:** A item entity consists of an item ID, its visibility, its categories, an item timestamp, and labels describing the item. The timestamp and labels can be empty, and similarly based on labels information helps to improve the recommendation accuracy of the recommender system, while the timestamp is used to estimate the freshness of the item. Read [2.2 Item Management](ch02-01-items.md) for more information about `IsHidden` and `Categories` fields.
 
 ```go
 type Item struct {
-    ItemId    string
-    Timestamp time.Time
-    Labels    []string
+	ItemId     string
+	IsHidden   bool
+	Categories []string
+	Timestamp  time.Time
+	Labels     []string
+	Comment    string
 }
 ```
 
