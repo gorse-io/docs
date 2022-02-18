@@ -20,8 +20,10 @@ services:
       --master-host master --master-port 8086 --http-host 0.0.0.0 --http-port 8089
       --log-path /var/log/gorse/worker.log --cache-path /var/lib/gorse/worker_cache.data
     volumes:
-      - ./var/log/gorse:/var/log/gorse
-      - ./var/lib/gorse:/var/lib/gorse
+      - gorse_log:/var/log/gorse
+      - worker_data:/var/lib/gorse
+    depends_on:
+      - master
 
   server:
     image: zhenghaoz/gorse-server
@@ -32,8 +34,10 @@ services:
       --master-host master --master-port 8086 --http-host 0.0.0.0 --http-port 8087
       --log-path /var/log/gorse/server.log --cache-path /var/lib/gorse/server_cache.data
     volumes:
-      - ./var/log/gorse:/var/log/gorse
-      - ./var/lib/gorse:/var/lib/gorse
+      - gorse_log:/var/log/gorse
+      - server_data:/var/lib/gorse
+    depends_on:
+      - master
 
   master:
     image: zhenghaoz/gorse-master
@@ -44,8 +48,11 @@ services:
     command: -c /etc/gorse/config.toml --log-path /var/log/gorse/master.log --cache-path /var/lib/gorse/master_cache.data
     volumes:
       - ./etc/gorse/config.toml:/etc/gorse/config.toml
-      - ./var/log/gorse:/var/log/gorse
-      - ./var/lib/gorse:/var/lib/gorse
+      - gorse_log:/var/log/gorse
+      - master_data:/var/lib/gorse
+    depends_on:
+      - redis
+      - mysql
 
   grafana:
     image: grafana/grafana
@@ -71,12 +78,17 @@ services:
     ports:
       - 9080:9080
     volumes:
-      - ./var/log/gorse:/var/log/gorse
+      - gorse_log:/var/log/gorse
       - ./etc/promtail/config.yml:/etc/promtail/config.yml
 
 # ...
 
 volumes:
+  mysql_data:
+  worker_data:
+  server_data:
+  master_data:
+  gorse_log:
   grafana-storage:
 ```
 
