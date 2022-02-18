@@ -17,4 +17,6 @@
   - [Log Monitoring](ch03-01-logging.md)
   - [Metrics Monitoring](ch03-02-metrics.md)
 
+- [Chapter 4: Developer's Guide](chapter_4.md)
+
 [FAQ](faq.md)
