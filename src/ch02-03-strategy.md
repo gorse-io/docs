@@ -2,6 +2,8 @@
 
 Gorse recommender system implements different types of recommenders, both non-personalized and personalized. No single recommender is a panacea, and only a combination of them can be used to achieve the best recommendation results.
 
+![gitrec](img/ch2/workflow.png)
+
 ## Recommenders
 
 First, this section introduces the various types of recommenders in Gorse, each of which has its pros and cons.
@@ -98,21 +100,27 @@ Offline recommendation consists of three phases.
 ```toml
 # Enable latest recommendation during offline recommendation. The default values is false.
 enable_latest_recommend = true
+
 # Enable popular recommendation during offline recommendation. The default values is false.
 enable_popular_recommend = false
+
 # Enable user-based similarity recommendation during offline recommendation. The default values is false.
 enable_user_based_recommend = true
+
 # Enable item-based similarity recommendation during offline recommendation. The default values is false.
 enable_item_based_recommend = false
+
 # Enable collaborative filtering recommendation during offline recommendation. The default values is true.
 enable_collaborative_recommend = true
+
 # Enable click-though rate prediction during offline recommendation. Otherwise, results from multi-way recommendation
 # would be merged randomly. The default values is true.
 enable_click_through_prediction = true
+
 # The explore recommendation method is used to inject popular items or latest items into recommended result:
 #   popular: Recommend popular items to cold-start users.
 #   latest: Recommend latest items to cold-start users.
-# Recommenders are used in order. The default values is { popular = 0.0, latest = 0.0 }.
+# The default values is { popular = 0.0, latest = 0.0 }.
 explore_recommend = { popular = 0.1, latest = 0.2 }
 ```
 
@@ -135,10 +143,10 @@ Since Gorse does not yet offer A/B testing, the preview is needed to sensitively
 
 ### Online Strategy
 
-Online recommendations have two tasks.
+Online recommendations have three tasks.
 
 - **Remove reads:** The read items in the recommendation result cache need to be removed.
-- **Fallback recommendation:** There might be a situation where the cached recommendation results are drained out but new offline recommendations haven't been generated, then the fallback recommenders are needed to generate the recommendation content in real-time. The fallback recommenders can be configured in the configuration file with priority from head to tail, and if the front recommender is no longer able to generate a recommendation, then continue to try the backward recommender.
+- **Fallback:** There might be a situation where the cached recommendation results are drained out but new offline recommendations haven't been generated, then the fallback recommenders are needed to generate the recommendation content in real-time. The fallback recommenders can be configured in the configuration file with priority from head to tail, and if the front recommender is no longer able to generate a recommendation, then continue to try the backward recommender.
 
 ```toml
 # The fallback recommendation method for cold-start users:
@@ -147,4 +155,11 @@ Online recommendations have two tasks.
 #   latest: Recommend latest items to cold-start users.
 # The default values is ["latest"].
 fallback_recommend = ["item_based", "latest"]
+```
+
+The fallback version of item-based similarity recommendation limit the number of feedbacks used. Only most recent `num_feedback_fallback_item_based` items are used which is set by configuration.
+
+```toml
+# The number of feedback used in fallback item-based similar recommendation. The default values is 10.
+num_feedback_fallback_item_based = 10
 ```

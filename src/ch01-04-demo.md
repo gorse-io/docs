@@ -20,16 +20,13 @@ In GitRec, there are three types of feedbacks: `read`, `star` and `like`. `read`
 # feedback type for positive event
 positive_feedback_types = ["star","like"]
 
-# feedback type for click event
-click_feedback_types = ["like"]
-
 # feedback type for read event
 read_feedback_type = "read"
 ```
 
 Other settings are the same as [docker/config.toml](https://github.com/zhenghaoz/gorse/blob/master/docker/config.toml).
 
-## Implemenetation
+## Implementation
 
 This project consists of frontend, backend, and crawlers. In this section, only these codes that interact with Gorse are introduced. Other codes are available in the [GitRec repository](https://github.com/zhenghaoz/gitrec).
 

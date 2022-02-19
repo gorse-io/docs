@@ -50,6 +50,18 @@ Gorse's server node provides RESTful APIs for inserting users, items, and feedba
 | POST |    /api/feedback | Insert feedback if the feedback not exist. |
 | PUT | /api/feedback | Insert feedback, and overwrites existed feedback. |
 
+The user and item must exist when a feedback is inserted. Gorse server nodes will create new users and new items automatically according to the following configurations:
+
+```toml
+# Insert new users while inserting feedback. The default value is true.
+auto_insert_user = true
+
+# Insert new items while inserting feedback. The default value is true.
+auto_insert_item = true
+```
+
+Auto created users and items have ID only and other fields are all empty.
+
 ## Define Positive Feedback and Read Feedback
 
 Before inserting feedback into the Gorse recommender system, it is necessary to define which of the user's behaviors are positive feedback and which are read feedback. Read feedback is relatively easy to define, as it can be recorded as read feedback when a user has seen the recommended item. However, the definition of positive feedback depends more on the specific scenario. For TikTok, users can be considered as positive feedback if they “like” or “share” the current video; for YouTube, users can be considered as positive feedback if they watch the video to a certain proportion of completion, “like“ the video, or "share" the video. To summarize, positive feedback and read feedback are defined by the following rules.

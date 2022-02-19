@@ -12,6 +12,8 @@
   - [Item Management](ch02-01-items.md)
   - [Feedback Collection](ch02-02-feedback.md)
   - [Recommendation Strategies](ch02-03-strategy.md)
+  - [Performance vs Precision](ch02-04-performance.md)
+  - [Gorse Dashboard](ch02-05-dashboard.md)
 
 - [Chapter 3: Monitoring](chapter_3.md)
   - [Log Monitoring](ch03-01-logging.md)
