@@ -163,3 +163,9 @@ The fallback version of item-based similarity recommendation limit the number of
 # The number of feedback used in fallback item-based similar recommendation. The default values is 10.
 num_feedback_fallback_item_based = 10
 ```
+
+## References
+
+1. Rendle, Steffen, et al. "BPR: Bayesian personalized ranking from implicit feedback." Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.
+2. He, Xiangnan, et al. "Fast matrix factorization for online recommendation with implicit feedback." Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016.
+3. Rendle, Steffen. "Factorization machines." 2010 IEEE International conference on data mining. IEEE, 2010.
