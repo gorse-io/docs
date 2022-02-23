@@ -38,8 +38,8 @@ Configurations under `[master]` are used to define behaviors of the master node.
 | `http_port` | integer | `8088` | Master node listening port for HTTP service (dashboard) |
 | `n_jobs` | integer | `1` | Number of working threads for the master node |
 | `meta_timeout` | integer | `60` | Metadata timeout in seconds |
-| `dashboard_user_name` | string | | Username login dashboard |
-| `dashboard_password` | string | | Password login dashboard |
+| `dashboard_user_name` | string | | Username login dashboard [(2.5)](ch02-05-dashboard.md#login) |
+| `dashboard_password` | string | | Password login dashboard [(2.5)](ch02-05-dashboard.md#login) |
 
 ## `[server]`
 
