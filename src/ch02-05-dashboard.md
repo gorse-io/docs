@@ -17,6 +17,8 @@ After setting a username and password, you will be redirected to the login page 
 
 ## Overview
 
+The top part of the overview page shows the number of users, items, feedback, valid positive feedback and valid negative feedback in Gorse. The middle part of the overview page shows the proportion of each positive feedback given by users over time, and the curve of the corresponding feedback can be hidden by clicking on the feedback type label. The bottom part of the overview page shows the popular items and the latest items in the system, as well as other status in the system.
+
 ![](img/ch3/gorse-dashboard-overview.png)
 
 ## Tasks

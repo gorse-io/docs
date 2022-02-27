@@ -57,28 +57,32 @@ Configurations under `[recommend]` are used to define behaviors of recommendatio
 | Key | Type | Default | Description |
 |-|-|-|-|
 | `popular_window` | integer | `180` | Time window of popular items in days [(2.3)](ch02-03-strategy.md#latest-recommender) |
-| `fit_period` | integer | `60` | Period of model training in minutes |
-| `search_period` | integer | `180` | Period of model search in minutes |
-| `search_epoch` | integer | `100` | Number of training epochs for each model in model search |
-| `search_trials` | integer | `10` | Number of trials for each model in model search |
-| `refresh_recommend_period` | integer | `5` | Period to refresh offline recommendation cache in days |
+| `fit_period` | integer | `60` | Period of model training in minutes [(2.4)](ch02-04-performance.md#set-training-and-recommendation-period) |
+| `search_period` | integer | `180` | Period of model search in minutes [(2.4)](ch02-04-performance.md#set-training-and-recommendation-period) |
+| `search_epoch` | integer | `100` | Number of training epochs for each model in model search [(2.4)](ch02-04-performance.md#set-training-and-recommendation-period) |
+| `search_trials` | integer | `10` | Number of trials for each model in model search [(2.4)](ch02-04-performance.md#set-training-and-recommendation-period) |
+| `check_recommend_period` | integer | `1` | Period to check recommendation for users in minute [(2.4)](ch02-04-performance.md#set-training-and-recommendation-period) |
+| `refresh_recommend_period` | integer | `5` | Period to refresh offline recommendation cache in days [(2.4)](ch02-04-performance.md#set-training-and-recommendation-period) |
 | `fallback_recommend` | strings | `["latest"]` | Source of recommendation when personalized recommendation exhausted [(2.3)](ch02-03-strategy.md#online-strategy) |
 | `num_feedback_fallback_item_based` | integer | `10` | The number of feedback used in fallback item-based similar recommendation [(2.3)](ch02-03-strategy.md#online-strategy) |
 | `item_neighbor_type` | string | `"auto"` | The type of neighbors for items [(2.3)](ch02-03-strategy.md#item-based-similarity-recommender) |
-| `enable_item_neighbor_index` | boolean | `false` | Enable approximate item neighbor searching using vector index |
-| `item_neighbor_index_recall` | float | `0.8` | Minimal recall for approximate user neighbor searching |
-| `item_neighbor_index_fit_epoch` | integer | `3` | Maximal number of fit epochs for approximate user neighbor searching vector index |
+| `enable_item_neighbor_index` | boolean | `false` | Enable approximate item neighbor searching using vector index [(2.4)](ch02-04-performance.md#enable-clustering-index-for-similar-itemuser-searching) |
+| `item_neighbor_index_recall` | float | `0.8` | Minimal recall for approximate user neighbor searching [(2.4)](ch02-04-performance.md#enable-clustering-index-for-similar-itemuser-searching) |
+| `item_neighbor_index_fit_epoch` | integer | `3` | Maximal number of fit epochs for approximate user neighbor searching vector index [(2.4)](ch02-04-performance.md#enable-clustering-index-for-similar-itemuser-searching) |
 | `user_neighbor_type` | string | `"auto"` | The type of neighbors for users [(2.3)](ch02-03-strategy.md#user-based-similarity-recommender) |
-| `enable_user_neighbor_index` | boolean | `false` | Enable approximate item neighbor searching using vector index |
-| `user_neighbor_index_recall` | float | `0.8` | Minimal recall for approximate item neighbor searching |
-| `user_neighbor_index_fit_epoch` | integer | `3` | Maximal number of fit epochs for approximate item neighbor searching vector index |
+| `enable_user_neighbor_index` | boolean | `false` | Enable approximate item neighbor searching using vector index [(2.4)](ch02-04-performance.md#enable-clustering-index-for-similar-itemuser-searching) |
+| `user_neighbor_index_recall` | float | `0.8` | Minimal recall for approximate item neighbor searching [(2.4)](ch02-04-performance.md#enable-clustering-index-for-similar-itemuser-searching) |
+| `user_neighbor_index_fit_epoch` | integer | `3` | Maximal number of fit epochs for approximate item neighbor searching vector index [(2.4)](ch02-04-performance.md#enable-clustering-index-for-similar-itemuser-searching) |
 | `enable_latest_recommend` | boolean | `false` | Enable latest recommendation during offline recommendation [(2.3)](ch02-03-strategy.md#offline-strategy) |
 | `enable_popular_recommend` | boolean | `false` | Enable popular recommendation during offline recommendation [(2.3)](ch02-03-strategy.md#offline-strategy) |
 | `enable_user_based_recommend` | boolean | `false` | Enable user-based similarity recommendation during offline recommendation [(2.3)](ch02-03-strategy.md#offline-strategy) |
 | `enable_item_based_recommend` | boolean | `false` | Enable item-based similarity recommendation during offline recommendation [(2.3)](ch02-03-strategy.md#offline-strategy) |
 | `enable_collaborative_recommend` | boolean | `true` | Enable collaborative filtering recommendation during offline recommendation [(2.3)](ch02-03-strategy.md#offline-strategy) |
-| `enable_collaborative_index` | boolean | `false` | Enable approximate collaborative filtering recommend using vector index |
-| `collaborative_index_recall` | float | `0.9` | Minimal recall for approximate collaborative filtering recommend |
-| `collaborative_index_fit_epoch` | integer | `3` | Maximal number of fit epochs for approximate collaborative filtering recommend vector index |
+| `enable_collaborative_index` | boolean | `false` | Enable approximate collaborative filtering recommend using vector index [(2.4)](ch02-04-performance.md#enable-hnsw-index-for-collaborative-filtering) |
+| `collaborative_index_recall` | float | `0.9` | Minimal recall for approximate collaborative filtering recommend [(2.4)](ch02-04-performance.md#enable-hnsw-index-for-collaborative-filtering) |
+| `collaborative_index_fit_epoch` | integer | `3` | Maximal number of fit epochs for approximate collaborative filtering recommend vector index [(2.4)](ch02-04-performance.md#enable-hnsw-index-for-collaborative-filtering) |
 | `enable_click_through_prediction` | boolean | `false` | Enable click-though rate prediction during offline recommendation. Otherwise, results from multi-way recommendation would be merged randomly [(2.3)](ch02-03-strategy.md#offline-strategy) |
 | `explore_recommend` | map | `{ popular = 0.0, latest = 0.0 }` | The explore recommendation method is used to inject popular items or latest items into recommended result [(2.3)](ch02-03-strategy.md#offline-strategy) |
+| `enable_positive_replacement` | boolean | `false` | |
+| `positive_replacement_decay` | float | `0.8` | |
+| `read_replacement_decay` | float | `0.6` | |
