@@ -83,6 +83,21 @@ Configurations under `[recommend]` are used to define behaviors of recommendatio
 | `collaborative_index_fit_epoch` | integer | `3` | Maximal number of fit epochs for approximate collaborative filtering recommend vector index [(2.4)](ch02-04-performance.md#enable-hnsw-index-for-collaborative-filtering) |
 | `enable_click_through_prediction` | boolean | `false` | Enable click-though rate prediction during offline recommendation. Otherwise, results from multi-way recommendation would be merged randomly [(2.3)](ch02-03-strategy.md#offline-strategy) |
 | `explore_recommend` | map | `{ popular = 0.0, latest = 0.0 }` | The explore recommendation method is used to inject popular items or latest items into recommended result [(2.3)](ch02-03-strategy.md#offline-strategy) |
-| `enable_positive_replacement` | boolean | `false` | |
-| `positive_replacement_decay` | float | `0.8` | |
-| `read_replacement_decay` | float | `0.6` | |
+| `enable_positive_replacement` | boolean | `false` | Replace historical items back to recommendations [(2.4)](ch02-03-strategy.md#offline-strategy) |
+| `positive_replacement_decay` | float | `0.8` | Decay the weights of replaced items from positive feedbacks [(2.4)](ch02-03-strategy.md#offline-strategy) |
+| `read_replacement_decay` | float | `0.6` | Decay the weights of replaced items from read feedbacks [(2.4)](ch02-03-strategy.md#offline-strategy) |
+
+## Environment Variables
+
+Part of configurations can be overwritten by environment variables.
+
+| Configuration | Environment Variable |
+|-|-|
+| `database.cache_store` | `GORSE_CACHE_STORE` |
+| `database.data_store` | `GORSE_DATA_STORE` |
+| `master.port` | `GORSE_MASTER_PORT` |
+| `master.host` | `GORSE_MASTER_HOST` |
+| `master.http_port` | `GORSE_MASTER_HTTP_PORT` |
+| `master.http_host` | `GORSE_MASTER_HTTP_HOST` |
+| `server.n_jobs` | `GORSE_MASTER_JOBS` |
+| `server.api_key` | `GORSE_SERVER_API_KEY` |

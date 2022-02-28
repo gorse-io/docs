@@ -91,10 +91,11 @@ Individual recommenders cannot perform the recommendation task well, and multipl
 
 ### Offline Strategy
 
-Offline recommendation consists of three phases.
+Offline recommendation consists of four phases.
 
 - **Matching:** Use different full-set recommenders to collect recommended items from all items. There are five types of full-set recommenders: popular recommender, latest recommender, item-based similarity recommender, user-based similarity recommender, and collaborative filtering recommender, which can be set on or off in the configuration file.
 - **Ranking:** Use the factorization machine model to rank the items collected by the matching phase, currently you can also turn off the click-through rate prediction in the configuration and use random merge.
+- **Replacement:** In some cases, read items should be recommended to users again but with lower priorities. If `enable_replacement` is set, read items would be replaced back to recommendations. The priority decay factors for positive feedbacks and read feedbacks are controlled by `positive_replacement_decay` and `read_replacement_decay`.
 - **Exploration:** Recommend content based on user history can be a good idea for users, but it also limits the possibility of users seeing more diverse content. It is also a kind of "exploration and exploitation" problem, where exploitation refers to recommending content based on users' historical behavior, while exploration refers to exposing users to more content beyond their awareness. One of the easiest ways to expose users to content beyond the information cocoon is to insert random items into the recommendation list, and Gorse can be configured to randomly insert the newest or recent popular items into the recommendation list, with their proportion set in the configuration file.
 
 ```toml
@@ -122,6 +123,15 @@ enable_click_through_prediction = true
 #   latest: Recommend latest items to cold-start users.
 # The default values is { popular = 0.0, latest = 0.0 }.
 explore_recommend = { popular = 0.1, latest = 0.2 }
+
+# Replace historical items back to recommendations.
+enable_replacement = false
+
+# Decay the weights of replaced items from positive feedbacks.
+positive_replacement_decay = 0.8
+
+# Decay the weights of replaced items from read feedbacks.
+read_replacement_decay = 0.6
 ```
 
 Perhaps the introduction of various recommenders is not intuitive enough, you can preview the recommendation results in the dashboard. The popular items and the latest items can be seen on the landing page of the dashboard.

@@ -1,49 +1,4 @@
-# Recommend using Gorse
-
-Each component and concept of Gorse will be introduced in this section.
-
-## Users, Items, and Feedback
-
-A recommender system is expected to recommend items to users. To learn the preferences of each user, feedbacks between users and items are fed to the recommender system. In Gorse, there are three types of entities.
-
-- **User:** A user is identified by a string identifier.
-
-```go
-type User struct {
-  UserId    string
-}
-```
-
-- **Item:** A item is identified by a string identifier. A timestamp is used to record the freshness of this item. The timestamp could be the last update time, release time, etc. Labels are used to describe characters of this item, eg., tags of a movie.
-
-```go
-type Item struct {
-  ItemId    string
-  Timestamp time.Time
-  Labels    []string
-}
-```
-
-- **Feedback:** A feedback is identified a triple: feedback type, user ID, and item ID. The type of feedback can be positive (like), negative (dislike), or neutral (read). The timestamp record the time that this feedback happened.
-
-```go
-type Feedback struct {
-  FeedbackType string
-  UserId       string
-  ItemId       string
-  Timestamp   time.Time
-}
-```
-
-Types of feedbacks are classified into three categories:
-
-1. `positive_feedback_types` mean a user favors an item.
-2. `click_feedback_types` mean a user favors a recommended item. This item must be recommended by Gorse.
-3. `read_feedback_type` means a user reads an item. However, the real feedback this user has in his/her mind is never known.
-
-The difference between `positive_feedback_types` and `click_feedback_types` is that the item of `click_feedback_types` must come from recommendations of Gorse. The item of `positive_feedback_types` could be found by a user through other approaches such as search, direct access, etc. `read_feedback_type` is a neutral event. Negative feedback can be conduct by \{`read_feedback_type` items\} - \{`positive_feedback_types` items\}.
-
-> There might be an extra field in the defined structure. They are preserved for future usage.
+# RESTful APIs
 
 ## Workflow
 
@@ -112,50 +67,8 @@ Offline recommendation cache will be consumed by users and fashion will change. 
 
 There are 4 ranking models (BPR[^5]/ALS[^3]/CCD[^4]) and 1 CTR model (factorization machines[^2]) in Gorse. They will be applied automatically by the model searcher. In ranking models, items and users are represented as embedding vectors. Since the dot product between two vectors is fast, ranking models are used to find top N items among all items. In CTR models, features from users or items are used in prediction. It's expensive to use CTR models to predict scores of all items.
 
-### Online Recommendation
-
-The online recommendation in the server node consists of three stages:
-
-1. Load offline recommendations from the cache, remove read items.
-2. If the number of offline recommendations is less than required, collect items similar to these items in the user's historical feedbacks. Read items are removed as well.
-3. If the number of recommendations is still less than required, collect items from `fallback_recommend` (latest items or popular items). Read items are removed.
-
-## Model Update
-
-There are two kinds of models in Gorse, but the training and hyperparameters optimization procedures are quite the same.
-
-### Model Training
-
-Model training is done by the master node, as well as model search. The master node pulls data from the database and fits the ranking model and CTR model periodically.
-
-> - For every `fit_jobs` minutes:
->   - Pull data from database.
->     - Train model with hyperparameters found by model search using `fit_jobs` jobs.
 
 ### Model Search
 
 There are many hyperparameters for each recommendation model in Gorse. However, it is hard to configure these hyperparameters manually even for machine learning experts. To help users get rid of hyperparameters tuning, Gorse integrates random search[^1] for hyperparameters optimization. The procedure of model search is as follows:
 
-> - For every `search_period` minutes:
->   - Pull data from database.
->   - For every recommender models:
->     - For `search_trials` trials:
->       - Sample a hyperparameter combination.
->       - Train model with sampled hyperparameters by `search_epoch` epoches and `search_jobs` jobs.
->       - Update best model.
-
-## Online Evaluation
-
-The only method to estimate recommendation performance is online evaluation. The metric of online evaluation in Gorse is click-through-rate: `click feedback` / `read feedback`.
-
-[^6]: Zhang, Zhenghao, et al. "SANS: Setwise Attentional Neural Similarity Method for Few-Shot Recommendation." DASFAA (3). 2021.
-
-[^5]: Rendle, Steffen, et al. "BPR: Bayesian personalized ranking from implicit feedback." Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.
-
-[^3]: Hu, Yifan, Yehuda Koren, and Chris Volinsky. "Collaborative filtering for implicit feedback datasets." *2008 Eighth IEEE International Conference on Data Mining*. Ieee, 2008.
-
-[^4]: He, Xiangnan, et al. "Fast matrix factorization for online recommendation with implicit feedback." Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016.
-
-[^2]: Rendle, Steffen. "Factorization machines." *2010 IEEE International Conference on Data Mining*. IEEE, 2010.
-
-[^1]: Bergstra, James, and Yoshua Bengio. "Random search for hyper-parameter optimization." Journal of machine learning research 13.2 (2012).

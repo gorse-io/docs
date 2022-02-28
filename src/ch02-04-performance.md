@@ -21,8 +21,22 @@ item_ttl = 0
 ## Set Training and Recommendation Period
 
 There are three loops in the Gorse recommender system, which are
+
 - **Model training loop:** The master node loads data, uses the latest data to train the recommendation model, and updates the latest items, popular items, similar items, similar users, etc. The interval of the model training loop corresponds to `fit_period` in the configuration file.
 - **Model tuning loop:** the master node loads data and uses random search[^1] to find the best hyper-parameters for the recommendation model. The loop interval is set by `search_period`, and the interval of the model tuning loop can be set longer. The optimal model hyper-parameters are relatively stable unless the dataset changes dramatically.
+
+  The model tuning loop 
+
+```
+for every `search_period` minutes:
+    pull data from database.
+    for every recommendation models:
+        for `search_trials` trials:
+            sample a hyperparameter combination.
+            train model with sampled hyper-parameters by `search_epoch` epoches and `search_jobs` jobs.
+            update best model.
+```
+
 - **Recommendation loop:** The worker node checks whether update each user's recommendation results, the check interval is `check_recommend_period` minutes. The conditions to update a user's recommendation are: the last active time of the user exceeds the last recommendation generated time, or the last recommendation generated time is more than `refresh_recommend_period` days from now. The interval `check_recommend_period` for checking recommendation results should be set relatively short, recommended to be around a few minutes, so as to be able to cope with the user's recommendation result consumption.
 
 Too long a interval will result in outdated models and recommendation results, and too short a interval will result in high database and cache load. In summary, `check_recommend_period` should be small, `search_period` should be large, and `fit_period` needs to be set reasonably according to the database load.
