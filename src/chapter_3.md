@@ -9,4 +9,6 @@ The overview architecture of monitoring infrastructure is as follows:
 - **Prometheus** scrapes metrics from Gorse nodes.
 - **Grafana** visualizes logs from **Loki** and metrics from **Prometheus** in dashboards.
 
+[Section 3.1](ch03-01-logging.md) introduces how to monitor logs from Gorse recommender system. [Section 3.2](ch03-02-metrics.md) shows how to monitoring metrics exported by Gorse.
+
 <img src="img/ch3/monitoring.png" width="600">

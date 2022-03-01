@@ -3,7 +3,7 @@
 [Introduction](introduction.md)
 
 - [Chapter 1: Quick Start](chapter_1.md)
-  - [Installation](ch01-01-installation.md)
+  - [Deploy](ch01-01-deploy.md)
   - [RESTful APIs](ch01-02-restful-api.md)
   - [Configuration](ch01-03-config.md)
   - [GitRec, The Live Demo](ch01-04-demo.md)

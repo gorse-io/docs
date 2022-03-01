@@ -1,8 +1,8 @@
-# Installation
+# Deploy
 
 Gorse can be set up via Docker Compose or manually.
 
-## Setup Gorse with Docker Compose
+## Deploy Gorse in Docker Compose
 
 The best practice to manage Gorse nodes is using orchestration tools such as Docker Compose, etc. There are Docker images of the master node, the server node, and the worker node.
 
@@ -35,7 +35,7 @@ docker-compose restart
 
 These images tagged with the `latest` tag are built from the master branch. The `tag` should be fixed to a specified version in production.
 
-## Setup Gorse Manually
+## Deploy Gorse Manually
 
 Binary distributions have been provided for 64-bit Windows/Linux/Mac OS on the [release](https://github.com/zhenghaoz/gorse/releases) page. Due to the demand for large memories, 64-bit machines are highly recommended to deploy Gorse.
 
@@ -109,22 +109,3 @@ mysql -h 127.0.0.1 -u root gorse < github.sql
 ```
 
 `--master-host` and `--master-port` are the RPC host and port of the master node. `--http-host` and `--http-port` are the HTTP host and port for metrics reporting of this worker node. `-j` is the number of working threads.
-
-## Play with Gorse
-
-There are HTTP entries provided by Gorse:
-
-| Entry | Link |
-| --- | --- |
-| Master Dashboard | http://127.0.0.1:8088/ |
-| Server RESTful API | http://127.0.0.1:8087/apidocs |
-| Server Prometheus Metrics | http://127.0.0.1:8087/metrics |
-| Worker Prometheus Metrics | http://127.0.0.1:8089/metrics |
-
-### Master Dashboard
-
-![dashboard](img/dashboard.jpg)
-
-### Server RESTful API
-
-![swagger](img/swagger.png)
