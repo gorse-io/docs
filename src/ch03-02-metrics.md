@@ -1,6 +1,6 @@
 # Metrics Monitoring
 
-Gorse nodes export Prometheus metrics, and Prometheus can scrape real-time metrics via HTTP from each node. The default HTTP port for worker nodes is `8089`, the default HTTP port for server nodes is `8087`, and the default HTTP port for master nodes is `8088`. The HTTP port for worker and server nodes can be set via the command line option `--http-port`. The HTTP port for the master node is specified in configuration file [(1.3)](ch01-03-config.md#master).
+Gorse nodes export Prometheus metrics, and Prometheus can scrape real-time metrics via HTTP from each node. The default HTTP port for worker nodes is `8089`, the default HTTP port for server nodes is `8087`, and the default HTTP port for master nodes is `8088`. The HTTP port for worker and server nodes can be set via the command line option `--http-port` [(1.1)](ch01-01-deploy.md#command-line-flags). The HTTP port for the master node is specified in configuration file [(1.3)](ch01-03-config.md#master).
 
 The Prometheus configuration file for scraping Gorse metrics is as follows.
 

@@ -17,8 +17,12 @@ services:
     ports:
       - 8089:8089
     command: >
-      --master-host master --master-port 8086 --http-host 0.0.0.0 --http-port 8089
-      --log-path /var/log/gorse/worker.log --cache-path /var/lib/gorse/worker_cache.data
+      --master-host master 
+      --master-port 8086 
+      --http-host 0.0.0.0 
+      --http-port 8089
+      --log-path /var/log/gorse/worker.log 
+      --cache-path /var/lib/gorse/worker_cache.data
     volumes:
       - gorse_log:/var/log/gorse
       - worker_data:/var/lib/gorse
@@ -31,8 +35,12 @@ services:
     ports:
       - 8087:8087
     command: >
-      --master-host master --master-port 8086 --http-host 0.0.0.0 --http-port 8087
-      --log-path /var/log/gorse/server.log --cache-path /var/lib/gorse/server_cache.data
+      --master-host master 
+      --master-port 8086 
+      --http-host 0.0.0.0 
+      --http-port 8087
+      --log-path /var/log/gorse/server.log 
+      --cache-path /var/lib/gorse/server_cache.data
     volumes:
       - gorse_log:/var/log/gorse
       - server_data:/var/lib/gorse
@@ -45,7 +53,10 @@ services:
     ports:
       - 8086:8086
       - 8088:8088
-    command: -c /etc/gorse/config.toml --log-path /var/log/gorse/master.log --cache-path /var/lib/gorse/master_cache.data
+    command: >
+      -c /etc/gorse/config.toml 
+      --log-path /var/log/gorse/master.log 
+      --cache-path /var/lib/gorse/master_cache.data
     volumes:
       - ./etc/gorse/config.toml:/etc/gorse/config.toml
       - gorse_log:/var/log/gorse
