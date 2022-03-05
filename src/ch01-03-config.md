@@ -1,6 +1,6 @@
 # Configuration
 
-Previous section *[Recommend using Gorse](ch01-02-recommend.md)* is helpful to understand configurations introduced in this section. These configuration items without default values must be filled. It's highly recommended to create a new config file based on [`config.toml.template`](https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template).
+These configuration items without default values must be filled. It's highly recommended to create a new config file based on [`config.toml.template`](https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template).
 
 ## `[database]`
 
@@ -47,8 +47,8 @@ Configurations under `[server]` are used to define behaviors of the server node.
 
 | Key | Type | Default | Description |
 |-|-|-|-|
-| `default_n` | integer | `10` | Default number of returned items |
-| `api_key` | string |  | Secret key for RESTful APIs (SSL required) |
+| `default_n` | integer | `10` | Default number of returned items [(1.2)](ch01-02-restful-api.md#authorization) |
+| `api_key` | string |  | Secret key for RESTful APIs (SSL required) [(1.2)](ch01-02-restful-api.md#default-length-of-returned-list) |
 
 ## `[recommend]`
 

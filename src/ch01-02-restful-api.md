@@ -2,6 +2,28 @@
 
 RESTful APIs provided by the Gorse server are listed in this section. For more detailed information, please browse the interactive API document at `http://<server node IP>:<server node port>/apidocs`.
 
+## Authorization
+
+By default, there is no authorization required for RESTful APIs. Authorization can be enabled by set `api_key` in config file:
+
+```toml
+api_key = "*****"    # secret key for RESTful APIs (SSL required)
+```
+
+The API key is passed through `X-API-Key` header.
+
+```bash
+curl -H "X-API-Key: *****"  http://127.0.0.1:8087/api/recommend/bob?n=10
+```
+
+## Default Length of Returned List
+
+There are RESTful APIs returns collections (users, items or feedbacks). The default number of returned elements is specified in configuration file:
+
+```toml
+default_n = 10  # default number of returned items
+```
+
 ## Item APIs
 
 | Method | URL | Description |

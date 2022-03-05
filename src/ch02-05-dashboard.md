@@ -1,6 +1,6 @@
 # Gorse Dashboard
 
-Gorse's master node provides the Gorse Dashboard, which can be accessed through port 8088 of the master node. The dashboard allows you to observe the current status of the recommender system, preview user recommendation results, and import and export data.
+Gorse's master node provides the Gorse Dashboard, which can be accessed through HTTP port (the default values is `8088`)) of the master node. The HTTP port is specified in configuration file [(1.3)](ch01-03-config.md#master). The dashboard allows you to observe the current status of the recommender system, preview user recommendation results, and import and export data.
 
 ## Login
 
