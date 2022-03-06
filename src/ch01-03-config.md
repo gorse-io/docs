@@ -8,15 +8,15 @@ Configurations under `[database]` are used to define behaviors on the database a
 
 | Key | Type | Default | Description |
 |-|-|-|-|
-| `data_store` | string |  | Database for data store (supports MySQL/MongoDB) |
-| `cache_store` | string |  | Database for cache store (supports Redis) |
+| `data_store` | string |  | Database for data store (supports MySQL/PostgresSQL/ClickHouse/MongoDB) [(2)](chapter_2.md) |
+| `cache_store` | string |  | Database for cache store (supports Redis) [(2)](chapter_2.md) |
 | `auto_insert_user` | boolean | `true` | Automatically insert new users when inserting new feedback [(2.2)](ch02-02-feedback.md#users-items-and-feedback) |
 | `auto_insert_item` | boolean | `true` | Automatically insert new items when inserting new feedback [(2.2)](ch02-02-feedback.md#users-items-and-feedback) |
 | `cache_size` | string | `100` | Number of cached elements in cache store |
 | `positive_feedback_types` | string | | Types of positive feedback [(2.2)](ch02-02-feedback.md#define-positive-feedback-and-read-feedback) |
 | `read_feedback_type` | string |  | Type of feedback for read events [(2.2)](ch02-02-feedback.md#define-positive-feedback-and-read-feedback) |
-| `positive_feedback_ttl` | string | `0` | Time-to-live of positive feedback |
-| `item_ttl` | string | `0` | Time-to-live of items |
+| `positive_feedback_ttl` | string | `0` | Time-to-live of positive feedback [(2.4)](ch02-04-performance.md#set-ttl-for-items-and-feedback) |
+| `item_ttl` | string | `0` | Time-to-live of items [(2.4)](ch02-04-performance.md#set-ttl-for-items-and-feedback) |
 
 The DSN (Database Source Name) format of the `data_store` and `cache_store` is as follows.
 
@@ -24,7 +24,7 @@ The DSN (Database Source Name) format of the `data_store` and `cache_store` is a
 - MySQL: `mysql://[username[:password]@][protocol[(hostname:port)]]/database[?config1=value1&...configN=valueN]`
 - PostgresSQL: `postgres://bob:secret@1.2.3.4:5432/mydb?sslmode=verify-full`
 - ClickHouse: `clickhouse://user:password@host[:port]/database?param1=value1&...&paramN=valueN`
-- MongoDB: `mongodb://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[database][?options]]`
+- MongoDB: `mongodb://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[database][?options]]` or `mongodb+srv://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[database][?options]]`
 
 ## `[master]`
 
@@ -32,12 +32,12 @@ Configurations under `[master]` are used to define behaviors of the master node.
 
 | Key | Type | Default | Description |
 |-|-|-|-|
-| `host` | string | `"127.0.0.1"` | Master node listening host for gRPC service (metadata exchange) |
-| `port` | integer | `8086` | Master node listening port for gRPC service (metadata exchange) |
-| `http_host` | string | `"127.0.0.1"` | Master node listening host for HTTP service (dashboard) |
-| `http_port` | integer | `8088` | Master node listening port for HTTP service (dashboard) |
+| `host` | string | `"127.0.0.1"` | Master node listening host for gRPC service (metadata exchange) [(2)](chapter_2.md) |
+| `port` | integer | `8086` | Master node listening port for gRPC service (metadata exchange) [(2)](chapter_2.md) |
+| `http_host` | string | `"127.0.0.1"` | Master node listening host for HTTP service (dashboard [(2.5)](ch02-05-dashboard.md)) |
+| `http_port` | integer | `8088` | Master node listening port for HTTP service (dashboard [(2.5)](ch02-05-dashboard.md)) |
 | `n_jobs` | integer | `1` | Number of working threads for the master node |
-| `meta_timeout` | integer | `60` | Metadata timeout in seconds |
+| `meta_timeout` | integer | `60` | Metadata timeout in seconds [(2)](chapter_2.md) |
 | `dashboard_user_name` | string | | Username login dashboard [(2.5)](ch02-05-dashboard.md#login) |
 | `dashboard_password` | string | | Password login dashboard [(2.5)](ch02-05-dashboard.md#login) |
 
