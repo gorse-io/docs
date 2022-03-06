@@ -7,3 +7,5 @@ title = "Gorse Document"
 
 [output.html]
 mathjax-support = true
+git-repository-url = "https://github.com/gorse-io/docs"
+edit-url-template = "https://github.com/gorse-io/docs/edit/main/{path}"
