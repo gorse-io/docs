@@ -24,6 +24,14 @@ There are RESTful APIs returns collections (users, items or feedbacks). The defa
 default_n = 10  # default number of returned items
 ```
 
+## Clock Error
+
+Gorse use timestamps to invalid recommended items and etc.. However, clocks on different nodes might differ from each other. The maximal clock error is specified in config file to ensure the system works properly.
+
+```toml
+epsilon_time = 5    # clock error in the cluster in seconds
+```
+
 ## Item APIs
 
 | Method | URL | Description |

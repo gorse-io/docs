@@ -49,6 +49,7 @@ Configurations under `[server]` are used to define behaviors of the server node.
 |-|-|-|-|
 | `default_n` | integer | `10` | Default number of returned items [(1.2)](ch01-02-restful-api.md#authorization) |
 | `api_key` | string |  | Secret key for RESTful APIs (SSL required) [(1.2)](ch01-02-restful-api.md#default-length-of-returned-list) |
+| `epsilon_time` | integer | `5` | clock error in the cluster in seconds [(1.2)](ch01-02-restful-api.md#clock-error) |
 
 ## `[recommend]`
 
