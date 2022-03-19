@@ -41,7 +41,7 @@ Creating gorse_redis_1  ... done
 
 </details>
 
-- Download the SQL file [github.sql](https://cdn.gorse.io/example/github.sql) and import to the MySQL instance. This dataset consists of GitHub users, GitHub repositories and star records.
+- Download the SQL file [github.sql](https://cdn.gorse.io/example/github.sql) and import to the MySQL instance. This dataset consists of GitHub users, GitHub repositories and interactions between users and repositories.
 
 ```bash
 # Download sample data.
@@ -49,6 +49,24 @@ wget https://cdn.gorse.io/example/github.sql
 
 # Import sample data.
 mysql -h 127.0.0.1 -u gorse -pgorse_pass gorse < github.sql
+```
+
+There are three kinds of interactions (called "feedbacks" in Gorse) between users and repositories in this dataset.
+
+| Feedback Type | Description |
+|-|-|
+| star | A user "starred" a repository in GitHub |
+| read | A user read a repository in [GitRec](https://gitrec.gorse.io/) |
+| like | A user "liked" a repository in [GitRec](https://gitrec.gorse.io/) |
+
+In the configuration file, "read" belongs to `read_feedback_types` while "star" and “like” belong to `positive_feedback_types`.
+
+```toml
+# The feedback types for positive events.
+positive_feedback_types = ["star","like"]
+
+# The feedback types for read events.
+read_feedback_types = ["read"]
 ```
 
 - Restart the master node to apply imported data.
