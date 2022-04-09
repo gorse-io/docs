@@ -20,5 +20,6 @@
   - [Metrics Monitoring](ch03-02-metrics.md)
 
 - [Chapter 4: Developer's Guide](chapter_4.md)
+  - [Benchmark](ch04-01-performance.md)
 
 [FAQ](faq.md)

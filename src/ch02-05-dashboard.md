@@ -7,8 +7,13 @@ Gorse's master node provides the Gorse Dashboard, which can be accessed through 
 The default configuration allows access to the console without logging in. In the configuration file, the username and password to log in to the dashboard can be set.
 
 ```toml
-dashboard_user_name = "admin"   # dashboard user name
-dashboard_password = "password" # dashboard password
+[master]
+
+# Username for the master node dashboard.
+dashboard_user_name = ""
+
+# Password for the master node dashboard.
+dashboard_password = ""
 ```
 
 After setting a username and password, you will be redirected to the login page the first time you access the dashboard.

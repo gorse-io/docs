@@ -26,7 +26,9 @@ type Item struct {
 Popular recommender shows the recent popular items to users, most typically Twitter trending. In Gorse, the `popular_window` in the configuration file corresponds to the window of popular items, the following example is to recommend popular items within one year (a bit too long).
 
 ```toml
-popular_window = 365
+[recommend.popular]
+
+popular_window = 4320h
 ```
 
 A popular recommender is not suitable to be used alone, otherwise, it would result in new items not being exposed. Many sites display content with a combination of popular and latest recommendations, such as calculating a score based on popularity and freshness and finally sorting by score.
@@ -42,13 +44,15 @@ Gorse calculates item similarity in three modes, which can be set in the configu
 - **Automatic:** Prefer to use labels to calculate similarity, if there are no labels then use users to calculate similarity.
 
 ```toml
+[recommend.item_neighbors]
+
 # The type of neighbors for items. There are three types:
-#   similar: Neighbors are found by some common labels.
-#   related: Neighbors are found by some common users.
-#   auto: If an item has labels, neighbors are found by some common labels.
-#         If this item has no labels, neighbors are found by some common users.
+#   similar: Neighbors are found by number of common labels.
+#   related: Neighbors are found by number of common users.
+#   auto: If a item have labels, neighbors are found by number of common labels.
+#         If this item have no labels, neighbors are found by number of common users.
 # The default value is "auto".
-item_neighbor_type = "similar"
+neighbor_type = "similar"
 ```
 
 It is recommended to choose `similar` or `auto` because item-based similarity recommender using `related` recommends similarly to collaborative filtering recommenders. The advantage of item-based similarity (labels-based) recommender is that it can quickly recommend a new item to users who are interested in such items based on the labels. Of course, this recommender requires accurate labels for the items, and invalid labels are counterproductive.
@@ -64,13 +68,15 @@ Gorse calculates the similarity between users in three modes, which can be set i
 - **Automatic:** Prioritizes the use of user labels, if there are no labels then the similarity is calculated using historical items.
 
 ```toml
+[recommend.user_neighbors]
+
 # The type of neighbors for users. There are three types:
-#   similar: Neighbors are found by some common labels.
-#   related: Neighbors are found by some common liked items.
-#   auto: If a user has labels, neighbors are found by some common labels.
-#         If this user has no labels, neighbors are found by some common liked items.
+#   similar: Neighbors are found by number of common labels.
+#   related: Neighbors are found by number of common liked items.
+#   auto: If a user have labels, neighbors are found by number of common labels.
+#         If this user have no labels, neighbors are found by number of common liked items.
 # The default value is "auto".
-user_neighbor_type = "similar"
+neighbor_type = "similar"
 ```
 
 It is recommended to choose `similar` or `auto` because user-based Similarity Recommender using `related` is similar to collaborative filtering recommender. The recommender is friendly to new users. With user labels, recommendations can be generated based on similar users' preferences even if the user does not have any history.
@@ -99,6 +105,8 @@ Offline recommendation consists of four phases.
 - **Exploration:** Recommend content based on user history can be a good idea for users, but it also limits the possibility of users seeing more diverse content. It is also a kind of "exploration and exploitation" problem, where exploitation refers to recommending content based on users' historical behavior, while exploration refers to exposing users to more content beyond their awareness. One of the easiest ways to expose users to content beyond the information cocoon is to insert random items into the recommendation list, and Gorse can be configured to randomly insert the newest or recent popular items into the recommendation list, with their proportion set in the configuration file.
 
 ```toml
+[recommend.offline]
+
 # Enable latest recommendation during offline recommendation. The default values is false.
 enable_latest_recommend = true
 
@@ -123,6 +131,8 @@ enable_click_through_prediction = true
 #   latest: Recommend latest items to cold-start users.
 # The default values is { popular = 0.0, latest = 0.0 }.
 explore_recommend = { popular = 0.1, latest = 0.2 }
+
+[recommend.replacement]
 
 # Replace historical items back to recommendations.
 enable_replacement = false
@@ -159,6 +169,8 @@ Online recommendations have three tasks.
 - **Fallback:** There might be a situation where the cached recommendation results are drained out but new offline recommendations haven't been generated, then the fallback recommenders are needed to generate the recommendation content in real-time. The fallback recommenders can be configured in the configuration file with priority from head to tail, and if the front recommender is no longer able to generate a recommendation, then continue to try the backward recommender.
 
 ```toml
+[recommend.online]
+
 # The fallback recommendation method for cold-start users:
 #   item_based: Recommend similar items to cold-start users.
 #   popular: Recommend popular items to cold-start users.
@@ -170,6 +182,8 @@ fallback_recommend = ["item_based", "latest"]
 The fallback version of item-based similarity recommendation limit the number of feedbacks used. Only most recent `num_feedback_fallback_item_based` items are used which is set by configuration.
 
 ```toml
+[recommend.online]
+
 # The number of feedback used in fallback item-based similar recommendation. The default values is 10.
 num_feedback_fallback_item_based = 10
 ```

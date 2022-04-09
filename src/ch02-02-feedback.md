@@ -53,6 +53,8 @@ Gorse's server node provides RESTful APIs for inserting users, items, and feedba
 The user and item must exist when a feedback is inserted. Gorse server nodes will create new users and new items automatically according to the following configurations:
 
 ```toml
+[server]
+
 # Insert new users while inserting feedback. The default value is true.
 auto_insert_user = true
 
@@ -72,6 +74,8 @@ Before inserting feedback into the Gorse recommender system, it is necessary to 
 For example, if Gabe Newell wants to build a recommender system for Steam based on Gorse, clicking into the game introduction page could be treated as read feedback (the game list page has too little information to determine that the user has read it), and then actions such as adding a wish list and adding a shopping cart are treated as positive feedback. Finally, set them in the configuration file as follows.
 
 ```toml
+[recommend.data_source]
+
 # Add to wishlist or cart
 positive_feedback_types = ["wish_list", "cart"]
 
@@ -120,7 +124,7 @@ curl -X GET "http://172.18.0.3:8087/api/recommend/zhenghaoz?write-back-type=read
 - **In list mode:** Get 10 recommendations and write "read" feedback with timestamps of 10 minutes later. The 10 recommendations will not be discarded until after 10 minutes.
 
 ```bash
-curl -X GET "http://172.18.0.3:8087/api/recommend/zhenghaoz?write-back-type=read&write-back-delay=10&n=10" \
+curl -X GET "http://172.18.0.3:8087/api/recommend/zhenghaoz?write-back-type=read&write-back-delay=10m&n=10" \
     -H "accept: application/json" \
     -H "X-API-Key: 19260817"
 ```

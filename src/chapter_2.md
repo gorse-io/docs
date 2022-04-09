@@ -12,9 +12,19 @@ Recommender systems are complex. The overall workflow in Gorse is as follows:
     - The server nodes and worker nodes synchronize meta information from the master node. The address adn timeout of meta communication are specified in config file.
 
 ```toml
-port = 8086                     # master port
-host = "0.0.0.0"                # master host
-meta_timeout = 10               # cluster meta timeout (second)
+[master]
+
+# GRPC port of the master node. The default value is 8086.
+port = 8086
+
+# gRPC host of the master node. The default values is "0.0.0.0".
+host = "0.0.0.0"
+
+# Number of working jobs in the master node. The default value is 1.
+n_jobs = 1
+
+# Meta information timeout. The default value is 10s.
+meta_timeout = "10s"
 ```
 
 All data and status can be viewed in Gorse dashboard (read [Section 2.5 Gorse Dashboard](ch02-05-dashboard.md) for more information).

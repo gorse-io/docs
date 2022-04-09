@@ -7,7 +7,10 @@ RESTful APIs provided by the Gorse server are listed in this section. For more d
 By default, there is no authorization required for RESTful APIs. Authorization can be enabled by set `api_key` in config file:
 
 ```toml
-api_key = "*****"    # secret key for RESTful APIs (SSL required)
+[server]
+
+# Secret key for RESTful APIs (SSL required).
+api_key = "*****"
 ```
 
 The API key is passed through `X-API-Key` header.
@@ -21,7 +24,10 @@ curl -H "X-API-Key: *****"  http://127.0.0.1:8087/api/recommend/bob?n=10
 There are RESTful APIs returns collections (users, items or feedbacks). The default number of returned elements is specified in configuration file:
 
 ```toml
-default_n = 10  # default number of returned items
+[server]
+
+# Default number of returned items. The default value is 10.
+default_n = 10
 ```
 
 ## Clock Error
@@ -29,7 +35,10 @@ default_n = 10  # default number of returned items
 Gorse use timestamps to invalid recommended items and etc.. However, clocks on different nodes might differ from each other. The maximal clock error is specified in config file to ensure the system works properly.
 
 ```toml
-epsilon_time = 5    # clock error in the cluster in seconds
+[server]
+
+# Clock error in the cluster. The default value is 5s.
+clock_error = "5s"
 ```
 
 ## Item APIs
