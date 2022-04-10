@@ -176,3 +176,11 @@ data_store = "mysql://gorse:gorse_pass@tcp(mysql:3306)/gorse?parseTime=true"
 ## Deploy Gorse in Kubernetes (Experimental)
 
 Coming soon.
+
+## Version Compatibility
+
+The version release of Gorse follows [semantic versioning](https://semver.org/) from v0.4.0.
+
+1. Major version is set to 0 during incubating stage.
+2. Minor version Y (0.Y.z) indicates there are break changes which are incompatible with lower minor versions or larger minor versions. To upgrade or downgrade between minor versions, additional operations are required, eg., refactor config file or change database schema.
+3. Patch version Z (0.y.Z) is used for bug fixes and incremental features. Lower patch version can be upgrade to larger patch version seamlessly. When downgrade patch version, there are no side effects except losing bug fixes and new features in the larger patch version.
