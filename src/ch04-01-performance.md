@@ -14,7 +14,7 @@ bash bench_test.sh --cache redis --data mysql
 - The `cache` argument should be one of `redis`, `mysql`, `postgres` or `mongodb`.
 - The `data` argument should be one of `clickhouse`, `mysql`, `postgres` or `mongodb`.
 
-The benchmark result is as follows:
+The benchmark result (in milliseconds) is as follows:
 
 | `data_store` | MySQL | PSQL | CH | Mongo | MySQL | PSQL | Mongo |
 |-|-|-|-|-|-|-|-|
