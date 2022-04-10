@@ -6,7 +6,7 @@ This chapter will show how to work on Gorse source code.
 
 These following installations are required:
 
-- **Go** (>= 1.17): Since Go features from 1.17 are used in Gorse, the version of the compiler must be greater than 1.17. GoLand or Visual Studio Code is highly recommended as the IDE to develop Gorse.
+- **Go** (>= 1.18): Since Go features from 1.18 are used in Gorse, the version of the compiler must be greater than 1.18. GoLand or Visual Studio Code is highly recommended as the IDE to develop Gorse.
 - **Docker Compose**: Multiple databases are required for unit tests. It's convenient to manage databases on Docker Compose. 
 
 ```bash
