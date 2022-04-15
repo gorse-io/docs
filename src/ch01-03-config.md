@@ -134,5 +134,7 @@ Part of configurations can be overwritten by environment variables.
 | `master.host` | `GORSE_MASTER_HOST` |
 | `master.http_port` | `GORSE_MASTER_HTTP_PORT` |
 | `master.http_host` | `GORSE_MASTER_HTTP_HOST` |
-| `server.n_jobs` | `GORSE_MASTER_JOBS` |
+| `master.n_jobs` | `GORSE_MASTER_JOBS` |
+| `master.dashboard_user_name` | `GORSE_DASHBOARD_USER_NAME` |
+| `master.dashboard_password` | `GORSE_DASHBOARD_PASSWORD` |
 | `server.api_key` | `GORSE_SERVER_API_KEY` |
