@@ -89,8 +89,8 @@ clock_error = "5s"
 | GET | /popular/{category} | Get popular items in category. |
 | GET | /latest | Get latest items. |
 | GET | /latest/{category} | Get latest items in category. |
-| GET | /item/{item-id} | Get neighbors of an item. |
-| GET | /item/{item-id}/{category} | Get neighbors of an item in category. |
+| GET | /item/{item-id}/neighbors | Get neighbors of an item. |
+| GET | /item/{item-id}/neighbors/{category} | Get neighbors of an item in category. |
 | GET | /user/{user-id} | Get neighbors of a user. |
 | GET | /recommend/{user-id} | Get recommendations for a user. |
 | GET | /recommend/{user-id}/{category} | Get recommendations for a user<br>in category. |
