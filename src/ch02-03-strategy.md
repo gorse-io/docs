@@ -188,6 +188,20 @@ The fallback version of item-based similarity recommendation limit the number of
 num_feedback_fallback_item_based = 10
 ```
 
+> #### Session-based Recommendation
+> In v0.4.1, session-based recommendation is supported. The client sends feedbacks instead of user ID to Gorse server to get recommendations. Session-based recommendation is useful for guests (users haven't logged in). The session-based recommendation is implemented by item based fallback recommender. The option `num_feedback_fallback_item_based` applies to session-based recommender.
+> ```
+> $ curl -X POST http://localhost::8087/api/session/recommend  \
+>        -H "Content-Type: application/json"  \
+>        -d '[{ "FeedbackType": "star", "UserId": "user1", "ItemId": "item1", "Timestamp": "2022-02-24" }]'
+> 
+> [
+>  "item4",
+>  "item5",
+>  "item6"
+> ]
+> ```
+
 ## References
 
 [^1]: Rendle, Steffen, et al. "BPR: Bayesian personalized ranking from implicit feedback." Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.

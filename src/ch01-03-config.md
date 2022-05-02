@@ -41,12 +41,14 @@ The DSN (Database Source Name) format of the `data_store` and `cache_store` is a
 | `clock_error` | integer | `5s` | clock error in the cluster [(1.2)](ch01-02-restful-api.md#clock-error) |
 | `auto_insert_user` | boolean | `true` | Automatically insert new users when inserting new feedback [(2.2)](ch02-02-feedback.md#users-items-and-feedback) |
 | `auto_insert_item` | boolean | `true` | Automatically insert new items when inserting new feedback [(2.2)](ch02-02-feedback.md#users-items-and-feedback) |
+| `cache_expire` | string | `10s` | Server-side cache expire time [(1.2)](ch01-02-restful-api.md#server-side-cache) |
 
 ## `[recommend]`
 
 | Key | Type | Default | Description |
 |-|-|-|-|
 | `cache_size` | string | `100` | Number of cached elements in cache store |
+| `cache_expire` | string | `72h` | Recommended cache expire time |
 
 ### `[recommend.data_source]`
 

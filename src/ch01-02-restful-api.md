@@ -41,6 +41,19 @@ Gorse use timestamps to invalid recommended items and etc.. However, clocks on d
 clock_error = "5s"
 ```
 
+## Server-side Cache
+
+The serer node is responsible to filter out hidden items or deleted items from cache and insert popular items to new categories. There is a server-side cache for hidden items and popular items from v0.4.1 to reduce the load of cache database. The freshness of cache is specified by `cache_expire` under `[server]`.
+
+```toml
+[server]
+
+# Server-side cache expire time. The default value is 10s.
+cache_expire = "10s"
+```
+
+The `cache_expire` is the time that a item recovers from hidden state. It has no affect on updating popular items or hiding items.
+
 ## Item APIs
 
 | Method | URL | Description |
@@ -94,3 +107,4 @@ clock_error = "5s"
 | GET | /user/{user-id}/neighbors | Get neighbors of a user. |
 | GET | /recommend/{user-id} | Get recommendations for a user. |
 | GET | /recommend/{user-id}/{category} | Get recommendations for a user<br>in category. |
+| POST | /session/recommend | Get recommendations based on session (a list of feedbacks). |
