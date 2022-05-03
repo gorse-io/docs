@@ -180,23 +180,17 @@ scrape_configs:
         - localhost
       labels:
         job: gorse
-        __path__: /var/log/gorse/master.log
-    - targets:
-        - localhost
-      labels:
-        job: gorse
-        __path__: /var/log/gorse/worker.log
-    - targets:
-        - localhost
-      labels:
-        job: gorse
-        __path__: /var/log/gorse/server.log
+        __path__: /var/log/gorse/*.log
     pipeline_stages:
     - json:
         expressions:
           level: level
+          ts: ts
     - labels:
         level:
+    - timestamp:
+        source: ts
+        format: Unix
 ```
 
 </details>
