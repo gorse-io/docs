@@ -10,7 +10,7 @@ Use `explore_recommend` to inject the latest items or recently popular items int
 explore_recommend = { popular = 0.1, latest = 0.2 }
 ```
 
-It means latest items are inserted into recommended items list in a probability of 0.1 and recently popular items are inserted into recommended items list in a probability of 0.2.
+It means latest items are inserted into recommended items list in a probability of 0.2 and recently popular items are inserted into recommended items list in a probability of 0.1.
 
 ### 2. How to keep track of items recommended to each user?
 
