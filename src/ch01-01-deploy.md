@@ -1,19 +1,20 @@
 # Deploy
 
-The best practice to manage Gorse nodes is using orchestration tools such as Docker Compose, etc. There are Docker images of the master node, the server node, and the worker node.
+Gorse support multiple nodes mode (master node, worker node and server node) or single node mode (all-in-one node). There are Docker images of the master node, the server node, the worker node, and the all-in-one node.
 
 | Docker Image         | Version | Size | Pulls |
 | ------------ | - | -------- | - |
 | [zhenghaoz/gorse-master](https://hub.docker.com/repository/docker/zhenghaoz/gorse-master) | ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/zhenghaoz/gorse-master?sort=semver) | ![gorse-master](https://img.shields.io/docker/image-size/zhenghaoz/gorse-master?sort=semver) | ![Docker Pulls](https://img.shields.io/docker/pulls/zhenghaoz/gorse-master) |
 | [zhenghaoz/gorse-server](https://hub.docker.com/repository/docker/zhenghaoz/gorse-server) | ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/zhenghaoz/gorse-server?sort=semver) | ![gorse-server](https://img.shields.io/docker/image-size/zhenghaoz/gorse-server?sort=semver) | ![Docker Pulls](https://img.shields.io/docker/pulls/zhenghaoz/gorse-server) |
 | [zhenghaoz/gorse-worker](https://hub.docker.com/repository/docker/zhenghaoz/gorse-worker) | ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/zhenghaoz/gorse-worker?sort=semver) | ![gorse-worker](https://img.shields.io/docker/image-size/zhenghaoz/gorse-worker?sort=semver) | ![Docker Pulls](https://img.shields.io/docker/pulls/zhenghaoz/gorse-worker) |
+| [zhenghaoz/gorse-in-one](https://hub.docker.com/repository/docker/zhenghaoz/gorse-in-one) | ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/zhenghaoz/gorse-in-one?sort=semver) | ![gorse-master](https://img.shields.io/docker/image-size/zhenghaoz/gorse-in-one?sort=semver) | ![Docker Pulls](https://img.shields.io/docker/pulls/zhenghaoz/gorse-in-one) |
 
 ## Prerequisite
 
 Gorse depends on following software:
 
-- *Redis* is used to store caches.
-- One of *MySQL/PostgresSQL/ClickHouse/MongoDB* is used to store data.
+- One of *MySQL/PostgreSQL/MongoDB/Redis* is used to store caches.
+- One of *MySQL/PostgreSQL/ClickHouse/MongoDB* is used to store data.
 
 The minimal versions of dependent software are as follows:
 
@@ -66,9 +67,54 @@ Command line flags are useful when deploy the Gorse cluster.
 | `--log-path` | | path of log file |
 | `--cache-path` | `worker_cache.data` | path of cache file |
 
+- Flags of the all-in-one node.
+
+| Flag | Default | Description |
+|-|-|-|
+| `-v,--version` | | print Gorse version |
+| `-c,--config` | | configuration file path |
+| `--debug` | | use debug log mode |
+| `--log-path` | | path of log file |
+| `--cache-path` | `one_cache.data` | path of cache file |
+| `--playground` | | enable playground mode |
+| `--recommend-jobs` | `1` | number of jobs for the recommendation tasks |
+
+## Deploy Gorse All-in-one Node
+
+Before deploying, make sure storage backends for data storage and cache storage is ready.
+
+- Linux (amd64)
+
+```bash
+# Download binary
+wget https://github.com/gorse-io/gorse/releases/latest/download/gorse_linux_amd64.zip
+unzip gorse_linux_amd64.zip
+
+# Start all-in-one node
+./gorse-in-one_linux_amd64 --config config.toml \
+  --log-path one.log \
+  --cache-path one_cache.data \
+  --recommend-jobs 1
+```
+
+> For other operating systems and architectures, please visit [GitHub Release](https://github.com/gorse-io/gorse/releases) for download links.
+
+- Docker:
+
+```bash 
+docker run -d --network=host \
+  -v ./config.toml:/etc/gorse/config.toml \
+  zhenghaoz/gorse-in-one \
+  -c /etc/gorse/config.toml \
+  --log-path /var/log/gorse/one.log \
+  --cache-path /var/lib/gorse/one_cache.data \
+```
+
+The all-in-one node loads the config file from `config.toml`, writes the log file to `one.log` and writes the cache file to `one_cache.data`. The addresses of Redis and MySQL are specified in configuration file [(1.3)](ch01-03-config.md#database) or by environment variables [(1.3)](ch01-03-config.md#environment-variables).
+
 ## Deploy Gorse in Docker Compose
 
-docker-compose.yaml for a minimal Gorse cluster is as follows:
+A `docker-compose.yaml` for a minimal Gorse cluster is as follows:
 
 ```yaml
 version: "3"
@@ -134,6 +180,9 @@ services:
     ports:
       - 8086:8086
       - 8088:8088
+    environment:
+      GORSE_CACHE_STORE: redis://redis:6379
+      GORSE_DATA_STORE: mysql://gorse:gorse_pass@tcp(mysql:3306)/gorse
     command: >
       -c /etc/gorse/config.toml 
       --log-path /var/log/gorse/master.log 
@@ -154,20 +203,9 @@ volumes:
   gorse_log:
 ```
 
+MySQL and Redis can be replaced by other storage backend supported by Gorse.
+
 - The master node loads the config file from `/etc/gorse/config.toml` (mounted to `./config.toml`), writes the log file to `/var/log/gorse/master.log` (mounted in "gorse_log" volume) and writes the cache file to `/var/lib/gorse/master_cache.data` (mounted in "master_data" volume). The addresses of Redis and MySQL are specified in configuration file [(1.3)](ch01-03-config.md#database) or by environment variables [(1.3)](ch01-03-config.md#environment-variables).
-
-```toml
-# The database for caching, support Redis only:
-#   redis://<user>:<password>@<host>:<port>/<db_number>
-cache_store = "redis://redis:6379"
-
-# The database for persist data, support MySQL, Postgres, ClickHouse and MongoDB:
-#   mysql://[username[:password]@][protocol[(address)]]/dbname[?param1=value1&...&paramN=valueN]
-#   postgres://bob:secret@1.2.3.4:5432/mydb?sslmode=verify-full
-#   clickhouse://user:password@host[:port]/database?param1=value1&...&paramN=valueN
-#   mongodb://[username:password@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][?options]]
-data_store = "mysql://gorse:gorse_pass@tcp(mysql:3306)/gorse?parseTime=true"
-```
 
 - The server node synchronizes with the master node at port `8086`, writes the log file to `/var/log/gorse/server.log` (mounted in "gorse_log" volume) and writes the cache file to `/var/lib/gorse/server_cache.data` (mounted in "server_data" volume). The entrypoint for RESTful APIs and Prometheus metrics export is `worker:8087`.
 

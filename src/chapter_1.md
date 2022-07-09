@@ -7,6 +7,18 @@ This guide walks you through the quickest way to setup a recommender system for 
 
 ## Setup Gorse
 
+Gorse supports to be single node or multiple nodes. This section demonstrates how to setup a minimal usable Gorse single node via playground and a multiple nodes cluster via Docker Compose.
+
+### Option 1: Setup Gorse All-in-one node via Playground
+
+Use the following command to setup a Gorse all-in-one node.
+
+```bash
+docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
+```
+
+### Option 2: Setup Gorse Cluster via Docker Compose
+
 There is an example [docker-compose.yml](https://github.com/zhenghaoz/gorse/blob/master/docker/docker-compose.yml) consists of a master node, a server node and a worker node, a Redis instance, and a MySQL instance.
 
 - Download [docker-compose.yml](https://github.com/zhenghaoz/gorse/blob/master/docker/docker-compose.yml) and the config file [config.toml](https://github.com/zhenghaoz/gorse/blob/master/docker/config.toml). The config file is explained in [Section 1.3 Configuration](ch01-03-config.md).

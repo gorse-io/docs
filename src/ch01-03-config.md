@@ -6,8 +6,8 @@ These configuration items without default values must be filled. It's highly rec
 
 | Key | Type | Default | Description |
 |-|-|-|-|
-| `data_store` | string |  | Database for data store (supports MySQL/PostgresSQL/ClickHouse/MongoDB) [(2)](chapter_2.md) |
-| `cache_store` | string |  | Database for cache store (supports Redis) [(2)](chapter_2.md) |
+| `data_store` | string |  | Database for data store (supports MySQL/PostgreSQL/ClickHouse/MongoDB) [(2)](chapter_2.md) |
+| `cache_store` | string |  | Database for cache store (supports MySQL/PostgreSQL/MongoDB/Redis) [(2)](chapter_2.md) |
 
 The DSN (Database Source Name) format of the `data_store` and `cache_store` is as follows.
 
