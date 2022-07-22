@@ -1,6 +1,6 @@
 # Frequently Asked Questions
 
-These frequent asked questions are collected from issues, emails and chats. Feel free to ask more questions via [issue](https://github.com/zhenghaoz/gorse/issues), [email](support@gorse.io), [Discord](https://discord.com/channels/830635934210588743/) (for English) or [QQ](https://qm.qq.com/cgi-bin/qm/qr?k=lOERnxfAM2U2rj4C9Htv9T68SLIXg6uk&jump_from=webapi) (for Chinese).
+These frequent asked questions are collected from issues, emails and chats. Feel free to ask more questions via [issue](https://github.com/zhenghaoz/gorse/issues), [email](mailto:support@gorse.io), [Discord](https://discord.com/channels/830635934210588743/) (for English) or [QQ](https://qm.qq.com/cgi-bin/qm/qr?k=lOERnxfAM2U2rj4C9Htv9T68SLIXg6uk&jump_from=webapi) (for Chinese).
 
 ### 1. How to address the cold-start problem?
 
