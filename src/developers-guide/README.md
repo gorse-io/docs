@@ -1,4 +1,4 @@
-# Chapter 4: Developer's Guide
+# Developers Guide
 
 This chapter will show how to work on Gorse source code.
 

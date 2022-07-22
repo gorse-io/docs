@@ -2,11 +2,11 @@
 
 [GitRec](https://gitrec.gorse.io/), the live demo, is developed to demonstrate the usage of the Gorse recommender system engine. A user logins in via GitHub OAuth, then repositories starred by this user before being imported to Gorse. Gorse recommends repositories to this user based on starred repositories. When this user saw a recommended repository, he or she can press ❤️ to tell GitRec that he or she like this recommendation and press ⏯️ to skip the current recommendation.
 
-![gitrec](img/gitrec.jpg)
+<center><img src="../img/gitrec.jpg"/></center>
 
 ## Design
 
-<center><img width="500" src="img/gitrec-architecture.png"/></center>
+<center><img width="500" src="../img/gitrec-architecture.png"/></center>
 
 - **Import new repositories**: The trending crawler crawls trending repositories and inserts them into Gorse as new items. Since there are a huge number of repositories in GitHub, it's impossible to add all of them into GitRec. So, only trending repositories are imported.
 - **Import user starred repositories**: The user starred crawler crawls user starred repositories and inserts them into Gorse as new feedback typed `star` when a new user signed in.

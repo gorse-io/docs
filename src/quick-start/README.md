@@ -1,4 +1,4 @@
-# Chapter 1: Quick Start
+# Quick Start
 
 This guide walks you through the quickest way to setup a recommender system for GitHub repositories. Make sure you have installed following softwares at the beginning: 
 
@@ -21,7 +21,7 @@ docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
 
 There is an example [docker-compose.yml](https://github.com/zhenghaoz/gorse/blob/master/docker/docker-compose.yml) consists of a master node, a server node and a worker node, a Redis instance, and a MySQL instance.
 
-- Download [docker-compose.yml](https://github.com/zhenghaoz/gorse/blob/master/docker/docker-compose.yml) and the config file [config.toml](https://github.com/zhenghaoz/gorse/blob/master/docker/config.toml). The config file is explained in [Section 1.3 Configuration](ch01-03-config.md).
+- Download [docker-compose.yml](https://github.com/zhenghaoz/gorse/blob/master/docker/docker-compose.yml) and the config file [config.toml](https://github.com/zhenghaoz/gorse/blob/master/docker/config.toml). The config file is explained in [configuration section](configuration).
 
 ```bash
 # Create a new directory
@@ -104,15 +104,15 @@ Restarting gorse_worker_1 ... done
 
 Gorse generate recommendations for users after feedbacks from users are inserted.
 
-- Open [http://127.0.0.1:8088](http://127.0.0.1:8088) in browser and log in with default user name `admin` and password `password`. The dashboard summarizes all status and data in Gorse. Read [Section 2.5 Gorse Dashboard](ch02-05-dashboard.md) for more information.
+- Open [http://127.0.0.1:8088](http://127.0.0.1:8088) in browser and log in with default user name `admin` and password `password`. The dashboard summarizes all status and data in Gorse. Read [Gorse Dashboard](/build-recommender/gorse-dashboard) for more information.
 
-![](img/ch3/gorse-dashboard-overview.png)
+![](../img/ch3/gorse-dashboard-overview.png)
 
 - Wait for all tasks *except "Searching collaborative filtering model" and "Searching click-through prediction model"* completed.
 
-![](/img/ch3/gorse-dashboard-tasks.png)
+![](../img/ch3/gorse-dashboard-tasks.png)
 
-- Suppose Bob is a frontend developers who starred several frontend repositories in GitHub. We insert his star feedback to Gorse via the RESTful API. [Section 1.2](ch01-02-restful-api.md) lists RESTful APIs available in Gorse.
+- Suppose Bob is a frontend developers who starred several frontend repositories in GitHub. We insert his star feedback to Gorse via the RESTful API. [The next page](restful-apis) lists the available methods in Gorse.
 
 ```bash
 read -d '' JSON << EOF
@@ -164,4 +164,4 @@ Expected outputs:
 ]
 ```
 
-A complete example to build a recommender system is discussed in [Section 1.5 GitRec, The Live Demo](ch01-04-demo.md), which is useful to learn Gorse.
+A complete example to build a recommender system is discussed in [GitRec, The Live Demo](demo), which is useful to learn Gorse.
