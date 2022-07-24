@@ -40,24 +40,24 @@ In Gorse, items can be taken down by setting `IsHidden` to `true` for the item v
 
 Multi-categories recommendations are common, take YouTube for example, where multiple recommendation categories are provided on the homepage.
 
-![](img/ch2/youtube-topics.png)
+![](../img/ch2/youtube-topics.png)
 
 Multiple categories can be distinguished by topics such as food, travel, etc., or by forms, e.g. live, short and long videos. Items will definitely appear in the global recommendation stream, and in addition the `Categories` field determines which recommendation categories the items should appear in. For each recommendation API, there are a global version and category version:
 
 | METHOD |  URL |   DESCRIPTION |
 |-|-|-|
-| GET | /api/latest | Get latest items. |
-| GET | /api/latest/{category} | Get latest items in specified category. |
-| GET | /api/popular | Get popular items. |
-| GET | /api/popular/{category} | Get popular items in specified category. |
-| GET | /api/recommend/{user-id} | Get recommendation for user. |
-| GET | /api/recommend/{user-id}/{category} | Get recommendation for user in specified category. |
-| GET | /api/item/{item-id}/neighbors | Get neighbors of a item. |
-| GET | /api/item/{item-id}/neighbors/{category} | Get neighbors of a item in specified category. |
+| `GET` | `/api/latest` | Get latest items. |
+| `GET` | `/api/latest/{category}` | Get latest items in specified category. |
+| `GET` | `/api/popular` | Get popular items. |
+| `GET` | `/api/popular/{category}` | Get popular items in specified category. |
+| `GET` | `/api/recommend/{user-id}` | Get recommendation for user. |
+| `GET` | `/api/recommend/{user-id}/{category}` | Get recommendation for user in specified category. |
+| `GET` | `/api/item/{item-id}/neighbors` | Get neighbors of a item. |
+| `GET` | `/api/item/{item-id}/neighbors/{category}` | Get neighbors of a item in specified category. |
 
 For example, for a live badminton match, you can set its `Categories` to "Live" and "Sports". In this way, in addition to the default recommendation stream, the user can find the live stream in the "Live" and "Sports" recommendation categories.
 
-![](img/ch2/youtube-live.png)
+![](../img/ch2/youtube-live.png)
 
 Note that multi-column recommendations will consume more Redis cache space.
 

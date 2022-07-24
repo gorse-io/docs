@@ -6,7 +6,7 @@ This section demonstrates how to setup monitoring infrastructures in three steps
 2. *Scrape and store metrics.* Prometheus is used for metrics monitoring.
 3. *Monitoring via Grafana.* Monitoring from metrics and logs in Grafana.
 
-![dashboard-logs-preview](/img/ch3/gorse_rev1.png)
+![dashboard-logs-preview](../img/ch3/gorse_rev1.png)
 
 ## Monitoring in Docker Compose 
 

@@ -2,7 +2,7 @@
 
 Gorse recommender system implements different types of recommenders, both non-personalized and personalized. No single recommender is a panacea, and only a combination of them can be used to achieve the best recommendation results.
 
-![gitrec](img/ch2/workflow.png)
+![gitrec](../img/ch2/workflow.png)
 
 ## Recommenders
 
@@ -146,7 +146,7 @@ read_replacement_decay = 0.6
 
 Perhaps the introduction of various recommenders is not intuitive enough, you can preview the recommendation results in the dashboard. The popular items and the latest items can be seen on the landing page of the dashboard.
 
-![latest-and-popular](img/ch2/latest-and-popular.png)
+![latest-and-popular](../img/ch2/latest-and-popular.png)
 
 The results of offline recommendation, item-based similarity recommendation, user-based similarity recommendation, and collaborative filtering recommendation can be viewed on the user page by clicking *Insight*:
 
@@ -155,9 +155,9 @@ The results of offline recommendation, item-based similarity recommendation, use
 
 You can choose to show offline recommendation results, similarity item recommendation, similar user recommendation, and collaborative filtering recommendation results from the drop-down menu on the right side
 
-![users](img/ch2/users.png)
+![users](../img/ch2/users.png)
 
-![user-insight](img/ch2/user-insight.png)
+![user-insight](../img/ch2/user-insight.png)
 
 Since Gorse does not yet offer A/B testing, the preview is needed to sensitively draft a recommendation strategy.
 

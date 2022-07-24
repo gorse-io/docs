@@ -1,0 +1,20 @@
+{
+  "name": "gorse",
+  "version": "0.0.1",
+  "description": "An open source recommender system service written in Go",
+  "main": "index.js",
+  "authors": {
+    "name": "zhenghaoz",
+    "email": "support@gorse.io"
+  },
+  "repository": "https://github.com/gorse-io/gorse/gorse",
+  "scripts": {
+    "dev": "vuepress dev src",
+    "build": "vuepress build src"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@vuepress/plugin-google-analytics": "^1.9.7",
+    "vuepress": "^1.5.3"
+  }
+}

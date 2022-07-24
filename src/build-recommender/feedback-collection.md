@@ -15,7 +15,7 @@ type User struct {
 }
 ```
 
-- **Item:** A item entity consists of an item ID, its visibility, its categories, an item timestamp, and labels describing the item. The timestamp and labels can be empty, and similarly based on labels information helps to improve the recommendation accuracy of the recommender system, while the timestamp is used to estimate the freshness of the item. Read [2.2 Item Management](ch02-01-items.md) for more information about `IsHidden` and `Categories` fields.
+- **Item:** A item entity consists of an item ID, its visibility, its categories, an item timestamp, and labels describing the item. The timestamp and labels can be empty, and similarly based on labels information helps to improve the recommendation accuracy of the recommender system, while the timestamp is used to estimate the freshness of the item. Read [Item Management](item-management) for more information about `IsHidden` and `Categories` fields.
 
 ```go
 type Item struct {
@@ -45,10 +45,10 @@ Gorse's server node provides RESTful APIs for inserting users, items, and feedba
 
 | METHOD |  URL |   DESCRIPTION |
 |-|-|-|
-| POST |    /api/item | Insert item. |
-| POST |    /api/user | Insert user. |
-| POST |    /api/feedback | Insert feedback if the feedback not exist. |
-| PUT | /api/feedback | Insert feedback, and overwrites existed feedback. |
+| `POST` |    `/api/item` | Insert item. |
+| `POST` |    `/api/user` | Insert user. |
+| `POST` |    `/api/feedback` | Insert feedback if the feedback not exist. |
+| `PUT` | `/api/feedback` | Insert feedback, and overwrites existed feedback. |
 
 The user and item must exist when a feedback is inserted. Gorse server nodes will create new users and new items automatically according to the following configurations:
 
@@ -104,8 +104,8 @@ Positive feedback can be inserted into the recommender system when the user take
 
 - **Full-screen mode:** The most typical application is TikTok, where the user is considered "read" when the full-screen content is shown to them. That is, the application can write a "read" feedback to the recommender system when the recommended content is shown to the user, and the read content will no longer be shown to the user.
 
-<img src="/img/ch2/tiktok.jpg" width="300">
-<img src="/img/ch2/youtube.jpg" width="300">
+<img src="../img/ch2/tiktok.jpg" width="300">
+<img src="../img/ch2/youtube.jpg" width="300">
 
 - **List mode:** The most typical application is YouTube, where the user is not considered "read" after looking at multiple videos in the list. When there are more than one videos, the user's attention is not able to browse the whole list. Moreover, if the read content is quickly discarded in the list mode, the recommended content is consumed too fast. Therefore, the best solution is to write a "read" feedback with a future timestamp to the recommender system when the item is presented to the user in the stream, and the "read" feedback will take effect when the time has reached the timestamp, and the read content will no longer be presented to the user.
 

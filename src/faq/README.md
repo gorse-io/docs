@@ -1,6 +1,6 @@
 # Frequently Asked Questions
 
-These frequent asked questions are collected from issues, emails and chats. Feel free to ask more questions via [issue](https://github.com/zhenghaoz/gorse/issues), [email](support@gorse.io), [Discord](https://discord.com/channels/830635934210588743/) (for English) or [QQ](https://qm.qq.com/cgi-bin/qm/qr?k=lOERnxfAM2U2rj4C9Htv9T68SLIXg6uk&jump_from=webapi) (for Chinese).
+These frequent asked questions are collected from issues, emails and chats. Feel free to ask more questions via [issue](https://github.com/zhenghaoz/gorse/issues), [email](mailto:support@gorse.io), [Discord](https://discord.com/channels/830635934210588743/) (for English) or [QQ](https://qm.qq.com/cgi-bin/qm/qr?k=lOERnxfAM2U2rj4C9Htv9T68SLIXg6uk&jump_from=webapi) (for Chinese).
 
 ### 1. How to address the cold-start problem?
 
@@ -24,7 +24,7 @@ curl -i -H "Accept: application/json" \
     -X GET http://127.0.0.1:8088//api/recommend/0?write-back-type=read&write-back-delay=10
 ```
 
-The 1st option is more accurate since it is done by the front end but the 2nd option is more convenient. Read [2.3 Recommendation Strategies](ch02-03-strategy.md) for detailed information.
+The 1st option is more accurate since it is done by the front end but the 2nd option is more convenient. Read [Recommendation Strategies](/build-recommender/recommendation-strategies) for detailed information.
 
 ### 3. What does "no feedback found" mean?
 

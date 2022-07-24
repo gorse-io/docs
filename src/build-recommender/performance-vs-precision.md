@@ -103,7 +103,7 @@ The advantages and disadvantages of using similar item/user indexing are as foll
 
 The recall of similar users index and similar items index can be seen in "User Neighbor Index Recall" and "Item Neighbor Index Recall" in the system status section in the overview page of Gorse dashboard.
 
-<center><img width="420px" src="img/ch3/neighbor_index_recall.jpeg"></center>
+<center><img width="420px" src="../img/ch3/neighbor_index_recall.jpeg"></center>
 
 ## Enable HNSW Index for Collaborative Filtering
 
@@ -131,7 +131,7 @@ The advantages and disadvantages of using vector indexing for collaborative filt
 
 The HNSW index recall of collaborative filtering corresponds to the "Matching Index Recall" in the system status of the dashboard overview page, if the value is low then consider turning off the index query.
 
-<center><img width="420px" src="img/ch3/cf_index_recall.jpeg"></center>
+<center><img width="420px" src="../img/ch3/cf_index_recall.jpeg"></center>
 
 ## References
 

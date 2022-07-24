@@ -17,4 +17,4 @@ Gorse is a single node training and distributed prediction recommender system. G
 
 In addition, the administrator can perform system monitoring, data import and export, and system status checking via the dashboard on the master node.
 
-<center><img width=480 src="img/architecture.png"/></center>
+![Architecture](../img/architecture.png)

@@ -1,23 +1,37 @@
-# Gorse Document
+# Gorse Docs
+
+Official documents for Gorse recommender system engine
 
 [![Build Docs](https://github.com/gorse-io/docs/actions/workflows/build_docs.yml/badge.svg)](https://github.com/gorse-io/docs/actions/workflows/build_docs.yml)
 
-## Build and Serve
+## ⚙️ Setup environment
 
-1. [Install Rust](https://www.rust-lang.org/tools/install).
+This is a [VuePress](https://vuepress.vuejs.org/) project, so you need to install:
 
-```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+- [Node.js](https://nodejs.org/en/)
+- [Yarn](https://yarnpkg.com/)
+
+## 📦 Install dependencies and run
+
+```
+# Clone the repository
+git clone git@github.com:gorse-io/docs.git
+# Change directory
+cd docs
+# Install dependencies
+yarn install
+# Run Gorse Docs on http://localhost:8080
+yarn dev
 ```
 
-2. Install `mdbook`.
+## ⚙️ Deployment
 
-```bash
-cargo install mdbook
+Gorse Docs is deployed as a static website. The main branch is deployed at https://docs.gorse.io.
+
+You can build the static website like this:
+
+```
+ yarn build
 ```
 
-3. Build and serve.
-
-```bash
-mdbook serve
-```
+The static files will be available in `.vuepress/dist` and you can use a webserver to serve the files.
