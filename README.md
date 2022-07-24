@@ -13,13 +13,16 @@ This is a [VuePress](https://vuepress.vuejs.org/) project, so you need to instal
 
 ## 📦 Install dependencies and run
 
-```
+```bash
 # Clone the repository
 git clone git@github.com:gorse-io/docs.git
+
 # Change directory
 cd docs
+
 # Install dependencies
 yarn install
+
 # Run Gorse Docs on http://localhost:8080
 yarn dev
 ```
@@ -30,7 +33,7 @@ Gorse Docs is deployed as a static website. The main branch is deployed at https
 
 You can build the static website like this:
 
-```
+```bash
  yarn build
 ```
 
