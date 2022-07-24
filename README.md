@@ -38,3 +38,7 @@ You can build the static website like this:
 ```
 
 The static files will be available in `.vuepress/dist` and you can use a webserver to serve the files.
+
+## 🙏 Acknowledgments
+
+- The [VuePress](https://vuepress.vuejs.org/) version of documents is contributed by [@andresribeiro](https://github.com/andresribeiro).
