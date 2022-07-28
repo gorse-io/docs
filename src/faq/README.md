@@ -28,7 +28,7 @@ The 1st option is more accurate since it is done by the front end but the 2nd op
 
 ### 3. What does "no feedback found" mean?
 
-If "collaborative filtering" tasks report no feedback found. It means there is no positive feedback in the database. The definition of positive feedback types and read feedback type is in the configuration file:
+If "collaborative filtering" tasks report no feedback found, it means there is no positive feedback in the database. The definition of positive feedback types and read feedback type is in the configuration file:
 
 ```toml
 # The feedback types for positive events.
