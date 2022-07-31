@@ -20,8 +20,13 @@ jobs:
         with:
           cmd: build
 
+      - uses: canastro/copy-file-action@master
+        with:
+          source: CNAME
+          target: src/.vuepress/dist/CNAME
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./src/.vuepress/dist
+          publish_dir: src/.vuepress/dist
