@@ -33,6 +33,11 @@ module.exports = {
     editLinkText: '',
     lastUpdated: true,
     logo: '/gorse.png',
+    algolia: {
+      apiKey: 'edd7075e83b0f14d48ea946c8fd98d0f',
+      indexName: 'gorse',
+      appId: 'KH1GFD6Q0P',
+    },
     nav: [
       {
         text: 'Getting Started',
@@ -52,99 +57,99 @@ module.exports = {
           { text: 'QQ', link: 'https://qm.qq.com/cgi-bin/qm/qr?k=lOERnxfAM2U2rj4C9Htv9T68SLIXg6uk&jump_from=webapi' }
         ]
       }
-      ],
-      sidebar: [
-        {
-          title: '🚀 Getting Started',
-          path: '/introduction/',
-          collapsable: false,
-          children: [
-            '/introduction/',
-            {
-              title: 'Quick Start',
-              path: '/quick-start/',
-            },
-            {
-              title: 'RESTful APIs',
-              path: '/quick-start/restful-apis'
-            },
-            {
-              title: 'Configuration',
-              path: '/quick-start/configuration'
-            },
-            {
-              title: 'GitRec, The Live Demo',
-              path: '/quick-start/demo'
-            }
-          ]        
-        },
-        {
-          title: '⚙️ Recommender',
-          path: '/build-recommender/',
-          collapsable: false,
-          children: [
-            {
-              title: 'Workflow',
-              path: '/build-recommender/'
-            },
-            {
-              title: 'Item Management',
-              path: '/build-recommender/item-management',
-            },
-            {
-              title: 'Feedback Collection',
-              path: '/build-recommender/feedback-collection',
-            },
-            {
-              title: 'Recommendation Strategies',
-              path: '/build-recommender/recommendation-strategies',
-            },
-            {
-              title: 'Performance vs Precision',
-              path: '/build-recommender/performance-vs-precision',
-            },
-            {
-              title: 'Gorse Dashboard',
-              path: '/build-recommender/gorse-dashboard',
-            }
-          ]
-        },
-        {
-          title: '🖥️ Monitoring',
-          path: '/monitoring/',
-          collapsable: false,
-          children: [
-            {
-              title: 'Overview',
-              path: '/monitoring/'
-            },
-            {
-              title: 'Setup Monitoring Infraestructures',
-              path: '/monitoring/setup-monitoring-infraestructures',
-            }
-          ]
-        },
-        {
-          title: "📚 Developer's Guide",
-          path: '/developers-guide/',
-          collapsable: false,
-          children: [
-            {
-              title: 'Working on Source Code',
-              path: '/developers-guide/'
-            },
-            {
-              title: 'Benchmark',
-              path: '/developers-guide/benchmark',
-            }
-          ]
-        },
-        {
-          title: 'FAQ',
-          path: '/faq/',
-          collapsable: false
-        }
-      ]
+    ],
+    sidebar: [
+      {
+        title: '🚀 Getting Started',
+        path: '/introduction/',
+        collapsable: false,
+        children: [
+          '/introduction/',
+          {
+            title: 'Quick Start',
+            path: '/quick-start/',
+          },
+          {
+            title: 'RESTful APIs',
+            path: '/quick-start/restful-apis'
+          },
+          {
+            title: 'Configuration',
+            path: '/quick-start/configuration'
+          },
+          {
+            title: 'GitRec, The Live Demo',
+            path: '/quick-start/demo'
+          }
+        ]
+      },
+      {
+        title: '⚙️ Recommender',
+        path: '/build-recommender/',
+        collapsable: false,
+        children: [
+          {
+            title: 'Workflow',
+            path: '/build-recommender/'
+          },
+          {
+            title: 'Item Management',
+            path: '/build-recommender/item-management',
+          },
+          {
+            title: 'Feedback Collection',
+            path: '/build-recommender/feedback-collection',
+          },
+          {
+            title: 'Recommendation Strategies',
+            path: '/build-recommender/recommendation-strategies',
+          },
+          {
+            title: 'Performance vs Precision',
+            path: '/build-recommender/performance-vs-precision',
+          },
+          {
+            title: 'Gorse Dashboard',
+            path: '/build-recommender/gorse-dashboard',
+          }
+        ]
+      },
+      {
+        title: '🖥️ Monitoring',
+        path: '/monitoring/',
+        collapsable: false,
+        children: [
+          {
+            title: 'Overview',
+            path: '/monitoring/'
+          },
+          {
+            title: 'Setup Monitoring Infraestructures',
+            path: '/monitoring/setup-monitoring-infraestructures',
+          }
+        ]
+      },
+      {
+        title: "📚 Developer's Guide",
+        path: '/developers-guide/',
+        collapsable: false,
+        children: [
+          {
+            title: 'Working on Source Code',
+            path: '/developers-guide/'
+          },
+          {
+            title: 'Benchmark',
+            path: '/developers-guide/benchmark',
+          }
+        ]
+      },
+      {
+        title: 'FAQ',
+        path: '/faq/',
+        collapsable: false
+      }
+    ]
   },
 
   /**
