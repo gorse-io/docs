@@ -12,12 +12,16 @@ These configuration items without default values must be filled. It's highly rec
 The DSN (Database Source Name) format of the `data_store` and `cache_store` is as follows.
 
 - Redis: `redis://<user>:<password>@<host>:<port>/<db_number>`
+    - Use the prefix `rediss://` for TLS connections.
 - MySQL: `mysql://[username[:password]@][protocol[(hostname:port)]]/database[?config1=value1&...configN=valueN]`
 - PostgresSQL: `postgres://bob:secret@1.2.3.4:5432/mydb?sslmode=verify-full`
+    - The prefix `postgresql://` is an alias of `postgres://`.
 - ClickHouse: `clickhouse://user:password@host[:port]/database?param1=value1&...&paramN=valueN`
-- MongoDB: Supports a DNS-constructed seed list by the DNS SRV record. 
-    - `mongodb://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[database][?options]]`
-    - `mongodb+srv://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[database][?options]]`
+    - Gorse connects ClickHouse via HTTP (TCP interface is not supported).
+    - The prefix `chhttp://` is an alias of `clickhouse://`.
+    - Use the prefix `chhttps://` for TLS connections.
+- MongoDB: `mongodb://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[database][?options]]`
+    - Use the prefix `mongodb+srv://` for a DNS-constructed seed list by the DNS SRV record. 
 
 ## `[master]`
 
@@ -91,6 +95,7 @@ The DSN (Database Source Name) format of the `data_store` and `cache_store` is a
 | `model_search_period` | integer | `360m` | Period of model search [(Performance vs Precision)](/build-recommender/performance-vs-precision#set-training-and-recommendation-period) |
 | `model_search_epoch` | integer | `100` | Number of training epochs for each model in model search [(Performance vs Precision)](/build-recommender/performance-vs-precision#set-training-and-recommendation-period) |
 | `model_search_trials` | integer | `10` | Number of trials for each model in model search [(Performance vs Precision)](/build-recommender/performance-vs-precision#set-training-and-recommendation-period) |
+| `enable_model_size_search` | boolean | `false` | Enable searching models of different sizes, which consume more memory. |
 | `enable_index` | boolean | `false` | Enable approximate collaborative filtering recommend using vector index [(Performance vs Precision)](/build-recommender/performance-vs-precision#enable-hnsw-index-for-collaborative-filtering) |
 | `index_recall` | float | `0.9` | Minimal recall for approximate collaborative filtering recommend [(Performance vs Precision)](/build-recommender/performance-vs-precision#enable-hnsw-index-for-collaborative-filtering) |
 | `index_fit_epoch` | integer | `3` | Maximal number of fit epochs for approximate collaborative filtering recommend vector index [(Performance vs Precision)](/build-recommender/performance-vs-precision#enable-hnsw-index-for-collaborative-filtering) |
