@@ -133,8 +133,6 @@ The HNSW index recall of collaborative filtering corresponds to the "Matching In
 
 <center><img width="420px" src="../img/ch3/cf_index_recall.jpeg"></center>
 
-## References
-
 [^1]: Bergstra, James, and Yoshua Bengio. "Random search for hyper-parameter optimization." Journal of machine learning research 13.2 (2012).
 
 [^2]: Auvolat, Alex, et al. "Clustering is efficient for approximate maximum inner product search." arXiv preprint arXiv:1507.05910 (2015).

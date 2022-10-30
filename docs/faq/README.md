@@ -21,7 +21,7 @@ There are two options:
 
 ```bash
 curl -i -H "Accept: application/json" \
-    -X GET http://127.0.0.1:8088//api/recommend/0?write-back-type=read&write-back-delay=10
+    -X GET http://127.0.0.1:8088//api/recommend/0?write-back-type=read&write-back-delay=10s
 ```
 
 The 1st option is more accurate since it is done by the front end but the 2nd option is more convenient. Read [Recommendation Strategies](/build-recommender/recommendation-strategies) for detailed information.

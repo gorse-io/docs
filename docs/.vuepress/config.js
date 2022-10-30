@@ -29,7 +29,7 @@ module.exports = {
   themeConfig: {
     repo: '',
     editLinks: false,
-    docsDir: '',
+    docsDir: 'src',
     editLinkText: '',
     lastUpdated: true,
     logo: '/gorse.png',
@@ -115,14 +115,10 @@ module.exports = {
         ]
       },
       {
-        title: '🖥️ Monitoring',
+        title: 'Monitoring',
         path: '/monitoring/',
         collapsable: false,
         children: [
-          {
-            title: 'Overview',
-            path: '/monitoring/'
-          },
           {
             title: 'Setup Monitoring Infraestructures',
             path: '/monitoring/setup-monitoring-infraestructures',
@@ -130,14 +126,10 @@ module.exports = {
         ]
       },
       {
-        title: "📚 Developer's Guide",
+        title: "Developer's Guide",
         path: '/developers-guide/',
         collapsable: false,
         children: [
-          {
-            title: 'Working on Source Code',
-            path: '/developers-guide/'
-          },
           {
             title: 'Benchmark',
             path: '/developers-guide/benchmark',
@@ -164,5 +156,11 @@ module.exports = {
         'ga': 'G-ZPKMQVNFGX'
       }
     ]
-  ]
+  ],
+
+  markdown: {
+    extendMarkdown: md => {
+      md.use(require("markdown-it-footnote"));
+    }
+  }
 }
