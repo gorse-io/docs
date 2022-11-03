@@ -1,10 +1,8 @@
 # Gorse Docs
 
-Official documents for Gorse recommender system engine
+Official documents for Gorse recommender system.
 
-[![Build Docs](https://github.com/gorse-io/docs/actions/workflows/build_docs.yml/badge.svg)](https://github.com/gorse-io/docs/actions/workflows/build_docs.yml)
-
-## ⚙️ Setup environment
+## Setup environment
 
 This is a [VuePress](https://vuepress.vuejs.org/) project, so you need to install:
 
@@ -24,21 +22,21 @@ cd docs
 yarn install
 
 # Run Gorse Docs on http://localhost:8080
-yarn dev
+yarn docs:dev
 ```
 
-## ⚙️ Deployment
+## Deployment
 
 Gorse Docs is deployed as a static website. The main branch is deployed at https://docs.gorse.io.
 
 You can build the static website like this:
 
 ```bash
- yarn build
+ yarn docs:build
 ```
 
-The static files will be available in `.vuepress/dist` and you can use a webserver to serve the files.
+The static files will be available in `.vuepress/dist`.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - The [VuePress](https://vuepress.vuejs.org/) version of documents is contributed by [@andresribeiro](https://github.com/andresribeiro).
