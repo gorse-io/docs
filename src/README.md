@@ -15,15 +15,15 @@ actions:
 
 features:
   - title: Multi-source
-    icon: condition
+    icon: si-glyph-multifunction-knife
     details: Recommend items from Popular, latest, user-based, item-based and collaborative filtering.
 
   - title: AutoML
-    icon: customize
+    icon: brightness-auto
     details: Search the best recommendation model automatically in the background.
 
   - title: Distributed prediction
-    icon: share
+    icon: cluster
     details: Support horizontal scaling in the recommendation stage after single node training.
 
   - title: RESTful APIs
@@ -31,19 +31,19 @@ features:
     details: Expose RESTful APIs for data CRUD and recommendation requests.
 
   - title: Multi-database support
-    icon: mysql
+    icon: database
     details: Support Redis, MySQL, Postgres, MongoDB, and ClickHouse as its storage backend.
 
   - title: Online evaluation
-    icon: rank
+    icon: chart
     details: Analyze online recommendation performance from recently inserted feedback.
 
   - title: Dashboard
-    icon: select
+    icon: dashboard
     details: Provide GUI for data management, system monitoring, and cluster status checking.
 
   - title: Open source
-    icon: code
+    icon: open-source-fill
     details: The codebase is released under Apache 2 license and driven by the community.
 
 copyright: false
@@ -101,27 +101,50 @@ curl -X POST http://127.0.0.1:8088/api/feedback \
 
 @tab Go
 
-```bash
+```go
+import "github.com/zhenghaoz/gorse/client"
+
+gorse := client.NewGorseClient("http://127.0.0.1:8088", "")
+
+gorse.InsertFeedback([]client.Feedback{
+    {FeedbackType: "star", UserId: "bob", ItemId: "vuejs:vue", Timestamp: "2022-02-24"},
+    {FeedbackType: "star", UserId: "bob", ItemId: "d3:d3", Timestamp: "2022-02-25"},
+    {FeedbackType: "star", UserId: "bob", ItemId: "dogfalo:materialize", Timestamp: "2022-02-26"},
+    {FeedbackType: "star", UserId: "bob", ItemId: "mozilla:pdf.js", Timestamp: "2022-02-27"},
+    {FeedbackType: "star", UserId: "bob", ItemId: "moment:moment", Timestamp: "2022-02-28"},
+})
 ```
 
 @tab Python
 
-```bash
+```python
+from gorse import Gorse
+
+client = Gorse('http://127.0.0.1:8088', '')
+
+client.insert_feedbacks([
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'vuejs:vue', 'Timestamp': '2022-02-24' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'd3:d3', 'Timestamp': '2022-02-25' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'dogfalo:materialize', 'Timestamp': '2022-02-26' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'mozilla:pdf.js', 'Timestamp': '2022-02-27' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'moment:moment', 'Timestamp': '2022-02-28' }
+])
 ```
 
 @tab TypeScript
 
-```bash
-```
+```javascript
+import { Gorse } from "gorsejs";
 
-@tab Rust
+const client = new Gorse({ endpoint: "http://127.0.0.1:8088", secret: "" });
 
-```bash
-```
-
-@tab Java
-
-```bash
+await client.insertFeedbacks([
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'vuejs:vue', Timestamp: '2022-02-24' },
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'd3:d3', Timestamp: '2022-02-25' },
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'dogfalo:materialize', Timestamp: '2022-02-26' },
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'mozilla:pdf.js', Timestamp: '2022-02-27' },
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'moment:moment', Timestamp: '2022-02-28' }
+]);
 ```
 
 :::
@@ -138,27 +161,20 @@ curl http://127.0.0.1:8088/api/recommend/bob?n=10
 
 @tab Go
 
-```bash
+```go
+gorse.GetRecommend("bob", "", 10)
 ```
 
 @tab Python
 
-```bash
+```python
+client.get_recommend('bob', n=10)
 ```
 
 @tab TypeScript
 
-```bash
-```
-
-@tab Rust
-
-```bash
-```
-
-@tab Java
-
-```bash
+```javascript
+await client.getRecommend({ userId: 'bob', cursorOptions: { n: 10 } });
 ```
 
 :::

@@ -9,7 +9,7 @@ This is a [VuePress](https://vuepress.vuejs.org/) project, so you need to instal
 - [Node.js](https://nodejs.org/en/)
 - [Yarn](https://yarnpkg.com/)
 
-## 📦 Install dependencies and run
+## Install dependencies and run
 
 ```bash
 # Clone the repository

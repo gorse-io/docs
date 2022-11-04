@@ -25,7 +25,7 @@ export const enSidebar = sidebar({
       ]
     },
     {
-      text: '⚙️ Recommender',
+      text: 'Recommender',
       link: '/docs/build-recommender/',
       children: [
         {
