@@ -1,0 +1,48 @@
+# create work directory
+mkdir -p ~/.gorse/playground/
+cd ~/.gorse/playground/
+
+# detect os
+OS=$(uname -s | awk '{print tolower($0)}')
+case $OS in
+linux)
+    ;;
+darwin)
+    ;;
+*)
+    echo unsupported os: $(uname -s)
+    exit 1
+esac
+
+# detect arch
+case $(uname -m) in
+x86_64)
+    ARCH=amd64
+    ;;
+aarch64)
+    ARCH=arm64
+    ;;
+arm64)
+    ARCH=arm64
+    ;;
+*)
+    echo unsupported arch: $(uname -m)
+    exit 1
+esac
+
+# download binary
+DOWNLOAD_URL=https://github.com/gorse-io/gorse/releases/latest/download/gorse_${OS}_${ARCH}.zip
+DOWNLOAD_DST=./gorse_${OS}_${ARCH}.zip
+PLAYGROUND_BIN=./gorse-in-one_${OS}_${ARCH}
+if [ -f $DOWNLOAD_DST ] && [ ! -f $PLAYGROUND_BIN ]; then
+    rm $DOWNLOAD_DST
+fi
+if [ ! -f $DOWNLOAD_DST ]; then
+    wget -O $DOWNLOAD_DST $DOWNLOAD_URL
+fi
+if [ ! -f $PLAYGROUND_BIN ]; then
+    unzip $DOWNLOAD_DST -d ./
+fi
+
+# start playground
+$PLAYGROUND_BIN --playground
