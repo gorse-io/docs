@@ -11,10 +11,6 @@ export const enSidebar = sidebar({
           link: '/docs/quick-start/',
         },
         {
-          text: 'RESTful APIs',
-          link: '/docs/quick-start/restful-apis'
-        },
-        {
           text: 'Configuration',
           link: '/docs/quick-start/configuration'
         },
@@ -55,27 +51,53 @@ export const enSidebar = sidebar({
       ]
     },
     {
-      text: 'Monitoring',
-      link: '/docs/monitoring/',
+      text: 'API',
+      icon: 'api',
       children: [
         {
-          text: 'Setup Monitoring Infraestructures',
-          link: '/docs/monitoring/setup-monitoring-infraestructures',
+          text: 'RESTful API',
+          icon: 'http',
+          link: '/docs/api/restful-api',
+        },
+        {
+          text: 'Go SDK',
+          icon: 'go',
+          link: '/docs/api/go-sdk',
+        },
+        {
+          text: 'Python SDK',
+          icon: 'python',
+          link: '/docs/api/python-sdk',
+        },
+        {
+          text: 'TypeScript SDK',
+          icon: 'typescript',
+          link: '/docs/api/typescript-sdk',
         }
       ]
     },
     {
-      text: "Developer's Guide",
-      link: '/docs/developers-guide/',
+      text: 'Observability',
       children: [
         {
-          text: 'Benchmark',
-          link: '/docs/developers-guide/benchmark',
+          text: 'Setup Grafana Dashboard',
+          link: '/docs/observability/setup-monitoring-infraestructures',
         }
       ]
+    },
+    {
+      text: 'Benchmark',
+      icon: 'faq',
+      link: '/docs/benchmark/'
+    },
+    {
+      text: 'Contribution Guide',
+      icon: 'faq',
+      link: '/docs/contribution-guide/'
     },
     {
       text: 'FAQ',
+      icon: 'faq',
       link: '/docs/faq/'
     }
   ],
