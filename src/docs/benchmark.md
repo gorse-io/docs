@@ -1,10 +1,13 @@
+---
+icon: dashboard-fill
+---
 # Benchmark
 
-In this section, different settings of Gorse are compared.
+In this page, different database backends of Gorse are compared.
 
 ## RESTful APIs
 
-Before benchmark RESTful APIs, [the develop environment](/developers-guide) should be set up first. Then, change working directory to `server` and run benchmark script:
+Before benchmark RESTful APIs, [the develop environment](/docs/contribution-guide#setup-develop-environment) should be set up first. Then, change working directory to `server` and run benchmark script:
 
 ```bash
 cd server
@@ -16,9 +19,8 @@ bash bench_test.sh --cache redis --data mysql
 
 The benchmark result (in milliseconds) is as follows:
 
-| `data_store` | MySQL | PSQL | CH | Mongo | MySQL | PSQL | Mongo |
+| Database[^1] | <FontIcon icon="mysql"/> <FontIcon icon="redis"/> | <FontIcon icon="postgresql"/> <FontIcon icon="redis"/> | <FontIcon icon="clickhouse"/> <FontIcon icon="redis"/> | <FontIcon icon="mongodb"/> <FontIcon icon="redis"/> | <FontIcon icon="mysql"/> <FontIcon icon="mysql"/> | <FontIcon icon="postgresql"/> <FontIcon icon="postgresql"/> | <FontIcon icon="mongodb"/> <FontIcon icon="mongodb"/> |
 |-|-|-|-|-|-|-|-|
-| `cache_store` | Redis | Redis | Redis | Redis | MySQL | PSQL | Mongo |
 | InsertUser | 1.39 | 2.60 | 1.33 | 0.45 | 17.97 | 4.03 | 0.41 |
 | PatchUser | 1.43 | 0.67 | 10.56 | 0.44 | 19.55 | 4.49 | 0.41 |
 | GetUser | 0.28 | 0.28 | 2.21 | 0.30 | 0.30 | 0.30 | 0.20 |
@@ -66,3 +68,5 @@ The benchmark result (in milliseconds) is as follows:
 | RecommendFromItemBased/10 | 2.21 | 2.21 | 5.86 | 1.94 | 6.75 | 5.10 | 3.79 |
 | RecommendFromItemBased/100 | 4.35 | 3.86 | 9.75 | 3.87 | 21.53 | 10.08 | 10.81 |
 | RecommendFromItemBased/1000 | 23.65 | 21.59 | 36.04 | 22.25 | 183.78 | 57.02 | 59.73 |
+
+[^1]: The first logo in the cell represents the database for data storage, and the second logo represents the database for cache storage.

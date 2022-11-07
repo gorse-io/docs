@@ -10,7 +10,7 @@ export default hopeTheme({
     url: "https://github.com/zhenghaoz",
   },
 
-  iconAssets: "https://at.alicdn.com/t/c/font_3748819_v5ixrr3veh.css",
+  iconAssets: "https://at.alicdn.com/t/c/font_3748819_7fefejgmosk.css",
 
   logo: "/logo.png",
 
@@ -22,6 +22,8 @@ export default hopeTheme({
 
   pageInfo: ["Author", "Original", "Date", "Category", "Tag", "ReadingTime"],
 
+  displayFooter: true,
+
   locales: {
     "/": {
       // navbar
@@ -29,10 +31,6 @@ export default hopeTheme({
 
       // sidebar
       sidebar: enSidebar,
-
-      footer: "Default footer",
-
-      displayFooter: true,
 
       metaLocales: {
         editLink: "Edit this page on GitHub",
@@ -48,10 +46,6 @@ export default hopeTheme({
 
       // sidebar
       sidebar: zhSidebar,
-
-      footer: "默认页脚",
-
-      displayFooter: true,
 
       // page meta
       metaLocales: {

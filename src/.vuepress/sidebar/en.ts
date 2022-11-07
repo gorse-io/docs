@@ -87,12 +87,12 @@ export const enSidebar = sidebar({
     },
     {
       text: 'Benchmark',
-      icon: 'faq',
+      icon: 'dashboard-fill',
       link: '/docs/benchmark/'
     },
     {
       text: 'Contribution Guide',
-      icon: 'faq',
+      icon: 'pullrequest',
       link: '/docs/contribution-guide/'
     },
     {

@@ -1,6 +1,9 @@
-# Developers Guide
+---
+icon: pullrequest
+---
+# Contribution Guide
 
-This chapter will show how to work on Gorse source code.
+This page will show how to work on Gorse source code.
 
 ## Setup Develop Environment
 
@@ -10,7 +13,7 @@ These following installations are required:
 - **Docker Compose**: Multiple databases are required for unit tests. It's convenient to manage databases on Docker Compose. 
 
 ```bash
-cd misc/database_test
+cd storage
 docker-compose up -d
 ```
 
@@ -22,7 +25,7 @@ Most logics in Gorse are covered by unit tests. Run unit tests by the following 
 go test -v ./...
 ```
 
-The default database URLs are directed to these databases in `misc/database_test/docker-compose.yml`. Test databases could be overrode by setting following environment variables:
+The default database URLs are directed to these databases in `storage/docker-compose.yml`. Test databases could be overrode by setting following environment variables:
 
 | Environment Value | Default Value |
 |-|-|
