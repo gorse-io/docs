@@ -46,8 +46,6 @@ features:
     icon: open-source-fill
     details: The codebase is released under Apache 2 license and driven by the community.
 
-copyright: false
-footer: Apache 2 Licensed | Copyright © 2022-present zhenghaoz
 ---
 
 Gorse is an open-source recommendation system written in Go. Gorse aims to be a universal open-source recommender system that can be easily introduced into a wide variety of online services. By importing items, users and interaction data into Gorse, the system will automatically train models to generate recommendations for each user.

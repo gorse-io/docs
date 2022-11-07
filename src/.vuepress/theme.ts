@@ -22,6 +22,8 @@ export default hopeTheme({
 
   pageInfo: ["Author", "Original", "Date", "Category", "Tag", "ReadingTime"],
 
+  footer: "Powered by <a target='_blank' href='https://vercel.com?utm_source=gorse&utm_campaign=oss'>▲Vercel</a>",
+
   displayFooter: true,
 
   locales: {

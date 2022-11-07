@@ -43,3 +43,5 @@ The static files will be available in `.vuepress/dist`.
 
 - The [VuePress](https://vuepress.vuejs.org/) version of documents is contributed by [@andresribeiro](https://github.com/andresribeiro).
 - The theme of VuePress is [vuepress-theme-hope](https://vuepress-theme-hope.github.io/v2/).
+
+[![](assets/powered-by-vercel.svg)](https://vercel.com?utm_source=gorse&utm_campaign=oss)
