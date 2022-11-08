@@ -21,6 +21,22 @@ export const enSidebar = sidebar({
       ]
     },
     {
+      text: 'Deploy',
+      icon: 'start',
+      children: [
+        {
+          text: 'All-in-one Deployment',
+          icon: 'box',
+          link: '/docs/deploy/all-in-one.md',
+        },
+        {
+          text: 'Docker Compose',
+          icon: 'docker',
+          link: '/docs/deploy/docker-compose.md',
+        },
+      ]
+    },
+    {
       text: 'Recommender',
       link: '/docs/build-recommender/',
       children: [

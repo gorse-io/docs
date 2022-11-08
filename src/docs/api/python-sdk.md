@@ -3,6 +3,10 @@ icon: python
 ---
 # Python SDK
 
+::: warning
+The Python SDK is under development, APIs might be changed in later versions. Pull requests are welcomed: https://github.com/gorse-io/PyGorse
+:::
+
 ## Install
 
 - Install from PyPI:

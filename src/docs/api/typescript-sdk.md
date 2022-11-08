@@ -3,18 +3,27 @@ icon: typescript
 ---
 # TypeScript SDK
 
+::: warning
+The TypeScript SDK is under development, APIs might be changed in later versions. Pull requests are welcomed: https://github.com/gorse-io/gorse-js
+:::
+
 ## Install
 
-- Install with npm:
+::: code-tabs#install
+
+@tab:active npm
 
 ```bash
 npm install gorsejs
 ```
-- Install with yarn:
+
+@tab yarn
 
 ```bash
 yarn add gorsejs
 ```
+
+:::
 
 ## Usage
 
