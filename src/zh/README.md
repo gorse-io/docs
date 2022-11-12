@@ -72,8 +72,8 @@ docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
 
 The playground mode will download data from [GitRec][gitrec] and import it into Gorse. The dashboard is available at http://localhost:8088.
 
-![](./img/dashboard-overview.png =580x)
-![](./img/dashboard-tasks.png =580x)
+![](../img/dashboard-overview.png =580x)
+![](../img/dashboard-tasks.png =580x)
 
 After the "Find neighbors of items" task is completed on the "Tasks" page, try to insert several feedbacks into Gorse. Suppose Bob is a frontend developer who starred several frontend repositories in GitHub. We insert his star feedback to Gorse.
 
