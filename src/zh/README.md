@@ -2,7 +2,7 @@
 home: true
 icon: home
 title: 主页
-heroImage: /logo.svg
+heroImage: /logo.png
 heroText: Gorse
 tagline: 一个使用Go语言开发的开源推荐系统。
 actions:
@@ -47,8 +47,150 @@ features:
     details: 代码库是在Apache 2许可下发布的、由社区驱动的。
 ---
 
-这是项目主页的案例。你可以在这里放置你的主体内容。
+Gorse是一个用Go语言编写的开源推荐系统。Gorse的目标是成为一个通用的开源推荐系统，可以很容易地被引入到各种各样的在线服务中。通过将物品、用户和交互数据导入到Gorse中，系统将自动训练模型，为每个用户生成推荐。
 
-想要使用此布局，你需要在页面 front matter 中设置 `home: true`。
+# 快速开始
 
-配置项的相关说明详见 [项目主页配置](https://vuepress-theme-hope.github.io/v2/zh/guide/layout/home/)。
+playground模式是为初学者准备的。只需通过以下命令为GitHub仓库设置一个推荐系统。
+
+::: code-tabs#setup
+
+@tab:active Bash
+
+```bash
+curl -fsSL https://gorse.io/playground | bash
+```
+
+@tab Docker
+
+```bash
+docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
+```
+
+:::
+
+playground模式将从[GitRec][gitrec]下载数据并导入到Gorse中。仪表板可以通过http://localhost:8088访问。
+
+![](../img/dashboard-overview.png =580x)
+![](../img/dashboard-tasks.png =580x)
+
+在“任务”页面上完成“查找临近的物品”任务后，尝试向Gorse插入一些反馈。假设Bob是GitHub中几个前端仓库的前端开发人员。我们把他的star行为的反馈写入Gorse。
+
+::: code-tabs#example
+
+@tab:active HTTP
+
+```bash
+read -d '' JSON << EOF
+[
+    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"vuejs:vue\", \"Timestamp\": \"2022-02-24\" },
+    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"d3:d3\", \"Timestamp\": \"2022-02-25\" },
+    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"dogfalo:materialize\", \"Timestamp\": \"2022-02-26\" },
+    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"mozilla:pdf.js\", \"Timestamp\": \"2022-02-27\" },
+    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"moment:moment\", \"Timestamp\": \"2022-02-28\" }
+]
+EOF
+
+curl -X POST http://127.0.0.1:8088/api/feedback \
+   -H 'Content-Type: application/json' \
+   -d "$JSON"
+```
+
+@tab Go
+
+```go
+import "github.com/zhenghaoz/gorse/client"
+
+gorse := client.NewGorseClient("http://127.0.0.1:8088", "")
+
+gorse.InsertFeedback([]client.Feedback{
+    {FeedbackType: "star", UserId: "bob", ItemId: "vuejs:vue", Timestamp: "2022-02-24"},
+    {FeedbackType: "star", UserId: "bob", ItemId: "d3:d3", Timestamp: "2022-02-25"},
+    {FeedbackType: "star", UserId: "bob", ItemId: "dogfalo:materialize", Timestamp: "2022-02-26"},
+    {FeedbackType: "star", UserId: "bob", ItemId: "mozilla:pdf.js", Timestamp: "2022-02-27"},
+    {FeedbackType: "star", UserId: "bob", ItemId: "moment:moment", Timestamp: "2022-02-28"},
+})
+```
+
+@tab Python
+
+```python
+from gorse import Gorse
+
+client = Gorse('http://127.0.0.1:8088', '')
+
+client.insert_feedbacks([
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'vuejs:vue', 'Timestamp': '2022-02-24' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'd3:d3', 'Timestamp': '2022-02-25' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'dogfalo:materialize', 'Timestamp': '2022-02-26' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'mozilla:pdf.js', 'Timestamp': '2022-02-27' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'moment:moment', 'Timestamp': '2022-02-28' }
+])
+```
+
+@tab TypeScript
+
+```javascript
+import { Gorse } from "gorsejs";
+
+const client = new Gorse({ endpoint: "http://127.0.0.1:8088", secret: "" });
+
+await client.insertFeedbacks([
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'vuejs:vue', Timestamp: '2022-02-24' },
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'd3:d3', Timestamp: '2022-02-25' },
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'dogfalo:materialize', Timestamp: '2022-02-26' },
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'mozilla:pdf.js', Timestamp: '2022-02-27' },
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'moment:moment', Timestamp: '2022-02-28' }
+]);
+```
+
+:::
+
+然后从Gorse中获取10个推荐的物品。我们可以发现，前端相关的仓库被推荐给了Bob。
+
+::: code-tabs#example
+
+@tab:active HTTP
+
+```bash
+curl http://127.0.0.1:8088/api/recommend/bob?n=10
+```
+
+@tab Go
+
+```go
+gorse.GetRecommend("bob", "", 10)
+```
+
+@tab Python
+
+```python
+client.get_recommend('bob', n=10)
+```
+
+@tab TypeScript
+
+```javascript
+await client.getRecommend({ userId: 'bob', cursorOptions: { n: 10 } });
+```
+
+:::
+
+```json
+[
+  "mbostock:d3",
+  "nt1m:material-framework",
+  "mdbootstrap:vue-bootstrap-with-material-design",
+  "justice47:f2-vue",
+  "10clouds:cyclejs-cookie",
+  "academicpages:academicpages.github.io",
+  "accenture:alexia",
+  "addyosmani:tmi",
+  "1wheel:d3-starterkit",
+  "acdlite:redux-promise"
+]
+```
+
+> 最终的输出可能与示例不同，因为playground数据集会随时间而变化。
+
+[gitrec]: https://girec.gorse.io
