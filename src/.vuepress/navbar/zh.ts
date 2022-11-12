@@ -1,22 +1,35 @@
 import { navbar } from "vuepress-theme-hope";
 
 export const zhNavbar = navbar([
-  "/zh/",
+  "/",
   { text: "文档", icon: "explore", link: "/docs/" },
   { text: "博客", icon: "article-fill", link: "/blog/" },
   {
-    text: "GitHub",
+    text: "源码",
     icon: "github-fill",
-    link: "https://github.com/gorse-io"
-  },
-  {
-    text: "公众号",
-    icon: "wechat-fill",
-    link: "https://gorse.io/weixin.jpg"
-  },
-  {
-    text: "QQ群",
-    icon: "QQ",
-    link: "https://qm.qq.com/cgi-bin/qm/qr?k=lOERnxfAM2U2rj4C9Htv9T68SLIXg6uk&jump_from=webapi"
+    children: [
+      {
+        text: "核心",
+        children: [
+          { text: "Gorse", icon: "code", link: "https://github.com/gorse-io/gorse" },
+        ],
+      },
+      {
+        text: "示例",
+        children: [
+          { text: "GitRec", icon: "preview", link: "https://github.com/gorse-io/gitrec" },
+        ],
+      },
+      {
+        text: "SDK",
+        children: [
+          { text: "Gorse Go SDK", icon: "go", link: "https://github.com/gorse-io/gorse/tree/master/client" },
+          { text: "PyGorse - Gorse Python SDK", icon: "python", link: "https://github.com/gorse-io/PyGorse" },
+          { text: "Gorse.js - Gorse TypeScript SDK", icon: "typescript", link: "https://github.com/gorse-io/gorse-js" },
+          { text: "Gorse4J - Gorse Java SDK", icon: "java", link: "https://github.com/gorse-io/gorse4j" },
+          { text: "gorse-rs - Gorse Rust SDK", icon: "rust", link: "https://github.com/gorse-io/gorse-rs" }
+        ],
+      },
+    ],
   },
 ]);
