@@ -1,109 +1,197 @@
 ---
 home: true
 icon: home
-title: 项目主页
-heroImage: /logo.svg
-heroText: 项目名称
-tagline: 你可以在这里放置或是整个项目的描述。
+title: 主页
+heroImage: /logo.png
+heroText: Gorse
+tagline: An open-source recommender system service written in Go.
 actions:
-  - text: 使用指南 💡
-    link: /zh/demo/
+  - text: Documentation
+    link: /docs/
     type: primary
 
-  - text: 文档
-    link: /zh/guide/
+  - text: Live Demo
+    link: https://gitrec.gorse.io
 
 features:
-  - title: Markdown 增强
-    icon: markdown
-    details: 新增文字对齐、上下角标、脚注、标记、任务列表、数学公式、流程图、图表与幻灯片支持
-    link: https://vuepress-theme-hope.github.io/v2/zh/guide/markdown/
+  - title: Multi-source
+    icon: si-glyph-multifunction-knife
+    details: Recommend items from Popular, latest, user-based, item-based and collaborative filtering.
 
-  - title: 幻灯片页面
-    icon: slides
-    details: 添加幻灯片页面以显示你喜欢的内容
-    link: https://vuepress-theme-hope.github.io/v2/zh/guide/layout/slides.html
+  - title: AutoML
+    icon: brightness-auto
+    details: Search the best recommendation model automatically in the background.
 
-  - title: 布局增强
-    icon: layout
-    details: 添加路径导航、页脚、改进的导航栏、改进的页面导航等。
-    link: https://vuepress-theme-hope.github.io/v2/zh/guide/layout/
+  - title: Distributed prediction
+    icon: cluster
+    details: Support horizontal scaling in the recommendation stage after single node training.
 
-  - title: 浏览量与评论
-    icon: comment
-    details: 配合 Waline 来开启阅读量统计与评论支持
-    link: https://vuepress-theme-hope.github.io/v2/zh/guide/feature/comment.html
+  - title: RESTful APIs
+    icon: http
+    details: Expose RESTful APIs for data CRUD and recommendation requests.
 
-  - title: 文章信息
-    icon: info
-    details: 为你的文章添加作者、写作日期、预计阅读时间、字数统计等信息
-    link: https://vuepress-theme-hope.github.io/v2/zh/guide/feature/page-info.html
+  - title: Multi-database support
+    icon: database
+    details: Support Redis, MySQL, Postgres, MongoDB, and ClickHouse as its storage backend.
 
-  - title: 博客支持
-    icon: blog
-    details: 使用一些很棒的布局提供博客功能，通过文章的日期、标签和分类，自动生成文章、分类、标签与时间轴列表
-    link: https://vuepress-theme-hope.github.io/v2/zh/guide/blog/intro.html
+  - title: Online evaluation
+    icon: chart
+    details: Analyze online recommendation performance from recently inserted feedback.
 
-  - title: 主题色切换
-    icon: palette
-    details: 支持自定义主题色并允许用户在预设的主题颜色之间切换
-    link: https://vuepress-theme-hope.github.io/v2/zh/guide/interface/theme-color.html
+  - title: Dashboard
+    icon: dashboard
+    details: Provide GUI for data management, system monitoring, and cluster status checking.
 
-  - title: 深色模式
-    icon: contrast
-    details: 可以自由切换浅色模式与深色模式
-    link: https://vuepress-theme-hope.github.io/v2/zh/guide/interface/darkmode.html
+  - title: Open source
+    icon: open-source-fill
+    details: The codebase is released under Apache 2 license and driven by the community.
 
-  - title: 完整的无障碍支持
-    icon: support
-    details: 为你的网站带来完整的无障碍支持
-    link: https://vuepress-theme-hope.github.io/v2/zh/guide/interface/accessibility.html
-
-  - title: 文章加密
-    icon: lock
-    details: 你可以为你的特定页面或特定目录进行加密，以便陌生人不能随意访问它们
-    link: https://vuepress-theme-hope.github.io/v2/zh/guide/feature/encrypt.html
-
-  - title: 复制按钮
-    icon: copy
-    details: 一键复制代码块中的代码
-    link: https://vuepress-theme-hope.github.io/v2/zh/guide/feature/copy-code.html
-
-  - title: 图片预览
-    icon: pic
-    details: 像相册一样允许你浏览、缩放并分享你的页面图片
-    link: https://vuepress-theme-hope.github.io/v2/zh/guide/feature/photo-swipe.html
-
-  - title: SEO 增强
-    icon: config
-    details: 将最终生成的网页针对搜索引擎进行优化。
-    link: https://vuepress-theme-hope.github.io/v2/zh/guide/advanced/seo.html
-
-  - title: Sitemap
-    icon: sitemap
-    details: 自动为你的网站生成 Sitemap
-    link: https://vuepress-theme-hope.github.io/v2/zh/guide/advanced/sitemap.html
-
-  - title: Feed 支持
-    icon: rss
-    details: 生成你的 Feed，并通知你的用户订阅它
-    link: https://vuepress-theme-hope.github.io/v2/zh/guide/advanced/feed.html
-
-  - title: PWA 支持
-    icon: mobile
-    details: 让你的网站更像一个 APP
-    link: https://vuepress-theme-hope.github.io/v2/zh/guide/advanced/pwa.html
-
-  - title: 更多新特性
-    icon: more
-    details: 包括图标支持、全屏按钮、返回顶部按钮等
-    link: https://vuepress-theme-hope.github.io/v2/zh/guide/feature/
-copyright: false
-footer: MIT Licensed | Copyright © 2019-present Mr.Hope
 ---
 
-这是项目主页的案例。你可以在这里放置你的主体内容。
+Gorse is an open-source recommendation system written in Go. Gorse aims to be a universal open-source recommender system that can be easily introduced into a wide variety of online services. By importing items, users and interaction data into Gorse, the system will automatically train models to generate recommendations for each user.
 
-想要使用此布局，你需要在页面 front matter 中设置 `home: true`。
+# Quick Start
 
-配置项的相关说明详见 [项目主页配置](https://vuepress-theme-hope.github.io/v2/zh/guide/layout/home/)。
+The playground mode has been prepared for beginners. Just set up a recommender system for GitHub repositories by following the commands.
+
+::: code-tabs#setup
+
+@tab:active Bash
+
+```bash
+curl -fsSL https://gorse.io/playground | bash
+```
+
+@tab Docker
+
+```bash
+docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
+```
+
+:::
+
+The playground mode will download data from [GitRec][gitrec] and import it into Gorse. The dashboard is available at http://localhost:8088.
+
+![](./img/dashboard-overview.png =580x)
+![](./img/dashboard-tasks.png =580x)
+
+After the "Find neighbors of items" task is completed on the "Tasks" page, try to insert several feedbacks into Gorse. Suppose Bob is a frontend developer who starred several frontend repositories in GitHub. We insert his star feedback to Gorse.
+
+::: code-tabs#example
+
+@tab:active HTTP
+
+```bash
+read -d '' JSON << EOF
+[
+    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"vuejs:vue\", \"Timestamp\": \"2022-02-24\" },
+    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"d3:d3\", \"Timestamp\": \"2022-02-25\" },
+    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"dogfalo:materialize\", \"Timestamp\": \"2022-02-26\" },
+    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"mozilla:pdf.js\", \"Timestamp\": \"2022-02-27\" },
+    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"moment:moment\", \"Timestamp\": \"2022-02-28\" }
+]
+EOF
+
+curl -X POST http://127.0.0.1:8088/api/feedback \
+   -H 'Content-Type: application/json' \
+   -d "$JSON"
+```
+
+@tab Go
+
+```go
+import "github.com/zhenghaoz/gorse/client"
+
+gorse := client.NewGorseClient("http://127.0.0.1:8088", "")
+
+gorse.InsertFeedback([]client.Feedback{
+    {FeedbackType: "star", UserId: "bob", ItemId: "vuejs:vue", Timestamp: "2022-02-24"},
+    {FeedbackType: "star", UserId: "bob", ItemId: "d3:d3", Timestamp: "2022-02-25"},
+    {FeedbackType: "star", UserId: "bob", ItemId: "dogfalo:materialize", Timestamp: "2022-02-26"},
+    {FeedbackType: "star", UserId: "bob", ItemId: "mozilla:pdf.js", Timestamp: "2022-02-27"},
+    {FeedbackType: "star", UserId: "bob", ItemId: "moment:moment", Timestamp: "2022-02-28"},
+})
+```
+
+@tab Python
+
+```python
+from gorse import Gorse
+
+client = Gorse('http://127.0.0.1:8088', '')
+
+client.insert_feedbacks([
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'vuejs:vue', 'Timestamp': '2022-02-24' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'd3:d3', 'Timestamp': '2022-02-25' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'dogfalo:materialize', 'Timestamp': '2022-02-26' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'mozilla:pdf.js', 'Timestamp': '2022-02-27' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'moment:moment', 'Timestamp': '2022-02-28' }
+])
+```
+
+@tab TypeScript
+
+```javascript
+import { Gorse } from "gorsejs";
+
+const client = new Gorse({ endpoint: "http://127.0.0.1:8088", secret: "" });
+
+await client.insertFeedbacks([
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'vuejs:vue', Timestamp: '2022-02-24' },
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'd3:d3', Timestamp: '2022-02-25' },
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'dogfalo:materialize', Timestamp: '2022-02-26' },
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'mozilla:pdf.js', Timestamp: '2022-02-27' },
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'moment:moment', Timestamp: '2022-02-28' }
+]);
+```
+
+:::
+
+Then, fetch 10 recommended items from Gorse. We can find that frontend-related repositories are recommended for Bob.
+
+::: code-tabs#example
+
+@tab:active HTTP
+
+```bash
+curl http://127.0.0.1:8088/api/recommend/bob?n=10
+```
+
+@tab Go
+
+```go
+gorse.GetRecommend("bob", "", 10)
+```
+
+@tab Python
+
+```python
+client.get_recommend('bob', n=10)
+```
+
+@tab TypeScript
+
+```javascript
+await client.getRecommend({ userId: 'bob', cursorOptions: { n: 10 } });
+```
+
+:::
+
+```json
+[
+  "mbostock:d3",
+  "nt1m:material-framework",
+  "mdbootstrap:vue-bootstrap-with-material-design",
+  "justice47:f2-vue",
+  "10clouds:cyclejs-cookie",
+  "academicpages:academicpages.github.io",
+  "accenture:alexia",
+  "addyosmani:tmi",
+  "1wheel:d3-starterkit",
+  "acdlite:redux-promise"
+]
+```
+
+> The exact output might be different from the example since the playground dataset changes over time.
+
+[gitrec]: https://girec.gorse.io
