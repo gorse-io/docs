@@ -4,55 +4,54 @@ icon: home
 title: 主页
 heroImage: /logo.png
 heroText: Gorse
-tagline: An open-source recommender system service written in Go.
+tagline: 一个使用Go语言开发的开源推荐系统。
 actions:
-  - text: Documentation
+  - text: 文档
     link: /docs/
     type: primary
 
-  - text: Live Demo
+  - text: 在线示例
     link: https://gitrec.gorse.io
 
 features:
-  - title: Multi-source
+  - title: 多源
     icon: si-glyph-multifunction-knife
-    details: Recommend items from Popular, latest, user-based, item-based and collaborative filtering.
+    details: 从热门、最新、基于用户、基于项目和协作过滤中推荐物品。
 
-  - title: AutoML
+  - title: 自动机器学习
     icon: brightness-auto
-    details: Search the best recommendation model automatically in the background.
+    details: 在后台自动搜索最佳的推荐模型。
 
-  - title: Distributed prediction
+  - title: 分布式预测
     icon: cluster
-    details: Support horizontal scaling in the recommendation stage after single node training.
+    details: 在单节点训练后的推荐阶段支持水平伸缩。
 
   - title: RESTful APIs
     icon: http
-    details: Expose RESTful APIs for data CRUD and recommendation requests.
+    details: 为数据CRUD和推荐请求暴露RESTful API。
 
-  - title: Multi-database support
+  - title: 多数据源支持
     icon: database
-    details: Support Redis, MySQL, Postgres, MongoDB, and ClickHouse as its storage backend.
+    details: 支持使用Redis、MySQL、Postgres、MongoDB和ClickHouse作为后端存储。
 
-  - title: Online evaluation
+  - title: 在线评估
     icon: chart
-    details: Analyze online recommendation performance from recently inserted feedback.
+    details: 根据最近插入的反馈分析在线推荐的效果。
 
-  - title: Dashboard
+  - title: 仪表盘
     icon: dashboard
-    details: Provide GUI for data management, system monitoring, and cluster status checking.
+    details: 提供数据管理、系统监控、集群状态检查的GUI界面。
 
-  - title: Open source
+  - title: 开源
     icon: open-source-fill
-    details: The codebase is released under Apache 2 license and driven by the community.
-
+    details: 代码库是在Apache 2许可下发布的、由社区驱动的。
 ---
 
-Gorse is an open-source recommendation system written in Go. Gorse aims to be a universal open-source recommender system that can be easily introduced into a wide variety of online services. By importing items, users and interaction data into Gorse, the system will automatically train models to generate recommendations for each user.
+Gorse是一个用Go语言编写的开源推荐系统。Gorse的目标是成为一个通用的开源推荐系统，可以很容易地被引入到各种各样的在线服务中。通过将物品、用户和交互数据导入到Gorse中，系统将自动训练模型，为每个用户生成推荐。
 
-# Quick Start
+# 快速开始
 
-The playground mode has been prepared for beginners. Just set up a recommender system for GitHub repositories by following the commands.
+playground模式是为初学者准备的。只需通过以下命令为GitHub仓库设置一个推荐系统。
 
 ::: code-tabs#setup
 
@@ -70,12 +69,12 @@ docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
 
 :::
 
-The playground mode will download data from [GitRec][gitrec] and import it into Gorse. The dashboard is available at http://localhost:8088.
+playground模式将从[GitRec][gitrec]下载数据并导入到Gorse中。仪表板可以通过http://localhost:8088访问。
 
 ![](../img/dashboard-overview.png =580x)
 ![](../img/dashboard-tasks.png =580x)
 
-After the "Find neighbors of items" task is completed on the "Tasks" page, try to insert several feedbacks into Gorse. Suppose Bob is a frontend developer who starred several frontend repositories in GitHub. We insert his star feedback to Gorse.
+在“任务”页面上完成“查找临近的物品”任务后，尝试向Gorse插入一些反馈。假设Bob是GitHub中几个前端仓库的前端开发人员。我们把他的star行为的反馈写入Gorse。
 
 ::: code-tabs#example
 
@@ -147,7 +146,7 @@ await client.insertFeedbacks([
 
 :::
 
-Then, fetch 10 recommended items from Gorse. We can find that frontend-related repositories are recommended for Bob.
+然后从Gorse中获取10个推荐的物品。我们可以发现，前端相关的仓库被推荐给了Bob。
 
 ::: code-tabs#example
 
@@ -192,6 +191,6 @@ await client.getRecommend({ userId: 'bob', cursorOptions: { n: 10 } });
 ]
 ```
 
-> The exact output might be different from the example since the playground dataset changes over time.
+> 最终的输出可能与示例不同，因为playground数据集会随时间而变化。
 
 [gitrec]: https://girec.gorse.io
