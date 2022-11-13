@@ -25,14 +25,19 @@ export const enSidebar = sidebar({
       icon: 'start',
       children: [
         {
-          text: 'All-in-one Deployment',
-          icon: 'box',
-          link: '/docs/deploy/all-in-one.md',
+          text: 'Binary Deployment',
+          icon: 'console',
+          link: '/docs/deploy/binary.md',
         },
         {
-          text: 'Docker Compose',
+          text: 'Docker Deployment',
           icon: 'docker',
-          link: '/docs/deploy/docker-compose.md',
+          link: '/docs/deploy/docker.md',
+        },
+        {
+          text: 'Kubernetes Deployment',
+          icon: 'kubernetes',
+          link: '/docs/deploy/kubernetes.md',
         },
       ]
     },

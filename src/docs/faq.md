@@ -27,8 +27,7 @@ curl -i -H "Accept: application/json" \
     -X GET http://127.0.0.1:8088//api/recommend/0?write-back-type=read&write-back-delay=10s
 ```
 
-The 1st option is more accurate since it is done by the front end but the 2nd option is more convenient. Read [Recommendation Strategies](/build-recommender/recommendation-strategies) for detailed information.
-
+The 1st option is more accurate since it is done by the front end but the 2nd option is more convenient.
 ### 3. What does "no feedback found" mean?
 
 If "collaborative filtering" tasks report no feedback found, it means there is no positive feedback in the database. The definition of positive feedback types and read feedback type is in the configuration file:

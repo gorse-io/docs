@@ -39,6 +39,14 @@ You can build the static website like this:
 
 The static files will be available in `.vuepress/dist`.
 
+## Localization
+
+Welcome to translate the Gorse document into more languages on [GitLocalize](https://gitlocalize.com/repo/8172).
+
+| Language | Progress |
+| --- | --- |
+| Chinese | [![gitlocalized ](https://gitlocalize.com/repo/8172/zh/badge.svg)](https://gitlocalize.com/repo/8172/zh?utm_source=badge) |
+
 ## Acknowledgments
 
 - The [VuePress](https://vuepress.vuejs.org/) version of documents is contributed by [@andresribeiro](https://github.com/andresribeiro).
