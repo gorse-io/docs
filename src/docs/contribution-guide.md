@@ -27,7 +27,7 @@ go test -v ./...
 
 The default database URLs are directed to these databases in `storage/docker-compose.yml`. Test databases could be overrode by setting following environment variables:
 
-| Environment Value | Default Value |
+| Environment Variable | Default Value |
 |-|-|
 | `MYSQL_URI` | `mysql://root:password@tcp(127.0.0.1:3306)/` |
 | `POSTGRES_URI` | `postgres://gorse:gorse_pass@127.0.0.1/` |

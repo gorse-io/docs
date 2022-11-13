@@ -3,6 +3,4 @@ icon: kubernetes
 ---
 # Kubernetes Deployment
 
-Kubernetes has been the standard of large scale orchestration.
-
-## Gorse Cluster on Kubernetes
+Kubernetes deployment is recommended for large scale orchestration or multi-tenancy.

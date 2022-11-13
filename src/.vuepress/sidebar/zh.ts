@@ -20,27 +20,27 @@ export const zhSidebar = sidebar({
     //     }
     //   ]
     // },
-    // {
-    //   text: 'Deploy',
-    //   icon: 'start',
-    //   children: [
-    //     {
-    //       text: 'Binary Deployment',
-    //       icon: 'console',
-    //       link: '/docs/deploy/binary.md',
-    //     },
-    //     {
-    //       text: 'Docker Deployment',
-    //       icon: 'docker',
-    //       link: '/docs/deploy/docker.md',
-    //     },
-    //     {
-    //       text: 'Kubernetes Deployment',
-    //       icon: 'kubernetes',
-    //       link: '/docs/deploy/kubernetes.md',
-    //     },
-    //   ]
-    // },
+    {
+      text: '部署',
+      icon: 'start',
+      children: [
+        {
+          text: '二进制部署',
+          icon: 'console',
+          link: '/zh/docs/deploy/binary.md',
+        },
+        {
+          text: 'Docker 部署',
+          icon: 'docker',
+          link: '/zh/docs/deploy/docker.md',
+        },
+        {
+          text: 'Kubernetes 部署',
+          icon: 'kubernetes',
+          link: '/zh/docs/deploy/kubernetes.md',
+        },
+      ]
+    },
     // {
     //   text: 'Recommender',
     //   link: '/docs/build-recommender/',

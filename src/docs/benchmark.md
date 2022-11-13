@@ -7,7 +7,7 @@ In this page, different database backends of Gorse are compared.
 
 ## RESTful APIs
 
-Before benchmark RESTful APIs, [the develop environment](/docs/contribution-guide#setup-develop-environment) should be set up first. Then, change working directory to `server` and run benchmark script:
+Before benchmark RESTful APIs, [the develop environment](contribution-guide#setup-develop-environment) should be set up first. Then, change working directory to `server` and run benchmark script:
 
 ```bash
 cd server
