@@ -7,7 +7,7 @@ heroText: Gorse
 tagline: 一个使用Go语言开发的开源推荐系统。
 actions:
   - text: 文档
-    link: /docs/
+    link: /zh/docs/
     type: primary
 
   - text: 在线示例
