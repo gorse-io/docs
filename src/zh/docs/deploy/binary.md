@@ -4,13 +4,13 @@ icon: console
 
 # 二进制部署
 
-For single node deployment, the gorse-in-one single binary can be used.
+当单节点部署时，可以使用 gorse-in-one 这个独立的二进制文件。
 
-::: warning For the multi-nodes scenario, binary deployment is not recommended. :::
+::: 警告：对于多节点场景，不推荐使用二进制部署。 ::::
 
-## Prerequisites
+## 前提条件
 
-Gorse depends on following software:
+Gorse依赖于以下软件：
 
 - 缓存存储数据库， *MySQL* 、 *PostgreSQL* 、 *MongoDB*或*Redis*之一。
 - 数据存储数据库， *MySQL* 、 *PostgreSQL* 、 *ClickHouse*或*MongoDB*之一。
@@ -25,7 +25,7 @@ PostgresSQL | 10.0 |
 ClickHouse | 21.10 |
 MongoDB | 4.0 |
 
-## Run Gorse-in-one
+## 运行Gorse-in-one
 
 1. 从 GitHub Release 下载 Gorse-in-one。
 
@@ -63,7 +63,7 @@ Invoke-WebRequest https://github.com/gorse-io/gorse/releases/latest/download/gor
 
 ::::
 
-1. Install Gorse-in-one.
+1. 运行Gorse-in-one
 
 ::: code-tabs#download
 
@@ -91,31 +91,31 @@ Expand-Archive gorse.zip -DestinationPath gorse
 
 ::::
 
-1. Create a configuration file `config.toml` based on [config.toml.template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml.template).
+1. 基于[config.toml.template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml.template) 创建配置文件 `config.toml`
 
-2. Run Gorse-in-one.
+2. 运行Gorse-in-one
 
 ```
 gorse -c config.toml
 ```
 
-### Flags of Gorse-in-one
+### Gorse-in-one的参数
 
-There are commend line flags for Gorse-in-one:
+这是Gorse-in-one的命令行参数：
 
- | Flag | 默认值 | 描述
+ | 标志 | 默认值 | 描述
 --- | --- | --- | ---
 `-c` | `-c,--config` |  | 配置文件路径。
  | `--debug` |  | 调试日志模式。
-`-h` | `--help` |  | Help for gorse-in-one.
+`-h` | `--help` |  | gorse-in-one的帮助。
  | `--log-path` |  | 日志文件路径。
  | `--master-cache-path` | `master_cache.data` | 主节点缓存路径。
- | `--playground` |  | Playground mode.
-`-v` | `--version` |  | Gorse version.
+ | `--playground` |  | playground模式。
+`-v` | `--version` |  | gorse版本。
  | `--worker-cache-path` | `worker_cache.data` | 工作节点缓存路径。
  | `--worker-jobs` | `1` | 工作节点工作作业。
 
-## Setup Systemd
+## 设置systemd
 
 1. 将 Gorse-in-one 二进制文件复制到`/usr/local/bin`并将配置文件复制到`/etc/gorse` ：
 
@@ -140,13 +140,13 @@ ExecStart=/usr/local/bin/gorse -c /etc/gorse/config.toml
 WantedBy=multi-user.target
 ```
 
-1. After that you're supposed to reload systemd:
+1. 然后重新加载systemd：
 
 ```bash
 sudo systemctl daemon-reload
 ```
 
-1. Launch Gorse-in-one on system startup with:
+1. 在系统启动的同时启动Gorse-in-one：
 
 ```bash
 sudo systemctl enable gorse
@@ -158,7 +158,7 @@ sudo systemctl enable gorse
 sudo systemctl start gorse
 ```
 
-1. Check the health and logs of Gorse-in-one with:
+1. 检查 Gorse-in-one 的运行状态和日志：
 
 ```bash
 systemctl status clash
