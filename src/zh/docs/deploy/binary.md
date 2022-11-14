@@ -6,11 +6,7 @@ icon: console
 
 当单节点部署时，可以使用 gorse-in-one 这个独立的二进制文件。
 
-::: warning
-
-对于多节点场景，不推荐使用二进制部署。 
-
-:::
+::: warning<br>对于多节点场景，不推荐使用二进制部署。<br>:::
 
 ## 前提条件
 
@@ -107,17 +103,17 @@ gorse -c config.toml
 
 这是Gorse-in-one的命令行参数：
 
-| | 标志 | 默认值 | 描述
-| --- | --- | --- | ---
-| `-c` | `-c,--config` |  | 配置文件路径。
-| | `--debug` |  | 调试日志模式。
-| `-h` | `--help` |  | gorse-in-one的帮助。
-| | `--log-path` |  | 日志文件路径。
-| | `--master-cache-path` | `master_cache.data` | 主节点缓存路径。
-| | `--playground` |  | playground模式。
-| `-v` | `--version` |  | gorse版本。
-| | `--worker-cache-path` | `worker_cache.data` | 工作节点缓存路径。
-| | `--worker-jobs` | `1` | 工作节点工作作业。
+ | 标志 | 默认值 | 描述
+--- | --- | --- | ---
+`-c` | `-c,--config` |  | 配置文件路径。
+ | `--debug` |  | 调试日志模式。
+`-h` | `--help` |  | gorse-in-one的帮助。
+ | `--log-path` |  | 日志文件路径。
+ | `--master-cache-path` | `master_cache.data` | 主节点缓存路径。
+ | `--playground` |  | playground模式。
+`-v` | `--version` |  | gorse版本。
+ | `--worker-cache-path` | `worker_cache.data` | 工作节点缓存路径。
+ | `--worker-jobs` | `1` | 工作节点工作作业。
 
 ## 设置systemd
 
