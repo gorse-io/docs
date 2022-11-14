@@ -1,4 +1,7 @@
-# Recommendation Strategies
+---
+icon: zhinengsuanfa
+---
+# Recommenders
 
 Gorse recommender system implements different types of recommenders, both non-personalized and personalized. No single recommender is a panacea, and only a combination of them can be used to achieve the best recommendation results.
 

@@ -97,15 +97,11 @@ export const zhSidebar = sidebar({
     //     }
     //   ]
     // },
-    // {
-    //   text: 'Observability',
-    //   children: [
-    //     {
-    //       text: 'Setup Grafana Dashboard',
-    //       link: '/docs/observability/setup-monitoring-infraestructures',
-    //     }
-    //   ]
-    // },
+    {
+      text: 'Gorse 控制台',
+      icon: 'dashboard',
+      link: '/zh/docs/gorse-dashboard'
+    },
     {
       text: '性能对比',
       icon: 'dashboard-fill',

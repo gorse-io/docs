@@ -1,4 +1,7 @@
-# Item Management
+---
+icon: model
+---
+# Data Model
 
 Items are the main characters of the recommender system. This section will introduce how to manage items in Gorse, including controlling the visibility of items, describing items to the recommender system, etc.
 

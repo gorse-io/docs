@@ -3,22 +3,9 @@ import { sidebar } from "vuepress-theme-hope";
 export const enSidebar = sidebar({
   "/": [
     {
-      text: '🚀 Getting Started',
-      link: '/docs/introduction/',
-      children: [
-        {
-          text: 'Quick Start',
-          link: '/docs/quick-start/',
-        },
-        {
-          text: 'Configuration',
-          link: '/docs/quick-start/configuration'
-        },
-        {
-          text: 'GitRec, The Live Demo',
-          link: '/docs/quick-start/demo'
-        }
-      ]
+      text: 'Quick Start',
+      icon: 'launch',
+      link: '/docs/quick-start',
     },
     {
       text: 'Deploy',
@@ -27,48 +14,34 @@ export const enSidebar = sidebar({
         {
           text: 'Binary Deployment',
           icon: 'console',
-          link: '/docs/deploy/binary.md',
+          link: '/docs/deploy/binary',
         },
         {
           text: 'Docker Deployment',
           icon: 'docker',
-          link: '/docs/deploy/docker.md',
+          link: '/docs/deploy/docker',
         },
         {
           text: 'Kubernetes Deployment',
           icon: 'kubernetes',
-          link: '/docs/deploy/kubernetes.md',
+          link: '/docs/deploy/kubernetes',
         },
       ]
     },
     {
-      text: 'Recommender',
-      link: '/docs/build-recommender/',
+      text: 'Concepts',
+      icon: 'idea',
       children: [
         {
-          text: 'Workflow',
-          link: '/docs/build-recommender/'
+          text: 'Data Model',
+          icon: "model",
+          link: '/docs/concepts/data-model',
         },
         {
-          text: 'Item Management',
-          link: '/docs/build-recommender/item-management',
+          text: 'Recommenders',
+          icon: "zhinengsuanfa",
+          link: '/docs/concepts/recommenders',
         },
-        {
-          text: 'Feedback Collection',
-          link: '/build-recommender/feedback-collection',
-        },
-        {
-          text: 'Recommendation Strategies',
-          link: '/docs/build-recommender/recommendation-strategies',
-        },
-        {
-          text: 'Performance vs Precision',
-          link: '/docs/build-recommender/performance-vs-precision',
-        },
-        {
-          text: 'Gorse Dashboard',
-          link: '/docs/build-recommender/gorse-dashboard',
-        }
       ]
     },
     {
@@ -98,13 +71,9 @@ export const enSidebar = sidebar({
       ]
     },
     {
-      text: 'Observability',
-      children: [
-        {
-          text: 'Setup Grafana Dashboard',
-          link: '/docs/observability/setup-monitoring-infraestructures',
-        }
-      ]
+      text: 'Gorse Dashboard',
+      icon: 'dashboard',
+      link: '/docs/gorse-dashboard'
     },
     {
       text: 'Benchmark',

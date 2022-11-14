@@ -1,3 +1,6 @@
+---
+icon: launch
+---
 # Quick Start
 
 This guide walks you through the quickest way to setup a recommender system for GitHub repositories. Make sure you have installed following softwares at the beginning: 
