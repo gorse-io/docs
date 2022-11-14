@@ -3,7 +3,7 @@ icon: launch
 ---
 # Quick Start
 
-This guide walks you through the quickest way to setup a recommender system for GitHub repositories. Make sure you have installed following softwares at the beginning: 
+This guide walks you through the quickest way to setup a recommender system for GitHub repositories based on dataset from [GitRec](https://gitrec.gorse.io/). Make sure you have installed following softwares at the beginning: 
 
 - [Docker](https://docs.docker.com/get-docker/), nodes will run in containers.
 - [Docker Compose](https://docs.docker.com/compose/install/), nodes will be orchestrated by Docker Compose.
@@ -12,19 +12,37 @@ This guide walks you through the quickest way to setup a recommender system for 
 
 Gorse supports to be single node or multiple nodes. This section demonstrates how to setup a minimal usable Gorse single node via playground and a multiple nodes cluster via Docker Compose.
 
-### Option 1: Setup Gorse All-in-one node via Playground
+### Option 1: Setup Gorse-in-one node via Playground
 
 Use the following command to setup a Gorse all-in-one node.
+
+::: code-tabs#setup
+
+@tab:active Bash
+
+```bash
+curl -fsSL https://gorse.io/playground | bash
+```
+
+@tab Docker
 
 ```bash
 docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
 ```
 
+:::
+
+::: tip
+
+For Gorse-in-one, the RESTful endpoint is http://127.0.0.1:8088.
+
+:::
+
 ### Option 2: Setup Gorse Cluster via Docker Compose
 
-There is an example [docker-compose.yml](https://github.com/zhenghaoz/gorse/blob/master/docker/docker-compose.yml) consists of a master node, a server node and a worker node, a Redis instance, and a MySQL instance.
+There is an example [docker-compose.yml](https://github.com/gorse-io/gorse/blob/release-0.4/docker-compose.yml) consists of a master node, a server node and a worker node, a Redis instance, and a MySQL instance.
 
-- Download [docker-compose.yml](https://github.com/zhenghaoz/gorse/blob/master/docker/docker-compose.yml) and the config file [config.toml](https://github.com/zhenghaoz/gorse/blob/master/docker/config.toml). The config file is explained in [configuration section](configuration).
+1. Download [docker-compose.yml](https://github.com/zhenghaoz/gorse/blob/release-0.4/docker-compose.yml) and the config file [config.toml](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml.template).
 
 ```bash
 # Create a new directory
@@ -32,18 +50,17 @@ mkdir gorse
 cd gorse
 
 # Download docker-compose.yml and config.tom
-wget https://raw.githubusercontent.com/zhenghaoz/gorse/master/docker/docker-compose.yml
-wget https://raw.githubusercontent.com/zhenghaoz/gorse/master/docker/config.toml
+wget https://raw.githubusercontent.com/zhenghaoz/gorse/release-0.4/docker-compose.yml
+wget https://raw.githubusercontent.com/zhenghaoz/gorse/release-0.4/config.toml
 ```
 
-- Setup the Gorse cluster using Docker Compose.
+2. Setup the Gorse cluster using Docker Compose.
 
 ```bash
 docker-compose up -d
 ```
 
-<details>
-<summary>Expected outputs:</summary>
+::: details Expected outputs
 
 ```
 Creating network "gorse_default" with the default driver
@@ -54,9 +71,9 @@ Creating gorse_server_1 ... done
 Creating gorse_redis_1  ... done
 ```
 
-</details>
+:::
 
-- Download the SQL file [github.sql](https://cdn.gorse.io/example/github.sql) and import to the MySQL instance. This dataset consists of GitHub users, GitHub repositories and interactions between users and repositories.
+3. Download the SQL file [github.sql](https://cdn.gorse.io/example/github.sql) and import to the MySQL instance. This dataset consists of GitHub users, GitHub repositories and interactions between users and repositories.
 
 ```bash
 # Download sample data.
@@ -84,14 +101,13 @@ positive_feedback_types = ["star","like"]
 read_feedback_types = ["read"]
 ```
 
-- Restart the master node to apply imported data.
+4. Restart the master node to reload imported data immediately.
 
 ```bash
 docker-compose restart
 ```
 
-<details>
-<summary>Expected outputs:</summary>
+::: details Expected outputs
 
 ```
 Restarting gorse_redis_1  ... done
@@ -101,21 +117,21 @@ Restarting gorse_server_1 ... done
 Restarting gorse_worker_1 ... done
 ```
 
-</details>
+:::
 
 ## Get Recommendation
 
 Gorse generate recommendations for users after feedbacks from users are inserted.
 
-- Open [http://127.0.0.1:8088](http://127.0.0.1:8088) in browser and log in with default user name `admin` and password `password`. The dashboard summarizes all status and data in Gorse. Read [Gorse Dashboard](/build-recommender/gorse-dashboard) for more information.
+Open [http://127.0.0.1:8088](http://127.0.0.1:8088) in browser and the dashboard summarizes all status and data in Gorse.
 
-![](../img/ch3/gorse-dashboard-overview.png)
+![](../img/dashboard-overview.png)
 
-- Wait for all tasks *except "Searching collaborative filtering model" and "Searching click-through prediction model"* completed.
+Wait for all tasks *except "Searching collaborative filtering model" and "Searching click-through prediction model"* completed.
 
-![](../img/ch3/gorse-dashboard-tasks.png)
+![](../img/dashboard-tasks.png)
 
-- Suppose Bob is a frontend developers who starred several frontend repositories in GitHub. We insert his star feedback to Gorse via the RESTful API. [The next page](restful-apis) lists the available methods in Gorse.
+Suppose Bob is a frontend developers who starred several frontend repositories in GitHub. We insert his star feedback to Gorse via the RESTful API.
 
 ```bash
 read -d '' JSON << EOF
@@ -133,8 +149,7 @@ curl -X POST http://127.0.0.1:8087/api/feedback \
    -d "$JSON"
 ```
 
-<details>
-<summary>Expected outputs:</summary>
+::: details Expected outputs
 
 ```json
 {
@@ -142,9 +157,9 @@ curl -X POST http://127.0.0.1:8087/api/feedback \
 }
 ```
 
-</details>
+:::
 
-- Fetch 10 recommended items from Gorse. We can found frontend related repositories are recommended for Bob.
+Then, fetch 10 recommended items from Gorse. We can found frontend related repositories are recommended for Bob.
 
 ```bash
 curl http://127.0.0.1:8087/api/recommend/bob?n=10
@@ -154,17 +169,15 @@ Expected outputs:
 
 ```json
 [
- "mbostock:d3",
- "nt1m:material-framework",
- "mdbootstrap:vue-bootstrap-with-material-design",
- "justice47:f2-vue",
- "10clouds:cyclejs-cookie",
- "academicpages:academicpages.github.io",
- "accenture:alexia",
- "addyosmani:tmi",
- "1wheel:d3-starterkit",
- "acdlite:redux-promise"
+    "mbostock:d3",
+    "nt1m:material-framework",
+    "mdbootstrap:vue-bootstrap-with-material-design",
+    "justice47:f2-vue",
+    "10clouds:cyclejs-cookie",
+    "academicpages:academicpages.github.io",
+    "accenture:alexia",
+    "addyosmani:tmi",
+    "1wheel:d3-starterkit",
+    "acdlite:redux-promise"
 ]
 ```
-
-A complete example to build a recommender system is discussed in [GitRec, The Live Demo](demo), which is useful to learn Gorse.
