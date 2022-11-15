@@ -1,4 +1,12 @@
-# Build Recommender
+---
+icon: process
+---
+# Workflow
+
+```mermaid
+flowchart LR
+    c1-->a2
+```
 
 Recommender systems are complex. The overall workflow in Gorse is as follows:
 

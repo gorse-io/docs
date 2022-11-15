@@ -58,32 +58,27 @@ export const zhSidebar = sidebar({
     //     }
     //   ]
     // },
-    // {
-    //   text: 'API',
-    //   icon: 'api',
-    //   children: [
-    //     {
-    //       text: 'RESTful API',
-    //       icon: 'http',
-    //       link: '/docs/api/restful-api',
-    //     },
-    //     {
-    //       text: 'Go SDK',
-    //       icon: 'go',
-    //       link: '/docs/api/go-sdk',
-    //     },
-    //     {
-    //       text: 'Python SDK',
-    //       icon: 'python',
-    //       link: '/docs/api/python-sdk',
-    //     },
-    //     {
-    //       text: 'TypeScript SDK',
-    //       icon: 'typescript',
-    //       link: '/docs/api/typescript-sdk',
-    //     }
-    //   ]
-    // },
+    {
+      text: '概念详解',
+      icon: 'idea',
+      children: [
+        {
+          text: '数据对象',
+          icon: "model",
+          link: '/zh/docs/concepts/data-objects',
+        },
+        {
+          text: '推荐算法',
+          icon: "zhinengsuanfa",
+          link: '/zh/docs/concepts/algorithms',
+        },
+        {
+          text: '推荐工作流',
+          icon: "process",
+          link: '/zh/docs/concepts/workflow',
+        },
+      ]
+    },
     {
       text: 'Gorse 控制台',
       icon: 'dashboard',

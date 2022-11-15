@@ -33,14 +33,19 @@ export const enSidebar = sidebar({
       icon: 'idea',
       children: [
         {
-          text: 'Data Model',
+          text: 'Data Objects',
           icon: "model",
-          link: '/docs/concepts/data-model',
+          link: '/docs/concepts/data-objects',
         },
         {
-          text: 'Recommenders',
+          text: 'Algorithms',
           icon: "zhinengsuanfa",
-          link: '/docs/concepts/recommenders',
+          link: '/docs/concepts/algorithms',
+        },
+        {
+          text: 'Workflow',
+          icon: "process",
+          link: '/docs/concepts/workflow',
         },
       ]
     },
