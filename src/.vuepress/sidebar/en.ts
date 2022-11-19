@@ -29,6 +29,11 @@ export const enSidebar = sidebar({
       ]
     },
     {
+      text: 'Configuration',
+      icon: 'config_s',
+      link: '/docs/config'
+    },
+    {
       text: 'Concepts',
       icon: 'idea',
       children: [
