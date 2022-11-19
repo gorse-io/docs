@@ -249,9 +249,12 @@ Insert feedbacks. Ignore insertion if feedback exists.
 | feedbacks | feedbacks need to be inserted |
 
 **Return**
+
+```go
 type RowAffected struct {
 	RowAffected int `json:"RowAffected"`
 }
+```
 
 **Example**
 
@@ -281,12 +284,7 @@ Get feedback by user id with feedback type.
 
 **Return**
 ```go
-[]Feedback{{
-    FeedbackType: "feedbackType",
-    UserId:       "userId",
-    ItemId:       "itemId",
-    Timestamp:    "2022-11-12T14:33:44.952Z",
-}}
+[]Feedback
 ```
 
 **Example**
@@ -334,6 +332,7 @@ func (c *GorseClient) GetRecommend(ctx context.Context, userId string, category 
 ```
 
 Get recommendation for user.
+
 **Parameters**
 
 | Name | Description |
@@ -360,6 +359,7 @@ func (c *GorseClient) SessionRecommend(ctx context.Context, feedbacks []Feedback
 ```
 
 Get recommendation for session.
+
 **Parameters**
 | Name | Description |
 |-|-|
@@ -368,10 +368,7 @@ Get recommendation for session.
 
 **Return**
 ```go
-[]Score{{
-    Id:    "id",
-    Score: 0,
-}}
+[]Score
 ```
 
 **Example**

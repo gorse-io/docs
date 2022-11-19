@@ -28,36 +28,32 @@ export const zhSidebar = sidebar({
         },
       ]
     },
-    // {
-    //   text: 'Recommender',
-    //   link: '/docs/build-recommender/',
-    //   children: [
-    //     {
-    //       text: 'Workflow',
-    //       link: '/docs/build-recommender/'
-    //     },
-    //     {
-    //       text: 'Item Management',
-    //       link: '/docs/build-recommender/item-management',
-    //     },
-    //     {
-    //       text: 'Feedback Collection',
-    //       link: '/build-recommender/feedback-collection',
-    //     },
-    //     {
-    //       text: 'Recommendation Strategies',
-    //       link: '/docs/build-recommender/recommendation-strategies',
-    //     },
-    //     {
-    //       text: 'Performance vs Precision',
-    //       link: '/docs/build-recommender/performance-vs-precision',
-    //     },
-    //     {
-    //       text: 'Gorse Dashboard',
-    //       link: '/docs/build-recommender/gorse-dashboard',
-    //     }
-    //   ]
-    // },
+    {
+      text: '接口文档',
+      icon: 'api',
+      children: [
+        // {
+        //   text: 'RESTful API',
+        //   icon: 'http',
+        //   link: '/docs/api/restful-api',
+        // },
+        {
+          text: 'Go 客户端',
+          icon: 'go',
+          link: '/zh/docs/api/go-sdk',
+        },
+        // {
+        //   text: 'Python SDK',
+        //   icon: 'python',
+        //   link: '/docs/api/python-sdk',
+        // },
+        // {
+        //   text: 'TypeScript SDK',
+        //   icon: 'typescript',
+        //   link: '/docs/api/typescript-sdk',
+        // }
+      ]
+    },
     {
       text: '概念详解',
       icon: 'idea',
