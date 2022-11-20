@@ -34,6 +34,7 @@ The default database URLs are directed to these databases in `storage/docker-com
 | `MONGO_URI` | `mongodb://root:password@127.0.0.1:27017/` |
 | `CLICKHOUSE_URI` | `clickhouse://127.0.0.1:8123/` |
 | `REDIS_URI` | `redis://127.0.0.1:6379/` |
+| `ORACLE_URI` | `oracle://system:password@127.0.0.1:1521/XE` |
 
 For example, use TiDB as a test database by:
 
