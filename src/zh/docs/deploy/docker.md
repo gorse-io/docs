@@ -8,10 +8,10 @@ icon: docker
 
 Docker镜像 | 版本 | 镜像大小 | 拉取次数
 --- | --- | --- | ---
-[gorse-master](https://hub.docker.com/repository/docker/zhenghaoz/gorse-master) | ![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/zhenghaoz/gorse-master/latest) | ![gorse-master](https://img.shields.io/docker/image-size/zhenghaoz/gorse-master) | ![Docker Pulls](https://img.shields.io/docker/pulls/zhenghaoz/gorse-master)
-gorse-server | ![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/zhenghaoz/gorse-server/latest) | ![gorse-server](https://img.shields.io/docker/image-size/zhenghaoz/gorse-server) | ![Docker Pulls](https://img.shields.io/docker/pulls/zhenghaoz/gorse-server)
-[gorse-worker](https://hub.docker.com/repository/docker/zhenghaoz/gorse-worker) | ![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/zhenghaoz/gorse-worker/latest) | ![gorse-worker](https://img.shields.io/docker/image-size/zhenghaoz/gorse-worker) | ![Docker Pulls](https://img.shields.io/docker/pulls/zhenghaoz/gorse-worker)
-[gorse-in-one](https://hub.docker.com/repository/docker/zhenghaoz/gorse-in-one) | ![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/zhenghaoz/gorse-in-one/latest) | ![gorse-in-one](https://img.shields.io/docker/image-size/zhenghaoz/gorse-in-one) | ![Docker Pulls](https://img.shields.io/docker/pulls/zhenghaoz/gorse-in-one)
+[gorse-master](https://hub.docker.com/repository/docker/zhenghaoz/gorse-master) | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-master/latest) | ![金雀花大师](https://img.shields.io/docker/image-size/zhenghaoz/gorse-master) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-master)
+gorse-server | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-server/latest) | ![金雀服务器](https://img.shields.io/docker/image-size/zhenghaoz/gorse-server) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-server)
+[gorse-worker](https://hub.docker.com/repository/docker/zhenghaoz/gorse-worker) | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-worker/latest) | ![金雀花工](https://img.shields.io/docker/image-size/zhenghaoz/gorse-worker) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-worker)
+[gorse-in-one](https://hub.docker.com/repository/docker/zhenghaoz/gorse-in-one) | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-in-one/latest) | ![金雀花](https://img.shields.io/docker/image-size/zhenghaoz/gorse-in-one) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-in-one)
 
 ::: tips 这些带有`nightly`标签的镜像是从 master 分支构建的。在生产中应使用指定版本的标签。 :::
 
@@ -102,7 +102,7 @@ services:
 docker-compose up -d
 ```
 
-:::
+::::
 
 ## Docker 上的 Gorse 集群
 
@@ -332,7 +332,7 @@ volumes:
 docker-compose up -d
 ```
 
-:::
+::::
 
 ### 命令行参数
 
