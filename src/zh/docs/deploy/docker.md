@@ -6,16 +6,16 @@ icon: docker
 
 使用Docker Compose或Docker Swarm管理小规模微服务集群是不错的选择。Gorse官方提供了Docker镜像：
 
-Docker镜像 | 版本 | 镜像大小 | Pulls
+Docker镜像 | 版本 | 镜像大小 | 拉取次数
 --- | --- | --- | ---
 [gorse-master](https://hub.docker.com/repository/docker/zhenghaoz/gorse-master) | ![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/zhenghaoz/gorse-master/latest) | ![gorse-master](https://img.shields.io/docker/image-size/zhenghaoz/gorse-master) | ![Docker Pulls](https://img.shields.io/docker/pulls/zhenghaoz/gorse-master)
 gorse-server | ![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/zhenghaoz/gorse-server/latest) | ![gorse-server](https://img.shields.io/docker/image-size/zhenghaoz/gorse-server) | ![Docker Pulls](https://img.shields.io/docker/pulls/zhenghaoz/gorse-server)
 [gorse-worker](https://hub.docker.com/repository/docker/zhenghaoz/gorse-worker) | ![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/zhenghaoz/gorse-worker/latest) | ![gorse-worker](https://img.shields.io/docker/image-size/zhenghaoz/gorse-worker) | ![Docker Pulls](https://img.shields.io/docker/pulls/zhenghaoz/gorse-worker)
 [gorse-in-one](https://hub.docker.com/repository/docker/zhenghaoz/gorse-in-one) | ![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/zhenghaoz/gorse-in-one/latest) | ![gorse-in-one](https://img.shields.io/docker/image-size/zhenghaoz/gorse-in-one) | ![Docker Pulls](https://img.shields.io/docker/pulls/zhenghaoz/gorse-in-one)
 
-::: tip These images tagged with the `nightly` tag are built from the master branch. The tag should be fixed to a specified version in production. :::
+::: tips 这些带有`nightly`标签的镜像是从 master 分支构建的。在生产中应使用指定版本的标签。 :::
 
-## Gorse-in-one on Docker
+## 在Docker上部署多合一节点
 
 当单节点部署时，可以使用 gorse-in-one 的 Docker 镜像。在`docker-compose.yaml`中有一个 Gorse-in-one 的示例。
 
@@ -349,29 +349,29 @@ docker-compose up -d
 
 服务节点的命令行参数：
 
- | Flag | 默认值 | 描述
+ | 参数 | 默认值 | 描述
 --- | --- | --- | ---
- | `--cache-path` | `worker_cache.data` | Cache file path.
- | `--debug` |  | Debug log mode.
-`-h` | `--help` |  | Help for gorse-server.
+ | `--cache-path` | `worker_cache.data` | 缓存文件路径
+ | `--debug` |  | 开启DEBUG日志模式
+`-h` | `--help` |  | 帮助信息
  | `--http-host` | `127.0.0.1` | RESTful API 和 Prometheus<br>度量所在主机
  | `--http-port` | `8087` | RESTful API 和 Prometheus<br>度量所在端口
- | `--log-path` |  | Log file path.
- | `--master-host` | `127.0.0.1` | Master node host.
- | `--master-port` | `8086` | Master node port.
-`-v` | `--version` |  | Gorse version.
+ | `--log-path` |  | 日志文件路径
+ | `--master-host` | `127.0.0.1` | 主节点的IP地址
+ | `--master-port` | `8086` | 主节点的端口
+`-v` | `--version` |  | Gorse版本
 
 工作节点的命令行参数：
 
- | Flag | 默认值 | 描述
+ | 参数 | 默认值 | 描述
 --- | --- | --- | ---
- | `--cache-path` | `worker_cache.data` | Cache file path.
- | `--debug` |  | Debug log mode.
-`-h` | `--help` |  | Help for gorse-worker.
- | `--http-host` | `127.0.0.1` | Prometheus metrics export host.
- | `--http-port` | `8089` | Prometheus metrics export port.
-`-j` | `--jobs` | `1` | Number of working jobs.
- | `--log-path` |  | Log file path.
- | `--master-host` | `127.0.0.1` | Master node host.
+ | `--cache-path` | `worker_cache.data` | 缓存文件路径
+ | `--debug` |  | 开启DEBUG日志模式
+`-h` | `--help` |  | 帮助信息
+ | `--http-host` | `127.0.0.1` | Prometheus metrics HTTP接口IP地址。
+ | `--http-port` | `8089` | Prometheus metrics HTTP接口端口。
+`-j` | `--jobs` | `1` | 工作线程数量
+ | `--log-path` |  | 日志文件路径
+ | `--master-host` | `127.0.0.1` | 主节点的IP地址
  | `--master-port` | `8086` | 主节点的端口
-`-v` | `--version` |  | Gorse version.
+`-v` | `--version` |  | Gorse版本
