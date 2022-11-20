@@ -39,7 +39,7 @@ The task page displays the tasks in Gorse, including the task name, task status,
 
 ## Cluster
 
-The cluster page lists nodes in the cluster, displaying information such as node type, node name, node IP and address for APIs and metrics. If a container orchestration tool is used, the node IP may not be accessible externally.
+The cluster page lists nodes in the cluster.
 
 ![](../img/dashboard-cluster.png)
 

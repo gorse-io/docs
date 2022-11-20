@@ -41,3 +41,15 @@ For example, use TiDB as a test database by:
 ```bash
 MYSQL_URI=mysql://root:password@tcp(127.0.0.1:4000)/ go test -v ./...
 ```
+
+## Run Integrate Test
+
+In the root directory of Gorse source:
+
+```bash
+# Setup Gorse
+docker-compose up -d
+
+# Test
+go test -tags='integrate_test' ./client/
+```
