@@ -77,6 +77,16 @@ export const enSidebar = sidebar({
           text: 'TypeScript SDK',
           icon: 'typescript',
           link: '/docs/api/typescript-sdk',
+        },
+        {
+          text: 'Java SDK',
+          icon: 'java',
+          link: '/docs/api/java-sdk',
+        },
+        {
+          text: 'Rust SDK',
+          icon: 'rust',
+          link: '/docs/api/rust-sdk',
         }
       ]
     },
