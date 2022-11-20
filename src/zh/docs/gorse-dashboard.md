@@ -4,7 +4,7 @@ Gorse 的主节点提供了 Gorse 控制台，并可以通过主节点的 HTTP �
 
 ## 登录页
 
-The default configuration allows access to the console without logging in. In the configuration file, the username and password to log in to the dashboard can be set.
+默认配置允许不登录就可以访问控制台。在配置文件中可以设置登录控制台的用户名和密码。
 
 ```toml
 [master]
@@ -28,7 +28,7 @@ dashboard_password = ""
 
 ## 任务页
 
-The task page displays the tasks in Gorse, including the task name, task status, task start time, task end time, and task progress.
+任务页面显示 Gorse 中的任务，包括任务名称、任务状态、任务开始时间、任务结束时间和任务进度。
 
 ![](../img/ch3/gorse-dashboard-tasks.png)
 
@@ -40,25 +40,25 @@ The task page displays the tasks in Gorse, including the task name, task status,
 
 ## 用户页
 
-The user page lists all users currently present in Gorse and can be searched by user ID. The information displayed includes the user ID, user labels, last active time and last update time of recommendation.
+用户页面列出了 Gorse 当前存在的所有用户，可以通过用户 ID 进行搜索。显示的信息包括用户ID、用户标签、最后活跃时间和推荐的最后更新时间。
 
 ![](../img/ch3/gorse-dashboard-users.png)
 
-Click on "Neighbors" to see similar users of this user.
+点击“Neighbors”按钮可以查看与该用户相似的用户。
 
 ![](../img/ch3/gorse-dashboard-similar-users.png)
 
-Click on "Insight" to see the user's history and the recommendations Gorse has generated for this user.
+点击“Insight”按钮可查看用户的历史记录以及 Gorse 为该用户生成的推荐。
 
 ![](../img/ch3/gorse-dashboard-user-insight.png)
 
 ## 物品页
 
-The item page lists all items currently in Gorse and can be searched by item ID. The information displayed includes the item ID, item categories, whether it is hidden or not, timestamp, item labels and item description.
+物品页面列出了目前 Gorse 中的所有物品，可以通过物品ID进行搜索。显示的信息包括物品ID、物品类别、是否隐藏、时间戳、物品标签和物品描述。
 
 ![](../img/ch3/gorse-dashboard-items.png)
 
-Click on "Neighbors" to see the similar items for each item.
+点击“Neighbors”按钮以查看每个物品的相似物品。
 
 ![](../img/ch3/gorse-dashboard-similar-items.png)
 
