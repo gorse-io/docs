@@ -6,3 +6,10 @@ icon: rust
 ::: warning
 The Rust SDK is under development, APIs might be changed in later versions. Pull requests are welcomed: https://github.com/gorse-io/gorse-rs
 :::
+
+## Install
+
+```toml
+[dependencies]
+gorse_rs = "0.4.1"
+```
