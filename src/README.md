@@ -145,6 +145,40 @@ await client.insertFeedbacks([
 ]);
 ```
 
+@tab Java
+
+```java
+import io.gorse.gorse4j.*;
+
+Gorse client = new Gorse(GORSE_ENDPOINT, GORSE_API_KEY);
+
+List<Feedback> feedbacks = List.of(
+        new Feedback("star", "bob", "vuejs:vue", "2022-02-24"),
+        new Feedback("star", "bob", "d3:d3", "2022-02-25"),
+        new Feedback("star", "bob", "dogfalo:materialize", "2022-02-26"),
+        new Feedback("star", "bob", "mozilla:pdf.js", "2022-02-27"),
+        new Feedback("star", "bob", "moment:moment", "2022-02-28")
+);
+client.insertFeedback(feedbacks);
+```
+
+@tab Rust
+
+```rust
+use gorse_rs::{Feedback, Gorse};
+
+let client = Gorse::new("http://127.0.0.1:8088", "");
+
+let feedback = vec![
+    Feedback::new("star", "bob", "vuejs:vue", "2022-02-24"),
+    Feedback::new("star", "bob", "d3:d3", "2022-02-25"),
+    Feedback::new("star", "bob", "dogfalo:materialize", "2022-02-26"),
+    Feedback::new("star", "bob", "mozilla:pdf.js", "2022-02-27"),
+    Feedback::new("star", "bob", "moment:moment", "2022-02-28")
+];
+client.insert_feedback(&feedback).await;
+```
+
 :::
 
 Then, fetch 10 recommended items from Gorse. We can find that frontend-related repositories are recommended for Bob.
@@ -173,6 +207,18 @@ client.get_recommend('bob', n=10)
 
 ```javascript
 await client.getRecommend({ userId: 'bob', cursorOptions: { n: 10 } });
+```
+
+@tab Java
+
+```java
+client.getRecommend("bob");
+```
+
+@tab Rust
+
+```rust
+client.get_recommend("bob").await;
 ```
 
 :::

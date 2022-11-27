@@ -7,6 +7,8 @@ icon: typescript
 The TypeScript SDK is under development, APIs might be changed in later versions. Pull requests are welcomed: https://github.com/gorse-io/gorse-js
 :::
 
+[![npm](https://img.shields.io/npm/v/gorsejs)](https://www.npmjs.com/package/gorsejs)
+
 ## Install
 
 ::: code-tabs#install
@@ -32,8 +34,10 @@ Create a client by the entrypoint and api key.
 ```js
 import { Gorse } from "gorsejs";
 
+// Create the client.
 const client = new Gorse({ endpoint: "http://127.0.0.1:8087", secret: "api_key" });
 
+// Insert feedbacks.
 await client.insertFeedbacks([
     { FeedbackType: 'star', UserId: 'bob', ItemId: 'vuejs:vue', Timestamp: '2022-02-24' },
     { FeedbackType: 'star', UserId: 'bob', ItemId: 'd3:d3', Timestamp: '2022-02-25' },
@@ -42,5 +46,6 @@ await client.insertFeedbacks([
     { FeedbackType: 'star', UserId: 'bob', ItemId: 'moment:moment', Timestamp: '2022-02-28' }
 ]);
 
+// Get recommendation.
 await client.getRecommend({ userId: 'bob', cursorOptions: { n: 10 } });
 ```

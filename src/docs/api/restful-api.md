@@ -25,6 +25,8 @@ curl -H "X-API-Key: *****"  http://127.0.0.1:8087/api/recommend/bob?n=10
 
 #### Get Recommend
 
+::: details
+
 ```
 GET /recommend/{user-id}/{category}
 ```
@@ -48,3 +50,5 @@ Get recommend for a user.
 ```
 
 ```
+
+:::
