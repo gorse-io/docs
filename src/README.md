@@ -240,4 +240,4 @@ client.get_recommend("bob").await;
 
 > The exact output might be different from the example since the playground dataset changes over time.
 
-[gitrec]: https://girec.gorse.io
+[gitrec]: https://gitrec.gorse.io
