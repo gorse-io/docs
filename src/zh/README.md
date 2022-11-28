@@ -193,4 +193,4 @@ await client.getRecommend({ userId: 'bob', cursorOptions: { n: 10 } });
 
 > 最终的输出可能与示例不同，因为playground数据集会随时间而变化。
 
-[gitrec]: https://girec.gorse.io
+[gitrec]: https://gitrec.gorse.io
