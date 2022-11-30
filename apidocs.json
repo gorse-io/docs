@@ -1,0 +1,2164 @@
+{
+ "swagger": "2.0",
+ "paths": {
+  "/api/feedback": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "feedback"
+    ],
+    "summary": "Get feedbacks.",
+    "operationId": "getFeedback",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "Cursor for the next page",
+      "name": "cursor",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned feedback",
+      "name": "n",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/server.FeedbackIterator"
+      }
+     }
+    }
+   },
+   "put": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "feedback"
+    ],
+    "summary": "Insert feedbacks. Existed feedback will be overwritten.",
+    "operationId": "func2",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "name": "body",
+      "in": "body",
+      "required": true,
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/data.Feedback"
+       }
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/server.Success"
+      }
+     }
+    }
+   },
+   "post": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "feedback"
+    ],
+    "summary": "Insert feedbacks. Ignore insertion if feedback exists.",
+    "operationId": "func1",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "name": "body",
+      "in": "body",
+      "required": true,
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/data.Feedback"
+       }
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/server.Success"
+      }
+     }
+    }
+   }
+  },
+  "/api/feedback/{feedback-type}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "feedback"
+    ],
+    "summary": "Get feedbacks with feedback type.",
+    "operationId": "getTypedFeedback",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "Type of returned feedbacks",
+      "name": "feedback-type",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "Cursor for the next page",
+      "name": "cursor",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned feedbacks",
+      "name": "n",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/server.FeedbackIterator"
+      }
+     }
+    }
+   }
+  },
+  "/api/feedback/{feedback-type}/{user-id}/{item-id}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "feedback"
+    ],
+    "summary": "Get feedbacks between a user and a item with feedback type.",
+    "operationId": "getTypedUserItemFeedback",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "Type of returned feedbacks",
+      "name": "feedback-type",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "User ID of returned feedbacks",
+      "name": "user-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "Item ID of returned feedbacks",
+      "name": "item-id",
+      "in": "path",
+      "required": true
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/data.Feedback"
+      }
+     }
+    }
+   },
+   "delete": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "feedback"
+    ],
+    "summary": "Delete feedbacks between a user and a item with feedback type.",
+    "operationId": "deleteTypedUserItemFeedback",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "Type of returned feedbacks",
+      "name": "feedback-type",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "User ID of returned feedbacks",
+      "name": "user-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "Item ID of returned feedbacks",
+      "name": "item-id",
+      "in": "path",
+      "required": true
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/data.Feedback"
+      }
+     }
+    }
+   }
+  },
+  "/api/feedback/{user-id}/{item-id}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "feedback"
+    ],
+    "summary": "Get feedbacks between a user and a item.",
+    "operationId": "getUserItemFeedback",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "User ID of returned feedbacks",
+      "name": "user-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "Item ID of returned feedbacks",
+      "name": "item-id",
+      "in": "path",
+      "required": true
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/data.Feedback"
+       }
+      }
+     }
+    }
+   },
+   "delete": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "feedback"
+    ],
+    "summary": "Delete feedbacks between a user and a item.",
+    "operationId": "deleteUserItemFeedback",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "User ID of returned feedbacks",
+      "name": "user-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "Item ID of returned feedbacks",
+      "name": "item-id",
+      "in": "path",
+      "required": true
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/data.Feedback"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/health/live": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "health"
+    ],
+    "summary": "Probe the liveness of this node. Return OK once the server starts.",
+    "operationId": "checkLive",
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/server.HealthStatus"
+      }
+     }
+    }
+   }
+  },
+  "/api/health/ready": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "health"
+    ],
+    "summary": "Probe the readiness of this node. Return OK if the server is able to handle requests.",
+    "operationId": "checkReady",
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/server.HealthStatus"
+      }
+     }
+    }
+   }
+  },
+  "/api/intermediate/recommend/{user-id}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "deprecated"
+    ],
+    "summary": "Get the collaborative filtering recommendation for a user",
+    "operationId": "getCollaborative",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "ID of the user to get recommendation",
+      "name": "user-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned items",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Offset of returned items",
+      "name": "offset",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/cache.Scored"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/intermediate/recommend/{user-id}/{category}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "deprecated"
+    ],
+    "summary": "Get the collaborative filtering recommendation for a user",
+    "operationId": "getCollaborative",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "ID of the user to get recommendation",
+      "name": "user-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "Category of returned items.",
+      "name": "category",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned items",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Offset of returned items",
+      "name": "offset",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/cache.Scored"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/item": {
+   "post": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "items"
+    ],
+    "summary": "Insert an item. Overwrite if the item exists.",
+    "operationId": "insertItem",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "name": "body",
+      "in": "body",
+      "required": true,
+      "schema": {
+       "$ref": "#/definitions/data.Item"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/server.Success"
+      }
+     }
+    }
+   }
+  },
+  "/api/item/{item-id}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "items"
+    ],
+    "summary": "Get a item.",
+    "operationId": "getItem",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "ID of the item to get.",
+      "name": "item-id",
+      "in": "path",
+      "required": true
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/data.Item"
+      }
+     }
+    }
+   },
+   "delete": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "items"
+    ],
+    "summary": "Delete an item and its feedback.",
+    "operationId": "deleteItem",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "ID of the item to delete",
+      "name": "item-id",
+      "in": "path",
+      "required": true
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/server.Success"
+      }
+     }
+    }
+   },
+   "patch": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "items"
+    ],
+    "summary": "Modify an item.",
+    "operationId": "modifyItem",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "ID of the item to modify",
+      "name": "item-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "name": "body",
+      "in": "body",
+      "required": true,
+      "schema": {
+       "$ref": "#/definitions/data.ItemPatch"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/server.Success"
+      }
+     }
+    }
+   }
+  },
+  "/api/item/{item-id}/category/{category}": {
+   "put": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "items"
+    ],
+    "summary": "Insert a category for a item.",
+    "operationId": "insertItemCategory",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "ID of the item to insert category",
+      "name": "item-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "Category to insert",
+      "name": "category",
+      "in": "path",
+      "required": true
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/server.Success"
+      }
+     }
+    }
+   },
+   "delete": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "items"
+    ],
+    "summary": "Delete a category from a item.",
+    "operationId": "deleteItemCategory",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "ID of the item to delete categoryßßß",
+      "name": "item-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "Category to delete",
+      "name": "category",
+      "in": "path",
+      "required": true
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/server.Success"
+      }
+     }
+    }
+   }
+  },
+  "/api/item/{item-id}/feedback": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "feedback"
+    ],
+    "summary": "Get feedbacks by item id.",
+    "operationId": "getFeedbackByItem",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "Item ID of returned feedbacks",
+      "name": "item-id",
+      "in": "path",
+      "required": true
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/data.Feedback"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/item/{item-id}/feedback/{feedback-type}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "feedback"
+    ],
+    "summary": "Get feedbacks by item id with feedback type.",
+    "operationId": "getTypedFeedbackByItem",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "Item ID of returned feedbacks",
+      "name": "item-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "Type of returned feedbacks",
+      "name": "feedback-type",
+      "in": "path",
+      "required": true
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/data.Feedback"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/item/{item-id}/neighbors": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "recommendation"
+    ],
+    "summary": "get neighbors of a item",
+    "operationId": "getItemNeighbors",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "ID of the item to get neighbors",
+      "name": "item-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned items",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Offset of returned items",
+      "name": "offset",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/cache.Scored"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/item/{item-id}/neighbors/{category}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "recommendation"
+    ],
+    "summary": "Get neighbors of a item in category.",
+    "operationId": "getItemNeighbors",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "ID of the item to get neighbors",
+      "name": "item-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "Category of returned items",
+      "name": "category",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned items",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Offset of returned items",
+      "name": "offset",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/cache.Scored"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/items": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "items"
+    ],
+    "summary": "Get items.",
+    "operationId": "getItems",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned items",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "string",
+      "description": "Cursor for the next page",
+      "name": "cursor",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/server.ItemIterator"
+      }
+     }
+    }
+   },
+   "post": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "items"
+    ],
+    "summary": "Insert items. Overwrite if items exist",
+    "operationId": "insertItems",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "name": "body",
+      "in": "body",
+      "required": true,
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/data.Item"
+       }
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/server.Success"
+      }
+     }
+    }
+   }
+  },
+  "/api/latest": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "recommendation"
+    ],
+    "summary": "Get the latest items.",
+    "operationId": "getLatest",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned items",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Offset of returned items",
+      "name": "offset",
+      "in": "query"
+     },
+     {
+      "type": "string",
+      "description": "Remove read items of a user",
+      "name": "user-id",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/cache.Scored"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/latest/{category}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "recommendation"
+    ],
+    "summary": "Get the latest items in category.",
+    "operationId": "getLatest",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "Category of returned items.",
+      "name": "category",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned items",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Offset of returned items",
+      "name": "offset",
+      "in": "query"
+     },
+     {
+      "type": "string",
+      "description": "Remove read items of a user",
+      "name": "user-id",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/cache.Scored"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/measurements/{name}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "measurements"
+    ],
+    "summary": "Get measurements.",
+    "operationId": "getMeasurements",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "Name of returned measurements",
+      "name": "name",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned measurements",
+      "name": "n",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/server.Measurement"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/popular": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "recommendation"
+    ],
+    "summary": "Get popular items.",
+    "operationId": "getPopular",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned recommendations",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Offset of returned recommendations",
+      "name": "offset",
+      "in": "query"
+     },
+     {
+      "type": "string",
+      "description": "Remove read items of a user",
+      "name": "user-id",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/cache.Scored"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/popular/{category}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "recommendation"
+    ],
+    "summary": "Get popular items in category.",
+    "operationId": "getPopular",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "Category of returned items.",
+      "name": "category",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned items",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Offset of returned items",
+      "name": "offset",
+      "in": "query"
+     },
+     {
+      "type": "string",
+      "description": "Remove read items of a user",
+      "name": "user-id",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/cache.Scored"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/recommend/{user-id}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "recommendation"
+    ],
+    "summary": "Get recommendation for user.",
+    "operationId": "getRecommend",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "ID of the user to get recommendation",
+      "name": "user-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "Type of write back feedback",
+      "name": "write-back-type",
+      "in": "query"
+     },
+     {
+      "type": "string",
+      "description": "Timestamp delay of write back feedback (format 0h0m0s)",
+      "name": "write-back-delay",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned items",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Offset of returned items",
+      "name": "offset",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "type": "string"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/recommend/{user-id}/{category}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "recommendation"
+    ],
+    "summary": "Get recommendation for user.",
+    "operationId": "getRecommend",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "ID of the user to get recommendation",
+      "name": "user-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "Category of the returned items",
+      "name": "category",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "Type of write back feedback",
+      "name": "write-back-type",
+      "in": "query"
+     },
+     {
+      "type": "string",
+      "description": "Timestamp delay of write back feedback (format 0h0m0s)",
+      "name": "write-back-delay",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned items",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Offset of returned items",
+      "name": "offset",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "type": "string"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/session/recommend": {
+   "post": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "recommendation"
+    ],
+    "summary": "Get recommendation for session.",
+    "operationId": "sessionRecommend",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned items",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Offset of returned items",
+      "name": "offset",
+      "in": "query"
+     },
+     {
+      "name": "body",
+      "in": "body",
+      "required": true,
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/server.Feedback"
+       }
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/cache.Scored"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/session/recommend/{category}": {
+   "post": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "recommendation"
+    ],
+    "summary": "Get recommendation for session.",
+    "operationId": "sessionRecommend",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "Category of the returned items",
+      "name": "category",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned items",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Offset of returned items",
+      "name": "offset",
+      "in": "query"
+     },
+     {
+      "name": "body",
+      "in": "body",
+      "required": true,
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/server.Feedback"
+       }
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/cache.Scored"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/user": {
+   "post": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "users"
+    ],
+    "summary": "Insert a user.",
+    "operationId": "insertUser",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "name": "body",
+      "in": "body",
+      "required": true,
+      "schema": {
+       "$ref": "#/definitions/data.User"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/server.Success"
+      }
+     }
+    }
+   }
+  },
+  "/api/user/{user-id}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "users"
+    ],
+    "summary": "Get a user.",
+    "operationId": "getUser",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "ID of the user to get",
+      "name": "user-id",
+      "in": "path",
+      "required": true
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/data.User"
+      }
+     }
+    }
+   },
+   "delete": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "users"
+    ],
+    "summary": "Delete a user and his or her feedback.",
+    "operationId": "deleteUser",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "ID of the user to delete",
+      "name": "user-id",
+      "in": "path",
+      "required": true
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/server.Success"
+      }
+     }
+    }
+   },
+   "patch": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "users"
+    ],
+    "summary": "Modify a user.",
+    "operationId": "modifyUser",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "ID of the user to modify",
+      "name": "user-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "name": "body",
+      "in": "body",
+      "required": true,
+      "schema": {
+       "$ref": "#/definitions/data.UserPatch"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/server.Success"
+      }
+     }
+    }
+   }
+  },
+  "/api/user/{user-id}/feedback": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "feedback"
+    ],
+    "summary": "Get feedbacks by user id.",
+    "operationId": "getFeedbackByUser",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "User ID of returned feedbacks",
+      "name": "user-id",
+      "in": "path",
+      "required": true
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/data.Feedback"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/user/{user-id}/feedback/{feedback-type}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "feedback"
+    ],
+    "summary": "Get feedbacks by user id with feedback type.",
+    "operationId": "getTypedFeedbackByUser",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "User ID of returned feedbacks",
+      "name": "user-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "Type of returned feedbacks",
+      "name": "feedback-type",
+      "in": "path",
+      "required": true
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/data.Feedback"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/user/{user-id}/neighbors": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "recommendation"
+    ],
+    "summary": "Get neighbors of a user.",
+    "operationId": "getUserNeighbors",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "ID of the user to get neighbors",
+      "name": "user-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned users",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Offset of returned users",
+      "name": "offset",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/cache.Scored"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/users": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "users"
+    ],
+    "summary": "Get users.",
+    "operationId": "getUsers",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned users",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "string",
+      "description": "Cursor for the next page",
+      "name": "cursor",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/server.UserIterator"
+      }
+     }
+    }
+   },
+   "post": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "users"
+    ],
+    "summary": "Insert users.",
+    "operationId": "insertUsers",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "name": "body",
+      "in": "body",
+      "required": true,
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/data.User"
+       }
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "$ref": "#/definitions/server.Success"
+      }
+     }
+    }
+   }
+  }
+ },
+ "definitions": {
+  "cache.Scored": {
+   "required": [
+    "Id",
+    "Score"
+   ],
+   "properties": {
+    "Id": {
+     "type": "string"
+    },
+    "Score": {
+     "type": "number",
+     "format": "double"
+    }
+   }
+  },
+  "data.Feedback": {
+   "required": [
+    "FeedbackType",
+    "UserId",
+    "ItemId",
+    "Timestamp",
+    "Comment"
+   ],
+   "properties": {
+    "Comment": {
+     "type": "string"
+    },
+    "FeedbackType": {
+     "type": "string"
+    },
+    "ItemId": {
+     "type": "string"
+    },
+    "Timestamp": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "UserId": {
+     "type": "string"
+    }
+   }
+  },
+  "data.FeedbackKey": {
+   "required": [
+    "FeedbackType",
+    "UserId",
+    "ItemId"
+   ],
+   "properties": {
+    "FeedbackType": {
+     "type": "string"
+    },
+    "ItemId": {
+     "type": "string"
+    },
+    "UserId": {
+     "type": "string"
+    }
+   }
+  },
+  "data.Item": {
+   "required": [
+    "ItemId",
+    "IsHidden",
+    "Categories",
+    "Timestamp",
+    "Labels",
+    "Comment"
+   ],
+   "properties": {
+    "Categories": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "Comment": {
+     "type": "string"
+    },
+    "IsHidden": {
+     "type": "boolean"
+    },
+    "ItemId": {
+     "type": "string"
+    },
+    "Labels": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "Timestamp": {
+     "type": "string",
+     "format": "date-time"
+    }
+   }
+  },
+  "data.ItemPatch": {
+   "required": [
+    "IsHidden",
+    "Categories",
+    "Timestamp",
+    "Labels",
+    "Comment"
+   ],
+   "properties": {
+    "Categories": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "Comment": {
+     "type": "string"
+    },
+    "IsHidden": {
+     "type": "boolean"
+    },
+    "Labels": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "Timestamp": {
+     "type": "string",
+     "format": "date-time"
+    }
+   }
+  },
+  "data.User": {
+   "required": [
+    "UserId",
+    "Labels",
+    "Subscribe",
+    "Comment"
+   ],
+   "properties": {
+    "Comment": {
+     "type": "string"
+    },
+    "Labels": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "Subscribe": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "UserId": {
+     "type": "string"
+    }
+   }
+  },
+  "data.UserPatch": {
+   "required": [
+    "Labels",
+    "Subscribe",
+    "Comment"
+   ],
+   "properties": {
+    "Comment": {
+     "type": "string"
+    },
+    "Labels": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "Subscribe": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "server.Feedback": {
+   "required": [
+    "ItemId",
+    "FeedbackType",
+    "UserId",
+    "Timestamp",
+    "Comment"
+   ],
+   "properties": {
+    "Comment": {
+     "type": "string"
+    },
+    "FeedbackType": {
+     "type": "string"
+    },
+    "ItemId": {
+     "type": "string"
+    },
+    "Timestamp": {
+     "type": "string"
+    },
+    "UserId": {
+     "type": "string"
+    }
+   }
+  },
+  "server.FeedbackIterator": {
+   "required": [
+    "Cursor",
+    "Feedback"
+   ],
+   "properties": {
+    "Cursor": {
+     "type": "string"
+    },
+    "Feedback": {
+     "type": "array",
+     "items": {
+      "$ref": "#/definitions/data.Feedback"
+     }
+    }
+   }
+  },
+  "server.HealthStatus": {
+   "required": [
+    "Ready",
+    "DataStoreError",
+    "CacheStoreError",
+    "DataStoreConnected",
+    "CacheStoreConnected"
+   ],
+   "properties": {
+    "CacheStoreConnected": {
+     "type": "boolean"
+    },
+    "CacheStoreError": {
+     "$ref": "#/definitions/error"
+    },
+    "DataStoreConnected": {
+     "type": "boolean"
+    },
+    "DataStoreError": {
+     "$ref": "#/definitions/error"
+    },
+    "Ready": {
+     "type": "boolean"
+    }
+   }
+  },
+  "server.ItemIterator": {
+   "required": [
+    "Cursor",
+    "Items"
+   ],
+   "properties": {
+    "Cursor": {
+     "type": "string"
+    },
+    "Items": {
+     "type": "array",
+     "items": {
+      "$ref": "#/definitions/data.Item"
+     }
+    }
+   }
+  },
+  "server.Measurement": {
+   "required": [
+    "Name",
+    "Timestamp",
+    "Value"
+   ],
+   "properties": {
+    "Name": {
+     "type": "string"
+    },
+    "Timestamp": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "Value": {
+     "type": "number",
+     "format": "float"
+    }
+   }
+  },
+  "server.Success": {
+   "required": [
+    "RowAffected"
+   ],
+   "properties": {
+    "RowAffected": {
+     "type": "integer",
+     "format": "int32"
+    }
+   }
+  },
+  "server.UserIterator": {
+   "required": [
+    "Cursor",
+    "Users"
+   ],
+   "properties": {
+    "Cursor": {
+     "type": "string"
+    },
+    "Users": {
+     "type": "array",
+     "items": {
+      "$ref": "#/definitions/data.User"
+     }
+    }
+   }
+  }
+ }
+}

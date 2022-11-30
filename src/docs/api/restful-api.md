@@ -15,40 +15,4 @@ By default, there is no authorization required for RESTful APIs. Authorization c
 curl -H "X-API-Key: *****"  http://127.0.0.1:8087/api/recommend/bob?n=10
 ```
 
-## Usage
-
-### Items APIs
-### Users APIs
-
-### Feedback APIs
-### Recommend APIs
-
-#### Get Recommend
-
-::: details
-
-```
-GET /recommend/{user-id}/{category}
-```
-
-Get recommend for a user.
-
-**Parameters**
-
-| Name | Description |
-|-|-|
-| user-id | |
-| category | |
-
-**Return**
-
-```json
-```
-
-**Example**
-
-```
-
-```
-
-:::
+@include(./apidocs.md)

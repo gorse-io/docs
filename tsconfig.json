@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "module": "ES2020",
+        "moduleResolution":"node"
+    },
+    "ts-node": {
+        "esm": true
+    }
+}
