@@ -10,6 +10,7 @@ export const enSidebar = sidebar({
     {
       text: 'Deploy',
       icon: 'start',
+      collapsible: true,
       children: [
         {
           text: 'Binary Deployment',
@@ -36,6 +37,7 @@ export const enSidebar = sidebar({
     {
       text: 'Concepts',
       icon: 'idea',
+      collapsible: true,
       children: [
         {
           text: 'Data Objects',
@@ -57,6 +59,7 @@ export const enSidebar = sidebar({
     {
       text: 'API',
       icon: 'api',
+      collapsible: true,
       children: [
         {
           text: 'RESTful API',
@@ -87,6 +90,21 @@ export const enSidebar = sidebar({
           text: 'Rust SDK',
           icon: 'rust',
           link: '/docs/api/rust-sdk',
+        },
+        {
+          text: 'PHP SDK',
+          icon: 'php',
+          link: '/docs/api/php-sdk',
+        },
+        {
+          text: 'Ruby SDK',
+          icon: 'ruby',
+          link: '/docs/api/ruby-sdk',
+        },
+        {
+          text: '.NET SDK',
+          icon: 'dot-net',
+          link: '/docs/api/dotnet-sdk',
         }
       ]
     },
