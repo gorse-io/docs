@@ -26,6 +26,8 @@ The `<cache_size>` comes from the configuration file:
 cache_size = 100
 ```
 
+:::
+
 ## Non-personalized Algorithms
 
 Non-personalized algorithms recommend the same content to all of users.
@@ -39,8 +41,6 @@ The latest items recommendation is equivalent to the following SQL:
 ```sql
 select item_id from items order by time_stamp desc limit <cache_size>;
 ```
-
-:::
 
 ### Popular Items
 
@@ -70,12 +70,14 @@ popular_window = "720h"
 
 ## Similarity Algorithms
 
-<!-- In some scenarios, users like specific types of items, for example, gamers like to solve puzzles or users of a video platform like to watch dancing girls. Based on the user's history and the similarity between items, the item-based similarity recommendation algorithm works as follows: 
-
-1. Calculate the similarity between items.
-2. Recommend items with maximal similarity to user's history. -->
+In some scenarios, users like specific types of items, for example, gamers like to solve puzzles or users of a video platform like to watch dancing girls.
 
 ### Item Similarity
+
+An item is similar to another item if their share more common users or labels than others. The cosine similarity is ideal to capture the similarity between two items. Since the importance of each users or labels are different, we use IDF to calculate the weight of each user or labels.
+
+- Label weight: 
+- User weight:
 
 <!-- 
 

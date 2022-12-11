@@ -163,5 +163,5 @@ sudo systemctl start gorse
 6. Check the health and logs of Gorse-in-one with:
 
 ```bash
-systemctl status clash
+systemctl status gorse
 ```
