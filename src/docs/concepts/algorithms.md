@@ -12,7 +12,10 @@ Math formulas are used to introduce complex algorithm, we define math symbols us
 | $n$ | `<cache_size>` |
 | $I$ | The set of items. |
 | $I_u$ | The set of favorite items by user $u$. |
+| $I_l$ | The set of items with label $l$. |
 | $U$ | The set of users. |
+| $L_u$ | The labels of user $u$. |
+| $L_i$ | The labels of item $i$. |
 | $\mathcal{N}_i$ | The neighbors of item $i$. |
 
 ::: tip
@@ -76,24 +79,43 @@ In some scenarios, users like specific types of items, for example, gamers like 
 
 An item is similar to another item if their share more common users or labels than others. The cosine similarity is ideal to capture the similarity between two items. Since the importance of each users or labels are different, we use IDF to calculate the weight of each user or labels.
 
-- Label weight: 
-- User weight:
+- **Label weight**: The label weight is defined as
 
-<!-- 
+$$
+w_l = -\log\left(\frac{|I_l|}{|I|}\right)
+$$
 
-- **Similarity:** Calculates similarity based on label overlap between items.
+If a label is used by more items, this user is more generic and has lower weight.
+
+- **User weight**: The user weight is defined as
+
+$$
+w_u = -\log\left(\frac{|I_u|}{|I|}\right)
+$$
+
+If a user have more favorite items, it means that this user have wider preference and he or she have lower weight. 
+
+Based on label weights and user weights, Gorse implements three similarity algorithm:
+
+- **Similar:** Calculates similarity based on label overlap between items
+
+$$
+s_{ij} = \frac{\sum_{l\in L_i \cap L_j}w_l}{\sqrt{\sum_{l\in L_i}w_l^2}\sqrt{\sum_{l\in L_j}w_l^2}}
+$$
+
 - **Related:** Calculates similarity based on user overlap between items.
 
 $$
-\frac{}{}
+s_{ij} = \frac{\sum_{u\in U_i \cap U_j}w_u}{\sqrt{\sum_{u\in U_i}w_u^2}\sqrt{\sum_{u\in U_j}w_u^2}}
 $$
 
-- **Automatic:** Prefer to use labels to calculate similarity, if there are no labels then use users to calculate similarity.
+- **Automatic:** Calculates similarity based on both label overlap and user overlap between items.
 
-It is recommended to choose `similar` or `auto` because item-based similarity recommender using `related` recommends similarly to collaborative filtering recommenders. The advantage of item-based similarity (labels-based) recommender is that it can quickly recommend a new item to users who are interested in such items based on the labels. Of course, this recommender requires accurate labels for the items, and invalid labels are counterproductive.
+$$
+s_{ij} = \frac{\sum_{l\in L_i \cap L_j}w_l + \sum_{u\in U_i \cap U_j}w_u}{\sqrt{\sum_{l\in L_i}w_l^2 + \sum_{u\in U_i}w_u^2}\sqrt{\sum_{l\in L_j}w_l^2 + \sum_{u\in U_j}w_u^2}}
+$$
 
-
-Gorse calculates item similarity in three modes, which can be set in the configuration file.
+For each item, top $n$ items with top similarity will be cached as neighbprs of this item. The algorithm for item similarity can be set in the configuration file.
 
 ```toml
 [recommend.item_neighbors]
@@ -101,11 +123,12 @@ Gorse calculates item similarity in three modes, which can be set in the configu
 # The type of neighbors for items. There are three types:
 #   similar: Neighbors are found by number of common labels.
 #   related: Neighbors are found by number of common users.
-#   auto: If a item have labels, neighbors are found by number of common labels.
-#         If this item have no labels, neighbors are found by number of common users.
+#   auto: Neighbors are found by number of common labels and users.
 # The default value is "auto".
 neighbor_type = "similar"
-``` -->
+```
+
+If items are attached with high quality labels, `similar` is the best choice. If items have no labels, use `related`. For other situation, consider `auto`.
 
 ### User Similarity
 <!-- 

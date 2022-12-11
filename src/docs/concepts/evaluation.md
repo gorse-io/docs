@@ -1,4 +1,7 @@
-# Performance vs Precision
+---
+icon: charts
+---
+# Evaluation
 
 In the most ideal situation, a recommender system should recommend to users the items they are most likely to like. However, since computation and storage resources are always limited, recommender systems often have to make tradeoffs between performance and accuracy. In this section, we describe how to configure the tradeoff between Gorse's computational resource usage, storage resource usage, and recommendation accuracy.
 

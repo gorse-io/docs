@@ -54,6 +54,11 @@ export const enSidebar = sidebar({
           icon: "process",
           link: '/docs/concepts/workflow',
         },
+        {
+          text: "Evaluation",
+          icon: "chart",
+          link: "/docs/concepts/evaluation",
+        },
       ]
     },
     {
