@@ -15,4 +15,17 @@ By default, there is no authorization required for RESTful APIs. Authorization c
 curl -H "X-API-Key: *****"  http://127.0.0.1:8087/api/recommend/bob?n=10
 ```
 
+::: tip
+
+The API key is defined in the configuration file:
+
+```toml
+[server]
+
+# Secret key for RESTful APIs (SSL required).
+api_key = ""
+```
+
+:::
+
 @include(./apidocs.md)

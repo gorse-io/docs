@@ -5,6 +5,27 @@ icon: zhinengsuanfa
 
 Gorse has implemented various types of recommendation algorithms, both non-personalized and personalized. These recommendation algorithms are building blocks compose the recommendation workflow.
 
+Math formulas are used to introduce complex algorithm, we define math symbols used in this section as follows:
+
+| Symbol | Meaning |
+|-|-|
+| $n$ | `<cache_size>` |
+| $I$ | The set of items. |
+| $I_u$ | The set of favorite items by user $u$. |
+| $U$ | The set of users. |
+| $\mathcal{N}_i$ | The neighbors of item $i$. |
+
+::: tip
+
+The `<cache_size>` comes from the configuration file:
+
+```toml
+[recommend]
+
+# The cache size for recommended/popular/latest items. The default value is 100.
+cache_size = 100
+```
+
 ## Non-personalized Algorithms
 
 Non-personalized algorithms recommend the same content to all of users.
@@ -19,17 +40,11 @@ The latest items recommendation is equivalent to the following SQL:
 select item_id from items order by time_stamp desc limit <cache_size>;
 ```
 
+:::
+
 ### Popular Items
 
-Many websites shows the recent popular items to users such as Twitter trending. In Gorse, the `popular_window` in the configuration file corresponds to the window of popular items, the following example is to recommend popular items within one year (a bit too long).
-
-```toml
-[recommend.popular]
-
-popular_window = "4320h"
-```
-
-The popular items recommendation is equivalent to the following SQL:
+Many websites shows the recent popular items to users such as Twitter trending. The popular items recommendation is equivalent to the following SQL:
 
 ```sql
 select item_id from (
@@ -37,8 +52,21 @@ select item_id from (
     where feedback_type in <positive_feedback_types> 
         and time_stamp >= NOW() - INTERVAL <popular_window> 
     group by item_id) t
-order by feedback_count desc;
+order by feedback_count desc limit <cache_size>;
 ```
+
+::: tip
+
+The `<popular_window> ` in the configuration file corresponds to the window of popular items.
+
+```toml
+[recommend.popular]
+
+# The time window of popular items. The default values is 4320h.
+popular_window = "720h"
+```
+
+:::
 
 ## Similarity Algorithms
 
@@ -107,14 +135,52 @@ There are lots of fancy recommendation algorithms these days and most of them ar
 
 ### Item Similarity based Recommendation
 
+For a user $u$ with favorite items $I_u$, if we know the similarity between any pair of items, The probability that a user $u$ likes an item $i$ is predicted by the sum of similarity between the item $i$ and favorite items.
+
+$$
+\hat{y}_{ui}=\sum_{j\in I_u}s_{ij}
+$$
+
+where $s_{ij}$ is the similarity between the item $i$ and the item $j$. For a user, the time complexity to search top recommended items in the full item set is $O(|I_u||I|)$. In practice, for most pairs of two items, their similarity is zero. Hence, we could search recommended items in neighbors of favorite items.
+
+1. Collect candidates from neighors of favorite items.
+
+$$
+C = \bigcup_{j\in I_u}\mathcal{N}_j
+$$
+
+2. For each item $i$ in $C$, calculate the prediction score by
+
+$$
+\hat{y}_{ui}=\sum_{j\in I_u}s_{ij}\mathbb{I}(i\in\mathcal{N}_j)
+$$
+
+the indicator $\mathbb{I}(i\in\mathcal{N}_j)$ means the similarity is sumed to the prediction score only if $i$ is in the neighbors of item $j$. Since Gorse only cache top $n$ neighbors and their similarity of each item, lots of similarity is missing in the cache. The time complexoty of the optimized algorithm is $O(|I_u|n)$.
+
 ### User Similarity based Recommendation
+
+The user similarity based recommendation is the same to the item similarity based recommendation:
+
+1. Collect candidates from favorite items of neighbors of user.
+
+$$
+C = \bigcup_{v\in\mathcal{N}_u}I_v
+$$
+
+2. For each item $i$ in $C$, calculate the prediction score by
+
+$$
+\hat{y}_{ui} = \sum_{v\in\mathcal{N}_u}s_{uv}\mathbb{I}(i\in I_v)
+$$
+
+the indicator $\mathbb{I}(i\in I_v)$ means the similarity is sumed to the prediction score only if $i$ is favored by user $v$. The time complexity is $O(|I_u|n)$ as well.
 
 ### Matrix Factorization
 
 In matrix factorization models, items and users are represented by vectors. The probability that a user $u$ likes an item $i$ is predicted by the dot product of two vectors.
 
 $$
-s_{ui}=\mathbf{p}_u^T \mathbf{q}_i
+y_{ui}=\mathbf{p}_u^T \mathbf{q}_i
 $$
 
 where $\mathbf{p}_u$ is the embedding vector of the user $u$, and $\mathbf{q}_i$ is the embedding vector of the item $i$. There are two training 
