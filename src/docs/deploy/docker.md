@@ -96,7 +96,7 @@ services:
       - mysql
 ```
 
-2. Create a configuration file `config.toml` in the same directory based on [config.toml.template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml.template).
+2. Create a configuration file `config.toml` in the same directory based on [the configurationn template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml).
 
 3. Start all services:
 
@@ -181,7 +181,7 @@ services:
       --cache-path /var/lib/gorse/master_cache.data
     volumes:
       # Mount the configuration file.
-      - ./config/config.toml.template:/etc/gorse/config.toml
+      - ./config/config.toml:/etc/gorse/config.toml
       # Mount log files in volume.
       - gorse_log:/var/log/gorse  
       # Mount cache files in volume.
@@ -305,7 +305,7 @@ services:
       --log-path /var/log/gorse/master.log 
       --cache-path /var/lib/gorse/master_cache.data
     volumes:
-      - ./config/config.toml.template:/etc/gorse/config.toml
+      - ./config/config.toml:/etc/gorse/config.toml
       - gorse_log:/var/log/gorse
       - master_data:/var/lib/gorse
     depends_on:
@@ -326,7 +326,7 @@ volumes:
   # clickhouse_data:
 ```
 
-2. Create a configuration file `config.toml` in the same directory based on [config.toml.template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml.template).
+2. Create a configuration file `config.toml` in the same directory based on [the configuration template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml).
 
 3. Start all services:
 

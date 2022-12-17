@@ -93,7 +93,7 @@ Expand-Archive gorse.zip -DestinationPath gorse
 
 :::
 
-3. Create a configuration file `config.toml` based on [config.toml.template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml.template).
+3. Create a configuration file `config.toml` based on [the configuration template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml).
 
 4. Run Gorse-in-one.
 

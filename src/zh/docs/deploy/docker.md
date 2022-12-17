@@ -94,7 +94,7 @@ services:
       - mysql
 ```
 
-1. 基于[config.toml.template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml.template)在同一目录下创建配置文件 `config.toml` 。
+1. 基于[配置文件模板](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml)在同一目录下创建配置文件 `config.toml` 。
 
 2. 启动所有服务：
 
@@ -179,7 +179,7 @@ services:
       --cache-path /var/lib/gorse/master_cache.data
     volumes:
       # Mount the configuration file.
-      - ./config/config.toml.template:/etc/gorse/config.toml
+      - ./config/config.toml:/etc/gorse/config.toml
       # Mount log files in volume.
       - gorse_log:/var/log/gorse
       # Mount cache files in volume.
@@ -303,7 +303,7 @@ services:
       --log-path /var/log/gorse/master.log
       --cache-path /var/lib/gorse/master_cache.data
     volumes:
-      - ./config/config.toml.template:/etc/gorse/config.toml
+      - ./config/config.toml:/etc/gorse/config.toml
       - gorse_log:/var/log/gorse
       - master_data:/var/lib/gorse
     depends_on:
@@ -324,7 +324,7 @@ volumes:
   # clickhouse_data:
 ```
 
-1. 基于[config.toml.template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml.template)在同一目录下创建配置文件 `config.toml` 。
+1. 基于[配置文件模板](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml)在同一目录下创建配置文件 `config.toml` 。
 
 2. 启动所有服务：
 

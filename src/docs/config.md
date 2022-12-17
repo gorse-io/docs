@@ -3,7 +3,7 @@ icon: config_s
 ---
 # Configuration
 
-These configuration items without default values must be filled. It's highly recommended to create a new config file based on [config.toml.template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml.template).
+These configuration items without default values must be filled. It's highly recommended to create a new config file based on [the configuration template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml).
 
 ## `database`
 
