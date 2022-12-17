@@ -42,7 +42,7 @@ For Gorse-in-one, the RESTful endpoint is http://127.0.0.1:8088.
 
 There is an example [docker-compose.yml](https://github.com/gorse-io/gorse/blob/release-0.4/docker-compose.yml) consists of a master node, a server node and a worker node, a Redis instance, and a MySQL instance.
 
-1. Download [docker-compose.yml](https://github.com/zhenghaoz/gorse/blob/release-0.4/docker-compose.yml) and the config file [config.toml](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml.template).
+1. Download [docker-compose.yml](https://github.com/zhenghaoz/gorse/blob/release-0.4/docker-compose.yml) and the config file [config.toml](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml).
 
 ```bash
 # Create a new directory

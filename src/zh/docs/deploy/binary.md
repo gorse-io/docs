@@ -95,7 +95,7 @@ Expand-Archive gorse.zip -DestinationPath gorse
 
 ::::
 
-1. 基于[config.toml.template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml.template) 创建配置文件 `config.toml`
+1. 基于[配置文件模板](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml) 创建配置文件 `config.toml`
 
 2. 运行Gorse-in-one
 
