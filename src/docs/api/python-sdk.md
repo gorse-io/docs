@@ -25,7 +25,7 @@ cd PyGorse
 pip install .
 ```
 
-## Example
+## Usage
 
 The default client `Gorse` is the blocking client.
 

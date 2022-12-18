@@ -15,7 +15,7 @@ The Go SDK is under development, APIs might be changed in later versions. Pull r
 go get github.com/zhenghaoz/gorse/client@master
 ```
 
-## Example
+## Usage
 
 ```go
 import "github.com/zhenghaoz/gorse/client"

@@ -17,7 +17,7 @@ The Rust SDK is under development, APIs might be changed in later versions. Pull
 gorse_rs = "0.4.1"
 ```
 
-## Example
+## Usage
 
 The Rust SDK implements two client: the async client `gorse_rs::Gorse` and the blocking client `gorse_rs::blocking::Gorse`.
 
