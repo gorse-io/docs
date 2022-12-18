@@ -48,6 +48,17 @@ In many cases, items in the history are not available for recommendation to othe
 
 In Gorse, items can be taken down by setting `IsHidden` to `true` for the item via the RESTful API. The recommendation algorithm can use the item during training, but the item will no longer be recommended to other users. Setting `IsHidden` to `true` takes effect immediately, but setting it to `false` resumes item recommendations after the `refresh_recommend_period` has expired.
 
+### Time to Live
+
+Users tend to favor new content other than old. There is a option `item_ttl` in the configuration to hide too old items from recommender system. Stale items will never be recommended to users or be the training data to generate personalized recommendation.
+
+```toml
+[recommend.data_source]
+
+# The time-to-live (days) of items, 0 means disabled. The default value is 0.
+item_ttl = 0
+```
+
 ### Multi-Categories Recommendation
 
 Multi-categories recommendations are common, take YouTube for example, where multiple recommendation categories are provided on the homepage.
@@ -73,7 +84,7 @@ For example, for a live badminton match, you can set its `Categories` to "Live" 
 
 ::: warning
 
-Multi-column recommendations will consume more cache storage space.
+Multi-categories recommendations will consume more cache storage space.
 
 :::
 
@@ -122,6 +133,17 @@ positive_feedback_types = ["wish_list", "cart"]
 
 # Read the game introduction page
 read_feedback_types = ["read"]
+```
+
+### Time to Live
+
+Users' preference change over time. The `positive_feedback_ttl` option prevents recommender system generate recommendation based on stale feedbacks.
+
+```toml
+[recommend.data_source]
+
+# The time-to-live (days) of positive feedback, 0 means disabled. The default value is 0.
+positive_feedback_ttl = 0
 ```
 
 ### Insert Positive Feedback

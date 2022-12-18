@@ -179,6 +179,53 @@ let feedback = vec![
 client.insert_feedback(&feedback).await;
 ```
 
+@tab Ruby
+
+```ruby
+require 'gorse'
+
+client = Gorse.new('http://127.0.0.1:8088', 'api_key')
+
+client.insert_feedback([
+    Feedback.new("star", "bob", "vuejs:vue", "2022-02-24"),
+    Feedback.new("star", "bob", "d3:d3", "2022-02-25"),
+    Feedback.new("star", "bob", "dogfalo:materialize", "2022-02-26"),
+    Feedback.new("star", "bob", "mozilla:pdf.js", "2022-02-27"),
+    Feedback.new("star", "bob", "moment:moment", "2022-02-28")
+])
+```
+
+@tab PHP
+
+```php
+$client = new Gorse("http://127.0.0.1:8088/", "api_key");
+
+$rowsAffected = $client->insertFeedback([
+    new Feedback("star", "bob", "vuejs:vue", "2022-02-24"),
+    new Feedback("star", "bob", "d3:d3", "2022-02-25"),
+    new Feedback("star", "bob", "dogfalo:materialize", "2022-02-26"),
+    new Feedback("star", "bob", "mozilla:pdf.js", "2022-02-27"),
+    new Feedback("star", "bob", "moment:moment", "2022-02-28")
+]);
+```
+
+@tab .NET
+
+```cs
+using Gorse.NET;
+
+var client = new Gorse("http://127.0.0.1:8087", "api_key");
+
+client.InsertFeedback(new Feedback[]
+{
+    new Feedback{FeedbackType="star", UserId="bob", ItemId="vuejs:vue", Timestamp="2022-02-24"},
+    new Feedback{FeedbackType="star", UserId="bob", ItemId="d3:d3", Timestamp="2022-02-25"},
+    new Feedback{FeedbackType="star", UserId="bob", ItemId="dogfalo:materialize", Timestamp="2022-02-26"},
+    new Feedback{FeedbackType="star", UserId="bob", ItemId="mozilla:pdf.js", Timestamp="2022-02-27"},
+    new Feedback{FeedbackType="star", UserId="bob", ItemId="moment:moment", Timestamp="2022-02-28"},
+});
+```
+
 :::
 
 Then, fetch 10 recommended items from Gorse. We can find that frontend-related repositories are recommended for Bob.
@@ -219,6 +266,24 @@ client.getRecommend("bob");
 
 ```rust
 client.get_recommend("bob").await;
+```
+
+@tab Ruby
+
+```ruby
+client.get_recommend('10')
+```
+
+@tab PHP
+
+```php
+$client->getRecommend('10');
+```
+
+@tab .NET
+
+```cs
+client.GetRecommend("10");
 ```
 
 :::

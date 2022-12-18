@@ -1,4 +1,7 @@
-# Performance vs Precision
+---
+icon: charts
+---
+# Evaluation
 
 In the most ideal situation, a recommender system should recommend to users the items they are most likely to like. However, since computation and storage resources are always limited, recommender systems often have to make tradeoffs between performance and accuracy. In this section, we describe how to configure the tradeoff between Gorse's computational resource usage, storage resource usage, and recommendation accuracy.
 
@@ -132,9 +135,3 @@ The advantages and disadvantages of using vector indexing for collaborative filt
 The HNSW index recall of collaborative filtering corresponds to the "Matching Index Recall" in the system status of the dashboard overview page, if the value is low then consider turning off the index query.
 
 <center><img width="420px" src="../img/ch3/cf_index_recall.jpeg"></center>
-
-[^1]: Bergstra, James, and Yoshua Bengio. "Random search for hyper-parameter optimization." Journal of machine learning research 13.2 (2012).
-
-[^2]: Auvolat, Alex, et al. "Clustering is efficient for approximate maximum inner product search." arXiv preprint arXiv:1507.05910 (2015).
-
-[^3]: Malkov, Yu A., and Dmitry A. Yashunin. "Efficient and robust approximate nearest neighbor search using hierarchical navigable small world graphs." IEEE transactions on pattern analysis and machine intelligence 42.4 (2018): 824-836.

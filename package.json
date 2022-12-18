@@ -2,7 +2,7 @@
   "name": "gorse",
   "version": "0.4.0",
   "description": "A project of vuepress-theme-hope",
-  "license": "Apache 2",
+  "license": "Apache-2.0",
   "type": "module",
   "scripts": {
     "docs:build": "vuepress build src",

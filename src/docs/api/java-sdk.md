@@ -51,7 +51,7 @@ libraryDependencies += "io.gorse" % "gorse-client" % "0.4.0"
 
 :::
 
-## Example
+## Usage
 
 ```java
 import io.gorse.gorse4j.*;
