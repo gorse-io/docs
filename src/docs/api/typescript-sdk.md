@@ -4,7 +4,9 @@ icon: typescript
 # TypeScript SDK
 
 ::: warning
+
 The TypeScript SDK is under development, APIs might be changed in later versions. Pull requests are welcomed: https://github.com/gorse-io/gorse-js
+
 :::
 
 [![npm](https://img.shields.io/npm/v/gorsejs)](https://www.npmjs.com/package/gorsejs)
