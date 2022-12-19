@@ -4,7 +4,9 @@ icon: go
 # Go SDK
 
 ::: warning
+
 The Go SDK is under development, APIs might be changed in later versions. Pull requests are welcomed: https://github.com/gorse-io/gorse/tree/master/client
+
 :::
 
 [![GoDoc](https://godoc.org/github.com/zhenghaoz/gorse?status.svg)](https://pkg.go.dev/github.com/zhenghaoz/gorse/client)

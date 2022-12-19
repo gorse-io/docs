@@ -65,52 +65,17 @@ export const enSidebar = sidebar({
       text: 'API',
       icon: 'api',
       collapsible: true,
+      prefix: '/docs/api/',
       children: [
-        {
-          text: 'RESTful API',
-          icon: 'http',
-          link: '/docs/api/restful-api',
-        },
-        {
-          text: 'Go SDK',
-          icon: 'go',
-          link: '/docs/api/go-sdk',
-        },
-        {
-          text: 'Python SDK',
-          icon: 'python',
-          link: '/docs/api/python-sdk',
-        },
-        {
-          text: 'TypeScript SDK',
-          icon: 'typescript',
-          link: '/docs/api/typescript-sdk',
-        },
-        {
-          text: 'Java SDK',
-          icon: 'java',
-          link: '/docs/api/java-sdk',
-        },
-        {
-          text: 'Rust SDK',
-          icon: 'rust',
-          link: '/docs/api/rust-sdk',
-        },
-        {
-          text: 'PHP SDK',
-          icon: 'php',
-          link: '/docs/api/php-sdk',
-        },
-        {
-          text: 'Ruby SDK',
-          icon: 'ruby',
-          link: '/docs/api/ruby-sdk',
-        },
-        {
-          text: '.NET SDK',
-          icon: 'dot-net',
-          link: '/docs/api/dotnet-sdk',
-        }
+        'restful-api',
+        'go-sdk',
+        'python-sdk',
+        'typescript-sdk',
+        'java-sdk',
+        'rust-sdk',
+        'php-sdk',
+        'ruby-sdk',
+        'dotnet-sdk'
       ]
     },
     {

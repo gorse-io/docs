@@ -14,8 +14,10 @@ Math formulas are used to introduce complex algorithm, we define math symbols us
 | $I_u$ | The set of favorite items by user $u$. |
 | $I_l$ | The set of items with label $l$. |
 | $U$ | The set of users. |
+| $U_l$ | The set of users with label $l$. |
 | $L_u$ | The labels of user $u$. |
 | $L_i$ | The labels of item $i$. |
+| $\mathcal{N}_u$ | The neighbors pf user $u$. |
 | $\mathcal{N}_i$ | The neighbors of item $i$. |
 
 ::: tip
@@ -131,28 +133,60 @@ neighbor_type = "similar"
 If items are attached with high quality labels, `similar` is the best choice. If items have no labels, use `related`. For other situation, consider `auto`.
 
 ### User Similarity
-<!-- 
-There are also common preferences among similar users. For example, students majoring in computer science usually buy books about computer science, and elders like to buy health care products.
 
-Gorse calculates the similarity between users in three modes, which can be set in the configuration file.
+The computation of user similarity is similar to the computation of item similarity. First, we use IDF to calculate the weight of each item or labels.
 
-- **Similarity:** Calculates similarity based on label overlap between users.
-- **Related:** Calculates similarity based on historical item overlap between users.
-- **Automatic:** Prioritizes the use of user labels, if there are no labels then the similarity is calculated using historical items.
+- **Label weight**: The label weight is defined as
+
+$$
+w_l = -\log\left(\frac{|U_l|}{|U|}\right)
+$$
+
+If a label is used by more users, this label is more generic and has lower weight.
+
+- **Item weight**: The item weight is defined as
+
+$$
+w_i = -\log\left(\frac{|U_i|}{|U|}\right)
+$$
+
+If an item have more users, it means that this item is popular but have lower weight to characterize users' preferences. 
+
+
+Based on label weights and user weights, Gorse implements three similarity algorithm:
+
+- **Similar:** Calculates similarity based on label overlap between items
+
+$$
+s_{ij} = \frac{\sum_{l\in L_i \cap L_j}w_l}{\sqrt{\sum_{l\in L_i}w_l^2}\sqrt{\sum_{l\in L_j}w_l^2}}
+$$
+
+- **Related:** Calculates similarity based on user overlap between items.
+
+$$
+s_{ij} = \frac{\sum_{u\in U_i \cap U_j}w_u}{\sqrt{\sum_{u\in U_i}w_u^2}\sqrt{\sum_{u\in U_j}w_u^2}}
+$$
+
+- **Automatic:** Calculates similarity based on both label overlap and user overlap between items.
+
+$$
+s_{ij} = \frac{\sum_{l\in L_i \cap L_j}w_l + \sum_{u\in U_i \cap U_j}w_u}{\sqrt{\sum_{l\in L_i}w_l^2 + \sum_{u\in U_i}w_u^2}\sqrt{\sum_{l\in L_j}w_l^2 + \sum_{u\in U_j}w_u^2}}
+$$
+
+For each item, top $n$ items with top similarity will be cached as neighbprs of this item. The algorithm for item similarity can be set in the configuration file.
 
 ```toml
 [recommend.user_neighbors]
 
 # The type of neighbors for users. There are three types:
 #   similar: Neighbors are found by number of common labels.
-#   related: Neighbors are found by number of common liked items.
-#   auto: If a user have labels, neighbors are found by number of common labels.
-#         If this user have no labels, neighbors are found by number of common liked items.
+#   related: Neighbors are found by number of common favorite items.
+#   auto: Neighbors are found by number of common labels and favorite items.
 # The default value is "auto".
 neighbor_type = "similar"
 ```
 
-It is recommended to choose `similar` or `auto` because user-based Similarity Recommender using `related` is similar to collaborative filtering recommender. The recommender is friendly to new users. With user labels, recommendations can be generated based on similar users' preferences even if the user does not have any history. -->
+It is recommended to choose `similar` or `auto` because user-based Similarity Recommender using `related` is similar to collaborative filtering recommender. The recommender is friendly to new users. With user labels, recommendations can be generated based on similar users' preferences even if the user does not have any history.
 
 ## Personalized Algorithms
 

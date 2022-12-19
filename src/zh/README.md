@@ -7,35 +7,35 @@ heroText: Gorse
 tagline: 一个使用Go语言开发的开源推荐系统。
 actions:
   - text: 文档
-  link: "/zh/docs/"
-  type: primary
+    link: "/zh/docs/"
+    type: primary
   - text: 在线示例
-  link: "https://gitrec.gorse.io"
+    link: "https://gitrec.gorse.io"
 features:
   - title: 多源
-  icon: si-glyph-multifunction-knife
-  details: 从热门、最新、基于用户、基于项目和协作过滤中推荐物品。
+    icon: si-glyph-multifunction-knife
+    details: 从热门、最新、基于用户、基于项目和协作过滤中推荐物品。
   - title: 自动机器学习
-  icon: brightness-auto
-  details: 在后台自动搜索最佳的推荐模型。
+    icon: brightness-auto
+    details: 在后台自动搜索最佳的推荐模型。
   - title: 分布式预测
-  icon: cluster
-  details: 在单节点训练后的推荐阶段支持水平伸缩。
+    icon: cluster
+    details: 在单节点训练后的推荐阶段支持水平伸缩。
   - title: RESTful APIs
-  icon: http
-  details: 为数据CRUD和推荐请求暴露RESTful API。
+    icon: http
+    details: 为数据CRUD和推荐请求暴露RESTful API。
   - title: 多数据源支持
-  icon: database
-  details: 支持使用Redis、MySQL、Postgres、MongoDB和ClickHouse作为后端存储。
+    icon: database
+    details: 支持使用Redis、MySQL、Postgres、MongoDB和ClickHouse作为后端存储。
   - title: 在线评估
-  icon: chart
-  details: 根据最近插入的反馈分析在线推荐的效果。
+    icon: chart
+    details: 根据最近插入的反馈分析在线推荐的效果。
   - title: 仪表盘
-  icon: dashboard
-  details: 提供数据管理、系统监控、集群状态检查的GUI界面。
+    icon: dashboard
+    details: 提供数据管理、系统监控、集群状态检查的GUI界面。
   - title: 开源
-  icon: open-source-fill
-  details: 代码库是在Apache 2许可下发布的、由社区驱动的。
+    icon: open-source-fill
+    details: 代码库是在Apache 2许可下发布的、由社区驱动的。
 ---
 
 Gorse是一个用Go语言编写的开源推荐系统。Gorse的目标是成为一个通用的开源推荐系统，可以很容易地被引入到各种各样的在线服务中。通过将物品、用户和交互数据导入到Gorse中，系统将自动训练模型，为每个用户生成推荐。

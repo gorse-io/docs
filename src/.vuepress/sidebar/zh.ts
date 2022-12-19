@@ -31,27 +31,18 @@ export const zhSidebar = sidebar({
     {
       text: '接口文档',
       icon: 'api',
+      prefix: '/zh/docs/api/',
+      collapsible: true,
       children: [
-        // {
-        //   text: 'RESTful API',
-        //   icon: 'http',
-        //   link: '/docs/api/restful-api',
-        // },
-        {
-          text: 'Go 客户端',
-          icon: 'go',
-          link: '/zh/docs/api/go-sdk',
-        },
-        // {
-        //   text: 'Python SDK',
-        //   icon: 'python',
-        //   link: '/docs/api/python-sdk',
-        // },
-        // {
-        //   text: 'TypeScript SDK',
-        //   icon: 'typescript',
-        //   link: '/docs/api/typescript-sdk',
-        // }
+        'restful-api',
+        'go-sdk',
+        'python-sdk',
+        'typescript-sdk',
+        'java-sdk',
+        'rust-sdk',
+        'php-sdk',
+        'ruby-sdk',
+        'dotnet-sdk'
       ]
     },
     {
