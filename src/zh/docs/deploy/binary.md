@@ -4,17 +4,17 @@ icon: console
 
 # 二进制部署
 
-当单节点部署时，可以使用 gorse-in-one 这个独立的二进制文件。
+单节点部署时，可以使用 gorse-in-one 这个独立的二进制文件。
 
 ::: warning
 
-对于多节点场景，不推荐使用二进制部署。 
+对于多节点场景，不推荐二进制部署。
 
-:::
+::::
 
 ## 前提条件
 
-Gorse依赖于以下软件：
+Gorse 依赖于以下软件：
 
 - 缓存存储数据库， *MySQL* 、 *PostgreSQL* 、 *MongoDB*或*Redis*之一。
 - 数据存储数据库， *MySQL* 、 *PostgreSQL* 、 *ClickHouse*或*MongoDB*之一。
@@ -29,9 +29,9 @@ PostgresSQL | 10.0 |
 ClickHouse | 21.10 |
 MongoDB | 4.0 |
 
-## 运行Gorse-in-one
+## 运行gorse-in-one
 
-1. 从 GitHub Release 下载 Gorse-in-one。
+1. 从 GitHub Release 下载 gorse-in-one。
 
 ::: code-tabs#download
 
@@ -67,7 +67,7 @@ Invoke-WebRequest https://github.com/gorse-io/gorse/releases/latest/download/gor
 
 ::::
 
-1. 运行Gorse-in-one
+1. 安装 gorse-in-one
 
 ::: code-tabs#download
 
@@ -93,35 +93,35 @@ sudo cp gorse/gorse-in-one /usr/local/bin/gorse
 Expand-Archive gorse.zip -DestinationPath gorse
 ```
 
-::::
+:::
 
 1. 基于[配置文件模板](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml) 创建配置文件 `config.toml`
 
-2. 运行Gorse-in-one
+2. 运行gorse-in-one
 
 ```
 gorse -c config.toml
 ```
 
-### Gorse-in-one的参数
+### Gorse-in-one 的参数
 
-这是Gorse-in-one的命令行参数：
+这是Gorse-in-one的命令行参数如下：
 
-| | 标志 | 默认值 | 描述
-| --- | --- | --- | ---
-| `-c` | `-c,--config` |  | 配置文件路径。
-| | `--debug` |  | 调试日志模式。
-| `-h` | `--help` |  | gorse-in-one的帮助。
-| | `--log-path` |  | 日志文件路径。
-| | `--master-cache-path` | `master_cache.data` | 主节点缓存路径。
-| | `--playground` |  | playground模式。
-| `-v` | `--version` |  | gorse版本。
-| | `--worker-cache-path` | `worker_cache.data` | 工作节点缓存路径。
-| | `--worker-jobs` | `1` | 工作节点工作作业。
+<fonticon icon="rightarrow"></fonticon> | 标志 | 默认值 | 描述
+--- | --- | --- | ---
+`-c` | `-c,--config` |  | 配置文件路径
+ | `--debug` |  | 调试日志模式
+`-h` | `--help` |  | 显示帮助信息
+ | `--log-path` |  | 日志文件路径
+ | `--master-cache-path` | `master_cache.data` | 主节点缓存路径
+ | `--playground` |  | playground模式
+`-v` | `--version` |  | 显示版本信息
+ | `--worker-cache-path` | `worker_cache.data` | 工作节点缓存路径
+ | `--worker-jobs` | `1` | 工作节点工作线程数
 
-## 设置systemd
+## 配置 systemd
 
-1. 将 Gorse-in-one 二进制文件复制到`/usr/local/bin`并将配置文件复制到`/etc/gorse` ：
+1. 将 gorse-in-one 二进制文件复制到`/usr/local/bin`并将配置文件复制到`/etc/gorse` ：
 
 ```bash
 sudo cp ./gorse-in-one /usr/local/bin/gorse
@@ -150,20 +150,20 @@ WantedBy=multi-user.target
 sudo systemctl daemon-reload
 ```
 
-1. 在系统启动的同时启动Gorse-in-one：
+1. 在系统启动的同时启动 gorse-in-one：
 
 ```bash
 sudo systemctl enable gorse
 ```
 
-1. 立即启动 Gorse-in-one：
+1. 立即启动 gorse-in-one：
 
 ```bash
 sudo systemctl start gorse
 ```
 
-1. 检查 Gorse-in-one 的运行状态和日志：
+1. 检查 gorse-in-one 的运行状态和日志：
 
 ```bash
-systemctl status clash
+systemctl status gorse
 ```
