@@ -31,13 +31,13 @@ curl -fsSL https://gorse.io/playground | bash
 docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
 ```
 
-:::
+::::
 
 :: tips
 
 Gorse 的 RESTful API 入口是 http://127.0.0.1:8088。
 
-:::
+::::
 
 ### 选项 2：通过 Docker Compose 搭建 Gorse 集群
 
@@ -72,7 +72,7 @@ Creating gorse_server_1 ... done
 Creating gorse_redis_1  ... done
 ```
 
-:::
+::::
 
 1. 下载SQL文件[github.sql](https://cdn.gorse.io/example/github.sql)并导入到MySQL实例中。该数据集由 GitHub 用户、GitHub 仓库以及用户与仓库之间的交互组成。
 
@@ -86,7 +86,7 @@ mysql -h 127.0.0.1 -u gorse -pgorse_pass gorse < github.sql
 
 在这个数据集中，用户和仓库之间存在三种交互（在 Gorse 中称为“反馈”）。
 
-Feedback Type | Description
+反馈类型 | 描述
 --- | ---
 star | 用户在 GitHub 中为仓库点赞
 read | 用户阅读了[GitRec](https://gitrec.gorse.io/)推荐的仓库
@@ -118,13 +118,13 @@ Restarting gorse_server_1 ... done
 Restarting gorse_worker_1 ... done
 ```
 
-:::
+::::
 
 ## 获取推荐
 
 在插入用户反馈后，Gorse 自动为用户生成推荐。
 
-Open [http://127.0.0.1:8088](http://127.0.0.1:8088) in browser and the dashboard summarizes all status and data in Gorse.
+在浏览器中打开[http://127.0.0.1:8088](http://127.0.0.1:8088) ，仪表盘汇总了 Gorse 中的所有状态和数据。
 
 ![](../img/dashboard-overview.png)
 
@@ -158,7 +158,7 @@ curl -X POST http://127.0.0.1:8087/api/feedback \
 }
 ```
 
-:::
+::::
 
 然后，从 Gorse 获取 10 个推荐项。我们可以发现 Gorse 为 Bob 推荐了前端相关的仓库。
 
