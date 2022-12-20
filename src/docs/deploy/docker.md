@@ -347,7 +347,7 @@ Command line flags of the master node:
 | | `--cache-path` | `worker_cache.data` | Cache file path. |
 | `-c` | `--config` | | Configuration file path. |
 | | `--debug` | | Debug log mode. |
-| `-h` | `--help` | Help for gorse-master. |
+| `-h` | `--help` | | Help for gorse-master. |
 | | `--log-path` | | Log file path. |
 | `-v` | `--version` | | Gorse version. |
 
