@@ -9,15 +9,19 @@ icon: docker
 Docker镜像 | 版本 | 镜像大小 | 拉取次数
 --- | --- | --- | ---
 [gorse-master](https://hub.docker.com/repository/docker/zhenghaoz/gorse-master) | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-master/latest) | ![金雀花大师](https://img.shields.io/docker/image-size/zhenghaoz/gorse-master) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-master)
-gorse-server | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-server/latest) | ![金雀服务器](https://img.shields.io/docker/image-size/zhenghaoz/gorse-server) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-server)
+[gorse-server](https://hub.docker.com/repository/docker/zhenghaoz/gorse-server) | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-server/latest) | ![金雀服务器](https://img.shields.io/docker/image-size/zhenghaoz/gorse-server) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-server)
 [gorse-worker](https://hub.docker.com/repository/docker/zhenghaoz/gorse-worker) | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-worker/latest) | ![金雀花工](https://img.shields.io/docker/image-size/zhenghaoz/gorse-worker) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-worker)
 [gorse-in-one](https://hub.docker.com/repository/docker/zhenghaoz/gorse-in-one) | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-in-one/latest) | ![金雀花](https://img.shields.io/docker/image-size/zhenghaoz/gorse-in-one) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-in-one)
 
-::: tips 这些带有`nightly`标签的镜像是从 master 分支构建的。在生产中应使用指定版本的标签。 :::
+::: tip
+
+这些带有`nightly`标签的镜像是从 master 分支构建的。生产中应当使用指定版本的标签。
+
+::::
 
 ## 在Docker上部署多合一节点
 
-当单节点部署时，可以使用 gorse-in-one 的 Docker 镜像。在`docker-compose.yaml`中有一个 Gorse-in-one 的示例。
+单节点部署时，可以使用 gorse-in-one 的 Docker 镜像。单节点部署的`docker-compose.yaml`示例如下：
 
 ```yaml
 version: "3"
@@ -45,7 +49,7 @@ services:
       - mysql
 ```
 
-阅读[二进制部署](binary.md#flags-of-gorse-in-one)以获取有关 gorse-in-one 命令行标志的详细信息。
+阅读[二进制部署](binary.md#flags-of-gorse-in-one)以获取有关 gorse-in-one 命令行参数的详细信息。
 
 ::: details 完整示例
 
@@ -106,7 +110,7 @@ docker-compose up -d
 
 ## Docker 上的 Gorse 集群
 
-Gorse 工作节点和服务节点具有水平可扩展性。增加服务节点的数量以提高在线推荐吞吐量，同时增加工作节点的数量以提高离线推荐吞吐量。
+Gorse 工作节点和服务节点具有水平可扩展性，增加服务节点的数量可以提高在线推荐吞吐量，增加工作节点的数量可以提高离线推荐吞吐量。
 
 ```mermaid
 flowchart RL
@@ -332,46 +336,46 @@ volumes:
 docker-compose up -d
 ```
 
-::::
+:::
 
 ### 命令行参数
 
 主节点的命令行参数：
 
- | 参数 | 默认值 | 描述
+<fonticon icon="rightarrow"></fonticon> | 参数 | 默认值 | 描述
 --- | --- | --- | ---
- | `--cache-path` | `worker_cache.data` | 缓存文件路径。
-`-c` | `--config` |  | 配置文件路径。
- | `--debug` |  | 调试日志模式。
-`-h` | `--help` | Gorse主节点的帮助。 |
- | `--log-path` |  | 日志文件路径。
-`-v` | `--version` |  | Gorse版本。
+ | `--cache-path` | `worker_cache.data` | 缓存文件路径
+`-c` | `--config` |  | 配置文件路径
+ | `--debug` |  | 开启DEBUG日志模式
+`-h` | `--help` |  | 显示帮助信息
+ | `--log-path` |  | 日志文件路径
+`-v` | `--version` |  | 显示版本信息
 
 服务节点的命令行参数：
 
- | 参数 | 默认值 | 描述
+<fonticon icon="rightarrow"></fonticon> | 参数 | 默认值 | 描述
 --- | --- | --- | ---
  | `--cache-path` | `worker_cache.data` | 缓存文件路径
  | `--debug` |  | 开启DEBUG日志模式
-`-h` | `--help` |  | 帮助信息
- | `--http-host` | `127.0.0.1` | RESTful API 和 Prometheus<br>度量所在主机
+`-h` | `--help` |  | 显示帮助信息
+ | `--http-host` | `127.0.0.1` | RESTful API 和 Prometheus<br>度量所在IP地址
  | `--http-port` | `8087` | RESTful API 和 Prometheus<br>度量所在端口
  | `--log-path` |  | 日志文件路径
  | `--master-host` | `127.0.0.1` | 主节点的IP地址
  | `--master-port` | `8086` | 主节点的端口
-`-v` | `--version` |  | Gorse版本
+`-v` | `--version` |  | 显示版本信息
 
 工作节点的命令行参数：
 
- | 参数 | 默认值 | 描述
+<fonticon icon="rightarrow"></fonticon> | 参数 | 默认值 | 描述
 --- | --- | --- | ---
  | `--cache-path` | `worker_cache.data` | 缓存文件路径
  | `--debug` |  | 开启DEBUG日志模式
-`-h` | `--help` |  | 帮助信息
- | `--http-host` | `127.0.0.1` | Prometheus metrics HTTP接口IP地址。
+`-h` | `--help` |  | 显示帮助信息
+ | `--http-host` | `127.0.0.1` | Prometheus metrics HTTP接口IP地址
  | `--http-port` | `8089` | Prometheus metrics HTTP接口端口。
 `-j` | `--jobs` | `1` | 工作线程数量
  | `--log-path` |  | 日志文件路径
  | `--master-host` | `127.0.0.1` | 主节点的IP地址
  | `--master-port` | `8086` | 主节点的端口
-`-v` | `--version` |  | Gorse版本
+`-v` | `--version` |  | 显示版本信息
