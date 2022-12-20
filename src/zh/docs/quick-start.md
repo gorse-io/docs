@@ -6,16 +6,16 @@ icon: launch
 
 本指南将引导您基于[GitRec](https://gitrec.gorse.io/)的数据集以最快的速度为 GitHub 仓库搭建一个推荐系统。在开始前，请确保你已经安装了以下软件：
 
-- [Docker](https://docs.docker.com/get-docker/), nodes will run in containers.
-- [Docker Compose](https://docs.docker.com/compose/install/), nodes will be orchestrated by Docker Compose.
+- [Docker](https://docs.docker.com/get-docker/) ，Gorse 的节点将运行在容器中。
+- [Docker Compose](https://docs.docker.com/compose/install/) ，Gorse 的节点由 Docker Compose 编排。
 
 ## 搭建 Gorse
 
-Gorse supports to be single node or multiple nodes. This section demonstrates how to setup a minimal usable Gorse single node via playground and a multiple nodes cluster via Docker Compose.
+Gorse 支持单节点和多节点部署。本节演示如何通过 playground 搭建最小可用的 Gorse 单节点，以及如何通过 Docker Compose 搭建多节点集群。
 
-### Option 1: Setup Gorse-in-one node via Playground
+### 选项 1：通过 Playground 搭建 Gorse-in-one 节点
 
-Use the following command to setup a Gorse all-in-one node.
+使用以下命令搭建 Gorse-in-one 节点。
 
 ::: code-tabs#setup
 
@@ -39,7 +39,7 @@ Gorse 的 RESTful API 入口是 http://127.0.0.1:8088。
 
 :::
 
-### Option 2: Setup Gorse Cluster via Docker Compose
+### 选项 2：通过 Docker Compose 搭建 Gorse 集群
 
 示例[docker-compose.yml](https://github.com/gorse-io/gorse/blob/release-0.4/docker-compose.yml)由一个主节点、一个服务节点和一个工作节点、一个 Redis 实例和一个 MySQL 实例组成。
 
@@ -55,7 +55,7 @@ wget https://raw.githubusercontent.com/zhenghaoz/gorse/release-0.4/docker-compos
 wget https://raw.githubusercontent.com/zhenghaoz/gorse/release-0.4/config.toml
 ```
 
-1. Setup the Gorse cluster using Docker Compose.
+1. 使用 Docker Compose 搭建 Gorse 集群。
 
 ```bash
 docker-compose up -d
@@ -74,7 +74,7 @@ Creating gorse_redis_1  ... done
 
 :::
 
-1. Download the SQL file [github.sql](https://cdn.gorse.io/example/github.sql) and import to the MySQL instance. This dataset consists of GitHub users, GitHub repositories and interactions between users and repositories.
+1. 下载SQL文件[github.sql](https://cdn.gorse.io/example/github.sql)并导入到MySQL实例中。该数据集由 GitHub 用户、GitHub 仓库以及用户与仓库之间的交互组成。
 
 ```bash
 # Download sample data.
@@ -84,7 +84,7 @@ wget https://cdn.gorse.io/example/github.sql
 mysql -h 127.0.0.1 -u gorse -pgorse_pass gorse < github.sql
 ```
 
-There are three kinds of interactions (called "feedbacks" in Gorse) between users and repositories in this dataset.
+在这个数据集中，用户和仓库之间存在三种交互（在 Gorse 中称为“反馈”）。
 
 Feedback Type | Description
 --- | ---
