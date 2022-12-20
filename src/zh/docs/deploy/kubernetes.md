@@ -8,19 +8,19 @@ icon: kubernetes
 
 ::: warning
 
-The Helm charts is under development, Parameters and default values might be changed in later versions. Pull requests are welcomed: https://github.com/gorse-io/charts/tree/main/charts/gorse
+Helm chart正在开发中，参数和默认值可能会在以后的版本中更改。欢迎贡献代码：https://github.com/gorse-io/charts/tree/main/charts/gorse
 
 :::
 
-## Prerequisites
+## 前提条件
 
 - Kubernetes 1.19+
 - Helm 3.2.0+
-- PV provisioner support in the underlying infrastructure
+- 底层基础设施支持 PV provisioner
 
-## Install
+## 安装
 
-To install the chart with the release name `my-release` in the `gorse` namespace:
+在`gorse`命名空间中安装版本名称为`my-release`的 chart：
 
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
@@ -28,20 +28,20 @@ helm repo add gorse-io https://charts.gorse.io
 helm upgrade --name my-release --install gorse-io/gorse --create-namespace --namespace gorse --devel
 ```
 
-The command deploys Gorse on the Kubernetes cluster in the default configuration. The [Parameters](https://github.com/gorse-io/charts/blob/main/charts/gorse/README.md#parameters) section of `README.md` lists the parameters that can be configured during installation.
+该命令以默认配置在 Kubernetes 集群上部署 Gorse。 <code>README.md</code>的<a>参数</a>部分列出了可以在安装期间配置的参数。
 
 ::: tip
 
-Tou can override the default values by passing `-f ./values.yaml` to the `helm upgrade` command.
+您可以将参数`-f ./values.yaml`传递给`helm upgrade`命令来覆盖默认值。
 
 :::
 
-## Uninstall
+## 卸载
 
-To uninstall/delete the `my-release` deployment in the `gorse` namespace:
+卸载`gorse`命名空间中的`my-release`部署：
 
 ```bash
 $ helm unistall my-release --namespace gorse
 ```
 
-The command removes all the Kubernetes components associated with the chart and deletes the release.
+该命令删除与 chart 关联的所有 Kubernetes 组件并删除 release。
