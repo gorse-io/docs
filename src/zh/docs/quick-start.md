@@ -31,13 +31,13 @@ curl -fsSL https://gorse.io/playground | bash
 docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
 ```
 
-::::
+:::
 
-:: tips
+::: tips
 
 Gorse 的 RESTful API 入口是 http://127.0.0.1:8088。
 
-::::
+:::
 
 ### 选项 2：通过 Docker Compose 搭建 Gorse 集群
 
