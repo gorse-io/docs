@@ -35,9 +35,22 @@ go test -v ./...
 `MONGO_URI` | `mongodb://root:password@127.0.0.1:27017/`
 `CLICKHOUSE_URI` | `clickhouse://127.0.0.1:8123/`
 `REDIS_URI` | `redis://127.0.0.1:6379/`
+`ORACLE_URI` | `oracle://system:password@127.0.0.1:1521/XE`
 
 例如，通过以下方式使用 TiDB 作为测试数据库：
 
 ```bash
 MYSQL_URI=mysql://root:password@tcp(127.0.0.1:4000)/ go test -v ./...
+```
+
+## 运行集成测试
+
+在 Gorse 源码根目录下：
+
+```bash
+# Setup Gorse
+docker-compose up -d
+
+# Test
+go test -tags='integrate_test' ./client/
 ```
