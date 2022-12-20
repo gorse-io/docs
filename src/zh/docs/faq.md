@@ -8,13 +8,13 @@ icon: faq
 
 ### 1. 如何解决冷启动问题？
 
-Use `explore_recommend` to inject the latest items or recently popular items into a recommendation. Also, item labels are helpful to rank new items in a recommendation. For example:
+使用`explore_recommend`将最新项目或最近流行的项目注入推荐。此外，物品标签有助于对推荐中的新项目进行排名。例如：
 
 ```toml
 explore_recommend = { popular = 0.1, latest = 0.2 }
 ```
 
-It means latest items are inserted into recommended items list in a probability of 0.2 and recently popular items are inserted into recommended items list in a probability of 0.1.
+这意味着最新物品以 0.2 的概率插入推荐项目列表，最近流行的项目以 0.1 的概率插入推荐项目列表。
 
 ### 2. 如何跟踪推荐给每个用户的项目？
 
