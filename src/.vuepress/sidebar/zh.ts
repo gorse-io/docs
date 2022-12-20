@@ -38,22 +38,12 @@ export const zhSidebar = sidebar({
     {
       text: '概念详解',
       icon: 'idea',
+      prefix: '/zh/docs/concepts/',
       children: [
-        {
-          text: '数据对象',
-          icon: "model",
-          link: '/zh/docs/concepts/data-objects',
-        },
-        {
-          text: '推荐算法',
-          icon: "zhinengsuanfa",
-          link: '/zh/docs/concepts/algorithms',
-        },
-        {
-          text: '推荐工作流',
-          icon: "process",
-          link: '/zh/docs/concepts/workflow',
-        },
+        'data-objects',
+        'algorithms',
+        'workflow',
+        "evaluation"
       ]
     },
     {

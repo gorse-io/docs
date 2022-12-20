@@ -27,27 +27,12 @@ export const enSidebar = sidebar({
       text: 'Concepts',
       icon: 'idea',
       collapsible: true,
+      prefix: '/docs/concepts/',
       children: [
-        {
-          text: 'Data Objects',
-          icon: "model",
-          link: '/docs/concepts/data-objects',
-        },
-        {
-          text: 'Algorithms',
-          icon: "zhinengsuanfa",
-          link: '/docs/concepts/algorithms',
-        },
-        {
-          text: 'Workflow',
-          icon: "process",
-          link: '/docs/concepts/workflow',
-        },
-        {
-          text: "Evaluation",
-          icon: "chart",
-          link: "/docs/concepts/evaluation",
-        },
+        'data-objects',
+        'algorithms',
+        'workflow',
+        "evaluation"
       ]
     },
     {
