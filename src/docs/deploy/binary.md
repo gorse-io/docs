@@ -6,7 +6,9 @@ icon: console
 For single node deployment, the gorse-in-one single binary can be used.
 
 ::: warning
+
 For the multi-nodes scenario, binary deployment is not recommended.
+
 :::
 
 ## Prerequisites
@@ -105,7 +107,7 @@ gorse -c config.toml
 
 There are commend line flags for Gorse-in-one:
 
-| | Flag | Default Value | Description |
+| <FontIcon icon="rightarrow"/> | Flag | Default Value | Description |
 |-|-|-|-|
 | `-c` | `-c,--config` | | Configuration file path. |
 | | `--debug` | | Debug log mode. |

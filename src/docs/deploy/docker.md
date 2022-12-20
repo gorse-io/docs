@@ -13,7 +13,9 @@ Docker Compose or Docker Swarm is a good choice for managing small size microser
 | [gorse-in-one](https://hub.docker.com/repository/docker/zhenghaoz/gorse-in-one) | ![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/zhenghaoz/gorse-in-one/latest) | ![gorse-in-one](https://img.shields.io/docker/image-size/zhenghaoz/gorse-in-one) | ![Docker Pulls](https://img.shields.io/docker/pulls/zhenghaoz/gorse-in-one) |
 
 ::: tip
+
 These images tagged with the `nightly` tag are built from the master branch. The tag should be fixed to a specified version in production.
+
 :::
 
 ## Gorse-in-one on Docker
@@ -340,7 +342,7 @@ docker-compose up -d
 
 Command line flags of the master node:
 
-| | Flag | Default Value | Description |
+| <FontIcon icon="rightarrow"/> | Flag | Default Value | Description |
 |-|-|-|-|
 | | `--cache-path` | `worker_cache.data` | Cache file path. |
 | `-c` | `--config` | | Configuration file path. |
@@ -351,7 +353,7 @@ Command line flags of the master node:
 
 Command line flags of the server node:
 
-| | Flag | Default Value | Description |
+| <FontIcon icon="rightarrow"/> | Flag | Default Value | Description |
 |-|-|-|-|
 | | `--cache-path` | `worker_cache.data` | Cache file path. |
 | | `--debug` | | Debug log mode. |
@@ -365,7 +367,7 @@ Command line flags of the server node:
 
 Command line flags of the worker node:
 
-| | Flag | Default Value | Description |
+| <FontIcon icon="rightarrow"/> | Flag | Default Value | Description |
 |-|-|-|-|
 | | `--cache-path` | `worker_cache.data` | Cache file path. |
 | | `--debug` | | Debug log mode. |

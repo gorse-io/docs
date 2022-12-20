@@ -11,22 +11,11 @@ export const enSidebar = sidebar({
       text: 'Deploy',
       icon: 'start',
       collapsible: true,
+      prefix: '/docs/deploy/',
       children: [
-        {
-          text: 'Binary Deployment',
-          icon: 'console',
-          link: '/docs/deploy/binary',
-        },
-        {
-          text: 'Docker Deployment',
-          icon: 'docker',
-          link: '/docs/deploy/docker',
-        },
-        {
-          text: 'Kubernetes Deployment',
-          icon: 'kubernetes',
-          link: '/docs/deploy/kubernetes',
-        },
+        'binary',
+        'docker',
+        'kubernetes'
       ]
     },
     {
