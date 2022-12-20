@@ -6,7 +6,9 @@ icon: kubernetes
 Kubernetes deployment is recommended for large scale orchestration or multi-tenancy.
 
 ::: warning
+
 The Helm charts is under development, Parameters and default values might be changed in later versions. Pull requests are welcomed: https://github.com/gorse-io/charts/tree/main/charts/gorse
+
 :::
 
 ## Prerequisites

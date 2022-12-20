@@ -6,7 +6,9 @@ icon: console
 For single node deployment, the gorse-in-one single binary can be used.
 
 ::: warning
+
 For the multi-nodes scenario, binary deployment is not recommended.
+
 :::
 
 ## Prerequisites
