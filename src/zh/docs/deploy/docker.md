@@ -342,7 +342,7 @@ docker-compose up -d
 
 主节点的命令行参数：
 
-<fonticon icon="rightarrow"></fonticon> | Flag | Default Value | Description
+<fonticon icon="rightarrow"></fonticon> | 参数 | 默认值 | 描述
 --- | --- | --- | ---
  | `--cache-path` | `worker_cache.data` | 缓存文件路径
 `-c` | `--config` |  | 配置文件路径
@@ -353,13 +353,13 @@ docker-compose up -d
 
 服务节点的命令行参数：
 
-<fonticon icon="rightarrow"></fonticon> | 参数 | Default Value | Description
+<fonticon icon="rightarrow"></fonticon> | 参数 | 默认值 | 描述
 --- | --- | --- | ---
  | `--cache-path` | `worker_cache.data` | 缓存文件路径
  | `--debug` |  | 开启DEBUG日志模式
 `-h` | `--help` |  | 显示帮助信息
  | `--http-host` | `127.0.0.1` | RESTful API 和 Prometheus<br>度量所在IP地址
- | `--http-port` | `8087` | RESTful APIs and Prometheus<br>metrics export port
+ | `--http-port` | `8087` | RESTful API 和 Prometheus<br>度量所在端口
  | `--log-path` |  | 日志文件路径
  | `--master-host` | `127.0.0.1` | 主节点的IP地址
  | `--master-port` | `8086` | 主节点的端口
@@ -367,7 +367,7 @@ docker-compose up -d
 
 工作节点的命令行参数：
 
-<fonticon icon="rightarrow"></fonticon> | 参数 | Default Value | Description
+<fonticon icon="rightarrow"></fonticon> | 参数 | 默认值 | 描述
 --- | --- | --- | ---
  | `--cache-path` | `worker_cache.data` | 缓存文件路径
  | `--debug` |  | 开启DEBUG日志模式
@@ -377,5 +377,5 @@ docker-compose up -d
 `-j` | `--jobs` | `1` | 工作线程数量
  | `--log-path` |  | 日志文件路径
  | `--master-host` | `127.0.0.1` | 主节点的IP地址
- | `--master-port` | `8086` | Master node port
+ | `--master-port` | `8086` | 主节点的端口
 `-v` | `--version` |  | 显示版本信息
