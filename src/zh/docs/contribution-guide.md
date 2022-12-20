@@ -45,7 +45,7 @@ MYSQL_URI=mysql://root:password@tcp(127.0.0.1:4000)/ go test -v ./...
 
 ## 运行集成测试
 
-In the root directory of Gorse source:
+在 Gorse 源码根目录下：
 
 ```bash
 # Setup Gorse
