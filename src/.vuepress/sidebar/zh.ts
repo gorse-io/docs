@@ -10,22 +10,12 @@ export const zhSidebar = sidebar({
     {
       text: '部署',
       icon: 'start',
+      collapsible: true,
+      prefix: '/zh/docs/deploy/',
       children: [
-        {
-          text: '二进制部署',
-          icon: 'console',
-          link: '/zh/docs/deploy/binary.md',
-        },
-        {
-          text: 'Docker 部署',
-          icon: 'docker',
-          link: '/zh/docs/deploy/docker.md',
-        },
-        {
-          text: 'Kubernetes 部署',
-          icon: 'kubernetes',
-          link: '/zh/docs/deploy/kubernetes.md',
-        },
+        'binary',
+        'docker',
+        'kubernetes'
       ]
     },
     {

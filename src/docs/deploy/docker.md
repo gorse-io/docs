@@ -340,7 +340,7 @@ docker-compose up -d
 
 Command line flags of the master node:
 
-| | Flag | Default Value | Description |
+| <FontIcon icon="rightarrow"/> | Flag | Default Value | Description |
 |-|-|-|-|
 | | `--cache-path` | `worker_cache.data` | Cache file path. |
 | `-c` | `--config` | | Configuration file path. |
@@ -351,7 +351,7 @@ Command line flags of the master node:
 
 Command line flags of the server node:
 
-| | Flag | Default Value | Description |
+| <FontIcon icon="rightarrow"/> | Flag | Default Value | Description |
 |-|-|-|-|
 | | `--cache-path` | `worker_cache.data` | Cache file path. |
 | | `--debug` | | Debug log mode. |
@@ -365,7 +365,7 @@ Command line flags of the server node:
 
 Command line flags of the worker node:
 
-| | Flag | Default Value | Description |
+| <FontIcon icon="rightarrow"/> | Flag | Default Value | Description |
 |-|-|-|-|
 | | `--cache-path` | `worker_cache.data` | Cache file path. |
 | | `--debug` | | Debug log mode. |

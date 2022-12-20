@@ -105,7 +105,7 @@ gorse -c config.toml
 
 There are commend line flags for Gorse-in-one:
 
-| | Flag | Default Value | Description |
+| <FontIcon icon="rightarrow"/> | Flag | Default Value | Description |
 |-|-|-|-|
 | `-c` | `-c,--config` | | Configuration file path. |
 | | `--debug` | | Debug log mode. |
