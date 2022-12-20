@@ -43,7 +43,7 @@ go test -v ./...
 MYSQL_URI=mysql://root:password@tcp(127.0.0.1:4000)/ go test -v ./...
 ```
 
-## Run Integrate Test
+## 运行集成测试
 
 In the root directory of Gorse source:
 
