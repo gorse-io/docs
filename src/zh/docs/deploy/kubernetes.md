@@ -4,7 +4,7 @@ icon: kubernetes
 
 # Kubernetes 部署
 
-Kubernetes deployment is recommended for large scale orchestration or multi-tenancy.
+大规模编排或多租户的场景下，建议使用 Kubernetes 部署。
 
 ::: warning
 
