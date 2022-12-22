@@ -1,6 +1,9 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { faker } from '@faker-js/faker';
 
+const EXAMPLE_TIMESTAMP = "2020-02-02T20:20:02.02Z";
+const EXAMPLE_NUMBER = 3.1415926;
+
 function capitalizeFirstLetter(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
@@ -54,12 +57,11 @@ class Transpiler {
           return 1;
         case "string":
           if (definition["format"] && definition["format"] == "date-time") {
-            // Generate random date time.
-            return faker.date.past();
+            return EXAMPLE_TIMESTAMP;
           }
-          return faker.random.word().toLowerCase();
+          return faker.animal.type();
         case "number":
-          return Math.random();
+          return EXAMPLE_NUMBER;
         case "array":
           let v = new Array();
           for (let i = 0; i < 3; i++) {
@@ -155,6 +157,7 @@ class Transpiler {
   }
 }
 
+faker.seed(0)
 const text = readFileSync('./apidocs.json', 'utf-8');
 let transpiler = new Transpiler(["users", "items", "feedback", "recommendation", "health"]);
 const output = transpiler.translate(text);

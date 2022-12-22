@@ -7,7 +7,8 @@
   "scripts": {
     "docs:build": "vuepress build src",
     "docs:clean-dev": "vuepress dev src --clean-cache",
-    "docs:dev": "vuepress dev src"
+    "docs:dev": "vuepress dev src",
+    "docs:api": "npx ts-node apidocs.ts"
   },
   "devDependencies": {
     "@faker-js/faker": "7.6.0",

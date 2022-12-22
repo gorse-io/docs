@@ -153,27 +153,27 @@ $$
 If an item have more users, it means that this item is popular but have lower weight to characterize users' preferences. 
 
 
-Based on label weights and user weights, Gorse implements three similarity algorithm:
+Based on label weights and item weights, Gorse implements three similarity algorithm:
 
-- **Similar:** Calculates similarity based on label overlap between items
-
-$$
-s_{ij} = \frac{\sum_{l\in L_i \cap L_j}w_l}{\sqrt{\sum_{l\in L_i}w_l^2}\sqrt{\sum_{l\in L_j}w_l^2}}
-$$
-
-- **Related:** Calculates similarity based on user overlap between items.
+- **Similar:** Calculates similarity based on label overlap between users
 
 $$
-s_{ij} = \frac{\sum_{u\in U_i \cap U_j}w_u}{\sqrt{\sum_{u\in U_i}w_u^2}\sqrt{\sum_{u\in U_j}w_u^2}}
+s_{uv} = \frac{\sum_{l\in L_u \cap L_v}w_l}{\sqrt{\sum_{l\in L_u}w_l^2}\sqrt{\sum_{l\in L_v}w_l^2}}
 $$
 
-- **Automatic:** Calculates similarity based on both label overlap and user overlap between items.
+- **Related:** Calculates similarity based on item overlap between users.
 
 $$
-s_{ij} = \frac{\sum_{l\in L_i \cap L_j}w_l + \sum_{u\in U_i \cap U_j}w_u}{\sqrt{\sum_{l\in L_i}w_l^2 + \sum_{u\in U_i}w_u^2}\sqrt{\sum_{l\in L_j}w_l^2 + \sum_{u\in U_j}w_u^2}}
+s_{uv} = \frac{\sum_{i\in I_u \cap I_v}w_i}{\sqrt{\sum_{i\in I_u}w_i^2}\sqrt{\sum_{i\in I_v}w_i^2}}
 $$
 
-For each item, top $n$ items with top similarity will be cached as neighbprs of this item. The algorithm for item similarity can be set in the configuration file.
+- **Automatic:** Calculates similarity based on both label overlap and item overlap between users.
+
+$$
+s_{uv} = \frac{\sum_{l\in L_u \cap L_v}w_l + \sum_{i\in I_u \cap I_v}w_i}{\sqrt{\sum_{l\in L_u}w_l^2 + \sum_{i\in I_u}w_i^2}\sqrt{\sum_{l\in L_v}w_l^2 + \sum_{i\in I_v}w_i^2}}
+$$
+
+For each user, top $n$ users with top similarity will be cached as neighbors of this user. The algorithm for user similarity can be set in the configuration file.
 
 ```toml
 [recommend.user_neighbors]
@@ -186,7 +186,7 @@ For each item, top $n$ items with top similarity will be cached as neighbprs of 
 neighbor_type = "similar"
 ```
 
-It is recommended to choose `similar` or `auto` because user-based Similarity Recommender using `related` is similar to collaborative filtering recommender. The recommender is friendly to new users. With user labels, recommendations can be generated based on similar users' preferences even if the user does not have any history.
+If users are attached with high quality labels, `similar` is the best choice. If users have no labels, use `related`. For other situation, consider `auto`.
 
 ## Personalized Algorithms
 
