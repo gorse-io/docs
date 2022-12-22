@@ -239,19 +239,121 @@ the indicator $\mathbb{I}(i\in I_v)$ means the similarity is sumed to the predic
 In matrix factorization models, items and users are represented by vectors. The probability that a user $u$ likes an item $i$ is predicted by the dot product of two vectors.
 
 $$
-y_{ui}=\mathbf{p}_u^T \mathbf{q}_i
+\hat y_{ui}=\mathbf{p}_u^T \mathbf{q}_i
 $$
 
-where $\mathbf{p}_u$ is the embedding vector of the user $u$, and $\mathbf{q}_i$ is the embedding vector of the item $i$. There are two training 
+where $\mathbf{p}_u$ is the embedding vector of the user $u$, and $\mathbf{q}_i$ is the embedding vector of the item $i$. The model of matrix factorization is simple, but there is more than one training algorithms.
 
-<!-- 
-Recommenders based on similar items and similar users require that the recommended items need to be linked with similar users or historical items of the recommended user, which limits the scope of recommended items searching. The collaborative filtering recommender in Gorse uses matrix factorization[^1][^2] to recommend items. The training algorithm maps users and items to embedding vectors in a high-dimensional space, and the user's preference for an item is the dot product of the user embedding vector and the item embedding vector. However, the disadvantage of collaborative filtering recommender is that it cannot utilize the label information of users and items, and it cannot handle new users and new items. -->
+#### BPR
+
+BPR[^1] (Bayesian Personalized Ranking) is a pairwise training algorithm. The training data for BPR consist a set of triples: 
+
+$$
+D_s=\{(u,i,j)|i\in I_u\wedge I \setminus I_u\}
+$$
+
+The semantics of $(u, i, j) \in D_S$ is that user $u$ is assumed to prefer $i$ over $j$. The negative cases are regarded implicitly.
+
+The Bayesian formulation of finding the correct personalized ranking for all items is to maximize the following posterior probability where $\Theta$ represents the parameter vectors of the matrix factorization model
+
+$$
+p(\Theta|>_u) \propto p(>_u|\Theta)p(\Theta)
+$$
+
+where $>_u$ is the desired but latent preference 
+for user $u$. All users are presumed to act independently of each other. BPR also assume the ordering of each pair of items $(i, j)$ for a specific user is independent of the ordering of every other pair. Hence, the above user-specific likelihood function $p(>_u|\Theta)$ can first be rewritten as a product of single densities and second be combined for all users $u \in U$.
+
+$$
+\prod_{u\in U}p(>_u|\Theta)=\prod_{(u,i,j)\in D_s}p(i>_u j|\Theta)
+$$
+
+where $p(i>_u j|\Theta)=\sigma(\hat y_{uij})$ and $\hat y_{uij}=\hat y_{ui} - \hat y_{uj}$.
+
+For the parameter vectors, BPR introduces a general prior density $p(\Theta)$ which is a normal distribution with zero mean and variance-covariance matrix $\Sigma_\Theta$.
+
+$$
+p(\Theta) \sim N(0,\Sigma_\Theta)
+$$
+
+where $Σ_Θ = λ_ΘI$. Then the optimization criterion for personalized ranking is
+
+$$
+\begin{split}
+\text{BPR-OPT}&=\ln p(\Theta|>_u)\\
+&=\ln p(>_u|\Theta)p(\Theta)\\
+&=\ln\prod_{(u,i,j)\in D_s}\sigma(\hat y_{uij})p(\Theta)\\
+&=\sum_{(u,i,j)\in D_s}\ln \sigma(\hat y_{uij})+\ln p(\Theta)\\
+&=\sum_{(u,i,j)\in D_s}\ln \sigma(\hat y_{uij})-\lambda_\Theta\|\Theta\|^2
+\end{split}
+$$
+
+The gradient of BPR-Opt with respect to
+the model parameters is:
+
+$$
+\begin{split}
+\frac{\partial\text{BPR-OPT}}{\partial\Theta}&=\sum_{(u,i,j)\in D_s}\frac{\partial}{\partial\Theta}\ln\sigma(\hat x_{uij})-\lambda_\Theta\frac{\partial}{\partial\Theta}\|\Theta\|^2\\
+&\propto\sum_{(u,i,j)\in D_s}\frac{-e^{-\hat y_{uij}}}{1+e^{-\hat y_{uij}}}\cdot \frac{\partial}{\partial\Theta}\hat y_{uij}-\lambda_\Theta\Theta\\
+\end{split}
+$$
+
+A stochastic gradient-descent algorithm
+based on bootstrap sampling of training triples is as follows:
+
+> - initialize $\Theta$
+>   - **repeat**
+>     - draw $(u,i,j)$ from $D_s$
+>     - $\Theta\leftarrow\Theta+\alpha\left(\frac{e^{-\hat y_{uij}}}{1+e^{-\hat y_{uij}}}\cdot \frac{\partial}{\partial\Theta}\hat y_{uij}+\lambda_\Theta\Theta\right)$
+>   - **util** convergence
+> - **return** $\Theta$
+
+The derivatives from embedding vectors is
+
+$$
+\frac{\partial}{\partial\theta}\hat y_{uij}=\begin{cases}
+(q_{if}-q_{jf})&\text{if }\theta=p_{uf}\\
+p_uf&\text{if }\theta=q_if\\
+-p_uf&\text{if }\theta=q_{jf}\\
+0&\text{else}
+\end{cases}
+$$
+
+#### eALS
+
+eALS[^2] is a point-wise training algorithm. For a pair of a user $u$ and a item $i$, the ground truth for training is
+
+$$
+y_{ui}\begin{cases}
+1&i\in I_u\\
+0&i\notin I_u
+\end{cases}
+$$
+
+Embedding vectors are optimized by minimizing the following cost function[^8]:
+
+$$
+\mathcal{C} = \sum_{u\in U}\sum_{i \in I}(y_{ui}-\mathbf{p}^T_u\mathbf{q}_i)^2 + \lambda\left(\sum_{u \in U}\|\mathcal{p}\|^2+\sum_{i \in I}\|\mathbf{q}_i\|^2\right)
+$$
+
+The derivative of objective function with respect to $p_{uf}$ is
+
+$$
+\frac{\partial J}{\partial p_{uf}}=-2\sum_{i\in I}(y_{ui}-\hat y_{ui})q_{uf} + 2p_{uf}\sum_{i\in I}q_{if}^2 + 2\lambda p_{uf}
+$$
+
+By setting this derivative to 0, obtain the solution of $p_{uf}$:
+
+$$
+p_{uf} = \frac{\sum_{i \in I}(y_{ui}-\hat y_{ui})q_{if}}{\sum_{i \in I}q^2_{if}+\lambda}
+$$
+
+Similarly, get the solver for an item embedding vector:
+
+$$
+q_{if} = \frac{\sum_{u \in U}(y_{ui}-\hat y_{ui})p_{uf}}{\sum_{u \in I}p^2_{uf} + \lambda}
+$$
 
 ### Factorization Machines
-<!-- 
-Is there a recommender that combines the advantages of similarity recommender and collaborative filtering recommender? Then it is the click-through rate, prediction model. The click-through rate prediction model in Gorse is a factorization machine[^3] that generates embedding vectors for each user label and item label in addition to embedding vectors for each user and item. Although the factorization machine model is effective, it is not generally used as a recommender for collecting recommended items over all items. Compared with collaborative filtering recommender and similarity recommender, its computational complexity is large. Gorse's click-through prediction model is used to fuse and rank the results of the above recommenders.
-
-The original meaning of "click-through rate prediction" is to predict the probability that users will click on the recommended content or ads, but it should be noted that the click-through rate prediction in Gorse refers more to the probability that users will give positive feedback to the recommended results. For example, suppose we set in Gorse that positive feedback means the user has watched 50% of the video, then the "click-through rate" is the probability that the user has watched more than 50% of the video. -->
 
 [^1]: Rendle, Steffen, et al. "BPR: Bayesian personalized ranking from implicit feedback." Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.
 
@@ -266,3 +368,5 @@ The original meaning of "click-through rate prediction" is to predict the probab
 [^6]: Auvolat, Alex, et al. "Clustering is efficient for approximate maximum inner product search." arXiv preprint arXiv:1507.05910 (2015).
 
 [^7]: Malkov, Yu A., and Dmitry A. Yashunin. "Efficient and robust approximate nearest neighbor search using hierarchical navigable small world graphs." IEEE transactions on pattern analysis and machine intelligence 42.4 (2018): 824-836.
+
+[^8]: Hu, Yifan, Yehuda Koren, and Chris Volinsky. "Collaborative filtering for implicit feedback datasets." 2008 Eighth IEEE international conference on data mining. Ieee, 2008.

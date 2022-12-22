@@ -1,5 +1,5 @@
 ---
-icon: charts
+icon: chart
 ---
 # Evaluation
 
