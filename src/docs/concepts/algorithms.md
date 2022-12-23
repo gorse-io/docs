@@ -353,6 +353,11 @@ $$
 q_{if} = \frac{\sum_{u \in U}(y_{ui}-\hat y_{ui})p_{uf}}{\sum_{u \in I}p^2_{uf} + \lambda}
 $$
 
+> - Randomly initialize P and Q
+> - **for** $(u, i)$ 
+> - **while** Stopping criteria is not met **do**
+> - **return** P and Q
+
 ### Factorization Machines
 
 [^1]: Rendle, Steffen, et al. "BPR: Bayesian personalized ranking from implicit feedback." Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.
