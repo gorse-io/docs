@@ -3,14 +3,14 @@ icon: pullrequest
 ---
 # Contribution Guide
 
-This page will show how to work on Gorse source code.
+This page will show how to work on the Gorse source code.
 
 ## Setup Develop Environment
 
-These following installations are required:
+The following installations are required:
 
 - **Go** (>= 1.18): Since Go features from 1.18 are used in Gorse, the version of the compiler must be greater than 1.18. GoLand or Visual Studio Code is highly recommended as the IDE to develop Gorse.
-- **Docker Compose**: Multiple databases are required for unit tests. It's convenient to manage databases on Docker Compose. 
+- **Docker Compose**: Databases are required for unit tests. It's convenient to manage databases on Docker Compose. 
 
 ```bash
 cd storage

@@ -5,7 +5,7 @@ icon: typescript
 
 ::: warning
 
-The TypeScript SDK is under development, APIs might be changed in later versions. Pull requests are welcomed: https://github.com/gorse-io/gorse-js
+The TypeScript SDK is under development, and APIs might be changed in later versions. Pull requests are welcomed: https://github.com/gorse-io/gorse-js
 
 :::
 
@@ -31,7 +31,7 @@ yarn add gorsejs
 
 ## Usage
 
-Create a client by the entrypoint and api key.
+Create a client by the endpoint and API key.
 
 ```js
 import { Gorse } from "gorsejs";

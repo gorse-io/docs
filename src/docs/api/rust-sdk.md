@@ -5,7 +5,7 @@ icon: rust
 
 ::: warning
 
-The Rust SDK is under development, APIs might be changed in later versions. Pull requests are welcomed: https://github.com/gorse-io/gorse-rs
+The Rust SDK is under development, and APIs might be changed in later versions. Pull requests are welcomed: https://github.com/gorse-io/gorse-rs
 
 :::
 
@@ -21,7 +21,7 @@ gorse_rs = "0.4.1"
 
 ## Usage
 
-The Rust SDK implements two client: the async client `gorse_rs::Gorse` and the blocking client `gorse_rs::blocking::Gorse`.
+The Rust SDK implements two clients: the async client `gorse_rs::Gorse` and the blocking client `gorse_rs::blocking::Gorse`.
 
 ### Async Client
 

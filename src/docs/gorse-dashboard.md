@@ -3,7 +3,7 @@ icon: dashboard
 ---
 # Gorse Dashboard
 
-The master node provides the Gorse dashboard, which can be accessed through HTTP port (the default values is `8088`) of the master node. The HTTP port is specified in configuration file.
+The master node provides the Gorse dashboard, which can be accessed through the HTTP port (the default value is `8088``) of the master node. The HTTP port is specified in the configuration file.
 
 ## Login
 
@@ -45,7 +45,7 @@ The cluster page lists nodes in the cluster.
 
 ## Users
 
-The user page lists all users currently present in Gorse and can be searched by user ID. The information displayed includes the user ID, user labels, last active time and last update time of recommendation.
+The user page lists all users currently present in Gorse and can be searched by user ID. The information displayed includes the user ID, user labels, last active time and last update time of the recommendation.
 
 ![](../img/dashboard-users.png)
 
@@ -69,14 +69,14 @@ Click on "Neighbors" to see the similar items for each item.
 
 ## Data Export and Import
 
-The advance page allows importing and exporting data.
-- The "Export Users" button exports users to a CSV file with the format of user ID, user labels.
+The advanced page allows importing and exporting data.
+- The "Export Users" button exports users to a CSV file with the format of user ID, and user labels.
 - The "Export Items" button exports items to a CSV file with the format of item ID, hidden or not, item categories, timestamp, item labels and item description.
 - The "Export Feedback" button exports feedbacks to a CSV file in the format of feedback type, user ID, item ID and timestamp.
 
 ![](../img/dashboard-advance.png)
 
-- The "Import Users" button allows you to enter the "Import Users" page and preview the imported data after selecting the file. You can set the field separator, label separator, the mapping of each field and the existence of header row. Once the settings are correct, you can click "Confirm Import" to complete the data import.
+- The "Import Users" button allows you to enter the "Import Users" page and preview the imported data after selecting the file. You can set the field separator, label separator, the mapping of each field and the existence of the header row. Once the settings are correct, you can click "Confirm Import" to complete the data import.
 
 ![](../img/dashboard-import-users.png)
 

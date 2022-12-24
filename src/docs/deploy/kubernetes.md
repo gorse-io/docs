@@ -3,11 +3,11 @@ icon: kubernetes
 ---
 # Kubernetes Deployment
 
-Kubernetes deployment is recommended for large scale orchestration or multi-tenancy.
+Kubernetes deployment is recommended for large-scale orchestration or multi-tenancy.
 
 ::: warning
 
-The Helm charts is under development, Parameters and default values might be changed in later versions. Pull requests are welcomed: https://github.com/gorse-io/charts/tree/main/charts/gorse
+The Helm chart is under development, Parameters and default values might be changed in later versions. Pull requests are welcomed: https://github.com/gorse-io/charts/tree/main/charts/gorse
 
 :::
 
@@ -31,7 +31,7 @@ The command deploys Gorse on the Kubernetes cluster in the default configuration
 
 ::: tip
 
-Tou can override the default values by passing `-f ./values.yaml` to the `helm upgrade` command.
+You can override the default values by passing `-f ./values.yaml` to the `helm upgrade` command.
 
 :::
 

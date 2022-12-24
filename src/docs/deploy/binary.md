@@ -7,13 +7,13 @@ For single node deployment, the gorse-in-one single binary can be used.
 
 ::: warning
 
-For the multi-nodes scenario, binary deployment is not recommended.
+For the multi-node scenario, binary deployment is not recommended.
 
 :::
 
 ## Prerequisites
 
-Gorse depends on following software:
+Gorse depends on the following software:
 
 - Cache storage database, one of *MySQL*, *PostgreSQL*, *MongoDB* or *Redis*.
 - Data storage database, one of *MySQL*, *PostgreSQL*, *ClickHouse* or *MongoDB*.
@@ -105,7 +105,7 @@ gorse -c config.toml
 
 ### Flags of Gorse-in-one
 
-There are commend line flags for Gorse-in-one:
+There are command line flags for Gorse-in-one:
 
 | <FontIcon icon="rightarrow"/> | Flag | Default Value | Description |
 |-|-|-|-|

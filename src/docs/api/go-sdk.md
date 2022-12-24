@@ -5,7 +5,7 @@ icon: go
 
 ::: warning
 
-The Go SDK is under development, APIs might be changed in later versions. Pull requests are welcomed: https://github.com/gorse-io/gorse/tree/master/client
+The Go SDK is under development, and APIs might be changed in later versions. Pull requests are welcomed: https://github.com/gorse-io/gorse/tree/master/client
 
 :::
 
