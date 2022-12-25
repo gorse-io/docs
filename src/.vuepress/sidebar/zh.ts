@@ -19,6 +19,18 @@ export const zhSidebar = sidebar({
       ]
     },
     {
+      text: '概念详解',
+      icon: 'idea',
+      collapsible: true,
+      prefix: '/zh/docs/concepts/',
+      children: [
+        'data-objects',
+        'algorithms',
+        'workflow',
+        "evaluation"
+      ]
+    },
+    {
       text: '接口文档',
       icon: 'api',
       prefix: '/zh/docs/api/',
@@ -33,17 +45,6 @@ export const zhSidebar = sidebar({
         'php-sdk',
         'ruby-sdk',
         'dotnet-sdk'
-      ]
-    },
-    {
-      text: '概念详解',
-      icon: 'idea',
-      prefix: '/zh/docs/concepts/',
-      children: [
-        'data-objects',
-        'algorithms',
-        'workflow',
-        "evaluation"
       ]
     },
     {
