@@ -10,6 +10,7 @@ Math formulas are used to introduce complex algorithm, we define math symbols us
 | Symbol | Meaning |
 |-|-|
 | $n$ | `<cache_size>` |
+| $R$ | The set of positive feedbacks |
 | $I$ | The set of items. |
 | $I_u$ | The set of favorite items by user $u$. |
 | $I_l$ | The set of items with label $l$. |
@@ -368,7 +369,7 @@ $$
 eALS[^2] is a point-wise training algorithm. For a pair of a user $u$ and a item $i$, the ground truth for training is
 
 $$
-y_{ui}\begin{cases}
+y_{ui}=\begin{cases}
 1&i\in I_u\\
 0&i\notin I_u
 \end{cases}
@@ -377,31 +378,76 @@ $$
 Embedding vectors are optimized by minimizing the following cost function[^8]:
 
 $$
-\mathcal{C} = \sum_{u\in U}\sum_{i \in I}(y_{ui}-\mathbf{p}^T_u\mathbf{q}_i)^2 + \lambda\left(\sum_{u \in U}\|\mathcal{p}\|^2+\sum_{i \in I}\|\mathbf{q}_i\|^2\right)
+\mathcal{C} = \sum_{u\in U}\sum_{i \in I}w_{ui}(y_{ui}-\hat{y}_{ui}^f)^2 + \lambda\left(\sum_{u \in U}\|\mathcal{p}\|^2+\sum_{i \in I}\|\mathbf{q}_i\|^2\right)
 $$
 
-The derivative of objective function with respect to $p_{uf}$ is
+where $\hat{y}_{ui}^f=\hat{y}_{ui}-p_{uf}q_{if}$ and $w_{ui}$ the weight of feedback
 
 $$
-\frac{\partial J}{\partial p_{uf}}=-2\sum_{i\in I}(y_{ui}-\hat y_{ui})q_{uf} + 2p_{uf}\sum_{i\in I}q_{if}^2 + 2\lambda p_{uf}
+w_{ui}=\begin{cases}
+1&i\in I_u\\
+\alpha&i\notin I_u
+\end{cases}
 $$
 
-By setting this derivative to 0, obtain the solution of $p_{uf}$:
+$\alpha$ ($\alpha < 1$) is the weight for negative feedbacks. The derivative of objective function with respect to $p_{uf}$ is
 
 $$
-p_{uf} = \frac{\sum_{i \in I}(y_{ui}-\hat y_{ui})q_{if}}{\sum_{i \in I}q^2_{if}+\lambda}
+\frac{\partial J}{\partial p_{uf}}=-2\sum_{i\in I}(y_{ui}-\hat y_{ui}^f)w_{ui}q_{uf} + 2p_{uf}\sum_{i\in I}w_{ui}q_{if}^2 + 2\lambda p_{uf}
 $$
 
-Similarly, get the solver for an item embedding vector:
+By setting this derivative to 0, obtain the solution of $p_{uf}$ (Eq 1):
 
 $$
-q_{if} = \frac{\sum_{u \in U}(y_{ui}-\hat y_{ui})p_{uf}}{\sum_{u \in I}p^2_{uf} + \lambda}
+\begin{split}
+p_{uf} &= \frac{\sum_{i \in I}(y_{ui}-\hat y_{ui}^f)w_{ui}q_{if}}{\sum_{i \in I}w_{ui}q^2_{if}+\lambda}\\
+&=\frac{\sum_{i\in I_u}(y_{ui}-\hat{y}_{ui}^f)q_{if}-\sum_{i\in I_u}\hat{y}_{ui}^f\alpha q_{if}}{\sum_{i\in I_u}q^2_{if}+\sum_{i \in I_u}\alpha q_{if}^2+\lambda}\\
+&=\frac{\sum_{i\in I_u}[y_{ui}-(1-\alpha)\hat{y}_{ui}^f]q_{if}-\sum_{k\neq f}p_{uk}s^q_{kf}}{\sum_{i\in I_u}(1-\alpha)q^2_{if}+\alpha s^q_{ff}+\lambda}
+\end{split}
 $$
 
-> - Randomly initialize P and Q
-> - **for** $(u, i)$ 
+where $s^q_{kf}$ denotes the $(k, f)^\text{th}$ element of the $\mathbf{S}^q$ cache, defined as $\mathbf{S}^q = \mathbf{Q}^T\mathbf{Q}$. Similarly, get the solver for an item embedding vector (Eq 2):
+
+$$
+q_{if} = \frac{\sum_{u \in U_i}(y_{ui}-(1-\alpha)\hat y_{ui})p_{uf}-\alpha\sum_{k\neq f}q_{ik}s^p_{kf}}{\sum_{u \in U_i}(1-\alpha)p^2_{uf} + \alpha s^p_{ff} + \lambda}
+$$
+
+where $s^p_{kf}$ denotes the $(k, f)^\text{th}$ element of the $\mathbf{S}^p$ cache, defined as $\mathbf{S}^p = \mathbf{P}^T\mathbf{P}$. The learning algorithm is summarized as
+
+> - Randomly initialize $\mathbf{P}$ and $\mathbf{Q}$
+> - **for** $(u, i)\in R$ **do** $\hat{y}_{ui}=\mathbf{p}_u^T\mathbf{q}_i$
 > - **while** Stopping criteria is not met **do**
-> - **return** P and Q
+>   - $\mathbf{S}^q = \mathbf{Q}^T\mathbf{Q}$
+>   - **for** $u \leftarrow 1$ **to** $M$ **do**
+>     - **for** $f \leftarrow 1$ **to** $K$ **do**
+>       - **for** $i \in I_u$ **do** $\hat{y}_{ui}\leftarrow\hat{y}_{ui}^f-p_{uf}q_{if}$
+>       - $p_{uf}\leftarrow$ Eq 1
+>       - **for** $i \in I_u$ **do** $\hat{y}_{ui}\leftarrow\hat{y}_{ui}^f+p_{uf}q_{if}$
+>     - **end**
+>   - **end**
+>   - $\mathbf{S}^p=\mathbf{P}^T\mathbf{P}$
+>   - **for** $i \leftarrow 1$ **to** $N$ **do**
+>     - **for** $f \leftarrow 1$ **to** $K$ **do**
+>       - **for** $u \in U_i$ **do** $\hat{y}_{ui}\leftarrow\hat{y}_{ui}^f-p_{uf}q_{if}$
+>       - $q_{if}\leftarrow$ Eq 2
+>       - **for** $u \in U_i$ **do** $\hat{y}_{ui}\leftarrow\hat{y}_{ui}^f+p_{uf}q_{if}$
+>     - **end**
+>   - **end**
+> - **return** $\mathbf{P}$ and $\mathbf{Q}$
+
+#### Random Search for Hyper-parameters
+
+There are hyper-parameters for model training such as learning rate, regularization strength, etc.. Gorse uses random search[^5] to find the best hyper-parameters. The hyper-parameters optimization behavior is set by `model_search_epoch` and `model_search_trials`. Large value might lead better recommendation but cost more CPU time. The optimal model hyper-parameters are relatively stable unless the dataset changes dramatically.
+
+```toml
+[recommend.collaborative]
+
+# The number of epochs for model searching. The default value is 100.
+model_search_epoch = 100
+
+# The number of trials for model searching. The default value is 10.
+model_search_trials = 10
+```
 
 #### HNSW Index
 
@@ -429,6 +475,26 @@ HNSW index is complex and it is impossible to introduce it in this page. For mor
 :::
 
 ### Factorization Machines
+
+User labels and item labels are important information for personalized recommendations, but matrix factorization only handles user embedding and item embedding. Factorization machines[^3] generate recommendation with rich features such as user features and item features.
+
+Each feedback is encoded to a vector $x_i$. There are no numerical features in Gorse. So the vector $x_i$ is the concatenation of the one-hot encoded user ID, item ID, user labels and item labels. The prediction output is
+
+$$
+\hat y = w_0 + \sum^n_{i=1}w_i x_i + \sum^n_{i=1}\sum^n_{j=i+1}\left<\mathbf{v}_i,\mathbf{v}_j\right>x_i x_j
+$$
+
+where the model parameters that have to be estimated are: $w_0\in\mathbb{R}$, $\mathbf{w}\in\mathbb{R}^n$, $\mathbf{V}\in\mathbb{R}^{n\times k}$. And $\left<\cdot,\cdot\right>$ is the dot product of two vectors. Parameters are optimized by logit loss with SGD. The gradient for each parameter is
+
+$$
+\frac{\partial}{\partial\theta}\hat y=\begin{cases}
+1,&\text{if }\theta\text{ is }w_0\\
+x_i,&\text{if }\theta\text{ is }w_i\\
+x_i\sum^n_{j=1}v_{j,f}x_j-v_{i,f}x^2_i,&\text{if }\theta\text{ is }v_{i,f}
+\end{cases}
+$$
+
+Hyper-parameters are optimized by random search and the configuration `recommend.collaborative` is reused.
 
 [^1]: Rendle, Steffen, et al. "BPR: Bayesian personalized ranking from implicit feedback." Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.
 
