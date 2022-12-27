@@ -7,7 +7,7 @@ There are only three kinds of data objects in Gorse: users, items and feedbacks.
 
 ## User
 
-- A user object consists of a user ID and labels describing the user. The user labels can be empty, but these labels help to improve recommendation.
+- A user object consists of a user ID and labels describing the user. The user labels can be empty, but these labels help to improve recommendations.
 
 ```go
 type User struct {
@@ -50,7 +50,7 @@ In Gorse, items can be taken down by setting `IsHidden` to `true` for the item v
 
 ### Time to Live
 
-Users tend to favor new content other than old. There is a option `item_ttl` in the configuration to hide too old items from recommender system. Stale items will never be recommended to users or be the training data to generate personalized recommendation.
+Users tend to favor new content other than old. There is an option `item_ttl` in the configuration to hide too old items from the recommender system. Stale items will never be recommended to users or be the training data to generate personalized recommendations.
 
 ```toml
 [recommend.data_source]
@@ -65,7 +65,7 @@ Multi-categories recommendations are common, take YouTube for example, where mul
 
 ![](../../img/youtube-topics.png)
 
-Multiple categories can be distinguished by topics such as food, travel, etc., or by forms, e.g. live, short and long videos. Items will definitely appear in the global recommendation stream, and in addition the `Categories` field determines which recommendation categories the items should appear in. For each recommendation API, there are a global version and category version:
+Multiple categories can be distinguished by topics such as food, travel, etc., or by forms, e.g. live, short and long videos. Items will appear in the global recommendation stream, and in addition, the `Categories`` field determines which recommendation categories the items should appear in. For each recommendation API, there are a global version and a categorized version:
 
 | METHOD |  URL |   DESCRIPTION |
 |-|-|-|
@@ -90,14 +90,14 @@ Multi-categories recommendations will consume more cache storage space.
 
 ### Using Labels to Describe Items
 
-If only the item ID is available, the recommender system has no knowledge of the item's content, which requires labels to help the recommender system understand the item.
+If only the item ID is available, the recommender system does not know the item's content, which requires labels to help the recommender system understand the item.
 
-- **User-Generated Label**: Human-supplied labels are generally the most accurate and can be added by editors or users. For example, for a game, editors can add publisher and genres as labels, and users can add topics about the game as labels.
+- **User-Generated Label**: Human-supplied labels are generally the most accurate and can be added by editors or users. For example, for a game, editors can add the publisher and genres as labels, and users can add topics about the game as labels.
 - **Automatic Label Extraction**: Unfortunately, in many cases, items do not have ready-made labels, so it is necessary to use machine learning to automatically generate labels for items.
   - **Image Classification**: The class of image is used as a label, for example, to classify whether the image is a girl, a boy, a cat or a dog.
   - **Object Detection**: Detect the objects contained in the image as labels, e.g. detecting the image as having a girl with a cat.
-  - **Keyword Extraction**: Extract the keywords of the text, e.g. an article talks about deep learning based recommender systems, the keywords are deep learning and recommender system.
-  - **Text Classification**: Classify the content of a article, for example, to determine whether a tweet is confiding, dating or job hunting.
+  - **Keyword Extraction**: Extract the keywords of the text, e.g. an article talks about deep learning-based recommender systems, the keywords are deep learning and recommender system.
+  - **Text Classification**: Classify the content of an article, for example, to determine whether a tweet is confiding, dating or job hunting.
 
 Generating high-quality labels for items is a difficult task, and low-quality labels might harm the accuracy of the recommender system.
 
@@ -123,7 +123,7 @@ Before inserting feedback into the Gorse recommender system, it is necessary to 
 - **Read Feedback:** The user sees the item.
 - **Positive feedback:** The user action that is expected to do by the service provider.
 
-For example, if Gabe Newell wants to build a recommender system for Steam based on Gorse, clicking into the game introduction page could be treated as read feedback (the game list page has too little information to determine that the user has read it), and then actions such as adding a wish list and adding a shopping cart are treated as positive feedback. Finally, set them in the configuration file as follows.
+For example, if Gabe Newell wants to build a recommender system for Steam based on Gorse, clicking on the game introduction page could be treated as read feedback (the game list page has too little information to determine that the user has read it), and then actions such as adding a wish list and adding a shopping cart are treated as positive feedback. Finally, set them in the configuration file as follows.
 
 ```toml
 [recommend.data_source]
@@ -137,7 +137,7 @@ read_feedback_types = ["read"]
 
 ### Time to Live
 
-Users' preference change over time. The `positive_feedback_ttl` option prevents recommender system generate recommendation based on stale feedbacks.
+Users' preference change over time. The `positive_feedback_ttl` option prevents the recommender system generate recommendations based on stale feedbacks.
 
 ```toml
 [recommend.data_source]
@@ -178,7 +178,7 @@ Positive feedback can be inserted into the recommender system when the user take
 
 #### Automatic Insertion
 
-Proactively inserting read feedback to the recommender system requires the application to be able to accurately capture user browsing behavior. This task is easier for mobile applications but more difficult for web applications. To address this problem, Gorse's API for getting recommendation results provides two parameters: `write−back−type` and `write−back−delay`.
+Proactively inserting read feedback into the recommender system requires the application to be able to accurately capture user browsing behavior. This task is easier for mobile applications but more difficult for web applications. To address this problem, Gorse's API for getting recommendation results provides two parameters: `write−back−type` and `write−back−delay`.
 
 - **In full-screen mode:** Get a recommendation and write a "read" feedback, the recommendation will not appear again afterward.
 

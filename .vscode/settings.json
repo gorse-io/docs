@@ -1,7 +1,8 @@
 {
-    "cSpell.words": [
-        "Grafana",
-        "Kubernetes",
-        "Promtail"
+    "grammarly.files.include": [
+        "**/*.md"
+    ],
+    "grammarly.files.exclude": [
+        "**/zh/**/*.md"
     ]
 }

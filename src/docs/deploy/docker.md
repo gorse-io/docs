@@ -3,7 +3,7 @@ icon: docker
 ---
 # Docker Deployment
 
-Docker Compose or Docker Swarm is a good choice for managing small size microservice clusters. There are Docker images provided by the Gorse official:
+Docker Compose or Docker Swarm is a good choice for managing small-size microservice clusters. There are Docker images provided by the Gorse official:
 
 | Docker Image | Version | Image Size | Pulls |
 | ------------ | -------- | --- | --- |
@@ -49,7 +49,7 @@ services:
       - mysql
 ```
 
-Read [Binary Deployment](binary.md#flags-of-gorse-in-one) for the detailed information about command line flags of gorse-in-one.
+Read [Binary [Deployment](binary.md#flags-of-gorse-in-one) for detailed information about command line flags of gorse-in-one.
 
 ::: details Full Example
 
@@ -129,7 +129,7 @@ flowchart RL
   worker_2 --- |gRPC| master
 ```
 
-There is an example for a Gorse cluster with one master node, one server node and one worker node:
+There is an example of a Gorse cluster with one master node, one server node and one worker node:
 
 ```yaml
 version: "3"

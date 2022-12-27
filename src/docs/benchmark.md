@@ -3,11 +3,11 @@ icon: dashboard-fill
 ---
 # Benchmark
 
-In this page, different database backends of Gorse are compared.
+On this page, different database backends of Gorse are compared.
 
 ## RESTful APIs
 
-Before benchmark RESTful APIs, [the develop environment](contribution-guide#setup-develop-environment) should be set up first. Then, change working directory to `server` and run benchmark script:
+Before benchmarking RESTful APIs, [the develop environment](contribution-guide#setup-develop-environment) should be set up first. Then, change the working directory to `server` and run the benchmark script:
 
 ```bash
 cd server

@@ -3,7 +3,7 @@ icon: launch
 ---
 # Quick Start
 
-This guide walks you through the quickest way to setup a recommender system for GitHub repositories based on dataset from [GitRec](https://gitrec.gorse.io/). Make sure you have installed following softwares at the beginning: 
+This guide walks you through the quickest way to setup a recommender system for GitHub repositories based on dataset from [GitRec](https://gitrec.gorse.io/). Make sure you have installed the following softwares at the beginning: 
 
 - [Docker](https://docs.docker.com/get-docker/), nodes will run in containers.
 - [Docker Compose](https://docs.docker.com/compose/install/), nodes will be orchestrated by Docker Compose.
