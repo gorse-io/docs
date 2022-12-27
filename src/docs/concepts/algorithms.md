@@ -188,6 +188,51 @@ neighbor_type = "similar"
 
 If users are attached with high quality labels, `similar` is the best choice. If users have no labels, use `related`. For other situation, consider `auto`.
 
+### Clustering Index
+
+Gorse needs to generate neighbors for each users and items, but it is an expensive procedure. The complexity to generate neighbors for all items is $O(|I|^2)$ by brute force (for simplicity, assume the complexity of similarity calculation is constant). The clustering index[^9] is more efficient to search neighbors for each item with acceptable precision decay. The usage of the clustering index consists of two steps:
+
+1. **Clustering:** The *spherical k-means* algorithm is used to cluster items to $k$ clusters with centroids $c_i$ ($i\in\{1.\dots,K\}$). Then, each item $j$ belongs to $a_j$-th cluster.
+
+> - $a_j \leftarrow \text{rand}(k)$
+> - **while** $c_i$ or $a_j$ changed at previous step **do**
+>   - $c_i \leftarrow$ the centroid of items belong to $i$-th cluster  
+>   - $a_j \leftarrow \argmax_{i\in\{1,\dots,K\}}s_{c_i j}$
+> - **end while**
+
+2. **Search:** For searching neighbors for item $i'$.
+
+> - Step 1, find the nearest $L$ centroid to item $i'$.
+> - Step 2, find the nearest $n$ items to item $i'$ on $L$ clusters.
+
+The time complexity is $O(|I|TK+|I|L/K)$, where $T$ is the maximal number of iterations to stop the clustering algorithm. In Gorse implementation, $K = \sqrt{|I|}$, the time complexity becomes $O(\sqrt{|I|}(|I|T+L))$. Hence, the clustering index is efficient if $T \ll \sqrt{|T|}$.
+
+The clustering index can be switched on and off by `enable_index`, which is turned on by default. The clustering index needs to set the parameter $L$, which is the number of clusters to query. Too small $L$ will cause the index to fail to reach the required recall, while too large $L$ will reduce the performance. The construction process tries to increase $L$. If the query recall reaches `index_recall`, or the growth epochs reaches `index_fit_epoch`, the build process stops increasing $L$.
+
+```toml
+[recommend.item_neighbors]
+
+# Enable approximate item neighbor searching using vector index. The default value is true.
+enable_index = true
+
+# Minimal recall for approximate item neighbor searching. The default value is 0.8.
+index_recall = 0.8
+
+# Maximal number of fit epochs for approximate item neighbor searching vector index. The default value is 3.
+index_fit_epoch = 3
+
+[recommend.user_neighbors]
+
+# Enable approximate user neighbor searching using vector index. The default value is true.
+enable_index = true
+
+# Minimal recall for approximate user neighbor searching. The default value is 0.8.
+index_recall = 0.8
+
+# Maximal number of fit epochs for approximate user neighbor searching vector index. The default value is 3.
+index_fit_epoch = 3
+```
+
 ## Personalized Algorithms
 
 There are lots of fancy recommendation algorithms these days and most of them are based on deep learning[^4]. However, we believe traditional methods without deep learning is sufficient to achieve compromising recommendation performance.
@@ -307,7 +352,7 @@ based on bootstrap sampling of training triples is as follows:
 >   - **util** convergence
 > - **return** $\Theta$
 
-The derivatives from embedding vectors is
+where $\alpha$ . The derivatives from embedding vectors is
 
 $$
 \frac{\partial}{\partial\theta}\hat y_{uij}=\begin{cases}
@@ -358,6 +403,31 @@ $$
 > - **while** Stopping criteria is not met **do**
 > - **return** P and Q
 
+#### HNSW Index
+
+Matrix factorization model in Gorse represent users and items as embedding vectors. For each user, items with large dot products of embedding vectors with the user are filtered as recommended items. Therefore, the most intuitive way to search for recommended items is to scan all items, calculate the dot product of embedding vectors during the scanning process, and select the top several items with the largest dot products as the recommended result. Assuming that there are N users and M items, the computational complexity to generate recommendation results for all users is $O(|I||U|)$. However, if the number of items and users is large, the overall computation is unacceptable.
+
+A more efficient approach is to use the vector index HNSW[^10]. The HNSW index creates a navigation graph for all item vectors. The results from HNSW are not accurate, but the small loss in recall is worth the large performance gain. The HNSW requires a parameter, ef_construction, to be set. ef_construction that is too small will prevent the vector index from reaching the required recall, and $\text{ef\_construction}$ that is too large will reduce search performance. The build process tries to keep increasing $\text{ef\_construction}$, and stops growing $\text{ef\_construction}$ if the recall reaches `index_recall`, or if the number of epochs reaches `index_fit_epoch`.
+
+```toml
+[recommend.collaborative]
+
+# Enable approximate collaborative filtering recommend using vector index. The default value is true.
+enable_index = true
+
+# Minimal recall for approximate collaborative filtering recommend. The default value is 0.9.
+index_recall = 0.9
+
+# Maximal number of fit epochs for approximate collaborative filtering recommend vector index. The default value is 3.
+index_fit_epoch = 3
+```
+
+::: note
+
+HNSW index is complex and it is impossible to introduce it in this page. For more information, read the original paper: https://arxiv.org/abs/1603.09320
+
+:::
+
 ### Factorization Machines
 
 [^1]: Rendle, Steffen, et al. "BPR: Bayesian personalized ranking from implicit feedback." Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.
@@ -375,3 +445,7 @@ $$
 [^7]: Malkov, Yu A., and Dmitry A. Yashunin. "Efficient and robust approximate nearest neighbor search using hierarchical navigable small world graphs." IEEE transactions on pattern analysis and machine intelligence 42.4 (2018): 824-836.
 
 [^8]: Hu, Yifan, Yehuda Koren, and Chris Volinsky. "Collaborative filtering for implicit feedback datasets." 2008 Eighth IEEE international conference on data mining. Ieee, 2008.
+
+[^9]: Auvolat, Alex, et al. "Clustering is efficient for approximate maximum inner product search." arXiv preprint arXiv:1507.05910 (2015).
+
+[^10]: Malkov, Yu A., and Dmitry A. Yashunin. "Efficient and robust approximate nearest neighbor search using hierarchical navigable small world graphs." IEEE transactions on pattern analysis and machine intelligence 42.4 (2018): 824-836.
