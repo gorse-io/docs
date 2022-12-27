@@ -31,7 +31,7 @@ export const enSidebar = sidebar({
       children: [
         'data-objects',
         'algorithms',
-        'workflow',
+        'how-it-works',
         "evaluation"
       ]
     },

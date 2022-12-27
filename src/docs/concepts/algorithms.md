@@ -10,6 +10,7 @@ Math formulas are used to introduce complex algorithm, we define math symbols us
 | Symbol | Meaning |
 |-|-|
 | $n$ | `<cache_size>` |
+| $R$ | The set of positive feedbacks |
 | $I$ | The set of items. |
 | $I_u$ | The set of favorite items by user $u$. |
 | $I_l$ | The set of items with label $l$. |
@@ -188,6 +189,51 @@ neighbor_type = "similar"
 
 If users are attached with high quality labels, `similar` is the best choice. If users have no labels, use `related`. For other situation, consider `auto`.
 
+### Clustering Index
+
+Gorse needs to generate neighbors for each users and items, but it is an expensive procedure. The complexity to generate neighbors for all items is $O(|I|^2)$ by brute force (for simplicity, assume the complexity of similarity calculation is constant). The clustering index[^9] is more efficient to search neighbors for each item with acceptable precision decay. The usage of the clustering index consists of two steps:
+
+1. **Clustering:** The *spherical k-means* algorithm is used to cluster items to $k$ clusters with centroids $c_i$ ($i\in\{1.\dots,K\}$). Then, each item $j$ belongs to $a_j$-th cluster.
+
+> - $a_j \leftarrow \text{rand}(k)$
+> - **while** $c_i$ or $a_j$ changed at previous step **do**
+>   - $c_i \leftarrow$ the centroid of items belong to $i$-th cluster  
+>   - $a_j \leftarrow \argmax_{i\in\{1,\dots,K\}}s_{c_i j}$
+> - **end while**
+
+2. **Search:** For searching neighbors for item $i'$.
+
+> - Step 1, find the nearest $L$ centroid to item $i'$.
+> - Step 2, find the nearest $n$ items to item $i'$ on $L$ clusters.
+
+The time complexity is $O(|I|TK+|I|L/K)$, where $T$ is the maximal number of iterations to stop the clustering algorithm. In Gorse implementation, $K = \sqrt{|I|}$, the time complexity becomes $O(\sqrt{|I|}(|I|T+L))$. Hence, the clustering index is efficient if $T \ll \sqrt{|T|}$.
+
+The clustering index can be switched on and off by `enable_index`, which is turned on by default. The clustering index needs to set the parameter $L$, which is the number of clusters to query. Too small $L$ will cause the index to fail to reach the required recall, while too large $L$ will reduce the performance. The construction process tries to increase $L$. If the query recall reaches `index_recall`, or the growth epochs reaches `index_fit_epoch`, the build process stops increasing $L$.
+
+```toml
+[recommend.item_neighbors]
+
+# Enable approximate item neighbor searching using vector index. The default value is true.
+enable_index = true
+
+# Minimal recall for approximate item neighbor searching. The default value is 0.8.
+index_recall = 0.8
+
+# Maximal number of fit epochs for approximate item neighbor searching vector index. The default value is 3.
+index_fit_epoch = 3
+
+[recommend.user_neighbors]
+
+# Enable approximate user neighbor searching using vector index. The default value is true.
+enable_index = true
+
+# Minimal recall for approximate user neighbor searching. The default value is 0.8.
+index_recall = 0.8
+
+# Maximal number of fit epochs for approximate user neighbor searching vector index. The default value is 3.
+index_fit_epoch = 3
+```
+
 ## Personalized Algorithms
 
 There are lots of fancy recommendation algorithms these days and most of them are based on deep learning[^4]. However, we believe traditional methods without deep learning is sufficient to achieve compromising recommendation performance.
@@ -239,19 +285,216 @@ the indicator $\mathbb{I}(i\in I_v)$ means the similarity is sumed to the predic
 In matrix factorization models, items and users are represented by vectors. The probability that a user $u$ likes an item $i$ is predicted by the dot product of two vectors.
 
 $$
-y_{ui}=\mathbf{p}_u^T \mathbf{q}_i
+\hat y_{ui}=\mathbf{p}_u^T \mathbf{q}_i
 $$
 
-where $\mathbf{p}_u$ is the embedding vector of the user $u$, and $\mathbf{q}_i$ is the embedding vector of the item $i$. There are two training 
+where $\mathbf{p}_u$ is the embedding vector of the user $u$, and $\mathbf{q}_i$ is the embedding vector of the item $i$. The model of matrix factorization is simple, but there is more than one training algorithms.
 
-<!-- 
-Recommenders based on similar items and similar users require that the recommended items need to be linked with similar users or historical items of the recommended user, which limits the scope of recommended items searching. The collaborative filtering recommender in Gorse uses matrix factorization[^1][^2] to recommend items. The training algorithm maps users and items to embedding vectors in a high-dimensional space, and the user's preference for an item is the dot product of the user embedding vector and the item embedding vector. However, the disadvantage of collaborative filtering recommender is that it cannot utilize the label information of users and items, and it cannot handle new users and new items. -->
+#### BPR
+
+BPR[^1] (Bayesian Personalized Ranking) is a pairwise training algorithm. The training data for BPR consist a set of triples: 
+
+$$
+D_s=\{(u,i,j)|i\in I_u\wedge I \setminus I_u\}
+$$
+
+The semantics of $(u, i, j) \in D_S$ is that user $u$ is assumed to prefer $i$ over $j$. The negative cases are regarded implicitly.
+
+The Bayesian formulation of finding the correct personalized ranking for all items is to maximize the following posterior probability where $\Theta$ represents the parameter vectors of the matrix factorization model
+
+$$
+p(\Theta|>_u) \propto p(>_u|\Theta)p(\Theta)
+$$
+
+where $>_u$ is the desired but latent preference 
+for user $u$. All users are presumed to act independently of each other. BPR also assume the ordering of each pair of items $(i, j)$ for a specific user is independent of the ordering of every other pair. Hence, the above user-specific likelihood function $p(>_u|\Theta)$ can first be rewritten as a product of single densities and second be combined for all users $u \in U$.
+
+$$
+\prod_{u\in U}p(>_u|\Theta)=\prod_{(u,i,j)\in D_s}p(i>_u j|\Theta)
+$$
+
+where $p(i>_u j|\Theta)=\sigma(\hat y_{uij})$ and $\hat y_{uij}=\hat y_{ui} - \hat y_{uj}$.
+
+For the parameter vectors, BPR introduces a general prior density $p(\Theta)$ which is a normal distribution with zero mean and variance-covariance matrix $\Sigma_\Theta$.
+
+$$
+p(\Theta) \sim N(0,\Sigma_\Theta)
+$$
+
+where $Σ_Θ = λ_ΘI$. Then the optimization criterion for personalized ranking is
+
+$$
+\begin{split}
+\text{BPR-OPT}&=\ln p(\Theta|>_u)\\
+&=\ln p(>_u|\Theta)p(\Theta)\\
+&=\ln\prod_{(u,i,j)\in D_s}\sigma(\hat y_{uij})p(\Theta)\\
+&=\sum_{(u,i,j)\in D_s}\ln \sigma(\hat y_{uij})+\ln p(\Theta)\\
+&=\sum_{(u,i,j)\in D_s}\ln \sigma(\hat y_{uij})-\lambda_\Theta\|\Theta\|^2
+\end{split}
+$$
+
+The gradient of BPR-Opt with respect to
+the model parameters is:
+
+$$
+\begin{split}
+\frac{\partial\text{BPR-OPT}}{\partial\Theta}&=\sum_{(u,i,j)\in D_s}\frac{\partial}{\partial\Theta}\ln\sigma(\hat x_{uij})-\lambda_\Theta\frac{\partial}{\partial\Theta}\|\Theta\|^2\\
+&\propto\sum_{(u,i,j)\in D_s}\frac{-e^{-\hat y_{uij}}}{1+e^{-\hat y_{uij}}}\cdot \frac{\partial}{\partial\Theta}\hat y_{uij}-\lambda_\Theta\Theta\\
+\end{split}
+$$
+
+A stochastic gradient-descent algorithm
+based on bootstrap sampling of training triples is as follows:
+
+> - initialize $\Theta$
+>   - **repeat**
+>     - draw $(u,i,j)$ from $D_s$
+>     - $\Theta\leftarrow\Theta+\alpha\left(\frac{e^{-\hat y_{uij}}}{1+e^{-\hat y_{uij}}}\cdot \frac{\partial}{\partial\Theta}\hat y_{uij}+\lambda_\Theta\Theta\right)$
+>   - **util** convergence
+> - **return** $\Theta$
+
+where $\alpha$ . The derivatives from embedding vectors is
+
+$$
+\frac{\partial}{\partial\theta}\hat y_{uij}=\begin{cases}
+(q_{if}-q_{jf})&\text{if }\theta=p_{uf}\\
+p_uf&\text{if }\theta=q_if\\
+-p_uf&\text{if }\theta=q_{jf}\\
+0&\text{else}
+\end{cases}
+$$
+
+#### eALS
+
+eALS[^2] is a point-wise training algorithm. For a pair of a user $u$ and a item $i$, the ground truth for training is
+
+$$
+y_{ui}=\begin{cases}
+1&i\in I_u\\
+0&i\notin I_u
+\end{cases}
+$$
+
+Embedding vectors are optimized by minimizing the following cost function[^8]:
+
+$$
+\mathcal{C} = \sum_{u\in U}\sum_{i \in I}w_{ui}(y_{ui}-\hat{y}_{ui}^f)^2 + \lambda\left(\sum_{u \in U}\|\mathcal{p}\|^2+\sum_{i \in I}\|\mathbf{q}_i\|^2\right)
+$$
+
+where $\hat{y}_{ui}^f=\hat{y}_{ui}-p_{uf}q_{if}$ and $w_{ui}$ the weight of feedback
+
+$$
+w_{ui}=\begin{cases}
+1&i\in I_u\\
+\alpha&i\notin I_u
+\end{cases}
+$$
+
+$\alpha$ ($\alpha < 1$) is the weight for negative feedbacks. The derivative of objective function with respect to $p_{uf}$ is
+
+$$
+\frac{\partial J}{\partial p_{uf}}=-2\sum_{i\in I}(y_{ui}-\hat y_{ui}^f)w_{ui}q_{uf} + 2p_{uf}\sum_{i\in I}w_{ui}q_{if}^2 + 2\lambda p_{uf}
+$$
+
+By setting this derivative to 0, obtain the solution of $p_{uf}$ (Eq 1):
+
+$$
+\begin{split}
+p_{uf} &= \frac{\sum_{i \in I}(y_{ui}-\hat y_{ui}^f)w_{ui}q_{if}}{\sum_{i \in I}w_{ui}q^2_{if}+\lambda}\\
+&=\frac{\sum_{i\in I_u}(y_{ui}-\hat{y}_{ui}^f)q_{if}-\sum_{i\in I_u}\hat{y}_{ui}^f\alpha q_{if}}{\sum_{i\in I_u}q^2_{if}+\sum_{i \in I_u}\alpha q_{if}^2+\lambda}\\
+&=\frac{\sum_{i\in I_u}[y_{ui}-(1-\alpha)\hat{y}_{ui}^f]q_{if}-\sum_{k\neq f}p_{uk}s^q_{kf}}{\sum_{i\in I_u}(1-\alpha)q^2_{if}+\alpha s^q_{ff}+\lambda}
+\end{split}
+$$
+
+where $s^q_{kf}$ denotes the $(k, f)^\text{th}$ element of the $\mathbf{S}^q$ cache, defined as $\mathbf{S}^q = \mathbf{Q}^T\mathbf{Q}$. Similarly, get the solver for an item embedding vector (Eq 2):
+
+$$
+q_{if} = \frac{\sum_{u \in U_i}(y_{ui}-(1-\alpha)\hat y_{ui})p_{uf}-\alpha\sum_{k\neq f}q_{ik}s^p_{kf}}{\sum_{u \in U_i}(1-\alpha)p^2_{uf} + \alpha s^p_{ff} + \lambda}
+$$
+
+where $s^p_{kf}$ denotes the $(k, f)^\text{th}$ element of the $\mathbf{S}^p$ cache, defined as $\mathbf{S}^p = \mathbf{P}^T\mathbf{P}$. The learning algorithm is summarized as
+
+> - Randomly initialize $\mathbf{P}$ and $\mathbf{Q}$
+> - **for** $(u, i)\in R$ **do** $\hat{y}_{ui}=\mathbf{p}_u^T\mathbf{q}_i$
+> - **while** Stopping criteria is not met **do**
+>   - $\mathbf{S}^q = \mathbf{Q}^T\mathbf{Q}$
+>   - **for** $u \leftarrow 1$ **to** $M$ **do**
+>     - **for** $f \leftarrow 1$ **to** $K$ **do**
+>       - **for** $i \in I_u$ **do** $\hat{y}_{ui}\leftarrow\hat{y}_{ui}^f-p_{uf}q_{if}$
+>       - $p_{uf}\leftarrow$ Eq 1
+>       - **for** $i \in I_u$ **do** $\hat{y}_{ui}\leftarrow\hat{y}_{ui}^f+p_{uf}q_{if}$
+>     - **end**
+>   - **end**
+>   - $\mathbf{S}^p=\mathbf{P}^T\mathbf{P}$
+>   - **for** $i \leftarrow 1$ **to** $N$ **do**
+>     - **for** $f \leftarrow 1$ **to** $K$ **do**
+>       - **for** $u \in U_i$ **do** $\hat{y}_{ui}\leftarrow\hat{y}_{ui}^f-p_{uf}q_{if}$
+>       - $q_{if}\leftarrow$ Eq 2
+>       - **for** $u \in U_i$ **do** $\hat{y}_{ui}\leftarrow\hat{y}_{ui}^f+p_{uf}q_{if}$
+>     - **end**
+>   - **end**
+> - **return** $\mathbf{P}$ and $\mathbf{Q}$
+
+#### Random Search for Hyper-parameters
+
+There are hyper-parameters for model training such as learning rate, regularization strength, etc.. Gorse uses random search[^5] to find the best hyper-parameters. The hyper-parameters optimization behavior is set by `model_search_epoch` and `model_search_trials`. Large value might lead better recommendation but cost more CPU time. The optimal model hyper-parameters are relatively stable unless the dataset changes dramatically.
+
+```toml
+[recommend.collaborative]
+
+# The number of epochs for model searching. The default value is 100.
+model_search_epoch = 100
+
+# The number of trials for model searching. The default value is 10.
+model_search_trials = 10
+```
+
+#### HNSW Index
+
+Matrix factorization model in Gorse represent users and items as embedding vectors. For each user, items with large dot products of embedding vectors with the user are filtered as recommended items. Therefore, the most intuitive way to search for recommended items is to scan all items, calculate the dot product of embedding vectors during the scanning process, and select the top several items with the largest dot products as the recommended result. Assuming that there are N users and M items, the computational complexity to generate recommendation results for all users is $O(|I||U|)$. However, if the number of items and users is large, the overall computation is unacceptable.
+
+A more efficient approach is to use the vector index HNSW[^10]. The HNSW index creates a navigation graph for all item vectors. The results from HNSW are not accurate, but the small loss in recall is worth the large performance gain. The HNSW requires a parameter, ef_construction, to be set. ef_construction that is too small will prevent the vector index from reaching the required recall, and $\text{ef\_construction}$ that is too large will reduce search performance. The build process tries to keep increasing $\text{ef\_construction}$, and stops growing $\text{ef\_construction}$ if the recall reaches `index_recall`, or if the number of epochs reaches `index_fit_epoch`.
+
+```toml
+[recommend.collaborative]
+
+# Enable approximate collaborative filtering recommend using vector index. The default value is true.
+enable_index = true
+
+# Minimal recall for approximate collaborative filtering recommend. The default value is 0.9.
+index_recall = 0.9
+
+# Maximal number of fit epochs for approximate collaborative filtering recommend vector index. The default value is 3.
+index_fit_epoch = 3
+```
+
+::: note
+
+HNSW index is complex and it is impossible to introduce it in this page. For more information, read the original paper: https://arxiv.org/abs/1603.09320
+
+:::
 
 ### Factorization Machines
-<!-- 
-Is there a recommender that combines the advantages of similarity recommender and collaborative filtering recommender? Then it is the click-through rate, prediction model. The click-through rate prediction model in Gorse is a factorization machine[^3] that generates embedding vectors for each user label and item label in addition to embedding vectors for each user and item. Although the factorization machine model is effective, it is not generally used as a recommender for collecting recommended items over all items. Compared with collaborative filtering recommender and similarity recommender, its computational complexity is large. Gorse's click-through prediction model is used to fuse and rank the results of the above recommenders.
 
-The original meaning of "click-through rate prediction" is to predict the probability that users will click on the recommended content or ads, but it should be noted that the click-through rate prediction in Gorse refers more to the probability that users will give positive feedback to the recommended results. For example, suppose we set in Gorse that positive feedback means the user has watched 50% of the video, then the "click-through rate" is the probability that the user has watched more than 50% of the video. -->
+User labels and item labels are important information for personalized recommendations, but matrix factorization only handles user embedding and item embedding. Factorization machines[^3] generate recommendation with rich features such as user features and item features.
+
+Each feedback is encoded to a vector $x_i$. There are no numerical features in Gorse. So the vector $x_i$ is the concatenation of the one-hot encoded user ID, item ID, user labels and item labels. The prediction output is
+
+$$
+\hat y = w_0 + \sum^n_{i=1}w_i x_i + \sum^n_{i=1}\sum^n_{j=i+1}\left<\mathbf{v}_i,\mathbf{v}_j\right>x_i x_j
+$$
+
+where the model parameters that have to be estimated are: $w_0\in\mathbb{R}$, $\mathbf{w}\in\mathbb{R}^n$, $\mathbf{V}\in\mathbb{R}^{n\times k}$. And $\left<\cdot,\cdot\right>$ is the dot product of two vectors. Parameters are optimized by logit loss with SGD. The gradient for each parameter is
+
+$$
+\frac{\partial}{\partial\theta}\hat y=\begin{cases}
+1,&\text{if }\theta\text{ is }w_0\\
+x_i,&\text{if }\theta\text{ is }w_i\\
+x_i\sum^n_{j=1}v_{j,f}x_j-v_{i,f}x^2_i,&\text{if }\theta\text{ is }v_{i,f}
+\end{cases}
+$$
+
+Hyper-parameters are optimized by random search and the configuration `recommend.collaborative` is reused.
 
 [^1]: Rendle, Steffen, et al. "BPR: Bayesian personalized ranking from implicit feedback." Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.
 
@@ -266,3 +509,9 @@ The original meaning of "click-through rate prediction" is to predict the probab
 [^6]: Auvolat, Alex, et al. "Clustering is efficient for approximate maximum inner product search." arXiv preprint arXiv:1507.05910 (2015).
 
 [^7]: Malkov, Yu A., and Dmitry A. Yashunin. "Efficient and robust approximate nearest neighbor search using hierarchical navigable small world graphs." IEEE transactions on pattern analysis and machine intelligence 42.4 (2018): 824-836.
+
+[^8]: Hu, Yifan, Yehuda Koren, and Chris Volinsky. "Collaborative filtering for implicit feedback datasets." 2008 Eighth IEEE international conference on data mining. Ieee, 2008.
+
+[^9]: Auvolat, Alex, et al. "Clustering is efficient for approximate maximum inner product search." arXiv preprint arXiv:1507.05910 (2015).
+
+[^10]: Malkov, Yu A., and Dmitry A. Yashunin. "Efficient and robust approximate nearest neighbor search using hierarchical navigable small world graphs." IEEE transactions on pattern analysis and machine intelligence 42.4 (2018): 824-836.

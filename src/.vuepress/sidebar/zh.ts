@@ -26,7 +26,7 @@ export const zhSidebar = sidebar({
       children: [
         'data-objects',
         'algorithms',
-        'workflow',
+        'how-it-works',
         "evaluation"
       ]
     },

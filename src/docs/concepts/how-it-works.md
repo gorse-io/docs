@@ -1,11 +1,23 @@
 ---
 icon: process
 ---
-# Workflow
+# How It Works
 
 ```mermaid
-flowchart LR
-    c1-->a2
+flowchart TD
+    users[(Users)]-->load(Load Dataset)
+    items[(Items)]-->load
+    feedback[(Feedbacks)]-->load
+    subgraph Master Node
+    load-->latest(Latest Items)
+    load-->pop(Popular Items)
+    load-->user_neighbors(User Neighbors)
+    load-->item_neighbors(Item Neighbors)
+    load-->a(Item Neighbors)
+    load-->b(Item Neighbors)
+    user_neighbors-->user_based(User Similarity based Recommendation)
+    item_neighbors-->item_based(Item Similarity based Recommendation)
+    end
 ```
 
 Recommender systems are complex. The overall workflow in Gorse is as follows:
