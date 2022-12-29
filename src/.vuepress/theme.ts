@@ -82,7 +82,9 @@ export default hopeTheme({
       include: true,
       katex: true,
       mark: true,
-      mermaid: true,
+      mermaid: {
+        flowchart: { useWidth: "100%" }
+      },
       playground: {
         presets: ["ts", "vue"],
       },
