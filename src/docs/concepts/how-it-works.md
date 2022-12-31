@@ -5,46 +5,27 @@ icon: process
 
 ```mermaid
 flowchart TD
-    users[(Users)]-->load(Load Dataset)
-    items[(Items)]-->load
-    feedback[(Feedbacks)]-->load
+    items(Users)-->load[[Load dataset]]
+    items-->load
+    feedback(Feedbacks)-->load
     subgraph Master Node
-    load-->latest(Latest Items)
-    load-->pop(Popular Items)
-    load-->user_neighbors(User Neighbors)
-    load-->item_neighbors(Item Neighbors)
-    load-->a(Item Neighbors)
-    load-->b(Item Neighbors)
-    user_neighbors-->user_based(User Similarity based Recommendation)
-    item_neighbors-->item_based(Item Similarity based Recommendation)
+    load-->latest(Latest)
+    load-->pop(Popular)
+    load-->dataset(Dataset)
+    dataset-->find_users[[Find neighbors of users]]
+    find_users-->user_neighbors(User Neighbors)
+    dataset-->find_items[[Find neighbors of items]]
+    find_items-->item_neighbors(Item Neighbors)
+    dataset-->fit_mf[[Fit MF]]
+    fit_mf-->mf(MF)
+    dataset-->fit_fm[[Fit FM]]
+    fit_fm-->fm(FM)
+    end
+    subgraph Worker Node
+    user_neighbors-->user_based(User Similarity-based\nRecommendation)
+    item_neighbors-->item_based(Item Similarity-based\nRecommendation)
+    end
+    subgraph Server Node
+    latest-->a
     end
 ```
-
-Recommender systems are complex. The overall workflow in Gorse is as follows:
-
-<center><img width="500" src="../img/ch2/overview.png"></center>
-
-- Users, items and feedbacks are stored in **database** (a.k.a. `data_store` in config file). [Item Management](item-management) introduces how to manage items in Gorse. Feedbacks are required to generate personalized recommendations for user, which is discussed in [Feedback Collection](feedback-collection).
-- Latest items, popular items, user neighbors, item neighbors, recommendations and meta data are store in **cache** (a.k.a `cache_store` in config file).
-- The **master node** loads data from database. In the process of loading data, popular items and latest items are write to cache. Then, the master node search neighbors and training recommendation models. In background, random search is used to find the optimal recommendation model for current data. The **worker nodes** pull recommendation models from the master node and generate recommendations for each user. The **server nodes** provides RESTful APis. 
-    - [Recommendation Strategies](recommendation-strategies) shows how to define recommendation behaviors. 
-    - [Performance vs Precision](performance-vs-precision) discusses how to trade off between system performance and recommendation precision. 
-    - The server nodes and worker nodes synchronize meta information from the master node. The address adn timeout of meta communication are specified in config file.
-
-```toml
-[master]
-
-# GRPC port of the master node. The default value is 8086.
-port = 8086
-
-# gRPC host of the master node. The default values is "0.0.0.0".
-host = "0.0.0.0"
-
-# Number of working jobs in the master node. The default value is 1.
-n_jobs = 1
-
-# Meta information timeout. The default value is 10s.
-meta_timeout = "10s"
-```
-
-All data and status can be viewed in Gorse dashboard (read [Gorse Dashboard](gorse-dashboard) for more information).

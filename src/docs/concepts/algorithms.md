@@ -10,7 +10,8 @@ Math formulas are used to introduce complex algorithm, we define math symbols us
 | Symbol | Meaning |
 |-|-|
 | $n$ | `<cache_size>` |
-| $R$ | The set of positive feedbacks |
+| $R$ | The set of positive feedbacks. |
+| $\not R$ | The set of negative feedbacks. |
 | $I$ | The set of items. |
 | $I_u$ | The set of favorite items by user $u$. |
 | $I_l$ | The set of items with label $l$. |
@@ -18,8 +19,11 @@ Math formulas are used to introduce complex algorithm, we define math symbols us
 | $U_l$ | The set of users with label $l$. |
 | $L_u$ | The labels of user $u$. |
 | $L_i$ | The labels of item $i$. |
+| $L_U$ | The labels used by all users. |
+| $L_I$ | The labels used by all items. |
 | $\mathcal{N}_u$ | The neighbors pf user $u$. |
 | $\mathcal{N}_i$ | The neighbors of item $i$. |
+| $\mathbb{I}(p)$ | Equals 1 if condition $p$ satisfies, otherwise equals 0. |
 
 ::: tip
 
@@ -478,13 +482,36 @@ HNSW index is complex and it is impossible to introduce it in this page. For mor
 
 User labels and item labels are important information for personalized recommendations, but matrix factorization only handles user embedding and item embedding. Factorization machines[^3] generate recommendation with rich features such as user features and item features.
 
-Each feedback is encoded to a vector $x_i$. There are no numerical features in Gorse. So the vector $x_i$ is the concatenation of the one-hot encoded user ID, item ID, user labels and item labels. The prediction output is
+Different from the learning algorithms for the matrix factorization, negative feedbacks are used in factorization machines training. The training dataset is constructed by
+
+$$
+D=\{((x_1,\dots,x_f,\dots,x_F),1)|(u,i)\in R\}\cup\{((x_1,\dots,x_f,\dots,x_F),0)|(u,i)\in\not R\}
+$$
+
+The dimension of input vectors $\mathbf{x}$ is the sum of the numbers of items, users, item labels and user labels: $F = |I| + |U| + |L_I| + |L_U|$. Each element in $\mathbf{x}$ for a pair $(u,i)$ is defined by
+
+$$
+x_f=\begin{cases}
+\mathbb{I}(f=u)&0<f\le |I|\\
+\mathbb{I}(f-|I|=u)&|I|<f\le |I|+|U|\\
+\mathbb{I}(f-|I|-|U|\in L_i)&|I|+|U|<f<\le |I|+|U|+|L_I|\\
+\mathbb{I}(f-|I|-|U|-|L_U| \in L_u)&|I|+|U|+|L_I|<f<\le F
+\end{cases}
+$$
+
+The prediction output for a input vector $\mathbf{x}$ is
 
 $$
 \hat y = w_0 + \sum^n_{i=1}w_i x_i + \sum^n_{i=1}\sum^n_{j=i+1}\left<\mathbf{v}_i,\mathbf{v}_j\right>x_i x_j
 $$
 
-where the model parameters that have to be estimated are: $w_0\in\mathbb{R}$, $\mathbf{w}\in\mathbb{R}^n$, $\mathbf{V}\in\mathbb{R}^{n\times k}$. And $\left<\cdot,\cdot\right>$ is the dot product of two vectors. Parameters are optimized by logit loss with SGD. The gradient for each parameter is
+where the model parameters that have to be estimated are: $w_0\in\mathbb{R}$, $\mathbf{w}\in\mathbb{R}^n$, $\mathbf{V}\in\mathbb{R}^{n\times k}$. And $\left<\cdot,\cdot\right>$ is the dot product of two vectors. Parameters are optimized by logit loss with SGD. The loss function is
+
+$$
+\mathcal C=\sum_{(\mathbf{x},y)\in D}−y\log(\hat y)−(1−y)\log(1-\hat y)
+$$
+
+The gradient for each parameter is
 
 $$
 \frac{\partial}{\partial\theta}\hat y=\begin{cases}
