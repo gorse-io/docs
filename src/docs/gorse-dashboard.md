@@ -3,7 +3,17 @@ icon: dashboard
 ---
 # Gorse Dashboard
 
-The master node provides the Gorse dashboard, which can be accessed through the HTTP port (the default value is `8088``) of the master node. The HTTP port is specified in the configuration file.
+The master node provides the Gorse dashboard, which can be accessed through the HTTP port (the default value is `8088``) of the master node. The HTTP host and the HTTP port are specified in the configuration file.
+
+```toml
+[master]
+
+# HTTP port of the master node. The default values is 8088.
+http_port = 8088
+
+# HTTP host of the master node. The default values is "0.0.0.0".
+http_host = "0.0.0.0"
+```
 
 ## Login
 
