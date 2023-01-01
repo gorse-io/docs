@@ -7,7 +7,17 @@ To estimate the performance of a recommender system, evaluation is needed. Gorse
 
 ## Online Evaluation
 
+The target of a recommender system is maximize the probability every user like recommended items. Thus, the metric for online evaluation is positive feedback rate
 
+$$
+\text{positive rate}=\frac{1}{|U|}\sum_{i\in |U|}\frac{|R^p_u|}{|R^r_u|}
+$$
+
+where $R^r_u$ is the set of read feedback from user $u$, and $R^p_U$ is the set of a specific positive feedback. Gorse calculates positive rates everyday and plots as the line chart.
+
+For example, there are two positive feedback types (like and star) in [GitRec](https://gitrec.gorse.io/#/). Thus, the like rate and star rate are shown in the overview page of the dashboard.
+
+![](../../img/dashboard-overview.png)
 
 ## Offline Evaluation
 
