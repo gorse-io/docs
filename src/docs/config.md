@@ -3,7 +3,7 @@ icon: config_s
 ---
 # Configuration
 
-These configuration items without default values must be filled. It's highly recommended to create a new config file based on [the configuration template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml).
+These configuration items without default values must be filled. It's highly recommended to create a new config file based on [the configuration template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml). *The "description" for each option links to the detailed usage of this option.*
 
 ## `database`
 
@@ -86,21 +86,21 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `host` | string | `"0.0.0.0"` | Master node listening host for gRPC service (metadata exchange) [(Build Recommender)](/build-recommender/) |
-| `port` | integer | `8086` | Master node listening port for gRPC service (metadata exchange) [(Build Recommender)](/build-recommender/) |
-| `http_host` | string | `"0.0.0.0"` | Master node listening host for HTTP service (dashboard [(Gorse Dashboard)](/build-recommender/gorse-dashboard)) |
-| `http_port` | integer | `8088` | Master node listening port for HTTP service (dashboard [(Gorse Dashboard)](/build-recommender/gorse-dashboard)) |
-| `n_jobs` | integer | `1` | Number of working threads for the master node |
-| `meta_timeout` | integer | `10s` | Metadata timeout [(Build Recommender)](/build-recommender/) |
-| `dashboard_user_name` | string |     | Username login dashboard [(Gorse Dashboard)](/build-recommender/gorse-dashboard#login) |
-| `dashboard_password` | string |     | Password login dashboard [(Gorse Dashboard)](/build-recommender/gorse-dashboard#login) |
+| `host` | string | `"0.0.0.0"` | [Master node listening host for gRPC service (metadata exchange)](./concepts/how-it-works#architecture) |
+| `port` | integer | `8086` | [Master node listening port for gRPC service (metadata exchange)](./concepts/how-it-works#architecture) |
+| `http_host` | string | `"0.0.0.0"` | [Master node listening host for HTTP service (dashboard and metrics)](./gorse-dashboard#login) |
+| `http_port` | integer | `8088` | [Master node listening port for HTTP service (dashboard and metrics)](./gorse-dashboard#login) |
+| `n_jobs` | integer | `1` | [Number of working threads for the master node](./concepts/how-it-works#architecture) |
+| `meta_timeout` | integer | `10s` | [Metadata timeout](./concepts/how-it-works#architecture) |
+| `dashboard_user_name` | string |     | [Dashboard login username](./gorse-dashboard#login) |
+| `dashboard_password` | string |     | [Dashboard login password](./gorse-dashboard#login) |
 
 ## `server`
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
 | `default_n` | integer | `10` | Default number of returned items [(RESTful APIs)](restful-apis#authorization) |
-| `api_key` | string |     | Secret key for RESTful APIs (SSL required) [(RESTful APIs)](restful-apis#default-length-of-returned-list) |
+| `api_key` | string |     | [Secret key for RESTful APIs (SSL required)](./api/restful-api.html#authorization) |
 | `clock_error` | integer | `5s` | clock error in the cluster [(RESTful APIs)](restful-apis#clock-error) |
 | `auto_insert_user` | boolean | `true` | Automatically insert new users when inserting new feedback [(Feedback Collection)](/build-recommender/feedback-collection#users-items-and-feedback) |
 | `auto_insert_item` | boolean | `true` | Automatically insert new items when inserting new feedback [(Feedback Collection)](/build-recommender/feedback-collection#users-items-and-feedback) |
@@ -110,41 +110,41 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `cache_size` | string | `100` | Number of cached elements in cache store |
-| `cache_expire` | string | `72h` | Recommended cache expire time |
+| `cache_size` | string | `100` | [Number of cached elements in cache store](./concepts/how-it-works#recommendation-flow) |
+| `cache_expire` | string | `72h` | [Recommended cache expire time](./concepts/how-it-works#recommendation-flow) |
 
 ### `recommend.data_source`
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `positive_feedback_types` | string |     | Types of positive feedback [(Feedback Collection)](/build-recommender/feedback-collection#define-positive-feedback-and-read-feedback) |
-| `read_feedback_types` | string |     | Type of feedback for read events [(Feedback Collection)](/build-recommender/feedback-collection#define-positive-feedback-and-read-feedback) |
-| `positive_feedback_ttl` | string | `0` | Time-to-live of positive feedback [(Performance vs Precision)](/build-recommender/performance-vs-precision#set-ttl-for-items-and-feedback) |
-| `item_ttl` | string | `0` | Time-to-live of items [(Performance vs Precision)](/build-recommender/performance-vs-precision#set-ttl-for-items-and-feedback) |
+| `positive_feedback_types` | string |     | [Types of positive feedback](./concepts/data-objects#positive-feedback-and-read-feedback) |
+| `read_feedback_types` | string |     | [Type of read feedback](./concepts/data-objects#positive-feedback-and-read-feedback) |
+| `positive_feedback_ttl` | string | `0` | [Time-to-live of positive feedback](./concepts/data-objects#time-to-live-1) |
+| `item_ttl` | string | `0` | [Time-to-live of items](./concepts/data-objects#time-to-live) |
 
 ### `recommend.popular`
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `popular_window` | integer | `4320h` | Time window of popular items in days [(Recommendation Strategies)](/build-recommender/recommendation-strategies#latest-recommender) |
+| `popular_window` | integer | `4320h` | [Time window of popular items in days](./concepts/algorithms#popular-items) |
 
 ### `recommend.user_neighbors`
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `neighbor_type` | string | `"auto"` | The type of neighbors for users [(Recommendation Strategies)](/build-recommender/recommendation-strategies#user-based-similarity-recommender) |
-| `enable_index` | boolean | `false` | Enable approximate item neighbor searching using vector index [(Performance vs Precision)](/build-recommender/performance-vs-precision#enable-clustering-index-for-similar-itemuser-searching) |
-| `index_recall` | float | `0.8` | Minimal recall for approximate item neighbor searching [(Performance vs Precision)](/build-recommender/performance-vs-precision#enable-clustering-index-for-similar-itemuser-searching) |
-| `index_fit_epoch` | integer | `3` | Maximal number of fit epochs for approximate item neighbor searching vector index [(Performance vs Precision)](/build-recommender/performance-vs-precision#enable-clustering-index-for-similar-itemuser-searching) |
+| `neighbor_type` | string | `"auto"` | [The type of neighbors for users](./concepts/algorithms#item-similarity) |
+| `enable_index` | boolean | `false` | [Enable approximate item neighbor searching using clustering index](./concepts/algorithms#clustering-index) |
+| `index_recall` | float | `0.8` | [Minimal recall for approximate item neighbor searching](./concepts/algorithms#clustering-index) |
+| `index_fit_epoch` | integer | `3` | [Maximal number of fit epochs for approximate item neighbor searching clustering index](./concepts/algorithms#clustering-index) |
 
 ### `recommend.item_neighbors`
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `neighbor_type` | string | `"auto"` | The type of neighbors for items [(Recommendation Strategies)](/build-recommender/recommendation-strategies#item-based-similarity-recommender) |
-| `enable_index` | boolean | `false` | Enable approximate item neighbor searching using vector index [(Performance vs Precision)](/build-recommender/performance-vs-precision#enable-clustering-index-for-similar-itemuser-searching) |
-| `index_recall` | float | `0.8` | Minimal recall for approximate user neighbor searching [(Performance vs Precision)](/build-recommender/performance-vs-precision#enable-clustering-index-for-similar-itemuser-searching) |
-| `index_fit_epoch` | integer | `3` | Maximal number of fit epochs for approximate user neighbor searching vector index [(Performance vs Precision)](/build-recommender/performance-vs-precision#enable-clustering-index-for-similar-itemuser-searching) |
+| `neighbor_type` | string | `"auto"` | [The type of neighbors for items](./concepts/algorithms#user-similarity) |
+| `enable_index` | boolean | `false` | [Enable approximate item neighbor searching using clustering index](./concepts/algorithms#clustering-index) |
+| `index_recall` | float | `0.8` | [Minimal recall for approximate user neighbor searching](./concepts/algorithms#clustering-index) |
+| `index_fit_epoch` | integer | `3` | [Maximal number of fit epochs for approximate user neighbor searching clustering index](./concepts/algorithms#clustering-index) |
 
 ### `recommend.collaborative`
 
@@ -155,9 +155,9 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 | `model_search_epoch` | integer | `100` | Number of training epochs for each model in model search [(Performance vs Precision)](/build-recommender/performance-vs-precision#set-training-and-recommendation-period) |
 | `model_search_trials` | integer | `10` | Number of trials for each model in model search [(Performance vs Precision)](/build-recommender/performance-vs-precision#set-training-and-recommendation-period) |
 | `enable_model_size_search` | boolean | `false` | Enable searching models of different sizes, which consume more memory. |
-| `enable_index` | boolean | `false` | Enable approximate collaborative filtering recommend using vector index [(Performance vs Precision)](/build-recommender/performance-vs-precision#enable-hnsw-index-for-collaborative-filtering) |
-| `index_recall` | float | `0.9` | Minimal recall for approximate collaborative filtering recommend [(Performance vs Precision)](/build-recommender/performance-vs-precision#enable-hnsw-index-for-collaborative-filtering) |
-| `index_fit_epoch` | integer | `3` | Maximal number of fit epochs for approximate collaborative filtering recommend vector index [(Performance vs Precision)](/build-recommender/performance-vs-precision#enable-hnsw-index-for-collaborative-filtering) |
+| `enable_index` | boolean | `false` | [Enable approximate collaborative filtering recommend using HNSW index](./concepts/algorithms#matrix-factorization) |
+| `index_recall` | float | `0.9` | [Minimal recall for approximate collaborative filtering recommend](./concepts/algorithms#matrix-factorization) |
+| `index_fit_epoch` | integer | `3` | [Maximal number of fit epochs for approximate collaborative filtering recommend HNSW index](./concepts/algorithms#matrix-factorization) |
 
 ### `recommend.replacement`
 
