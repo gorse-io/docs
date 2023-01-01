@@ -7,15 +7,15 @@ To estimate the performance of a recommender system, evaluation is needed. Gorse
 
 ## Online Evaluation
 
-The target of a recommender system is maximize the probability every user like recommended items. Thus, the metric for online evaluation is positive feedback rate
+The target of a recommender system is to maximize the probability every user like recommended items. Thus, the metric for online evaluation is the positive feedback rate
 
 $$
 \text{positive rate}=\frac{1}{|U|}\sum_{i\in |U|}\frac{|R^p_u|}{|R^r_u|}
 $$
 
-where $R^r_u$ is the set of read feedback from user $u$, and $R^p_U$ is the set of a specific positive feedback. Gorse calculates positive rates everyday and plots as the line chart.
+where $R^r_u$ is the set of read feedback from user $u$, and $R^p_U$ is the set of a specific positive feedback. Gorse calculates positive rates every day and plots them as the line chart.
 
-For example, there are two positive feedback types (like and star) in [GitRec](https://gitrec.gorse.io/#/). Thus, the like rate and star rate are shown in the overview page of the dashboard.
+For example, there are two positive feedback types (like and star) in [GitRec](https://gitrec.gorse.io/#/). Thus, the like rate and star rate are shown on the overview page of the dashboard.
 
 ![](../../img/dashboard-overview.png)
 
@@ -25,7 +25,7 @@ Offline evaluation is used to estimate the performance of an individual algorith
 
 ### Factorization Machine
 
-The factorization machines model predicts the probability that a user give positive feedbacks on an item. Items with top probabilities are recommended to the user. The evaluation algorithm estimates the quality of prediction on given pairs of users and items. The dataset will be divided to a training dataset and a testing dataset. The following metrics will be calculate on the testing dataset.
+The factorization machines model predicts the probability that a user gives positive feedbacks on an item. Items with top probabilities are recommended to the user. The evaluation algorithm estimates the quality of prediction on given pairs of users and items. The dataset will be divided into a training dataset and a testing dataset. The following metrics will be calculated on the testing dataset.
 
 $$
 \text{precision}=\frac{tp}{tp+fp}
@@ -47,9 +47,9 @@ where $P=\{i|y_i=1\}$ and $N=\{i|y_i=0\}$.
 
 ### Matrix Factorization
 
-The matrix factorization filters out positive feedback from negative feedbacks and unobserved feedbacks. For each user, Gorse randomly leave one feedback out of other positive feedbacks as the test item. The matrix factorization model are expected to rank the test item before other unobserved items. Since it is too time-consuming to rank all items for every user during evaluation, Gorse followed the common strategy[^1] that randomly samples 100 items that are not interacted by the user, ranking the test item among the 100 items. 
+The matrix factorization filters out positive feedback from negative feedbacks and unobserved feedbacks. For each user, Gorse randomly leaves one feedback out of other positive feedbacks as the test item. The matrix factorization model is expected to rank the test item before other unobserved items. Since it is too time-consuming to rank all items for every user during evaluation, Gorse followed the common strategy[^1] that randomly samples 100 items that are not interacted with the user, ranking the test item among the 100 items. 
 
-The matrix factorization is evaluated in top 10 recommendation. Suppose the matrix factorization recommends 10 items $\hat I^{(10)}_u$ to user $u$ and the test item is $i_u$
+The matrix factorization is evaluated in top 10 recommendations. Suppose the matrix factorization recommends 10 items $\hat I^{(10)}_u$ to user $u$ and the test item is $i_u$
 
 $$
 \text{HR@10}=\sum_{u\in U}\frac{\mathbb{I}(i_u \in \hat I^{(10)}_u)}{|U|}
@@ -63,7 +63,7 @@ where $\mathbb{I}(i=\hat I^{(10)}_{u,i})$ is the $i$-th item in the top 10 recom
 
 ### Clustering Index and HNSW Index
 
-The clustering index is used to speed up searching user (item) neighbors, while the HNSW index is used to accelerate recommendations from matrix factorization. The quality of an index is evaluated by recall:
+The clustering index is used to speed up searching user (item) neighbors, while the HNSW index is used to accelerate recommendations from matrix factorization. The quality of an index is evaluated by the recall:
 
 $$
 \text{recall@n}=\frac{|\text{top n by index}|}{|\text{top n by brute force}|}
@@ -71,12 +71,12 @@ $$
 
 ::: tip
 
-The recall of indices are listed in the "System Status" section of dashboard homepage.
+The recalls of indices are listed in the "System Status" section of the dashboard homepage.
 
 ![](../../img/evaluation-neighbor-index-recall.jpeg =400x)
 ![](../../img/evaluation-mf-index-recall.jpeg =400x)
 
-If the recall of an index is extremely low, consider to turn off the index.
+If the recall of an index is extremely low, consider turning off the index.
 
 :::
 
