@@ -87,6 +87,48 @@ The recommendation flow will be introduced in the top-down method.
 
 ### Master: Neighbors and Models
 
+The master node is driven by data loading. Data loading happens in every `model_fit_period`. Latest items and popular items can be collected during loading data. Once data loaded, the following tasks start.
+
+- **Find Neighbors:** User neighbors and item neighbors are found and cached.
+- **Fit MF and FM** The matrix factorization model and factorization machine model are trained and delivered to workers.
+- **Optimize MF and FM:** In every `model_search_period`, random search are used to optimize MF and FM. The model searcher will generate `model_search_trials` combinations of hyper-parameters and the model with best score during `model_search_epoch` epoch is used in the next model training period. In most cases, there is no need to change these two options.
+
+```toml
+[recommend.collaborative]
+
+# The time period for model fitting. The default value is "60m".
+model_fit_period = "60m"
+
+# The time period for model searching. The default value is "360m".
+model_search_period = "360m"
+
+# The number of epochs for model searching. The default value is 100.
+model_search_epoch = 100
+
+# The number of trials for model searching. The default value is 10.
+model_search_trials = 10
+```
+
+Once data loaded, neighbors searching and model training starts in parallel. After neighbors searching and model training finished, model optimization starts if the last optimize time is `model_search_period` ago.
+
+```mermaid
+flowchart LR
+    start((Start))-->load
+    load[Load Dataset]-->user_neighbors[Find User Neighbors]
+    load-->item_neighbors[Find Item Neighbors]
+    load-->mf[Fit Matrix Factorization]
+    load-->fm[Fit Factorization Machine]
+    user_neighbors-->cond{last optimize time -\ncurrent time >\nmodel_search_period}
+    item_neighbors-->cond
+    mf-->cond
+    fm-->cond
+    cond--yes-->opt_mf[Optimize Matrix Factorization]
+    cond--yes-->opt_fm[Optimize Factorization Machine]
+    cond--no-->e((End))
+    opt_mf-->e
+    opt_fm-->e
+```
+
 ### Worker: Offline Recommendation
 
 Workers nodes generate and write offline recommendation to the cache database. The worker node check each user in every `check_recommend_period`. If a user's active time is greater than his or her latest offline recommendation cache or the cache is generated before `refresh_recommend_period`, the worker start to refresh offline recommendation for this user.
