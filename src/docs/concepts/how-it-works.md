@@ -83,4 +83,127 @@ cache_size = 100
 cache_expire = "72h"
 ```
 
-The recommendation flow will be introduced in top-down method.
+The recommendation flow will be introduced in the top-down method.
+
+### Master: Neighbors and Models
+
+### Worker: Offline Recommendation
+
+Workers nodes generate and write offline recommendation to the cache database. The worker node check each user in every `check_recommend_period`. If a user's active time is greater than his or her latest offline recommendation cache or the cache is generated before `refresh_recommend_period`, the worker start to refresh offline recommendation for this user.
+
+```mermaid
+flowchart TD
+    cache[(Cache)]--"latest items\n{{if enable_latest_recommend }}\n\npopular items\n{{ if enable_popular_recommend }}"-->concat
+    cache--user neighbors-->user_based["User Similarity-based Recommendation\n{{ if enable_user_based_recommend }}"]
+    cache--item neighbors-->item_based["Item Similarity-based Recommendation\n{{ if enable_item_based_recommend }}"]
+    user_based--recommendation-->concat
+    item_based--recommendation-->concat
+    database[(Database)]--feedback-->mf["Matrix Factorization Recommendation\n{{ if enable_collaborative_recommend }}"]
+    mf--recommendation-->concat[Concatenate]
+    concat--candidates-->fm[Factorization Machine\nRecommendation]
+    fm--recommendation-->remove[Remove\nRead Items]
+    database2[(Database)]--feedback-->remove
+    remove--recommendation-->explore[Explore\nRecommendation]
+    cache2[(Cache)]--latest and popular items-->explore
+    explore--recommendation-->cache3[(Cache)]
+```
+
+First, the worker collects candidates from latest items, popular items, user similarity-based recommendation, item similarity-based recommendation and matrix factorization recommendation. Sources of candidates can be enabled or disabled in the configuration. Then, candidates are ranked by the factorization machine and read items are removed. If `enable_click_through_prediction` is `false`, candidates are ranked by random. Finally, popular items and latest items will be injected to recommendation with probabilities defined in `explore_recommend`. Offline recommendation result will be written to cache.
+
+```toml
+[recommend.offline]
+
+# The time period to check recommendation for users. The default values is 1m.
+check_recommend_period = "1m"
+
+# The time period to refresh recommendation for inactive users. The default values is 120h.
+refresh_recommend_period = "24h"
+
+# Enable latest recommendation during offline recommendation. The default value is false.
+enable_latest_recommend = true
+
+# Enable popular recommendation during offline recommendation. The default value is false.
+enable_popular_recommend = false
+
+# Enable user-based similarity recommendation during offline recommendation. The default value is false.
+enable_user_based_recommend = true
+
+# Enable item-based similarity recommendation during offline recommendation. The default value is false.
+enable_item_based_recommend = false
+
+# Enable collaborative filtering recommendation during offline recommendation. The default value is true.
+enable_collaborative_recommend = true
+
+# Enable click-though rate prediction during offline recommendation. Otherwise, results from multi-way recommendation
+# would be merged randomly. The default value is false.
+enable_click_through_prediction = true
+
+# The explore recommendation method is used to inject popular items or latest items into recommended result:
+#   popular: Recommend popular items to cold-start users.
+#   latest: Recommend latest items to cold-start users.
+# The default values is { popular = 0.0, latest = 0.0 }.
+explore_recommend = { popular = 0.1, latest = 0.2 }
+```
+
+### Server: Online Recommendation
+
+The server node expose RESTful APIs for data and recommendation.
+
+#### Data APIs
+
+Data APIs provide CRUD for users, items and feedback. When insert a feedback, the user and the item must exist. There are options in the configuration to insert users or items automatically or ignore these feedback with non-existed users or items.
+
+```toml
+[server]
+
+# Insert new users while inserting feedback. The default value is true.
+auto_insert_user = true
+
+# Insert new items while inserting feedback. The default value is true.
+auto_insert_item = true
+```
+
+#### Recommendation APIs
+
+Recommendation APIs return recommendation results. For non-personalized recommendations (latest items, popular items or neighbors), the server node fetches cached recommendation from cache database and sends responses. But the server node need to do more works for personalized recommendation.
+
+- **Recommendation:** Offline recommendation by workers are written to responses and read items will be removed. But if the offline recommendation cache is consumed up, fallback recommenders will be used. Recommenders in `fallback_recommend` will be tried in order.
+
+```mermaid
+flowchart LR
+    start((Start))-->offline[Load Offline\nRecommendation]
+    offline-->remove1[Remove\nRead Items]
+    remove1-->cond1{#recommend\n>= N}
+    cond1--yes-->e((End))
+    cond1--no-->fallback[#1 Fallback\nRecommendation]
+    fallback-->remove2[Remove\nRead Items]
+    remove2-->cond2{#recommend\n>= N}
+    cond2--yes-->e
+    cond2--no-->more["…"]
+```
+
+- **Session recommendation:** Session recommender generate recommendation for unregistered users based on user session-wise feedbacks. Session recommendations are generated by item similarity based algorithm based on latest $n$ feedback and read items from feedback will be removed from recommendations. The number of used feedback is set by `num_feedback_fallback_item_based`.
+
+```mermaid
+flowchart LR
+    request[Request]--feedback-->head(Latest N Feedback)
+    head--N feedback-->recommend(Item Similarity-based\nRecommendation)
+    recommend--recommendation-->remove(Remove Read Items)
+    remove--recommendation-->response(Response)
+    request--feedback-->remove
+    cache[(Cache)]--neighbors-->recommend
+```
+
+```toml
+[recommend.online]
+
+# The fallback recommendation method is used when cached recommendation drained out:
+#   item_based: Recommend similar items.
+#   popular: Recommend popular items.
+#   latest: Recommend latest items.
+# Recommenders are used in order. The default values is ["latest"].
+fallback_recommend = ["item_based", "latest"]
+
+# The number of feedback used in fallback item-based similar recommendation. The default values is 10.
+num_feedback_fallback_item_based = 10
+```

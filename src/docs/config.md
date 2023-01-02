@@ -102,8 +102,8 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 | `default_n` | integer | `10` | Default number of returned items [(RESTful APIs)](restful-apis#authorization) |
 | `api_key` | string |     | [Secret key for RESTful APIs (SSL required)](./api/restful-api.html#authorization) |
 | `clock_error` | integer | `5s` | clock error in the cluster [(RESTful APIs)](restful-apis#clock-error) |
-| `auto_insert_user` | boolean | `true` | Automatically insert new users when inserting new feedback [(Feedback Collection)](/build-recommender/feedback-collection#users-items-and-feedback) |
-| `auto_insert_item` | boolean | `true` | Automatically insert new items when inserting new feedback [(Feedback Collection)](/build-recommender/feedback-collection#users-items-and-feedback) |
+| `auto_insert_user` | boolean | `true` | [Automatically insert new users when inserting new feedback](./concepts/how-it-works#server-online-recommendation) |
+| `auto_insert_item` | boolean | `true` | [Automatically insert new items when inserting new feedback](./concepts/how-it-works#server-online-recommendation) |
 | `cache_expire` | string | `10s` | Server-side cache expire time [(RESTful APIs)](restful-apis#server-side-cache) |
 
 ## `recommend`
@@ -150,10 +150,10 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `model_fit_period` | integer | `60m` | Period of model training [(Performance vs Precision)](/build-recommender/performance-vs-precision#set-training-and-recommendation-period) |
-| `model_search_period` | integer | `360m` | Period of model search [(Performance vs Precision)](/build-recommender/performance-vs-precision#set-training-and-recommendation-period) |
-| `model_search_epoch` | integer | `100` | Number of training epochs for each model in model search [(Performance vs Precision)](/build-recommender/performance-vs-precision#set-training-and-recommendation-period) |
-| `model_search_trials` | integer | `10` | Number of trials for each model in model search [(Performance vs Precision)](/build-recommender/performance-vs-precision#set-training-and-recommendation-period) |
+| `model_fit_period` | integer | `60m` | [Period of model training](./concepts/how-it-works#master-neighbors-and-models) |
+| `model_search_period` | integer | `360m` | [Period of model search](./concepts/how-it-works#master-neighbors-and-models) |
+| `model_search_epoch` | integer | `100` | [Number of training epochs for each model in model search](./concepts/how-it-works#master-neighbors-and-models) |
+| `model_search_trials` | integer | `10` | [Number of trials for each model in model search](./concepts/how-it-works#master-neighbors-and-models) |
 | `enable_model_size_search` | boolean | `false` | Enable searching models of different sizes, which consume more memory. |
 | `enable_index` | boolean | `false` | [Enable approximate collaborative filtering recommend using HNSW index](./concepts/algorithms#matrix-factorization) |
 | `index_recall` | float | `0.9` | [Minimal recall for approximate collaborative filtering recommend](./concepts/algorithms#matrix-factorization) |
@@ -171,22 +171,22 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `check_recommend_period` | integer | `1m` | Period to check recommendation for users [(Performance vs Precision)](/build-recommender/performance-vs-precision#set-training-and-recommendation-period) |
-| `refresh_recommend_period` | integer | `24h` | Period to refresh offline recommendation cache [(Performance vs Precision)](/build-recommender/performance-vs-precision#set-training-and-recommendation-period) |
-| `enable_latest_recommend` | boolean | `false` | Enable latest recommendation during offline recommendation [(Recommendation Strategies)](/build-recommender/recommendation-strategies#offline-strategy) |
-| `enable_popular_recommend` | boolean | `false` | Enable popular recommendation during offline recommendation [(Recommendation Strategies)](/build-recommender/recommendation-strategies#offline-strategy) |
-| `enable_user_based_recommend` | boolean | `false` | Enable user-based similarity recommendation during offline recommendation [(Recommendation Strategies)](/build-recommender/recommendation-strategies#offline-strategy) |
-| `enable_item_based_recommend` | boolean | `false` | Enable item-based similarity recommendation during offline recommendation [(Recommendation Strategies)](/build-recommender/recommendation-strategies#offline-strategy) |
-| `enable_collaborative_recommend` | boolean | `true` | Enable collaborative filtering recommendation during offline recommendation [(Recommendation Strategies)](/build-recommender/recommendation-strategies#offline-strategy) |
-| `enable_click_through_prediction` | boolean | `false` | Enable click-though rate prediction during offline recommendation. Otherwise, results from multi-way recommendation would be merged randomly [(Recommendation Strategies)](/build-recommender/recommendation-strategies#offline-strategy) |
-| `explore_recommend` | map | `{ popular = 0.0, latest = 0.0 }` | The explore recommendation method is used to inject popular items or latest items into recommended result [(Recommendation Strategies)](/build-recommender/recommendation-strategies#offline-strategy) |
+| `check_recommend_period` | integer | `1m` | [Period to check recommendation for users](./concepts/how-it-works#worker-offline-recommendation) |
+| `refresh_recommend_period` | integer | `24h` | [Period to refresh offline recommendation cache](./concepts/how-it-works#worker-offline-recommendation) |
+| `enable_latest_recommend` | boolean | `false` | [Enable latest recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
+| `enable_popular_recommend` | boolean | `false` | [Enable popular recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
+| `enable_user_based_recommend` | boolean | `false` | [Enable user-based similarity recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
+| `enable_item_based_recommend` | boolean | `false` | [Enable item-based similarity recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
+| `enable_collaborative_recommend` | boolean | `true` | [Enable collaborative filtering recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
+| `enable_click_through_prediction` | boolean | `false` | [Enable click-though rate prediction during offline recommendation. Otherwise, results from multi-way recommendation would be merged randomly](./concepts/how-it-works.html#worker-offline-recommendation) |
+| `explore_recommend` | map | `{ popular = 0.0, latest = 0.0 }` | [The explore recommendation method is used to inject popular items or latest items into recommended result](./concepts/how-it-works.html#worker-offline-recommendation) |
 
 ### `recommend.online`
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `fallback_recommend` | strings | `["latest"]` | Source of recommendation when personalized recommendation exhausted [(Recommendation Strategies)](/build-recommender/recommendation-strategies#online-strategy) |
-| `num_feedback_fallback_item_based` | integer | `10` | The number of feedback used in fallback item-based similar recommendation [(Recommendation Strategies)](/build-recommender/recommendation-strategies#online-strategy) |
+| `fallback_recommend` | strings | `["latest"]` | [Source of recommendation when personalized recommendation exhausted](./concepts/how-it-works.html#server-online-recommendation) |
+| `num_feedback_fallback_item_based` | integer | `10` | [The number of feedback used in fallback item-based similar recommendation](./concepts/how-it-works.html#server-online-recommendation) |
 
 ## Environment Variables
 
