@@ -91,7 +91,26 @@ The master node is driven by data loading. Data loading happens in every `model_
 
 - **Find Neighbors:** User neighbors and item neighbors are found and cached.
 - **Fit MF and FM** The matrix factorization model and factorization machine model are trained and delivered to workers.
-- **Optimize MF and FM:** In every `model_search_period`, random search is used to optimize MF and FM. The model searcher will generate `model_search_trials` combinations of hyper-parameters and the model with the best score during `model_search_epoch` epoch is used in the next model training period. In most cases, there is no need to change these two options.
+- **Optimize MF and FM:** In every `model_search_period`, random search is used to optimize MF and FM. The model searcher will generate `model_search_trials` combinations of hyper-parameters and the model with the best score during `model_search_epoch` epoch is used in the next model training period. In most cases, there is no need to change these two options. By default, the model size is fixed, set `enable_model_size_search` to search larger models, which consumes more memory.
+
+```toml
+[recommend.collaborative]
+
+# The time period for model fitting. The default value is "60m".
+model_fit_period = "60m"
+
+# The time period for model searching. The default value is "360m".
+model_search_period = "360m"
+
+# The number of epochs for model searching. The default value is 100.
+model_search_epoch = 100
+
+# The number of trials for model searching. The default value is 10.
+model_search_trials = 10
+
+# Enable searching models of different sizes, which consume more memory. The default value is false.
+enable_model_size_search = false
+```
 
 Once data is loaded, neighbor searching and model training starts in parallel. After neighbor searching and model training is finished, model optimization starts if the last optimize time is `model_search_period` ago.
 
@@ -232,4 +251,36 @@ fallback_recommend = ["item_based", "latest"]
 
 # The number of feedback used in fallback item-based similar recommendation. The default values is 10.
 num_feedback_fallback_item_based = 10
+```
+
+Besides recommendations, there are two important configurations for servers.
+
+- **Clock Error:** Gorse supports feedback with future timestamps, thus Gorse relies on a correct clock. However, clocks in different hosts might be different, `clock_error` should be the maximal difference between clocks.
+- **Cache Expiration:** Servers cache hidden items and popular items in the local cache to avoid accessing the external database too frequently. The local cache is refreshed every `cache_expire`.
+
+```toml
+[server]
+
+# Clock error in the cluster. The default value is 5s.
+clock_error = "5s"
+
+# Server-side cache expire time. The default value is 10s.
+cache_expire = "10s"
+```
+
+### Replacement
+
+In some cases, read items should be recommended to users again but with lower priorities. If `enable_replacement` is set, read items would be placed back to recommendations. The priority decay factors for positive feedbacks and read feedbacks are controlled by `positive_replacement_decay` and `read_replacement_decay`.
+
+```toml
+[recommend.replacement]
+
+# Replace historical items back to recommendations.
+enable_replacement = false
+
+# Decay the weights of replaced items from positive feedbacks.
+positive_replacement_decay = 0.8
+
+# Decay the weights of replaced items from read feedbacks.
+read_replacement_decay = 0.6
 ```

@@ -1,5 +1,6 @@
 {
     "recommendations": [
-        "znck.grammarly"
+        "znck.grammarly",
+        "bierner.markdown-mermaid"
     ]
 }

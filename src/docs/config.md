@@ -99,12 +99,12 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `default_n` | integer | `10` | Default number of returned items [(RESTful APIs)](restful-apis#authorization) |
+| `default_n` | integer | `10` | Default number of returned items |
 | `api_key` | string |     | [Secret key for RESTful APIs (SSL required)](./api/restful-api.html#authorization) |
-| `clock_error` | integer | `5s` | clock error in the cluster [(RESTful APIs)](restful-apis#clock-error) |
+| `clock_error` | integer | `5s` | [Clock error in the cluster](./concepts/how-it-works#server-online-recommendation)  |
 | `auto_insert_user` | boolean | `true` | [Automatically insert new users when inserting new feedback](./concepts/how-it-works#server-online-recommendation) |
 | `auto_insert_item` | boolean | `true` | [Automatically insert new items when inserting new feedback](./concepts/how-it-works#server-online-recommendation) |
-| `cache_expire` | string | `10s` | Server-side cache expire time [(RESTful APIs)](restful-apis#server-side-cache) |
+| `cache_expire` | string | `10s` | [Server-side cache expire time](./concepts/how-it-works#server-online-recommendation)  |
 
 ## `recommend`
 
@@ -154,7 +154,7 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 | `model_search_period` | integer | `360m` | [Period of model search](./concepts/how-it-works#master-neighbors-and-models) |
 | `model_search_epoch` | integer | `100` | [Number of training epochs for each model in model search](./concepts/how-it-works#master-neighbors-and-models) |
 | `model_search_trials` | integer | `10` | [Number of trials for each model in model search](./concepts/how-it-works#master-neighbors-and-models) |
-| `enable_model_size_search` | boolean | `false` | Enable searching models of different sizes, which consume more memory. |
+| `enable_model_size_search` | boolean | `false` | [Enable searching models of different sizes, which consume more memory](./concepts/how-it-works#master-neighbors-and-models) |
 | `enable_index` | boolean | `false` | [Enable approximate collaborative filtering recommend using HNSW index](./concepts/algorithms#matrix-factorization) |
 | `index_recall` | float | `0.9` | [Minimal recall for approximate collaborative filtering recommend](./concepts/algorithms#matrix-factorization) |
 | `index_fit_epoch` | integer | `3` | [Maximal number of fit epochs for approximate collaborative filtering recommend HNSW index](./concepts/algorithms#matrix-factorization) |
@@ -163,9 +163,9 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `enable_replacement` | boolean | `false` | Replace historical items back to recommendations [(Performance vs Precision)](/build-recommender/recommendation-strategies#offline-strategy) |
-| `positive_replacement_decay` | float | `0.8` | Decay the weights of replaced items from positive feedbacks [(Performance vs Precision)](/build-recommender/recommendation-strategies#offline-strategy) |
-| `read_replacement_decay` | float | `0.6` | Decay the weights of replaced items from read feedbacks [(Performance vs Precision)](/build-recommender/recommendation-strategies#offline-strategy) |
+| `enable_replacement` | boolean | `false` | [Replace historical items back to recommendations](./concepts/how-it-works#replacement) |
+| `positive_replacement_decay` | float | `0.8` | [Decay the weights of replaced items from positive feedbacks](./concepts/how-it-works#replacement) |
+| `read_replacement_decay` | float | `0.6` | [Decay the weights of replaced items from read feedbacks](./concepts/how-it-works#replacement) |
 
 ### `recommend.offline`
 
