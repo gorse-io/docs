@@ -19,6 +19,11 @@ export const zhSidebar = sidebar({
       ]
     },
     {
+      text: '配置项',
+      icon: 'config_s',
+      link: '/zh/docs/config'
+    },
+    {
       text: '概念详解',
       icon: 'idea',
       collapsible: true,
