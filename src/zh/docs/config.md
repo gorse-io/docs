@@ -1,21 +1,22 @@
 ---
 icon: config_s
 ---
-# Configuration
 
-These configuration items without default values must be filled. It's highly recommended to create a new config file based on [the configuration template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml). *The "description" for each option links to the detailed usage of this option.*
+# 配置项
+
+这些没有默认值的配置项必须填写。强烈建议根据[配置模板](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml)创建一个新的配置文件。*点击每个配置项的“描述”查看该配置项的详细用法。*
 
 ## `database`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `data_store` | string |     | Database for data storage, supports MySQL, PostgreSQL, ClickHouse and MongoDB. |
-| `cache_store` | string |     | Database for cache storage, supports MySQL, PostgreSQL, MongoDB and Redis. |
-| `table_prefix` | string | | Naming prefix for tables (collections, keys) in databases. |
-| `cache_table_prefix` | string | | Naming prefix for tables (collections, keys) in cache storage databases. If empty, `table_prefix` is used. |
-| `data_table_prefix` | string | | Naming prefix for tables (collections, keys) in data storage databases. If empty, `table_prefix` is used. |
+配置项 | 类型 | 默认值 | 描述
+--- | --- | --- | ---
+`data_store` | 字符串 |  | 用于数据存储的数据库，支持MySQL、PostgreSQL、ClickHouse和MongoDB。
+`cache_store` | 字符串 |  | 用于缓存存储的数据库，支持MySQL、PostgreSQL、MongoDB和Redis。
+`table_prefix` | 字符串 |  | 数据库中表（集合、键）的命名前缀。
+`cache_table_prefix` | 字符串 |  | 缓存存储数据库中表（集合、键）的命名前缀。如果为空，则使用`table_prefix` 。
+`data_table_prefix` | 字符串 |  | 数据存储数据库中表（集合、键）的命名前缀。如果为空，则使用`table_prefix` 。
 
-The DSN (Database Source Name) format of the `data_store` and `cache_store` is as follows.
+`data_store`和`cache_store`的DSN（Database Source Name）格式如下。
 
 ::: tabs
 
@@ -32,7 +33,7 @@ rediss://<user>:<password>@<host>:<port>/<db_number>
 redis+cluster://<user>:<password>@<host>:<port>/<db_number>
 ```
 
-Document: https://pkg.go.dev/github.com/go-redis/redis/v8#ParseURL
+文档：https://pkg.go.dev/github.com/go-redis/redis/v8#ParseURL
 
 @tab MySQL
 
@@ -40,7 +41,7 @@ Document: https://pkg.go.dev/github.com/go-redis/redis/v8#ParseURL
 mysql://[username[:password]@][protocol[(hostname:port)]]/database[?config1=value1&...configN=valueN]
 ```
 
-Document: https://github.com/go-sql-driver/mysql#dsn-data-source-name
+文档：https://github.com/go-sql-driver/mysql#dsn-data-source-name
 
 @tab Postgres
 
@@ -51,7 +52,8 @@ postgres://bob:secret@1.2.3.4:5432/mydb?sslmode=verify-full
 # Option 2
 postgresql://bob:secret@1.2.3.4:5432/mydb?sslmode=verify-full
 ```
-Document: https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING
+
+文档：https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING
 
 @tab MongoDB
 
@@ -63,7 +65,7 @@ mongodb://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[datab
 mongodb+srv://server.example.com/
 ```
 
-Document: https://www.mongodb.com/docs/manual/reference/connection-string/
+文档：https://www.mongodb.com/docs/manual/reference/connection-string/
 
 @tab ClickHouse
 
@@ -78,132 +80,132 @@ chhttp://user:password@host[:port]/database?param1=value1&...&paramN=valueN
 chhttps://user:password@host[:port]/database?param1=value1&...&paramN=valueN
 ```
 
-Document: https://github.com/mailru/go-clickhouse#dsn
+文档：https://github.com/mailru/go-clickhouse#dsn
 
 :::
 
 ## `master`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `host` | string | `"0.0.0.0"` | [Master node listening host for gRPC service (metadata exchange)](./concepts/how-it-works#architecture) |
-| `port` | integer | `8086` | [Master node listening port for gRPC service (metadata exchange)](./concepts/how-it-works#architecture) |
-| `http_host` | string | `"0.0.0.0"` | [Master node listening host for HTTP service (dashboard and metrics)](./gorse-dashboard#login) |
-| `http_port` | integer | `8088` | [Master node listening port for HTTP service (dashboard and metrics)](./gorse-dashboard#login) |
-| `n_jobs` | integer | `1` | [Number of working threads for the master node](./concepts/how-it-works#architecture) |
-| `meta_timeout` | integer | `10s` | [Metadata timeout](./concepts/how-it-works#architecture) |
-| `dashboard_user_name` | string |     | [Dashboard login username](./gorse-dashboard#login) |
-| `dashboard_password` | string |     | [Dashboard login password](./gorse-dashboard#login) |
+配置项 | 类型 | 默认值 | 描述
+--- | --- | --- | ---
+`host` | 字符串 | `"0.0.0.0"` | [主节点 gRPC 服务监听IP（用于元数据交换）](./concepts/how-it-works#architecture)
+`port` | 整型 | `8086` | [主节点 gRPC 监听端口（用于元数据交换）](./concepts/how-it-works#architecture)
+`http_host` | 字符串 | `"0.0.0.0"` | [主节点 HTTP 服务监听IP（用于控制台和指标监控）](./gorse-dashboard#login)
+`http_port` | 整型 | `8088` | [主节点 HTTP 服务监听端口（用于控制台和指标监控）](./gorse-dashboard#login)
+`n_jobs` | 整型 | `1` | [主节点的工作线程数](./concepts/how-it-works#architecture)
+`meta_timeout` | 整型 | `10s` | [元数据超时时间](./concepts/how-it-works#architecture)
+`dashboard_user_name` | 字符串 |  | [控制台登录用户名](./gorse-dashboard#login)
+`dashboard_password` | 字符串 |  | [控制台登录密码](./gorse-dashboard#login)
 
 ## `server`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `default_n` | integer | `10` | Default number of returned items [(RESTful APIs)](restful-apis#authorization) |
-| `api_key` | string |     | [Secret key for RESTful APIs (SSL required)](./api/restful-api.html#authorization) |
-| `clock_error` | integer | `5s` | clock error in the cluster [(RESTful APIs)](restful-apis#clock-error) |
-| `auto_insert_user` | boolean | `true` | [Automatically insert new users when inserting new feedback](./concepts/how-it-works#server-online-recommendation) |
-| `auto_insert_item` | boolean | `true` | [Automatically insert new items when inserting new feedback](./concepts/how-it-works#server-online-recommendation) |
-| `cache_expire` | string | `10s` | Server-side cache expire time [(RESTful APIs)](restful-apis#server-side-cache) |
+配置项 | 类型 | 默认值 | 描述
+--- | --- | --- | ---
+`default_n` | 整型 | `10` | 默认返回条目数量
+`api_key` | 字符串 |  | [RESTful API 的密钥（需要 SSL）](./api/restful-api.html#authorization)
+`clock_error` | 整型 | `5s` | [集群中的时钟误差](./concepts/how-it-works#server-online-recommendation)
+`auto_insert_user` | 布尔值 | `true` | [插入新反馈时自动插入新用户](./concepts/how-it-works#server-online-recommendation)
+`auto_insert_item` | 布尔值 | `true` | [插入新反馈时自动插入新物品](./concepts/how-it-works#server-online-recommendation)
+`cache_expire` | 字符串 | `10s` | [服务节点本地缓存过期时间](./concepts/how-it-works#server-online-recommendation)
 
 ## `recommend`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `cache_size` | string | `100` | [Number of cached elements in cache store](./concepts/how-it-works#recommendation-flow) |
-| `cache_expire` | string | `72h` | [Recommended cache expire time](./concepts/how-it-works#recommendation-flow) |
+配置项 | 类型 | 默认值 | 描述
+--- | --- | --- | ---
+`cache_size` | 字符串 | `100` | [推荐缓存大小](./concepts/how-it-works#recommendation-flow)
+`cache_expire` | 字符串 | `72h` | [推荐缓存过期时间](./concepts/how-it-works#recommendation-flow)
 
 ### `recommend.data_source`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `positive_feedback_types` | string |     | [Types of positive feedback](./concepts/data-objects#positive-feedback-and-read-feedback) |
-| `read_feedback_types` | string |     | [Type of read feedback](./concepts/data-objects#positive-feedback-and-read-feedback) |
-| `positive_feedback_ttl` | string | `0` | [Time-to-live of positive feedback](./concepts/data-objects#time-to-live-1) |
-| `item_ttl` | string | `0` | [Time-to-live of items](./concepts/data-objects#time-to-live) |
+配置项 | 类型 | 默认值 | 描述
+--- | --- | --- | ---
+`positive_feedback_types` | 字符串 |  | [正向反馈的类型](./concepts/data-objects#positive-feedback-and-read-feedback)
+`read_feedback_types` | 字符串 |  | [已读反馈的类型](./concepts/data-objects#positive-feedback-and-read-feedback)
+`positive_feedback_ttl` | 字符串 | `0` | [正反馈的有效时间](./concepts/data-objects#time-to-live-1)
+`item_ttl` | 字符串 | `0` | [物品的有效时间](./concepts/data-objects#time-to-live)
 
 ### `recommend.popular`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `popular_window` | integer | `4320h` | [Time window of popular items in days](./concepts/algorithms#popular-items) |
+配置项 | 类型 | 默认值 | 描述
+--- | --- | --- | ---
+`popular_window` | 整型 | `4320h` | [以天为单位的热门物品的时间窗口](./concepts/algorithms#popular-items)
 
 ### `recommend.user_neighbors`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `neighbor_type` | string | `"auto"` | [The type of neighbors for users](./concepts/algorithms#item-similarity) |
-| `enable_index` | boolean | `false` | [Enable approximate item neighbor searching using clustering index](./concepts/algorithms#clustering-index) |
-| `index_recall` | float | `0.8` | [Minimal recall for approximate item neighbor searching](./concepts/algorithms#clustering-index) |
-| `index_fit_epoch` | integer | `3` | [Maximal number of fit epochs for approximate item neighbor searching clustering index](./concepts/algorithms#clustering-index) |
+配置项 | 类型 | 默认值 | 描述
+--- | --- | --- | ---
+`neighbor_type` | 字符串 | `"auto"` | [相似用户算法](./concepts/algorithms#item-similarity)
+`enable_index` | 布尔值 | `false` | [使用聚类索引搜索相似用户](./concepts/algorithms#clustering-index)
+`index_recall` | 浮点 | `0.8` | [聚类索引的最小召回率](./concepts/algorithms#clustering-index)
+`index_fit_epoch` | 整型 | `3` | [聚类索引的最大拟合次数](./concepts/algorithms#clustering-index)
 
 ### `recommend.item_neighbors`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `neighbor_type` | string | `"auto"` | [The type of neighbors for items](./concepts/algorithms#user-similarity) |
-| `enable_index` | boolean | `false` | [Enable approximate item neighbor searching using clustering index](./concepts/algorithms#clustering-index) |
-| `index_recall` | float | `0.8` | [Minimal recall for approximate user neighbor searching](./concepts/algorithms#clustering-index) |
-| `index_fit_epoch` | integer | `3` | [Maximal number of fit epochs for approximate user neighbor searching clustering index](./concepts/algorithms#clustering-index) |
+配置项 | 类型 | 默认值 | 描述
+--- | --- | --- | ---
+`neighbor_type` | 字符串 | `"auto"` | [相似物品算法](./concepts/algorithms#user-similarity)
+`enable_index` | 布尔值 | `false` | [使用聚类索引搜索相似物品](./concepts/algorithms#clustering-index)
+`index_recall` | 浮点 | `0.8` | [聚类索引的最小召回率](./concepts/algorithms#clustering-index)
+`index_fit_epoch` | 整型 | `3` | [聚类索引的最大拟合次数](./concepts/algorithms#clustering-index)
 
 ### `recommend.collaborative`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `model_fit_period` | integer | `60m` | [Period of model training](./concepts/how-it-works#master-neighbors-and-models) |
-| `model_search_period` | integer | `360m` | [Period of model search](./concepts/how-it-works#master-neighbors-and-models) |
-| `model_search_epoch` | integer | `100` | [Number of training epochs for each model in model search](./concepts/how-it-works#master-neighbors-and-models) |
-| `model_search_trials` | integer | `10` | [Number of trials for each model in model search](./concepts/how-it-works#master-neighbors-and-models) |
-| `enable_model_size_search` | boolean | `false` | Enable searching models of different sizes, which consume more memory. |
-| `enable_index` | boolean | `false` | [Enable approximate collaborative filtering recommend using HNSW index](./concepts/algorithms#matrix-factorization) |
-| `index_recall` | float | `0.9` | [Minimal recall for approximate collaborative filtering recommend](./concepts/algorithms#matrix-factorization) |
-| `index_fit_epoch` | integer | `3` | [Maximal number of fit epochs for approximate collaborative filtering recommend HNSW index](./concepts/algorithms#matrix-factorization) |
+配置项 | 类型 | 默认值 | 描述
+--- | --- | --- | ---
+`model_fit_period` | 整型 | `60m` | [模型训练周期](./concepts/how-it-works#master-neighbors-and-models)
+`model_search_period` | 整型 | `360m` | [模型搜索周期](./concepts/how-it-works#master-neighbors-and-models)
+`model_search_epoch` | 整型 | `100` | [模型搜索中每个模型的训练迭代数](./concepts/how-it-works#master-neighbors-and-models)
+`model_search_trials` | 整型 | `10` | [模型搜索中试验模型数](./concepts/how-it-works#master-neighbors-and-models)
+`enable_model_size_search` | 布尔值 | `false` | [启用搜索不同大小的模型，这会占用更多内存](./concepts/how-it-works#master-neighbors-and-models)
+`enable_index` | 布尔值 | `false` | [使用 HNSW 索引加速协同过滤推荐](./concepts/algorithms#matrix-factorization)
+`index_recall` | 浮点 | `0.9` | [HNSW最小召回率](./concepts/algorithms#matrix-factorization)
+`index_fit_epoch` | 整型 | `3` | [HNSW最大拟合次数](./concepts/algorithms#matrix-factorization)
 
 ### `recommend.replacement`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `enable_replacement` | boolean | `false` | Replace historical items back to recommendations [(Performance vs Precision)](/build-recommender/recommendation-strategies#offline-strategy) |
-| `positive_replacement_decay` | float | `0.8` | Decay the weights of replaced items from positive feedbacks [(Performance vs Precision)](/build-recommender/recommendation-strategies#offline-strategy) |
-| `read_replacement_decay` | float | `0.6` | Decay the weights of replaced items from read feedbacks [(Performance vs Precision)](/build-recommender/recommendation-strategies#offline-strategy) |
+配置项 | 类型 | 默认值 | 描述
+--- | --- | --- | ---
+`enable_replacement` | 布尔值 | `false` | [将历史物品放回推荐池](./concepts/how-it-works#replacement)
+`positive_replacement_decay` | 浮点 | `0.8` | [正向反馈物品放回衰减权重](./concepts/how-it-works#replacement)
+`read_replacement_decay` | 浮点 | `0.6` | [已读反馈物品放回衰减权重](./concepts/how-it-works#replacement)
 
 ### `recommend.offline`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `check_recommend_period` | integer | `1m` | [Period to check recommendation for users](./concepts/how-it-works#worker-offline-recommendation) |
-| `refresh_recommend_period` | integer | `24h` | [Period to refresh offline recommendation cache](./concepts/how-it-works#worker-offline-recommendation) |
-| `enable_latest_recommend` | boolean | `false` | [Enable latest recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
-| `enable_popular_recommend` | boolean | `false` | [Enable popular recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
-| `enable_user_based_recommend` | boolean | `false` | [Enable user-based similarity recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
-| `enable_item_based_recommend` | boolean | `false` | [Enable item-based similarity recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
-| `enable_collaborative_recommend` | boolean | `true` | [Enable collaborative filtering recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
-| `enable_click_through_prediction` | boolean | `false` | [Enable click-though rate prediction during offline recommendation. Otherwise, results from multi-way recommendation would be merged randomly](./concepts/how-it-works.html#worker-offline-recommendation) |
-| `explore_recommend` | map | `{ popular = 0.0, latest = 0.0 }` | [The explore recommendation method is used to inject popular items or latest items into recommended result](./concepts/how-it-works.html#worker-offline-recommendation) |
+配置项 | 类型 | 默认值 | 描述
+--- | --- | --- | ---
+`check_recommend_period` | 整型 | `1m` | [触发离线推荐的周期](./concepts/how-it-works#worker-offline-recommendation)
+`refresh_recommend_period` | 整型 | `24h` | [强制刷新离线推荐的周期](./concepts/how-it-works#worker-offline-recommendation)
+`enable_latest_recommend` | 布尔值 | `false` | [离线推荐时启用最新推荐](./concepts/how-it-works.html#worker-offline-recommendation)
+`enable_popular_recommend` | 布尔值 | `false` | [离线推荐时开启热门推荐](./concepts/how-it-works.html#worker-offline-recommendation)
+`enable_user_based_recommend` | 布尔值 | `false` | [在离线推荐期间启用基于相似用户的推荐](./concepts/how-it-works.html#worker-offline-recommendation)
+`enable_item_based_recommend` | 布尔值 | `false` | [在离线推荐期间启用基于相似物品的推荐](./concepts/how-it-works.html#worker-offline-recommendation)
+`enable_collaborative_recommend` | 布尔值 | `true` | [离线推荐时启用协同过滤推荐](./concepts/how-it-works.html#worker-offline-recommendation)
+`enable_click_through_prediction` | 布尔值 | `false` | [在离线推荐期间启用点击率预测。否则，多路推荐的结果将被随机合并](./concepts/how-it-works.html#worker-offline-recommendation)
+`explore_recommend` | 字段 | `{ popular = 0.0, latest = 0.0 }` | [在探索推荐阶段，将热门物品或最新物品注入推荐结果的比例](./concepts/how-it-works.html#worker-offline-recommendation)
 
 ### `recommend.online`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `fallback_recommend` | strings | `["latest"]` | [Source of recommendation when personalized recommendation exhausted](./concepts/how-it-works.html#server-online-recommendation) |
-| `num_feedback_fallback_item_based` | integer | `10` | [The number of feedback used in fallback item-based similar recommendation](./concepts/how-it-works.html#server-online-recommendation) |
+配置项 | 类型 | 默认值 | 描述
+--- | --- | --- | ---
+`fallback_recommend` | 字符串 | `["latest"]` | [离线推荐耗尽时的兜底的推荐算法](./concepts/how-it-works.html#server-online-recommendation)
+`num_feedback_fallback_item_based` | 整型 | `10` | [在线相似物品推荐使用的用户正反馈数量](./concepts/how-it-works.html#server-online-recommendation)
 
-## Environment Variables
+## 环境变量
 
-Part of configurations can be overwritten by environment variables.
+部分配置可以被环境变量覆盖。
 
-| Configuration | Environment Variable |
-| --- | --- |
-| `database.cache_store` | `GORSE_CACHE_STORE` |
-| `database.data_store` | `GORSE_DATA_STORE` |
-| `database.table_prefix` | `GORSE_TABLE_PREFIX` |
-| `database.cache_table_prefix` | `GORSE_CACHE_TABLE_PREFIX` |
-| `database.data_table_prefix` | `GORSE_DATA_TABLE_PREFIX` |
-| `master.port` | `GORSE_MASTER_PORT` |
-| `master.host` | `GORSE_MASTER_HOST` |
-| `master.http_port` | `GORSE_MASTER_HTTP_PORT` |
-| `master.http_host` | `GORSE_MASTER_HTTP_HOST` |
-| `master.n_jobs` | `GORSE_MASTER_JOBS` |
-| `master.dashboard_user_name` | `GORSE_DASHBOARD_USER_NAME` |
-| `master.dashboard_password` | `GORSE_DASHBOARD_PASSWORD` |
-| `server.api_key` | `GORSE_SERVER_API_KEY` |
+配置项 | 环境变量
+--- | ---
+`database.cache_store` | `GORSE_CACHE_STORE`
+`database.data_store` | `GORSE_DATA_STORE`
+`database.table_prefix` | `GORSE_TABLE_PREFIX`
+`database.cache_table_prefix` | `GORSE_CACHE_TABLE_PREFIX`
+`database.data_table_prefix` | `GORSE_DATA_TABLE_PREFIX`
+`master.port` | `GORSE_MASTER_PORT`
+`master.host` | `GORSE_MASTER_HOST`
+`master.http_port` | `GORSE_MASTER_HTTP_PORT`
+`master.http_host` | `GORSE_MASTER_HTTP_HOST`
+`master.n_jobs` | `GORSE_MASTER_JOBS`
+`master.dashboard_user_name` | `GORSE_DASHBOARD_USER_NAME`
+`master.dashboard_password` | `GORSE_DASHBOARD_PASSWORD`
+`server.api_key` | `GORSE_SERVER_API_KEY`
