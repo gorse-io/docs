@@ -1,83 +1,71 @@
 ---
 icon: chart
 ---
-# Evaluation
 
-To estimate the performance of a recommender system, evaluation is needed. Gorse provides both online evaluation and offline evaluation.
+# 效果评估
 
-## Online Evaluation
+要观测推荐系统的推荐能力，需要进行效果评估。 Gorse 提供在线评估和离线评估。
 
-The target of a recommender system is to maximize the probability every user like recommended items. Thus, the metric for online evaluation is the positive feedback rate
+## 在线评估
 
-$$
-\text{positive rate}=\frac{1}{|U|}\sum_{i\in |U|}\frac{|R^p_u|}{|R^r_u|}
-$$
+推荐系统的目标是最大化每个用户喜欢推荐物品的概率。因此，在线评估的指标是正反馈率
 
-where $R^r_u$ is the set of read feedback from user $u$, and $R^p_U$ is the set of a specific positive feedback. Gorse calculates positive rates every day and plots them as the line chart.
+$$ \text{positive rate}=\frac{1}{|U|}\sum_{i\in |U|}\frac{|R^p_u|}{|R^r_u|} $$
 
-For example, there are two positive feedback types (like and star) in [GitRec](https://gitrec.gorse.io/#/). Thus, the like rate and star rate are shown on the overview page of the dashboard.
+其中 $R^r_u$ 是来自用户 $u$ 的已读反馈集合，$R^p_U$ 是某类型正反馈集合。 Gorse 每天计算正反馈率并将其绘制为折线图。
+
+例如，在[GitRec](https://gitrec.gorse.io/#/)中有两种正反馈类型（“喜欢”和“点赞”）。因此，喜欢率和点赞率显示在控制台的概览页面上。
 
 ![](../../../img/dashboard-overview.png)
 
-## Offline Evaluation
+## 离线评估
 
-Offline evaluation is used to estimate the performance of an individual algorithm. It allows users to inspect the status of an individual algorithm. Thus, this section is organized by different algorithms.
+离线评估用于评估单个算法的推荐能力。它允许用户检查单个算法的状态。因此，本节按照不同的算法组织。
 
-### Factorization Machine
+### 因子分解机
 
-The factorization machines model predicts the probability that a user gives positive feedbacks on an item. Items with top probabilities are recommended to the user. The evaluation algorithm estimates the quality of prediction on given pairs of users and items. The dataset will be divided into a training dataset and a testing dataset. The following metrics will be calculated on the testing dataset.
+因子分解机模型预测用户对物品给出正反馈的概率。向用户推荐具有最高概率的物品。评估算法估计给定用户和物品情况下的预测质量。数据集将分为训练数据集和测试数据集，在测试数据集上计算以下指标。
 
-$$
-\text{precision}=\frac{tp}{tp+fp}
-$$
+$$ \text{precision}=\frac{tp}{tp+fp} $$
 
-where $tp=|\{i|y_i=1\wedge\hat y_i=1\}|$ and $fp=|\{i|y_i=0\wedge \hat y_i=1\}|$.
+其中 $tp=|{i|y_i=1\wedge\hat y_i=1}|$ 和 $fp=|{i|y_i=0\wedge\hat y_i=1}|$。
 
-$$
-\text{recall}=\frac{tp}{tp+fn}
-$$
+$$ \text{recall}=\frac{tp}{tp+fn} $$
 
-where $fn=\{i|y_i=1\wedge \hat y_i=0\}$.
+其中 $fn={i|y_i=1\wedge\hat y_i=0}$。
 
-$$
-\text{AUC}=\sum_{i\in P}\sum_{j \in N}\frac{\mathbb{I}(\hat y_i>\hat y_j)}{|P||N|}
-$$
+$$ \text{AUC}=\sum_{i\in P}\sum_{j \in N}\frac{\mathbb{I}(\hat y_i&gt;\hat y_j)}{|P||N|} $$
 
-where $P=\{i|y_i=1\}$ and $N=\{i|y_i=0\}$.
+其中 $P={i|y_i=1}$ 和 $N={i|y_i=0}$。
 
-### Matrix Factorization
+### 矩阵分解
 
-The matrix factorization filters out positive feedback from negative feedbacks and unobserved feedbacks. For each user, Gorse randomly leaves one feedback out of other positive feedbacks as the test item. The matrix factorization model is expected to rank the test item before other unobserved items. Since it is too time-consuming to rank all items for every user during evaluation, Gorse followed the common strategy[^1] that randomly samples 100 items that are not interacted with the user, ranking the test item among the 100 items. 
+矩阵分解从负反馈和未观察到的反馈中挑选出正反馈。对于每个用户，Gorse 从其他正反馈中随机留下一个反馈作为测试物品。矩阵分解模型被希望将测试物品排在其他未观察到的物品之前。由于在评估期间为每个用户对所有物品进行排名太耗时，Gorse随机抽取 100 个未与用户交互的物品 [^1] ，在 100 个物品中对测试物品进行排名。
 
-The matrix factorization is evaluated in top 10 recommendations. Suppose the matrix factorization recommends 10 items $\hat I^{(10)}_u$ to user $u$ and the test item is $i_u$
+矩阵分解在前 10 个推荐物品中进行评估。假设矩阵分解向用户$u$推荐了10个物品$\hat I^{(10)}_u$，测试物品为$i_u$
 
-$$
-\text{HR@10}=\sum_{u\in U}\frac{\mathbb{I}(i_u \in \hat I^{(10)}_u)}{|U|}
-$$
+$$ \text{HR@10}=\sum_{u\in U}\frac{\mathbb{I}(i_u \in \hat I^{(10)}_u)}{|U|} $$
 
-$$
-\text{NDCG@10}=\sum_{u \in U}\sum_{i=1}^{10}\frac{\mathbb{I}(i=\hat I^{(10)}_{u,i})}{\log_2(i+1)}
-$$
+$$ \text{NDCG@10}=\sum_{u \in U}\sum_{i=1}^{10}\frac{\mathbb{I}(i=\hat I^{(10)}_{u,i})}{\log_2(i+1)} $$
 
-where $\mathbb{I}(i=\hat I^{(10)}_{u,i})$ is the $i$-th item in the top 10 recommendations.
+其中 $\mathbb{I}(i=\hat I^{(10)}_{u,i})$ 是前 10 个推荐物品中的第 $i$ 个物品。
 
-### Clustering Index and HNSW Index
+### 聚类索引和 HNSW 索引
 
-The clustering index is used to speed up searching user (item) neighbors, while the HNSW index is used to accelerate recommendations from matrix factorization. The quality of an index is evaluated by the recall:
+聚类索引用于加速搜索相似用户（物品），而 HNSW 索引用于加速矩阵分解的推荐。索引的质量通过召回率来评估：
 
-$$
-\text{recall@n}=\frac{|\text{top n by index}|}{|\text{top n by brute force}|}
-$$
+$$ \text{recall@n}=\frac{|\text{索引搜索得到的top n}|}{|\text{暴力搜索得到的top n}|} $$
 
 ::: tip
 
-The recalls of indices are listed in the "System Status" section of the dashboard homepage.
+索引的召回率在仪表板主页的“系统状态”部分可以查看。
 
-![](../../../img/evaluation-neighbor-index-recall.jpeg =400x)
-![](../../../img/evaluation-mf-index-recall.jpeg =400x)
+![](../../../img/evaluation-neighbor-index-recall.jpeg =400x) ![](../../../img/evaluation-mf-index-recall.jpeg =400x)
 
-If the recall of an index is extremely low, consider turning off the index.
+如果某个索引的召回率极低，请考虑关闭该索引。
 
 :::
 
 [^1]: He, Xiangnan, et al. "Neural collaborative filtering." Proceedings of the 26th international conference on world wide web. 2017.
+
+
