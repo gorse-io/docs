@@ -73,8 +73,8 @@ $$
 
 The recalls of indices are listed in the "System Status" section of the dashboard homepage.
 
-![](../../img/evaluation-neighbor-index-recall.jpeg =400x)
-![](../../img/evaluation-mf-index-recall.jpeg =400x)
+![](../../../img/evaluation-neighbor-index-recall.jpeg =400x)
+![](../../../img/evaluation-mf-index-recall.jpeg =400x)
 
 If the recall of an index is extremely low, consider turning off the index.
 
