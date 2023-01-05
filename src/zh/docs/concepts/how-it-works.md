@@ -8,7 +8,7 @@ Gorse 的工作流程如下图所示：
 
 ```mermaid
 flowchart TD
-    database[(数据库)]--用户、物品和反馈-->load[加载数据]
+    database[(数据库)]--"用户、物品和反馈"-->load[加载数据]
     load--最新物品和热门物品-->cache[(缓存)]
     find_users--相似用户-->cache
     find_items--相似物品-->cache
@@ -20,7 +20,7 @@ flowchart TD
     end
 
     cache2--推荐缓存-->api[RESTful APIs]
-    database2[(数据库)]<--用户、物品和反馈-->api
+    database2[(数据库)]<--"用户、物品和反馈"-->api
     subgraph 服务节点
         api<--最新物品和热门物品-->local_cache[本地缓存]
     end
