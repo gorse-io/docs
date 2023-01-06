@@ -146,15 +146,15 @@ $$ w_i = -\log\left(\frac{|U_i|}{|U|}\right) $$
 
 基于标签权重和物品权重，Gorse 实现了三种相似度算法：
 
-- **相似：**根据用户之间的标签重叠程度来计算相似度
+- **相似：** 根据用户之间的标签重叠程度来计算相似度
 
 $$ s_{uv} = \frac{\sum_{l\in L_u \cap L_v}w_l}{\sqrt{\sum_{l\in L_u}w_l^2}\sqrt{\sum_{l\in L_v}w_l^2}} $$
 
-- **相关：**根据用户之间的物品重叠程度来计算相似度。
+- **相关：** 根据用户之间的物品重叠程度来计算相似度。
 
 $$ s_{uv} = \frac{\sum_{i\in I_u \cap I_v}w_i}{\sqrt{\sum_{i\in I_u}w_i^2}\sqrt{\sum_{i\in I_v}w_i^2}} $$
 
-- **自动：**根据用户之间的标签重叠程度和物品重叠程度来计算相似度。
+- **自动：** 根据用户之间的标签重叠程度和物品重叠程度来计算相似度。
 
 $$ s_{uv} = \frac{\sum_{l\in L_u \cap L_v}w_l + \sum_{i\in I_u \cap I_v}w_i}{\sqrt{\sum_{l\in L_u}w_l^2 + \sum_{i\in I_u}w_i^2}\sqrt{\sum_{l\in L_v}w_l^2 + \sum_{i\in I_v}w_i^2}} $$
 
@@ -177,7 +177,7 @@ neighbor_type = "similar"
 
 Gorse 需要为每个用户和物品生成相似推荐，但这是一个昂贵的过程。通过暴力为所有物品生成相似推荐的复杂度是$O(|I|^2)$（为简单起见，假设相似度计算的复杂度是恒定的）。聚类索引[^9]在可接受的精度衰减的情况下，为每个物品搜索相似物品的效率更高。聚类索引的使用过程包括两个步骤
 
-1. **聚类：**使用*spherical k-means*算法将物品聚类到$k$类，类的中心点为$c_i$（$i/in{1./dots,K}$）。每个物品$j$都属于第$a_j$类。
+1. **聚类：** 使用*spherical k-means*算法将物品聚类到$k$类，类的中心点为$c_i$（$i/in{1./dots,K}$）。每个物品$j$都属于第$a_j$类。
 
 > - $a_j \leftarrow \text{rand}(k)$
 > - **while** $c_i$ 或 $a_j$ 在上一步迭代中发生改变 **do**
