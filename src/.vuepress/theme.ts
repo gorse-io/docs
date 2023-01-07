@@ -5,11 +5,6 @@ import { enSidebar, zhSidebar } from "./sidebar/index.js";
 export default hopeTheme({
   hostname: "https://gorse.io",
 
-  author: {
-    name: "zhenghaoz",
-    url: "https://github.com/zhenghaoz",
-  },
-
   iconAssets: "https://at.alicdn.com/t/c/font_3748819_srmoxls4kdd.css",
 
   logo: "/logo.png",
@@ -65,7 +60,6 @@ export default hopeTheme({
       categoryId: "DIC_kwDOFWPYq84CSXxH",
     },
 
-    // Disable features you don't want here
     mdEnhance: {
       align: true,
       attrs: true,
@@ -110,5 +104,11 @@ export default hopeTheme({
       vpre: true,
       vuePlayground: true,
     },
-  },
+
+    blog: {
+      article: "/blog/",
+      filter: ({ pathLocale, filePathRelative }) =>
+        filePathRelative ? filePathRelative.startsWith(pathLocale.substring(1) + "posts/") : false
+    }
+  }
 });

@@ -1,6 +1,7 @@
 {
     "recommendations": [
-        "znck.grammarly",
-        "bierner.markdown-mermaid"
+        "bierner.markdown-mermaid",
+        "vue.volar",
+        "znck.grammarly"
     ]
 }
