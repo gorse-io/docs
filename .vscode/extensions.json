@@ -1,7 +1,7 @@
 {
     "recommendations": [
         "bierner.markdown-mermaid",
-        "vue.volar",
+        "funkyremi.vscode-google-translate",
         "znck.grammarly"
     ]
 }
