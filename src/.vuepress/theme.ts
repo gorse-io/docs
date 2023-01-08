@@ -5,7 +5,7 @@ import { enSidebar, zhSidebar } from "./sidebar/index.js";
 export default hopeTheme({
   hostname: "https://gorse.io",
 
-  iconAssets: "https://at.alicdn.com/t/c/font_3748819_srmoxls4kdd.css",
+  iconAssets: "https://at.alicdn.com/t/c/font_3748819_l4201g8napn.css",
 
   logo: "/logo.png",
 
