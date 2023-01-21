@@ -70,14 +70,149 @@ Save the code to `mm512_mul_to.c` and use the following command to compile the C
 ```bash
 # Generate assembly
 clang -S -c mm512_mul_to.c -o mm512_mul_to.s \
+  -O3 -mavx -mfma -mavx512f -mavx512dq \
   -mno-red-zone -mstackrealign -mllvm -inline-threshold=1000 \
   -fno-asynchronous-unwind-tables -fno-exceptions -fno-rtti
 
 # Generate binary
 clang -c mm512_mul_to.c -o mm512_mul_to.o \
+  -O3 -mavx -mfma -mavx512f -mavx512dq \
   -mno-red-zone -mstackrealign -mllvm -inline-threshold=1000 \
   -fno-asynchronous-unwind-tables -fno-exceptions -fno-rtti
 ```
+
+::: details mm512_mul_to.s
+
+```asm
+ .globl _mm512_mul_to                   # -- Begin function _mm512_mul_to
+ .p2align 4, 0x90
+ .type _mm512_mul_to,@function
+_mm512_mul_to:                          # @_mm512_mul_to
+# %bb.0:
+ pushq %rbp
+ movq %rsp, %rbp
+ andq $-8, %rsp
+ leaq 15(%rcx), %r9
+ testq %rcx, %rcx
+ cmovnsq %rcx, %r9
+ shrq $4, %r9
+ movl %r9d, %eax
+ shll $4, %eax
+ subl %eax, %ecx
+ testl %r9d, %r9d
+ jle .LBB3_6
+# %bb.1:
+ leal -1(%r9), %eax
+ movl %r9d, %r8d
+ andl $3, %r8d
+ cmpl $3, %eax
+ jb .LBB3_4
+# %bb.2:
+ andl $-4, %r9d
+ negl %r9d
+ .p2align 4, 0x90
+.LBB3_3:                                # =>This Inner Loop Header: Depth=1
+ vmovups (%rdi), %zmm0
+ vmulps (%rsi), %zmm0, %zmm0
+ vmovups %zmm0, (%rdx)
+ vmovups 64(%rdi), %zmm0
+ vmulps 64(%rsi), %zmm0, %zmm0
+ vmovups %zmm0, 64(%rdx)
+ vmovups 128(%rdi), %zmm0
+ vmulps 128(%rsi), %zmm0, %zmm0
+ vmovups %zmm0, 128(%rdx)
+ vmovups 192(%rdi), %zmm0
+ vmulps 192(%rsi), %zmm0, %zmm0
+ vmovups %zmm0, 192(%rdx)
+ addq $256, %rdi                      # imm = 0x100
+ addq $256, %rsi                      # imm = 0x100
+ addq $256, %rdx                      # imm = 0x100
+ addl $4, %r9d
+ jne .LBB3_3
+.LBB3_4:
+ testl %r8d, %r8d
+ je .LBB3_6
+ .p2align 4, 0x90
+.LBB3_5:                                # =>This Inner Loop Header: Depth=1
+ vmovups (%rdi), %zmm0
+ vmulps (%rsi), %zmm0, %zmm0
+ vmovups %zmm0, (%rdx)
+ addq $64, %rdi
+ addq $64, %rsi
+ addq $64, %rdx
+ addl $-1, %r8d
+ jne .LBB3_5
+.LBB3_6:
+ cmpl $7, %ecx
+ jle .LBB3_8
+# %bb.7:
+ vmovups (%rdi), %ymm0
+ vmulps (%rsi), %ymm0, %ymm0
+ vmovups %ymm0, (%rdx)
+ addq $32, %rdi
+ addq $32, %rsi
+ addq $32, %rdx
+ addl $-8, %ecx
+.LBB3_8:
+ testl %ecx, %ecx
+ jle .LBB3_14
+# %bb.9:
+ movl %ecx, %ecx
+ leaq -1(%rcx), %rax
+ movl %ecx, %r8d
+ andl $3, %r8d
+ cmpq $3, %rax
+ jae .LBB3_15
+# %bb.10:
+ xorl %eax, %eax
+ jmp .LBB3_11
+.LBB3_15:
+ andl $-4, %ecx
+ xorl %eax, %eax
+ .p2align 4, 0x90
+.LBB3_16:                               # =>This Inner Loop Header: Depth=1
+ vmovss (%rdi,%rax,4), %xmm0            # xmm0 = mem[0],zero,zero,zero
+ vmulss (%rsi,%rax,4), %xmm0, %xmm0
+ vmovss %xmm0, (%rdx,%rax,4)
+ vmovss 4(%rdi,%rax,4), %xmm0           # xmm0 = mem[0],zero,zero,zero
+ vmulss 4(%rsi,%rax,4), %xmm0, %xmm0
+ vmovss %xmm0, 4(%rdx,%rax,4)
+ vmovss 8(%rdi,%rax,4), %xmm0           # xmm0 = mem[0],zero,zero,zero
+ vmulss 8(%rsi,%rax,4), %xmm0, %xmm0
+ vmovss %xmm0, 8(%rdx,%rax,4)
+ vmovss 12(%rdi,%rax,4), %xmm0          # xmm0 = mem[0],zero,zero,zero
+ vmulss 12(%rsi,%rax,4), %xmm0, %xmm0
+ vmovss %xmm0, 12(%rdx,%rax,4)
+ addq $4, %rax
+ cmpq %rax, %rcx
+ jne .LBB3_16
+.LBB3_11:
+ testq %r8, %r8
+ je .LBB3_14
+# %bb.12:
+ leaq (%rdx,%rax,4), %rcx
+ leaq (%rsi,%rax,4), %rdx
+ leaq (%rdi,%rax,4), %rax
+ xorl %esi, %esi
+ .p2align 4, 0x90
+.LBB3_13:                               # =>This Inner Loop Header: Depth=1
+ vmovss (%rax,%rsi,4), %xmm0            # xmm0 = mem[0],zero,zero,zero
+ vmulss (%rdx,%rsi,4), %xmm0, %xmm0
+ vmovss %xmm0, (%rcx,%rsi,4)
+ addq $1, %rsi
+ cmpq %rsi, %r8
+ jne .LBB3_13
+.LBB3_14:
+ movq %rbp, %rsp
+ popq %rbp
+ vzeroupper
+ retq
+.Lfunc_end3:
+ .size _mm512_mul_to, .Lfunc_end3-_mm512_mul_to
+                                        # -- End function
+```
+
+:::
 
 In Go, it is easy to execute the compile command with `exec.Command`.
 
@@ -95,110 +230,110 @@ objdump -d mm512_mul_to.o --insn-width 16
 
 ```
 0000000000000460 <_mm512_mul_to>:
- 460: 55 push %rbp
- 461: 48 89 e5 mov %rsp,%rbp
- 464: 48 83 e4 f8 and $0xfffffffffffffff8,%rsp
- 468: 4c 8d 49 0f lea 0xf(%rcx),%r9
- 46c: 48 85 c9 test %rcx,%rcx
- 46f: 4c 0f 49 c9 cmovns %rcx,%r9
- 473: 49 c1 e9 04 shr $0x4,%r9
- 477: 44 89 c8 mov %r9d,%eax
- 47a: c1 e0 04 shl $0x4,%eax
- 47d: 29 c1 sub %eax,%ecx
- 47f: 45 85 c9 test %r9d,%r9d
- 482: 0f 8e bc 00 00 00 jle 544 <_mm512_mul_to+0xe4>
- 488: 41 8d 41 ff lea -0x1(%r9),%eax
- 48c: 45 89 c8 mov %r9d,%r8d
- 48f: 41 83 e0 03 and $0x3,%r8d
- 493: 83 f8 03 cmp $0x3,%eax
- 496: 72 74 jb 50c <_mm512_mul_to+0xac>
- 498: 41 83 e1 fc and $0xfffffffc,%r9d
- 49c: 41 f7 d9 neg %r9d
- 49f: 90 nop
- 4a0: 62 f1 7c 48 10 07 vmovups (%rdi),%zmm0
- 4a6: 62 f1 7c 48 59 06 vmulps (%rsi),%zmm0,%zmm0
- 4ac: 62 f1 7c 48 11 02 vmovups %zmm0,(%rdx)
- 4b2: 62 f1 7c 48 10 47 01 vmovups 0x40(%rdi),%zmm0
- 4b9: 62 f1 7c 48 59 46 01 vmulps 0x40(%rsi),%zmm0,%zmm0
- 4c0: 62 f1 7c 48 11 42 01 vmovups %zmm0,0x40(%rdx)
- 4c7: 62 f1 7c 48 10 47 02 vmovups 0x80(%rdi),%zmm0
- 4ce: 62 f1 7c 48 59 46 02 vmulps 0x80(%rsi),%zmm0,%zmm0
- 4d5: 62 f1 7c 48 11 42 02 vmovups %zmm0,0x80(%rdx)
- 4dc: 62 f1 7c 48 10 47 03 vmovups 0xc0(%rdi),%zmm0
- 4e3: 62 f1 7c 48 59 46 03 vmulps 0xc0(%rsi),%zmm0,%zmm0
- 4ea: 62 f1 7c 48 11 42 03 vmovups %zmm0,0xc0(%rdx)
- 4f1: 48 81 c7 00 01 00 00 add $0x100,%rdi
- 4f8: 48 81 c6 00 01 00 00 add $0x100,%rsi
- 4ff: 48 81 c2 00 01 00 00 add $0x100,%rdx
- 506: 41 83 c1 04 add $0x4,%r9d
- 50a: 75 94 jne 4a0 <_mm512_mul_to+0x40>
- 50c: 45 85 c0 test %r8d,%r8d
- 50f: 74 33 je 544 <_mm512_mul_to+0xe4>
- 511: 66 2e 0f 1f 84 00 00 00 00 00 00 nopw %cs:0x0(%rax,%rax,1)
- 51b: 0f 1f 44 00 00 nopl 0x0(%rax,%rax,1)
- 520: 62 f1 7c 48 10 07 vmovups (%rdi),%zmm0
- 526: 62 f1 7c 48 59 06 vmulps (%rsi),%zmm0,%zmm0
- 52c: 62 f1 7c 48 11 02 vmovups %zmm0,(%rdx)
- 532: 48 83 c7 40 add $0x40,%rdi
- 536: 48 83 c6 40 add $0x40,%rsi
- 53a: 48 83 c2 40 add $0x40,%rdx
- 53e: 41 83 c0 ff add $0xffffffff,%r8d
- 542: 75 dc jne 520 <_mm512_mul_to+0xc0>
- 544: 83 f9 07 cmp $0x7,%ecx
- 547: 7e 1b jle 564 <_mm512_mul_to+0x104>
- 549: c5 fc 10 07 vmovups (%rdi),%ymm0
- 54d: c5 fc 59 06 vmulps (%rsi),%ymm0,%ymm0
- 551: c5 fc 11 02 vmovups %ymm0,(%rdx)
- 555: 48 83 c7 20 add $0x20,%rdi
- 559: 48 83 c6 20 add $0x20,%rsi
- 55d: 48 83 c2 20 add $0x20,%rdx
- 561: 83 c1 f8 add $0xfffffff8,%ecx
- 564: 85 c9 test %ecx,%ecx
- 566: 0f 8e ac 00 00 00 jle 618 <_mm512_mul_to+0x1b8>
- 56c: 89 c9 mov %ecx,%ecx
- 56e: 48 8d 41 ff lea -0x1(%rcx),%rax
- 572: 41 89 c8 mov %ecx,%r8d
- 575: 41 83 e0 03 and $0x3,%r8d
- 579: 48 83 f8 03 cmp $0x3,%rax
- 57d: 73 04 jae 583 <_mm512_mul_to+0x123>
- 57f: 31 c0 xor %eax,%eax
- 581: eb 5b jmp 5de <_mm512_mul_to+0x17e>
- 583: 83 e1 fc and $0xfffffffc,%ecx
- 586: 31 c0 xor %eax,%eax
- 588: 0f 1f 84 00 00 00 00 00 nopl 0x0(%rax,%rax,1)
- 590: c5 fa 10 04 87 vmovss (%rdi,%rax,4),%xmm0
- 595: c5 fa 59 04 86 vmulss (%rsi,%rax,4),%xmm0,%xmm0
- 59a: c5 fa 11 04 82 vmovss %xmm0,(%rdx,%rax,4)
- 59f: c5 fa 10 44 87 04 vmovss 0x4(%rdi,%rax,4),%xmm0
- 5a5: c5 fa 59 44 86 04 vmulss 0x4(%rsi,%rax,4),%xmm0,%xmm0
- 5ab: c5 fa 11 44 82 04 vmovss %xmm0,0x4(%rdx,%rax,4)
- 5b1: c5 fa 10 44 87 08 vmovss 0x8(%rdi,%rax,4),%xmm0
- 5b7: c5 fa 59 44 86 08 vmulss 0x8(%rsi,%rax,4),%xmm0,%xmm0
- 5bd: c5 fa 11 44 82 08 vmovss %xmm0,0x8(%rdx,%rax,4)
- 5c3: c5 fa 10 44 87 0c vmovss 0xc(%rdi,%rax,4),%xmm0
- 5c9: c5 fa 59 44 86 0c vmulss 0xc(%rsi,%rax,4),%xmm0,%xmm0
- 5cf: c5 fa 11 44 82 0c vmovss %xmm0,0xc(%rdx,%rax,4)
- 5d5: 48 83 c0 04 add $0x4,%rax
- 5d9: 48 39 c1 cmp %rax,%rcx
- 5dc: 75 b2 jne 590 <_mm512_mul_to+0x130>
- 5de: 4d 85 c0 test %r8,%r8
- 5e1: 74 35 je 618 <_mm512_mul_to+0x1b8>
- 5e3: 48 8d 0c 82 lea (%rdx,%rax,4),%rcx
- 5e7: 48 8d 14 86 lea (%rsi,%rax,4),%rdx
- 5eb: 48 8d 04 87 lea (%rdi,%rax,4),%rax
- 5ef: 31 f6 xor %esi,%esi
- 5f1: 66 2e 0f 1f 84 00 00 00 00 00 nopw %cs:0x0(%rax,%rax,1)
- 5fb: 0f 1f 44 00 00 nopl 0x0(%rax,%rax,1)
- 600: c5 fa 10 04 b0 vmovss (%rax,%rsi,4),%xmm0
- 605: c5 fa 59 04 b2 vmulss (%rdx,%rsi,4),%xmm0,%xmm0
- 60a: c5 fa 11 04 b1 vmovss %xmm0,(%rcx,%rsi,4)
- 60f: 48 83 c6 01 add $0x1,%rsi
- 613: 49 39 f0 cmp %rsi,%r8
- 616: 75 e8 jne 600 <_mm512_mul_to+0x1a0>
- 618: 48 89 ec mov %rbp,%rsp
- 61b: 5d pop %rbp
- 61c: c5 f8 77 vzeroupper 
- 61f: c3 retq   
+ 460:   55                              push   %rbp
+ 461:   48 89 e5                        mov    %rsp,%rbp
+ 464:   48 83 e4 f8                     and    $0xfffffffffffffff8,%rsp
+ 468:   4c 8d 49 0f                     lea    0xf(%rcx),%r9
+ 46c:   48 85 c9                        test   %rcx,%rcx
+ 46f:   4c 0f 49 c9                     cmovns %rcx,%r9
+ 473:   49 c1 e9 04                     shr    $0x4,%r9
+ 477:   44 89 c8                        mov    %r9d,%eax
+ 47a:   c1 e0 04                        shl    $0x4,%eax
+ 47d:   29 c1                           sub    %eax,%ecx
+ 47f:   45 85 c9                        test   %r9d,%r9d
+ 482:   0f 8e bc 00 00 00               jle    544 <_mm512_mul_to+0xe4>
+ 488:   41 8d 41 ff                     lea    -0x1(%r9),%eax
+ 48c:   45 89 c8                        mov    %r9d,%r8d
+ 48f:   41 83 e0 03                     and    $0x3,%r8d
+ 493:   83 f8 03                        cmp    $0x3,%eax
+ 496:   72 74                           jb     50c <_mm512_mul_to+0xac>
+ 498:   41 83 e1 fc                     and    $0xfffffffc,%r9d
+ 49c:   41 f7 d9                        neg    %r9d
+ 49f:   90                              nop
+ 4a0:   62 f1 7c 48 10 07               vmovups (%rdi),%zmm0
+ 4a6:   62 f1 7c 48 59 06               vmulps (%rsi),%zmm0,%zmm0
+ 4ac:   62 f1 7c 48 11 02               vmovups %zmm0,(%rdx)
+ 4b2:   62 f1 7c 48 10 47 01            vmovups 0x40(%rdi),%zmm0
+ 4b9:   62 f1 7c 48 59 46 01            vmulps 0x40(%rsi),%zmm0,%zmm0
+ 4c0:   62 f1 7c 48 11 42 01            vmovups %zmm0,0x40(%rdx)
+ 4c7:   62 f1 7c 48 10 47 02            vmovups 0x80(%rdi),%zmm0
+ 4ce:   62 f1 7c 48 59 46 02            vmulps 0x80(%rsi),%zmm0,%zmm0
+ 4d5:   62 f1 7c 48 11 42 02            vmovups %zmm0,0x80(%rdx)
+ 4dc:   62 f1 7c 48 10 47 03            vmovups 0xc0(%rdi),%zmm0
+ 4e3:   62 f1 7c 48 59 46 03            vmulps 0xc0(%rsi),%zmm0,%zmm0
+ 4ea:   62 f1 7c 48 11 42 03            vmovups %zmm0,0xc0(%rdx)
+ 4f1:   48 81 c7 00 01 00 00            add    $0x100,%rdi
+ 4f8:   48 81 c6 00 01 00 00            add    $0x100,%rsi
+ 4ff:   48 81 c2 00 01 00 00            add    $0x100,%rdx
+ 506:   41 83 c1 04                     add    $0x4,%r9d
+ 50a:   75 94                           jne    4a0 <_mm512_mul_to+0x40>
+ 50c:   45 85 c0                        test   %r8d,%r8d
+ 50f:   74 33                           je     544 <_mm512_mul_to+0xe4>
+ 511:   66 2e 0f 1f 84 00 00 00 00 00   nopw   %cs:0x0(%rax,%rax,1)
+ 51b:   0f 1f 44 00 00                  nopl   0x0(%rax,%rax,1)
+ 520:   62 f1 7c 48 10 07               vmovups (%rdi),%zmm0
+ 526:   62 f1 7c 48 59 06               vmulps (%rsi),%zmm0,%zmm0
+ 52c:   62 f1 7c 48 11 02               vmovups %zmm0,(%rdx)
+ 532:   48 83 c7 40                     add    $0x40,%rdi
+ 536:   48 83 c6 40                     add    $0x40,%rsi
+ 53a:   48 83 c2 40                     add    $0x40,%rdx
+ 53e:   41 83 c0 ff                     add    $0xffffffff,%r8d
+ 542:   75 dc                           jne    520 <_mm512_mul_to+0xc0>
+ 544:   83 f9 07                        cmp    $0x7,%ecx
+ 547:   7e 1b                           jle    564 <_mm512_mul_to+0x104>
+ 549:   c5 fc 10 07                     vmovups (%rdi),%ymm0
+ 54d:   c5 fc 59 06                     vmulps (%rsi),%ymm0,%ymm0
+ 551:   c5 fc 11 02                     vmovups %ymm0,(%rdx)
+ 555:   48 83 c7 20                     add    $0x20,%rdi
+ 559:   48 83 c6 20                     add    $0x20,%rsi
+ 55d:   48 83 c2 20                     add    $0x20,%rdx
+ 561:   83 c1 f8                        add    $0xfffffff8,%ecx
+ 564:   85 c9                           test   %ecx,%ecx
+ 566:   0f 8e ac 00 00 00               jle    618 <_mm512_mul_to+0x1b8>
+ 56c:   89 c9                           mov    %ecx,%ecx
+ 56e:   48 8d 41 ff                     lea    -0x1(%rcx),%rax
+ 572:   41 89 c8                        mov    %ecx,%r8d
+ 575:   41 83 e0 03                     and    $0x3,%r8d
+ 579:   48 83 f8 03                     cmp    $0x3,%rax
+ 57d:   73 04                           jae    583 <_mm512_mul_to+0x123>
+ 57f:   31 c0                           xor    %eax,%eax
+ 581:   eb 5b                           jmp    5de <_mm512_mul_to+0x17e>
+ 583:   83 e1 fc                        and    $0xfffffffc,%ecx
+ 586:   31 c0                           xor    %eax,%eax
+ 588:   0f 1f 84 00 00 00 00 00         nopl   0x0(%rax,%rax,1)
+ 590:   c5 fa 10 04 87                  vmovss (%rdi,%rax,4),%xmm0
+ 595:   c5 fa 59 04 86                  vmulss (%rsi,%rax,4),%xmm0,%xmm0
+ 59a:   c5 fa 11 04 82                  vmovss %xmm0,(%rdx,%rax,4)
+ 59f:   c5 fa 10 44 87 04               vmovss 0x4(%rdi,%rax,4),%xmm0
+ 5a5:   c5 fa 59 44 86 04               vmulss 0x4(%rsi,%rax,4),%xmm0,%xmm0
+ 5ab:   c5 fa 11 44 82 04               vmovss %xmm0,0x4(%rdx,%rax,4)
+ 5b1:   c5 fa 10 44 87 08               vmovss 0x8(%rdi,%rax,4),%xmm0
+ 5b7:   c5 fa 59 44 86 08               vmulss 0x8(%rsi,%rax,4),%xmm0,%xmm0
+ 5bd:   c5 fa 11 44 82 08               vmovss %xmm0,0x8(%rdx,%rax,4)
+ 5c3:   c5 fa 10 44 87 0c               vmovss 0xc(%rdi,%rax,4),%xmm0
+ 5c9:   c5 fa 59 44 86 0c               vmulss 0xc(%rsi,%rax,4),%xmm0,%xmm0
+ 5cf:   c5 fa 11 44 82 0c               vmovss %xmm0,0xc(%rdx,%rax,4)
+ 5d5:   48 83 c0 04                     add    $0x4,%rax
+ 5d9:   48 39 c1                        cmp    %rax,%rcx
+ 5dc:   75 b2                           jne    590 <_mm512_mul_to+0x130>
+ 5de:   4d 85 c0                        test   %r8,%r8
+ 5e1:   74 35                           je     618 <_mm512_mul_to+0x1b8>
+ 5e3:   48 8d 0c 82                     lea    (%rdx,%rax,4),%rcx
+ 5e7:   48 8d 14 86                     lea    (%rsi,%rax,4),%rdx
+ 5eb:   48 8d 04 87                     lea    (%rdi,%rax,4),%rax
+ 5ef:   31 f6                           xor    %esi,%esi
+ 5f1:   66 2e 0f 1f 84 00 00 00 00 00   nopw   %cs:0x0(%rax,%rax,1)
+ 5fb:   0f 1f 44 00 00                  nopl   0x0(%rax,%rax,1)
+ 600:   c5 fa 10 04 b0                  vmovss (%rax,%rsi,4),%xmm0
+ 605:   c5 fa 59 04 b2                  vmulss (%rdx,%rsi,4),%xmm0,%xmm0
+ 60a:   c5 fa 11 04 b1                  vmovss %xmm0,(%rcx,%rsi,4)
+ 60f:   48 83 c6 01                     add    $0x1,%rsi
+ 613:   49 39 f0                        cmp    %rsi,%r8
+ 616:   75 e8                           jne    600 <_mm512_mul_to+0x1a0>
+ 618:   48 89 ec                        mov    %rbp,%rsp
+ 61b:   5d                              pop    %rbp
+ 61c:   c5 f8 77                        vzeroupper 
+ 61f:   c3                              retq   
 ```
 
 :::
@@ -232,7 +367,7 @@ But if the length is not a multiple of two, for example
 It requires a combination of three instructions to represent
 
 ```asm
- LONG $0x487cf162; WORD $0x4710; BYTE $0x01 // vmovups	 64(%rdi), %zmm0
+ LONG $0x487cf162; WORD $0x4710; BYTE $0x01 // vmovups  64(%rdi), %zmm0
 ```
 
 Note that the byte order of the instruction encoding and the byte order of the `objdump` output are reversed.
@@ -402,13 +537,15 @@ Converting C function definitions to Go functions requires a C parser. [cznic](h
 The definition of the `_mm512_mul_to` conversion to a Go function is as follows
 
 ```go
+import "unsafe"
+
 //go:noescape
 func _mm512_mul_to(a, b, c, n unsafe.Pointer)
 ```
 
 ## Build with `go generate`
 
-For generated code, the `go generate` command can run custom commands to do conversions from C functions to Go functions. gorse added the `go generate` command to the [floats_amd64.go](https://github.com/gorse-io/gorse/blob/release-0.4/base/floats/floats_amd64.go) file, which executes `go generate . /... ` to automatically generate Go vectorized functions.
+For generated code, the `go generate` command can run custom commands to do conversions from C functions to Go functions. gorse added the `go generate` command to the [floats_amd64.go](https://github.com/gorse-io/gorse/blob/release-0.4/base/floats/floats_amd64.go) file, which executes `go generate . /...` to automatically generate Go vectorized functions.
 
 ```go
 //go:generate go run ... /... /cmd/goat src/floats_avx.c -O3 -mavx
@@ -467,6 +604,12 @@ func MulTo(a, b, c []float32) {
  }
 }
 ```
+
+::: note
+
+Go assembly should be saved in a file with the `.s` extension and the Go definition and wrapper should be saved in Go files. They must be in the same directory with the same package name.
+
+:::
 
 ## Summary
 

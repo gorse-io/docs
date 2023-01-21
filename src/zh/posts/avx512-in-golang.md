@@ -71,14 +71,149 @@ void _mm512_mul_to(float *a, float *b, float *c, int64_t n)
 ```bash
 # 生成汇编
 clang -S -c mm512_mul_to.c -o mm512_mul_to.s \
+  -O3 -mavx -mfma -mavx512f -mavx512dq \
   -mno-red-zone -mstackrealign -mllvm -inline-threshold=1000 \
   -fno-asynchronous-unwind-tables -fno-exceptions -fno-rtti
 
 # 生成二进制
 clang -c mm512_mul_to.c -o mm512_mul_to.o \
+  -O3 -mavx -mfma -mavx512f -mavx512dq \
   -mno-red-zone -mstackrealign -mllvm -inline-threshold=1000 \
   -fno-asynchronous-unwind-tables -fno-exceptions -fno-rtti
 ```
+
+::: details mm512_mul_to.s
+
+```asm
+ .globl _mm512_mul_to                   # -- Begin function _mm512_mul_to
+ .p2align 4, 0x90
+ .type _mm512_mul_to,@function
+_mm512_mul_to:                          # @_mm512_mul_to
+# %bb.0:
+ pushq %rbp
+ movq %rsp, %rbp
+ andq $-8, %rsp
+ leaq 15(%rcx), %r9
+ testq %rcx, %rcx
+ cmovnsq %rcx, %r9
+ shrq $4, %r9
+ movl %r9d, %eax
+ shll $4, %eax
+ subl %eax, %ecx
+ testl %r9d, %r9d
+ jle .LBB3_6
+# %bb.1:
+ leal -1(%r9), %eax
+ movl %r9d, %r8d
+ andl $3, %r8d
+ cmpl $3, %eax
+ jb .LBB3_4
+# %bb.2:
+ andl $-4, %r9d
+ negl %r9d
+ .p2align 4, 0x90
+.LBB3_3:                                # =>This Inner Loop Header: Depth=1
+ vmovups (%rdi), %zmm0
+ vmulps (%rsi), %zmm0, %zmm0
+ vmovups %zmm0, (%rdx)
+ vmovups 64(%rdi), %zmm0
+ vmulps 64(%rsi), %zmm0, %zmm0
+ vmovups %zmm0, 64(%rdx)
+ vmovups 128(%rdi), %zmm0
+ vmulps 128(%rsi), %zmm0, %zmm0
+ vmovups %zmm0, 128(%rdx)
+ vmovups 192(%rdi), %zmm0
+ vmulps 192(%rsi), %zmm0, %zmm0
+ vmovups %zmm0, 192(%rdx)
+ addq $256, %rdi                      # imm = 0x100
+ addq $256, %rsi                      # imm = 0x100
+ addq $256, %rdx                      # imm = 0x100
+ addl $4, %r9d
+ jne .LBB3_3
+.LBB3_4:
+ testl %r8d, %r8d
+ je .LBB3_6
+ .p2align 4, 0x90
+.LBB3_5:                                # =>This Inner Loop Header: Depth=1
+ vmovups (%rdi), %zmm0
+ vmulps (%rsi), %zmm0, %zmm0
+ vmovups %zmm0, (%rdx)
+ addq $64, %rdi
+ addq $64, %rsi
+ addq $64, %rdx
+ addl $-1, %r8d
+ jne .LBB3_5
+.LBB3_6:
+ cmpl $7, %ecx
+ jle .LBB3_8
+# %bb.7:
+ vmovups (%rdi), %ymm0
+ vmulps (%rsi), %ymm0, %ymm0
+ vmovups %ymm0, (%rdx)
+ addq $32, %rdi
+ addq $32, %rsi
+ addq $32, %rdx
+ addl $-8, %ecx
+.LBB3_8:
+ testl %ecx, %ecx
+ jle .LBB3_14
+# %bb.9:
+ movl %ecx, %ecx
+ leaq -1(%rcx), %rax
+ movl %ecx, %r8d
+ andl $3, %r8d
+ cmpq $3, %rax
+ jae .LBB3_15
+# %bb.10:
+ xorl %eax, %eax
+ jmp .LBB3_11
+.LBB3_15:
+ andl $-4, %ecx
+ xorl %eax, %eax
+ .p2align 4, 0x90
+.LBB3_16:                               # =>This Inner Loop Header: Depth=1
+ vmovss (%rdi,%rax,4), %xmm0            # xmm0 = mem[0],zero,zero,zero
+ vmulss (%rsi,%rax,4), %xmm0, %xmm0
+ vmovss %xmm0, (%rdx,%rax,4)
+ vmovss 4(%rdi,%rax,4), %xmm0           # xmm0 = mem[0],zero,zero,zero
+ vmulss 4(%rsi,%rax,4), %xmm0, %xmm0
+ vmovss %xmm0, 4(%rdx,%rax,4)
+ vmovss 8(%rdi,%rax,4), %xmm0           # xmm0 = mem[0],zero,zero,zero
+ vmulss 8(%rsi,%rax,4), %xmm0, %xmm0
+ vmovss %xmm0, 8(%rdx,%rax,4)
+ vmovss 12(%rdi,%rax,4), %xmm0          # xmm0 = mem[0],zero,zero,zero
+ vmulss 12(%rsi,%rax,4), %xmm0, %xmm0
+ vmovss %xmm0, 12(%rdx,%rax,4)
+ addq $4, %rax
+ cmpq %rax, %rcx
+ jne .LBB3_16
+.LBB3_11:
+ testq %r8, %r8
+ je .LBB3_14
+# %bb.12:
+ leaq (%rdx,%rax,4), %rcx
+ leaq (%rsi,%rax,4), %rdx
+ leaq (%rdi,%rax,4), %rax
+ xorl %esi, %esi
+ .p2align 4, 0x90
+.LBB3_13:                               # =>This Inner Loop Header: Depth=1
+ vmovss (%rax,%rsi,4), %xmm0            # xmm0 = mem[0],zero,zero,zero
+ vmulss (%rdx,%rsi,4), %xmm0, %xmm0
+ vmovss %xmm0, (%rcx,%rsi,4)
+ addq $1, %rsi
+ cmpq %rsi, %r8
+ jne .LBB3_13
+.LBB3_14:
+ movq %rbp, %rsp
+ popq %rbp
+ vzeroupper
+ retq
+.Lfunc_end3:
+ .size _mm512_mul_to, .Lfunc_end3-_mm512_mul_to
+                                        # -- End function
+```
+
+:::
 
 在Go语言中，可以用`exec.Command`很方便地执行编译命令。
 
@@ -403,6 +538,8 @@ LBB3_14:
 `_mm512_mul_to`转换为Go函数的定义如下
 
 ```go
+import "unsafe"
+
 //go:noescape
 func _mm512_mul_to(a, b, c, n unsafe.Pointer)
 ```
@@ -468,6 +605,12 @@ func MulTo(a, b, c []float32) {
  }
 }
 ```
+
+::: note
+
+Go汇编需要保存到后缀为`.s`的文件中，Go函数定义和包装函数保存在Go文件中，这些文件必须在同一个文件夹中，使用相同的包名。
+
+:::
 
 ## 总结
 
