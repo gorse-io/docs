@@ -1,5 +1,6 @@
 import { defineUserConfig } from "vuepress";
 import { docsearchPlugin } from "@vuepress/plugin-docsearch";
+import { googleAnalyticsPlugin } from '@vuepress/plugin-google-analytics'
 import theme from "./theme.js";
 
 export default defineUserConfig({
@@ -27,6 +28,9 @@ export default defineUserConfig({
       apiKey: 'edd7075e83b0f14d48ea946c8fd98d0f',
       indexName: 'gorse',
       appId: 'KH1GFD6Q0P',
+    }),
+    googleAnalyticsPlugin({
+      id: 'G-ZPKMQVNFGX',
     }),
   ],
 });
