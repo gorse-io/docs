@@ -4,5 +4,6 @@
     ],
     "grammarly.files.exclude": [
         "**/zh/**/*.md"
-    ]
+    ],
+    "vscodeGoogleTranslate.preferredLanguage": "English"
 }
