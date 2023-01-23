@@ -6,7 +6,7 @@ tag:
   - SIMD
 ---
 
-# How to Use AVX512 in Golang
+# How to Use AVX512 in Golang via C Compiler
 
 AVX512 is the latest generation of SIMD instructions released by Intel, which can process 512 bits of data in one instruction cycle, equivalent to 16 single-precision floating point numbers or 8 double-precision floating point numbers. The training and inference process of recommendation models in [Gorse](https://gorse.io/) requires a lot of vector computation, and AVX512 can theoretically bring some acceleration effect. Unfortunately, the Go compiler does not automatically generate SIMD instructions.
 
