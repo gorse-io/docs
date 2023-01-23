@@ -578,7 +578,7 @@ const (
 
 func init() {
  // Check if the CPU supports AVX512
- Supports(cpuid.AVX512F, cpuid.AVX512DQ) { if cpuid.CPU.Supports(cpuid.AVX512F, cpuid.AVX512DQ)
+ if cpuid.CPU.Supports(cpuid.AVX512F, cpuid.AVX512DQ) {
   impl = AVX512
  }
 }
