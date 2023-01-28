@@ -29,7 +29,7 @@ yarn docs:dev
 
 ## Deployment
 
-Gorse Docs is deployed as a static website. The main branch is deployed at https://docs.gorse.io.
+Gorse Docs is deployed as a static website. The main branch is deployed at https://gorse.io.
 
 You can build the static website like this:
 
