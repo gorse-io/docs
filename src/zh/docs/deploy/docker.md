@@ -8,10 +8,10 @@ icon: docker
 
 Docker镜像 | 版本 | 镜像大小 | 拉取次数
 --- | --- | --- | ---
-[gorse-master](https://hub.docker.com/repository/docker/zhenghaoz/gorse-master) | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-master/latest) | ![金雀花大师](https://img.shields.io/docker/image-size/zhenghaoz/gorse-master) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-master)
-[gorse-server](https://hub.docker.com/repository/docker/zhenghaoz/gorse-server) | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-server/latest) | ![金雀服务器](https://img.shields.io/docker/image-size/zhenghaoz/gorse-server) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-server)
-[gorse-worker](https://hub.docker.com/repository/docker/zhenghaoz/gorse-worker) | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-worker/latest) | ![金雀花工](https://img.shields.io/docker/image-size/zhenghaoz/gorse-worker) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-worker)
-[gorse-in-one](https://hub.docker.com/repository/docker/zhenghaoz/gorse-in-one) | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-in-one/latest) | ![金雀花](https://img.shields.io/docker/image-size/zhenghaoz/gorse-in-one) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-in-one)
+[gorse-master](https://hub.docker.com/r/zhenghaoz/gorse-master) | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-master/latest) | ![金雀花大师](https://img.shields.io/docker/image-size/zhenghaoz/gorse-master) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-master)
+[gorse-server](https://hub.docker.com/r/zhenghaoz/gorse-server) | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-server/latest) | ![金雀服务器](https://img.shields.io/docker/image-size/zhenghaoz/gorse-server) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-server)
+[gorse-worker](https://hub.docker.com/r/zhenghaoz/gorse-worker) | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-worker/latest) | ![金雀花工](https://img.shields.io/docker/image-size/zhenghaoz/gorse-worker) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-worker)
+[gorse-in-one](https://hub.docker.com/r/zhenghaoz/gorse-in-one) | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-in-one/latest) | ![金雀花](https://img.shields.io/docker/image-size/zhenghaoz/gorse-in-one) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-in-one)
 
 ::: tip
 

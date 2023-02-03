@@ -58,10 +58,10 @@ wget -O gorse.zip https://github.com/gorse-io/gorse/releases/latest/download/gor
 
 ```powershell
 # For amd64 CPU:
-Invoke-WebRequest https://github.com/gorse-io/gorse/releases/latest/download/gorse_darwin_amd64.zip -OutFile gorse.zip
+Invoke-WebRequest https://github.com/gorse-io/gorse/releases/latest/download/gorse_windows_amd64.zip -OutFile gorse.zip
 
 # For arm64 CPU:
-Invoke-WebRequest https://github.com/gorse-io/gorse/releases/latest/download/gorse_darwin_arm64.zip -OutFile gorse.zip
+Invoke-WebRequest https://github.com/gorse-io/gorse/releases/latest/download/gorse_windows_arm64.zip -OutFile gorse.zip
 ```
 
 :::
@@ -74,23 +74,23 @@ Invoke-WebRequest https://github.com/gorse-io/gorse/releases/latest/download/gor
 @tab:active Linux
 
 ```bash
-unzip gorse.zip
-
-sudo cp gorse/gorse-in-one /usr/local/bin/gorse
+sudo unzip gorse.zip -d /usr/local/bin
 ```
 
 @tab macOS
 
 ```bash
-unzip gorse.zip
-
-sudo cp gorse/gorse-in-one /usr/local/bin/gorse
+sudo unzip gorse.zip -d /usr/local/bin
 ```
 
 @tab Windows
 
 ```powershell
-Expand-Archive gorse.zip -DestinationPath gorse
+# Create install directory
+New-Item -Type Directory -Path "C:/Program Files/Gorse/bin"
+
+# Extract binaries
+Expand-Archive gorse.zip -DestinationPath "C:/Program Files/Gorse/bin"
 ```
 
 :::
@@ -99,9 +99,27 @@ Expand-Archive gorse.zip -DestinationPath gorse
 
 4. Run Gorse-in-one.
 
+::: code-tabs#download
+
+@tab:active Linux
+
+```bash
+gorse-in-one -c config.toml 
 ```
-gorse -c config.toml 
+
+@tab macOS
+
+```bash
+gorse-in-one -c config.toml 
 ```
+
+@tab Windows
+
+```powershell
+& 'C:/Program Files/Gorse/bin/gorse-in-one' -c config.toml
+```
+
+:::
 
 ### Flags of Gorse-in-one
 
@@ -119,16 +137,23 @@ There are command line flags for Gorse-in-one:
 | | `--worker-cache-path` | `worker_cache.data` | Worker node cache path. |
 | | `--worker-jobs` | `1` |  Worker node working jobs. |
 
-## Setup Systemd
+## Setup Systemd (Linux)
 
-1. Copy Gorse-in-one binary to `/usr/local/bin` and configuration files to `/etc/gorse`:
+1. Create directories for the log file and the cache file.
 
 ```bash
-sudo cp ./gorse-in-one /usr/local/bin/gorse
-sudo cp config.toml /etc/gorse/
+sudo mkdir -p /etc/gorse/
+sudo mkdir -p /var/log/gorse/
+sudo mkdir -p /var/lib/gorse/
 ```
 
-2. Create the systemd configuration file at `/etc/systemd/system/gorse.service`:
+2. Copy the configuration file to `/etc/gorse`:
+
+```bash
+sudo mv config.toml /etc/gorse/
+```
+
+3. Create the systemd configuration file at `/etc/systemd/system/gorse.service`:
 
 ```systemd
 [Unit]
@@ -138,31 +163,33 @@ After=network.target
 [Service]
 Type=simple
 Restart=always
-ExecStart=/usr/local/bin/gorse -c /etc/gorse/config.toml
+ExecStart=/usr/local/bin/gorse-in-one -c /etc/gorse/config.toml \
+    --log-path /var/log/gorse/gorse.log \
+    --cache-path /var/lib/gorse/gorse.data
 
 [Install]
 WantedBy=multi-user.target
 ```
 
-3. After that you're supposed to reload systemd:
+4. After that you're supposed to reload systemd:
 
 ```bash
 sudo systemctl daemon-reload
 ```
 
-4. Launch Gorse-in-one on system startup with:
+5. Launch Gorse-in-one on system startup with:
 
 ```bash
 sudo systemctl enable gorse
 ```
 
-5. Launch Gorse-in-one immediately with:
+6. Launch Gorse-in-one immediately with:
 
 ```bash
 sudo systemctl start gorse
 ```
 
-6. Check the health and logs of Gorse-in-one with:
+7. Check the health and logs of Gorse-in-one with:
 
 ```bash
 systemctl status gorse
