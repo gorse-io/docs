@@ -4,7 +4,7 @@ icon: docker
 
 # Docker 部署
 
-使用Docker Compose或Docker Swarm管理小规模微服务集群是不错的选择。Gorse官方提供了Docker镜像：
+用Docker Compose或Docker Swarm管理小规模微服务集群是不错的选择。Gorse官方提供了Docker镜像：
 
 Docker镜像 | 版本 | 镜像大小 | 拉取次数
 --- | --- | --- | ---
@@ -13,9 +13,15 @@ Docker镜像 | 版本 | 镜像大小 | 拉取次数
 [gorse-worker](https://hub.docker.com/r/zhenghaoz/gorse-worker) | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-worker/latest) | ![金雀花工](https://img.shields.io/docker/image-size/zhenghaoz/gorse-worker) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-worker)
 [gorse-in-one](https://hub.docker.com/r/zhenghaoz/gorse-in-one) | ![Docker 镜像版本（标记最新的 semver）](https://img.shields.io/docker/v/zhenghaoz/gorse-in-one/latest) | ![金雀花](https://img.shields.io/docker/image-size/zhenghaoz/gorse-in-one) | ![码头工人拉动](https://img.shields.io/docker/pulls/zhenghaoz/gorse-in-one)
 
-::: tip
+::: tip 每夜版
 
-这些带有`nightly`标签的镜像是从 master 分支构建的。生产中应当使用指定版本的标签。
+`nightly`标签的镜像是从 master 分支构建的。
+
+::::
+
+::: tip Windows 容器
+
+这些`*-windowsservercore`标签的镜像是为 Windows 容器构建的。
 
 ::::
 
@@ -106,7 +112,7 @@ services:
 docker-compose up -d
 ```
 
-::::
+:::
 
 ## Docker 上的 Gorse 集群
 
