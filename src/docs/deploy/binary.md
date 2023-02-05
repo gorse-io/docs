@@ -87,10 +87,10 @@ sudo unzip gorse.zip -d /usr/local/bin
 
 ```powershell
 # Create install directory
-New-Item -Type Directory -Path "C:/Program Files/Gorse/bin"
+New-Item -Type Directory -Path $env:ProgramFiles/Gorse/bin
 
 # Extract binaries
-Expand-Archive gorse.zip -DestinationPath "C:/Program Files/Gorse/bin"
+Expand-Archive gorse.zip -DestinationPath $env:ProgramFiles/Gorse/bin
 ```
 
 :::
@@ -116,7 +116,7 @@ gorse-in-one -c config.toml
 @tab Windows
 
 ```powershell
-& 'C:/Program Files/Gorse/bin/gorse-in-one' -c config.toml
+& $env:ProgramFiles/Gorse/bin/gorse-in-one -c config.toml
 ```
 
 :::
@@ -193,4 +193,36 @@ sudo systemctl start gorse
 
 ```bash
 systemctl status gorse
+```
+
+## Setup Service (Windows)
+
+::: warning
+
+Gorse service on Windows requires [NSSM](https://nssm.cc/) installed.
+
+:::
+
+1. Create directories for the log file and the cache file.
+
+```powershell
+New-Item -Type Directory -Path $env:ProgramFiles/Gorse/log
+New-Item -Type Directory -Path $env:ProgramFiles/Gorse/data
+```
+
+2. Copy the configuration file to `C:/Program Files/Gorse/bin`:
+
+```powershell
+Move-Item config.toml -Destination $env:ProgramFiles/Gorse/bin
+```
+
+3. Create service using [NSSM](https://nssm.cc/).
+
+```powershell
+nssm install Gorse $env:ProgramFiles\Gorse\bin\gorse-in-one.exe
+nssm set Gorse AppParameters -c bin\config.toml --cache-path data\gorse.data
+nssm set Gorse AppDirectory $env:ProgramFiles\Gorse
+nssm set Gorse AppStdout $env:ProgramFiles\Gorse\log\gorse.log
+nssm set Gorse AppStderr $env:ProgramFiles\Gorse\log\gorse.log
+nssm start Gorse
 ```
