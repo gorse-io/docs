@@ -59,10 +59,10 @@ wget -O gorse.zip https://github.com/gorse-io/gorse/releases/latest/download/gor
 
 ```powershell
 # For amd64 CPU:
-Invoke-WebRequest https://github.com/gorse-io/gorse/releases/latest/download/gorse_darwin_amd64.zip -OutFile gorse.zip
+Invoke-WebRequest https://github.com/gorse-io/gorse/releases/latest/download/gorse_windows_amd64.zip -OutFile gorse.zip
 
 # For arm64 CPU:
-Invoke-WebRequest https://github.com/gorse-io/gorse/releases/latest/download/gorse_darwin_arm64.zip -OutFile gorse.zip
+Invoke-WebRequest https://github.com/gorse-io/gorse/releases/latest/download/gorse_windows_arm64.zip -OutFile gorse.zip
 ```
 
 ::::
@@ -74,23 +74,23 @@ Invoke-WebRequest https://github.com/gorse-io/gorse/releases/latest/download/gor
 @tab:active Linux
 
 ```bash
-unzip gorse.zip
-
-sudo cp gorse/gorse-in-one /usr/local/bin/gorse
+sudo unzip gorse.zip -d /usr/local/bin
 ```
 
 @tab macOS
 
 ```bash
-unzip gorse.zip
-
-sudo cp gorse/gorse-in-one /usr/local/bin/gorse
+sudo unzip gorse.zip -d /usr/local/bin
 ```
 
 @tab Windows
 
 ```powershell
-Expand-Archive gorse.zip -DestinationPath gorse
+# Create install directory
+New-Item -Type Directory -Path $env:ProgramFiles/Gorse/bin
+
+# Extract binaries
+Expand-Archive gorse.zip -DestinationPath $env:ProgramFiles/Gorse/bin
 ```
 
 :::
@@ -99,13 +99,31 @@ Expand-Archive gorse.zip -DestinationPath gorse
 
 2. 运行gorse-in-one
 
+::: code-tabs#download
+
+@tab:active Linux
+
+```bash
+gorse-in-one -c config.toml
 ```
-gorse -c config.toml
+
+@tab macOS
+
+```bash
+gorse-in-one -c config.toml
 ```
+
+@tab Windows
+
+```powershell
+& $env:ProgramFiles/Gorse/bin/gorse-in-one -c config.toml
+```
+
+:::
 
 ### Gorse-in-one 的参数
 
-这是Gorse-in-one的命令行参数如下：
+Gorse-in-one的命令行参数如下：
 
 <fonticon icon="rightarrow"></fonticon> | 标志 | 默认值 | 描述
 --- | --- | --- | ---
@@ -119,13 +137,20 @@ gorse -c config.toml
  | `--worker-cache-path` | `worker_cache.data` | 工作节点缓存路径
  | `--worker-jobs` | `1` | 工作节点工作线程数
 
-## 配置 systemd
+## 配置 Systemd (Linux)
 
-1. 将 gorse-in-one 二进制文件复制到`/usr/local/bin`并将配置文件复制到`/etc/gorse` ：
+1. 为日志文件和缓存文件创建目录。
 
 ```bash
-sudo cp ./gorse-in-one /usr/local/bin/gorse
-sudo cp config.toml /etc/gorse/
+sudo mkdir -p /etc/gorse/
+sudo mkdir -p /var/log/gorse/
+sudo mkdir -p /var/lib/gorse/
+```
+
+1. 将配置文件复制到`/etc/gorse` ：
+
+```bash
+sudo mv config.toml /etc/gorse/
 ```
 
 1. 在`/etc/systemd/system/gorse.service`创建 systemd 配置文件：
@@ -138,7 +163,9 @@ After=network.target
 [Service]
 Type=simple
 Restart=always
-ExecStart=/usr/local/bin/gorse -c /etc/gorse/config.toml
+ExecStart=/usr/local/bin/gorse-in-one -c /etc/gorse/config.toml \
+    --log-path /var/log/gorse/gorse.log \
+    --cache-path /var/lib/gorse/gorse.data
 
 [Install]
 WantedBy=multi-user.target
@@ -166,4 +193,36 @@ sudo systemctl start gorse
 
 ```bash
 systemctl status gorse
+```
+
+## 配置服务 (Windows)
+
+::: warning
+
+在 Windows 上创建 Gorse 服务需要安装[NSSM](https://nssm.cc/) 。
+
+:::
+
+1. 为日志文件和缓存文件创建目录。
+
+```powershell
+New-Item -Type Directory -Path $env:ProgramFiles/Gorse/log
+New-Item -Type Directory -Path $env:ProgramFiles/Gorse/data
+```
+
+1. 将配置文件复制到`C:/Program Files/Gorse/bin` ：
+
+```powershell
+Move-Item config.toml -Destination $env:ProgramFiles/Gorse/bin
+```
+
+1. 使用[NSSM](https://nssm.cc/)创建服务。
+
+```powershell
+nssm install Gorse $env:ProgramFiles\Gorse\bin\gorse-in-one.exe
+nssm set Gorse AppParameters -c bin\config.toml --cache-path data\gorse.data
+nssm set Gorse AppDirectory $env:ProgramFiles\Gorse
+nssm set Gorse AppStdout $env:ProgramFiles\Gorse\log\gorse.log
+nssm set Gorse AppStderr $env:ProgramFiles\Gorse\log\gorse.log
+nssm start Gorse
 ```
