@@ -58,6 +58,11 @@ export const enSidebar = sidebar({
       link: '/docs/gorse-dashboard'
     },
     {
+      text: 'Multi-Tenancy (Beta)',
+      icon: 'lab',
+      link: '/docs/multi-tenancy'
+    },
+    {
       text: 'Benchmark',
       icon: 'dashboard-fill',
       link: '/docs/benchmark/'
