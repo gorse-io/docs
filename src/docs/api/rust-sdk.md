@@ -11,6 +11,7 @@ The Rust SDK is under development, and APIs might be changed in later versions. 
 
 [![Crates.io](https://img.shields.io/crates/v/gorse_rs)](https://crates.io/crates/gorse_rs)
 [![docs.rs](https://img.shields.io/docsrs/gorse_rs)](https://docs.rs/gorse_rs/latest/gorse_rs/)
+[![Crates.io](https://img.shields.io/crates/d/gorse_rs)](https://docs.rs/gorse_rs/latest/gorse_rs/)
 
 ## Install
 
