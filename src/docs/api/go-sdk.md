@@ -10,6 +10,7 @@ The Go SDK is under development, and APIs might be changed in later versions. Pu
 :::
 
 [![GoDoc](https://godoc.org/github.com/zhenghaoz/gorse?status.svg)](https://pkg.go.dev/github.com/zhenghaoz/gorse/client)
+[![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/gorse-io/gorse)](https://pkg.go.dev/github.com/zhenghaoz/gorse/client)
 
 ## Install
 

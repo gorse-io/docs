@@ -10,6 +10,7 @@ The TypeScript SDK is under development, and APIs might be changed in later vers
 :::
 
 [![npm](https://img.shields.io/npm/v/gorsejs)](https://www.npmjs.com/package/gorsejs)
+[![npm](https://img.shields.io/npm/dt/gorsejs)](https://www.npmjs.com/package/gorsejs)
 
 ## Install
 
