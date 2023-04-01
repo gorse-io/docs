@@ -355,6 +355,9 @@ docker-compose up -d
  | `--debug` |  | 开启DEBUG日志模式
 `-h` | `--help` |  | 显示帮助信息
  | `--log-path` |  | 日志文件路径
+ | `--log-max-size` |  | 日志文件的最大兆字节数
+ | `--log-max-age` |  | 保留旧日志文件的最大天数
+ | `--log-max-backups` |  | 保留的旧日志文件的最大数量
 `-v` | `--version` |  | 显示版本信息
 
 服务节点的命令行参数：
@@ -367,6 +370,9 @@ docker-compose up -d
  | `--http-host` | `127.0.0.1` | RESTful API 和 Prometheus<br>度量所在IP地址
  | `--http-port` | `8087` | RESTful API 和 Prometheus<br>度量所在端口
  | `--log-path` |  | 日志文件路径
+ | `--log-max-size` |  | 日志文件的最大兆字节数
+ | `--log-max-age` |  | 保留旧日志文件的最大天数
+ | `--log-max-backups` |  | 保留的旧日志文件的最大数量
  | `--master-host` | `127.0.0.1` | 主节点的IP地址
  | `--master-port` | `8086` | 主节点的端口
 `-v` | `--version` |  | 显示版本信息
@@ -382,6 +388,9 @@ docker-compose up -d
  | `--http-port` | `8089` | Prometheus metrics HTTP接口端口。
 `-j` | `--jobs` | `1` | 工作线程数量
  | `--log-path` |  | 日志文件路径
+ | `--log-max-size` |  | 日志文件的最大兆字节数
+ | `--log-max-age` |  | 保留旧日志文件的最大天数
+ | `--log-max-backups` |  | 保留的旧日志文件的最大数量
  | `--master-host` | `127.0.0.1` | 主节点的IP地址
  | `--master-port` | `8086` | 主节点的端口
 `-v` | `--version` |  | 显示版本信息
