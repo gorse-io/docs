@@ -131,6 +131,9 @@ Gorse-in-one的命令行参数如下：
  | `--debug` |  | 调试日志模式
 `-h` | `--help` |  | 显示帮助信息
  | `--log-path` |  | 日志文件路径
+ | `--log-max-size` |  | 日志文件的最大兆字节数
+ | `--log-max-age` |  | 保留旧日志文件的最大天数
+ | `--log-max-backups` |  | 保留的旧日志文件的最大数量
  | `--master-cache-path` | `master_cache.data` | 主节点缓存路径
  | `--playground` |  | playground模式
 `-v` | `--version` |  | 显示版本信息
