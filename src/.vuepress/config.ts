@@ -1,6 +1,7 @@
 import { defineUserConfig } from "vuepress";
 import { docsearchPlugin } from "@vuepress/plugin-docsearch";
-import { googleAnalyticsPlugin } from '@vuepress/plugin-google-analytics'
+import { googleAnalyticsPlugin } from '@vuepress/plugin-google-analytics';
+import { redirectPlugin } from "vuepress-plugin-redirect";
 import theme from "./theme.js";
 
 export default defineUserConfig({
@@ -31,6 +32,10 @@ export default defineUserConfig({
     }),
     googleAnalyticsPlugin({
       id: 'G-ZPKMQVNFGX',
+    }),
+    redirectPlugin({
+      autoLocale: true,
+      switchLocale: "modal",
     }),
   ],
 });
