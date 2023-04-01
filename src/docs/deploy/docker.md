@@ -354,7 +354,10 @@ Command line flags of the master node:
 | `-c` | `--config` | | Configuration file path. |
 | | `--debug` | | Debug log mode. |
 | `-h` | `--help` | | Help for gorse-master. |
-| | `--log-path` | | Log file path. |
+| | `--log-path` | | Path of log file. |
+| | `--log-max-size` | | Maximum size in megabytes of the log file. |
+| | `--log-max-age` | | Maximum number of days to retain old log files. |
+| | `--log-max-backups` | | Maximum number of old log files to retain. |
 | `-v` | `--version` | | Gorse version. |
 
 Command line flags of the server node:
@@ -366,7 +369,10 @@ Command line flags of the server node:
 | `-h` | `--help` | | Help for gorse-server. |
 | | `--http-host` | `127.0.0.1` | RESTful APIs and Prometheus<br>metrics export host |
 | | `--http-port` | `8087` | RESTful APIs and Prometheus<br>metrics export port |
-| | `--log-path` | | Log file path. |
+| | `--log-path` | | Path of log file. |
+| | `--log-max-size` | | Maximum size in megabytes of the log file. |
+| | `--log-max-age` | | Maximum number of days to retain old log files. |
+| | `--log-max-backups` | | Maximum number of old log files to retain. |
 | | `--master-host` | `127.0.0.1` | Master node host. |
 | | `--master-port` | `8086` | Master node port. |
 | `-v` | `--version` | | Gorse version. |
@@ -381,7 +387,10 @@ Command line flags of the worker node:
 | | `--http-host` | `127.0.0.1` | Prometheus metrics export host. |
 | | `--http-port` | `8089` | Prometheus metrics export port. |
 | `-j` | `--jobs` | `1` | Number of working jobs. |
-| | `--log-path` | | Log file path. |
+| | `--log-path` | | Path of log file. |
+| | `--log-max-size` | | Maximum size in megabytes of the log file. |
+| | `--log-max-age` | | Maximum number of days to retain old log files. |
+| | `--log-max-backups` | | Maximum number of old log files to retain. |
 | | `--master-host` | `127.0.0.1` | Master node host. |
 | | `--master-port` | `8086` | Master node port |
 | `-v` | `--version` | | Gorse version. |

@@ -130,7 +130,10 @@ There are command line flags for Gorse-in-one:
 | `-c` | `-c,--config` | | Configuration file path. |
 | | `--debug` | | Debug log mode. |
 | `-h` | `--help` | | Help for gorse-in-one. |
-| | `--log-path` | | Log file path. |
+| | `--log-path` | | Path of log file. |
+| | `--log-max-size` | | Maximum size in megabytes of the log file. |
+| | `--log-max-age` | | Maximum number of days to retain old log files. |
+| | `--log-max-backups` | | Maximum number of old log files to retain. |
 | | `--master-cache-path` | `master_cache.data` | Master node cache path. |
 | | `--playground` | | Playground mode. |
 | `-v` | `--version` | | Gorse version. |
