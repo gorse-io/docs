@@ -34,7 +34,6 @@ export default defineUserConfig({
       id: 'G-ZPKMQVNFGX',
     }),
     redirectPlugin({
-      autoLocale: true,
       switchLocale: "modal",
     }),
   ],
