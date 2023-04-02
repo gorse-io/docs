@@ -158,7 +158,7 @@ class Transpiler {
 }
 
 faker.seed(0)
-const text = readFileSync('./apidocs.json', 'utf-8');
+const text = readFileSync('./src/docs/api/apidocs.json', 'utf-8');
 let transpiler = new Transpiler(["users", "items", "feedback", "recommendation", "health"]);
 const output = transpiler.translate(text);
 writeFileSync('./src/docs/api/apidocs.md', output);
