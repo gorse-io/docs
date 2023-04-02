@@ -5,13 +5,13 @@ export const enSidebar = sidebar({
     {
       text: 'Quick Start',
       icon: 'launch',
-      link: '/docs/quick-start',
+      link: 'quick-start',
     },
     {
       text: 'Deploy',
       icon: 'start',
       collapsible: true,
-      prefix: '/docs/deploy/',
+      prefix: 'deploy/',
       children: [
         'binary',
         'docker',
@@ -21,13 +21,13 @@ export const enSidebar = sidebar({
     {
       text: 'Configuration',
       icon: 'config_s',
-      link: '/docs/config'
+      link: 'config'
     },
     {
       text: 'Concepts',
       icon: 'idea',
       collapsible: true,
-      prefix: '/docs/concepts/',
+      prefix: 'concepts/',
       children: [
         'data-objects',
         'algorithms',
@@ -39,7 +39,7 @@ export const enSidebar = sidebar({
       text: 'API',
       icon: 'api',
       collapsible: true,
-      prefix: '/docs/api/',
+      prefix: 'api/',
       children: [
         'restful-api',
         'go-sdk',
@@ -55,22 +55,22 @@ export const enSidebar = sidebar({
     {
       text: 'Gorse Dashboard',
       icon: 'dashboard',
-      link: '/docs/gorse-dashboard'
+      link: 'gorse-dashboard'
     },
     {
       text: 'Benchmark',
       icon: 'dashboard-fill',
-      link: '/docs/benchmark/'
+      link: 'benchmark/'
     },
     {
       text: 'Contribution Guide',
       icon: 'pullrequest',
-      link: '/docs/contribution-guide/'
+      link: 'contribution-guide/'
     },
     {
       text: 'FAQ',
       icon: 'faq',
-      link: '/docs/faq/'
+      link: 'faq/'
     }
   ],
 });

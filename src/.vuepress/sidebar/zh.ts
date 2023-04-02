@@ -5,13 +5,13 @@ export const zhSidebar = sidebar({
     {
       text: '快速上手',
       icon: 'launch',
-      link: '/zh/docs/quick-start',
+      link: 'quick-start',
     },
     {
       text: '部署',
       icon: 'start',
       collapsible: true,
-      prefix: '/zh/docs/deploy/',
+      prefix: 'deploy/',
       children: [
         'binary',
         'docker',
@@ -21,13 +21,13 @@ export const zhSidebar = sidebar({
     {
       text: '配置项',
       icon: 'config_s',
-      link: '/zh/docs/config'
+      link: 'config'
     },
     {
       text: '概念详解',
       icon: 'idea',
       collapsible: true,
-      prefix: '/zh/docs/concepts/',
+      prefix: 'concepts/',
       children: [
         'data-objects',
         'algorithms',
@@ -38,7 +38,7 @@ export const zhSidebar = sidebar({
     {
       text: '接口文档',
       icon: 'api',
-      prefix: '/zh/docs/api/',
+      prefix: 'api/',
       collapsible: true,
       children: [
         'restful-api',
@@ -55,22 +55,22 @@ export const zhSidebar = sidebar({
     {
       text: 'Gorse 控制台',
       icon: 'dashboard',
-      link: '/zh/docs/gorse-dashboard'
+      link: 'gorse-dashboard'
     },
     {
       text: '性能对比',
       icon: 'dashboard-fill',
-      link: '/zh/docs/benchmark/'
+      link: 'benchmark/'
     },
     {
       text: '贡献指南',
       icon: 'pullrequest',
-      link: '/zh/docs/contribution-guide/'
+      link: 'contribution-guide/'
     },
     {
       text: '常见问题',
       icon: 'faq',
-      link: '/zh/docs/faq/'
+      link: 'faq/'
     }
   ],
 });
