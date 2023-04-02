@@ -1,6 +1,6 @@
 ---
 title: 文档
-icon: explore
+shortTitle: 文档
 ---
 
 欢迎阅读 Gorse 推荐系统官方文档。

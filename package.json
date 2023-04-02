@@ -8,13 +8,17 @@
     "docs:build": "vuepress build src",
     "docs:clean-dev": "vuepress dev src --clean-cache",
     "docs:dev": "vuepress dev src",
-    "docs:gen": "npx ts-node scripts/apidocs.ts"
+    "docs:gen": "ts-node scripts/generate.ts",
+    "docs:prod": "ts-node scripts/build.ts"
   },
   "devDependencies": {
     "@faker-js/faker": "7.6.0",
     "@vuepress/client": "2.0.0-beta.61",
     "@vuepress/plugin-docsearch": "2.0.0-beta.61",
     "@vuepress/plugin-google-analytics": "2.0.0-beta.61",
+    "isomorphic-git": "^1.23.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.3",
     "vue": "^3.2.47",
     "vuepress": "2.0.0-beta.61",
     "vuepress-plugin-md-enhance": "2.0.0-beta.200",
