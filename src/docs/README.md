@@ -1,6 +1,5 @@
 ---
 title: Documentation
-icon: explore
 ---
 
 Welcome to the official documents for the Gorse recommender system.
