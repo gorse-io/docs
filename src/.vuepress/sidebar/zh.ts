@@ -1,9 +1,9 @@
-import { sidebar } from "vuepress-theme-hope";
+import fs from 'fs';
+import { sidebar, SidebarItem } from "vuepress-theme-hope";
 
 var sidebars = {}
 
-import('../../zh/docs/sidebar').then((e) => {
-  sidebars['/zh/docs/'] = e.sidebar;
-});
+const text = fs.readFileSync('src/zh/docs/sidebar.json', 'utf-8');
+sidebars['/zh/docs/'] = JSON.parse(text) as SidebarItem;
 
 export const zhSidebar = sidebar(sidebars);
