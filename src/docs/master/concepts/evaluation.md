@@ -17,7 +17,7 @@ where $R^r_u$ is the set of read feedback from user $u$, and $R^p_U$ is the set 
 
 For example, there are two positive feedback types (like and star) in [GitRec](https://gitrec.gorse.io/#/). Thus, the like rate and star rate are shown on the overview page of the dashboard.
 
-![](../../img/dashboard-overview.png)
+![](../../../img/dashboard-overview.png)
 
 ## Offline Evaluation
 
@@ -73,8 +73,8 @@ $$
 
 The recalls of indices are listed in the "System Status" section of the dashboard homepage.
 
-![](../../img/evaluation-neighbor-index-recall.jpeg =400x)
-![](../../img/evaluation-mf-index-recall.jpeg =400x)
+![](../../../img/evaluation-neighbor-index-recall.jpeg =400x)
+![](../../../img/evaluation-mf-index-recall.jpeg =400x)
 
 If the recall of an index is extremely low, consider turning off the index.
 

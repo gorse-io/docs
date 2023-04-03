@@ -19,50 +19,50 @@ dashboard_password = ""
 设置用户名和密码后，您将在第一次访问控制台时被重定向到登录页面。
 
 ::: center
-![](../../img/dashboard-login.png =x300)
+![](../../../img/dashboard-login.png =x300)
 :::
 
 ## 概述页
 
 概览页面的顶部显示了 Gorse 中的用户数、物品数、反馈数、有效正反馈和有效负反馈。概览页面的中间部分显示了用户在一段时间内给出的每种正面反馈的比例变化，点击反馈类型标签可以隐藏相应曲线。总览页面底部显示系统中的热门物品和最新物品，以及系统中的其他状态。
 
-![](../../img/dashboard-overview.png)
+![](../../../img/dashboard-overview.png)
 
 ## 任务页
 
 任务页面显示 Gorse 中的任务，包括任务名称、任务状态、任务开始时间、任务结束时间和任务进度。
 
-![](../../img/dashboard-tasks.png)
+![](../../../img/dashboard-tasks.png)
 
 ## 集群页
 
 集群页面列出集群中的节点。
 
-![](../../img/dashboard-cluster.png)
+![](../../../img/dashboard-cluster.png)
 
 ## 用户页
 
 用户页面列出了 Gorse 当前存在的所有用户，可以通过用户 ID 进行搜索。显示的信息包括用户ID、用户标签、最后活跃时间和推荐的最后更新时间。
 
-![](../../img/dashboard-users.png)
+![](../../../img/dashboard-users.png)
 
 点击“Neighbors”按钮可以查看与该用户相似的用户。
 
-![](../../img/dashboard-similar-users.png)
+![](../../../img/dashboard-similar-users.png)
 
 点击“Insight”按钮可查看用户的历史记录以及 Gorse 为该用户生成的推荐。
 
-![](../../img/dashboard-user-insight.png)
+![](../../../img/dashboard-user-insight.png)
 
 ## 物品页
 
 物品页面列出了目前 Gorse 中的所有物品，可以通过物品ID进行搜索。显示的信息包括物品ID、物品类别、是否隐藏、时间戳、物品标签和物品描述。
 
-![](../../img/dashboard-items.png)
+![](../../../img/dashboard-items.png)
 
 点击“Neighbors”按钮以查看每个物品的相似物品。
 
-![](../../img/dashboard-similar-items.png)
+![](../../../img/dashboard-similar-items.png)
 
 ## 数据导出和导入页
 
@@ -72,22 +72,22 @@ dashboard_password = ""
 - “Export Items”按钮将物品导出到 CSV 文件，格式为物品 ID、隐藏与否、物品类别、时间戳、物品标签和物品描述。
 - “Export Feedback”按钮以反馈类型、用户 ID、物品 ID 和时间戳的格式将反馈导出到 CSV 文件。
 
-![](../../img/dashboard-advance.png)
+![](../../../img/dashboard-advance.png)
 
 - 点击“Import Users”按钮进入导入用户页面并预览导入的数据。您可以设置字段分隔符、标签分隔符、每个字段的映射以及标题行是否存在。设置无误后，点击“Confirm Import”即可完成数据导入。
 
-![](../../img/dashboard-import-users.png)
+![](../../../img/dashboard-import-users.png)
 
 - 点击“Import Items”按钮进入导入物品页面，其操作逻辑与导入用户页面相同。
 
-![](../../img/dashboard-import-items.png)
+![](../../../img/dashboard-import-items.png)
 
 - 点击“Import Feedback”按钮进入导入反馈页面，其逻辑与导入用户相同。
 
-![](../../img/dashboard-import-feedback.png)
+![](../../../img/dashboard-import-feedback.png)
 
 ## 配置页
 
 配置页面显示了 Gorse 当前使用的配置。系统使用的配置是由配置文件、命令行选项和环境变量共同决定的，因此在设置页面看到的配置和使用的配置文件可能存在差异。
 
-![](../../img/dashboard-settings.png)
+![](../../../img/dashboard-settings.png)
