@@ -16,7 +16,7 @@ $$ \text{positive rate}=\frac{1}{|U|}\sum_{i\in |U|}\frac{|R^p_u|}{|R^r_u|} $$
 
 例如，在[GitRec](https://gitrec.gorse.io/#/)中有两种正反馈类型（“喜欢”和“点赞”）。因此，喜欢率和点赞率显示在控制台的概览页面上。
 
-![](../../../img/dashboard-overview.png)
+![](../../../../img/dashboard-overview.png)
 
 ## 离线评估
 
@@ -60,7 +60,7 @@ $$ \text{recall@n}=\frac{|\text{索引搜索得到的top n}|}{|\text{暴力搜�
 
 索引的召回率在仪表板主页的“系统状态”部分可以查看。
 
-![](../../../img/evaluation-neighbor-index-recall.jpeg =400x) ![](../../../img/evaluation-mf-index-recall.jpeg =400x)
+![](../../../../img/evaluation-neighbor-index-recall.jpeg =400x) ![](../../../../img/evaluation-mf-index-recall.jpeg =400x)
 
 如果某个索引的召回率极低，请考虑关闭该索引。
 

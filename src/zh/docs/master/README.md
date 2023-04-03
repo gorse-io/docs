@@ -1,6 +1,6 @@
 ---
 title: 文档
-shortTitle: 文档
+shortTitle: 主分支
 ---
 
 欢迎阅读 Gorse 推荐系统官方文档。
