@@ -24,6 +24,7 @@ async function checkoutVersions(locale: string) {
             filepaths: [`src/${locale}docs/master`]
         })
         fs.cpSync(`src/${locale}docs/master`, `src/${locale}docs/${version}`, { recursive: true });
+        console.log(`Checking out ${branch} to src/${locale}docs/${version}`)
         // print version
         let readme = fs.readFileSync(`src/${locale}docs/${version}/README.md`, 'utf8');
         readme = readme.replace(/shortTitle\:\s[\w\u4e00-\u9fa5]+/g, `shortTitle: "${version}"`);
