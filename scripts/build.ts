@@ -1,42 +1,46 @@
 import git from 'isomorphic-git';
 import * as fs from 'fs';
-import * as os from 'os';
 
 function isVersionedBranch(name: string): boolean {
-    return name.startsWith('release-') || name === 'main';
+    return name.startsWith('release-');
 }
 
 function getVersionFromBranch(name: string): string {
-    if (name === 'main') {
-        return 'stable';
-    }
     return name.substring('release-'.length);
 }
 
-const tempDocsFolder = fs.mkdtempSync(os.tmpdir() + '/docs-build');
-const tempZHDocsFolder = fs.mkdtempSync(os.tmpdir() + '/docs-build');
-
-fs.rmSync('src/docs', { recursive: true, force: true });
-fs.rmSync('src/zh/docs', { recursive: true, force: true });
-
-const branches = await git.listBranches({ fs, dir: '.', remote: 'origin' })
-const versionedBranches = branches.filter(isVersionedBranch);
-for (const branch of versionedBranches) {
-    const version = getVersionFromBranch(branch);
+async function checkoutVersions(locale: string) {
+    const branches = await git.listBranches({ fs, dir: '.', remote: 'origin' })
+    const versionedBranches = branches.filter(isVersionedBranch);
+    let branchTable = "";
+    for (const branch of versionedBranches) {
+        const version = getVersionFromBranch(branch);
+        await git.checkout({
+            fs,
+            dir: '.',
+            ref: branch,
+            noUpdateHead: true,
+            force: true,
+            filepaths: [`src/${locale}docs/master`]
+        })
+        fs.cpSync(`src/${locale}docs/master`, `src/${locale}docs/${version}`, { recursive: true });
+        console.log(`Checking out ${branch} to src/${locale}docs/${version}`)
+        // print version
+        let readme = fs.readFileSync(`src/${locale}docs/${version}/README.md`, 'utf8');
+        readme = readme.replace(/shortTitle\:\s[\w\u4e00-\u9fa5]+/g, `shortTitle: "${version}"`);
+        fs.writeFileSync(`src/${locale}docs/${version}/README.md`, readme);
+        // appemd to branch table
+        branchTable += `| [${version}](/${locale}docs/${version}/README.md) | [${branch}](https://github.com/gorse-io/docs/tree/${branch}) | [${branch}](https://github.com/gorse-io/gorse/tree/${branch}) |`
+    }
     await git.checkout({
         fs,
         dir: '.',
-        ref: branch,
         noUpdateHead: true,
         force: true,
-        filepaths: ['src/docs', 'src/zh/docs']
+        filepaths: [`src/${locale}docs/master`, `src/${locale}docs/README.md`]
     })
-    fs.cpSync('src/docs', `${tempDocsFolder}/${version}`, { recursive: true });
-    fs.cpSync('src/zh/docs', `${tempZHDocsFolder}/${version}`, { recursive: true });
+    fs.appendFileSync(`src/${locale}docs/README.md`, branchTable);
 }
 
-fs.rmSync('src/docs', { recursive: true, force: true });
-fs.rmSync('src/zh/docs', { recursive: true, force: true });
-fs.cpSync(tempDocsFolder, 'src/docs', { recursive: true });
-fs.cpSync(tempZHDocsFolder, 'src/zh/docs', { recursive: true });
-fs.cpSync('src/img', 'src/docs/img', { recursive: true });
+await checkoutVersions('');
+await checkoutVersions('zh/');
