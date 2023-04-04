@@ -1,12 +1,18 @@
-import { navbar } from "vuepress-theme-hope";
+import fs from 'fs';
+import { navbar, NavbarItem } from "vuepress-theme-hope";
+
+var navbars: NavbarItem[] = [];
+
+const versions = fs.readdirSync('src/docs/', { withFileTypes: true })
+  .filter((item) => item.isDirectory())
+  .map((item) => item.name);
+for (const version of versions) {
+  navbars.push({ text: version, link: `/docs/${version}/` });
+}
 
 export const enNavbar = navbar([
   "/",
-  {
-    text: "Docs", icon: "explore", children: [
-      { text: "master", link: "/docs/master/" },
-    ]
-  },
+  { text: "Docs", icon: "explore", children: navbars },
   { text: "Blog", icon: "article-fill", link: "/blog/" },
   {
     text: "GitHub",

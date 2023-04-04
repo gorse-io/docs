@@ -1,12 +1,18 @@
-import { navbar } from "vuepress-theme-hope";
+import fs from 'fs';
+import { navbar, NavbarItem } from "vuepress-theme-hope";
+
+var navbars: NavbarItem[] = [];
+
+const versions = fs.readdirSync('src/zh/docs/', { withFileTypes: true })
+  .filter((item) => item.isDirectory())
+  .map((item) => item.name);
+for (const version of versions) {
+  navbars.push({ text: version === "master" ? "主分支" : version, link: `/zh/docs/${version}/` });
+}
 
 export const zhNavbar = navbar([
   "/zh/",
-  {
-    text: "文档", icon: "explore", children: [
-      { text: "主分支", link: "/zh/docs/master/" },
-    ]
-  },
+  { text: "文档", icon: "explore", children: navbars },
   { text: "博客", icon: "article-fill", link: "/zh/blog/" },
   {
     text: "GitHub",

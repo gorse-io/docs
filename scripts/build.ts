@@ -1,6 +1,5 @@
 import git from 'isomorphic-git';
 import * as fs from 'fs';
-import * as os from 'os';
 
 function isVersionedBranch(name: string): boolean {
     return name.startsWith('release-');
@@ -11,9 +10,9 @@ function getVersionFromBranch(name: string): string {
 }
 
 async function checkoutVersions(locale: string) {
-    fs.rmSync(`src/${locale}docs`, { recursive: true, force: true });
     const branches = await git.listBranches({ fs, dir: '.', remote: 'origin' })
     const versionedBranches = branches.filter(isVersionedBranch);
+    let branchTable = "";
     for (const branch of versionedBranches) {
         const version = getVersionFromBranch(branch);
         await git.checkout({
@@ -25,14 +24,21 @@ async function checkoutVersions(locale: string) {
             filepaths: [`src/${locale}docs/master`]
         })
         fs.cpSync(`src/${locale}docs/master`, `src/${locale}docs/${version}`, { recursive: true });
+        // print version
+        let readme = fs.readFileSync(`src/${locale}docs/${version}/README.md`, 'utf8');
+        readme = readme.replace(/shortTitle\:\s[\w\u4e00-\u9fa5]+/g, `shortTitle: "${version}"`);
+        fs.writeFileSync(`src/${locale}docs/${version}/README.md`, readme);
+        // appemd to branch table
+        branchTable += `| [${version}](/${locale}docs/${version}/README.md) | [${branch}](https://github.com/gorse-io/docs/tree/${branch}) | [${branch}](https://github.com/gorse-io/gorse/tree/${branch}) |`
     }
-
-    // fs.rmSync('src/docs', { recursive: true, force: true });
-    // fs.rmSync('src/zh/docs', { recursive: true, force: true });
-    // fs.cpSync(tempDocsFolder, 'src/docs', { recursive: true });
-    // fs.cpSync(tempZHDocsFolder, 'src/zh/docs', { recursive: true });
-    // fs.cpSync('src/img', 'src/docs/img', { recursive: true });
-
+    await git.checkout({
+        fs,
+        dir: '.',
+        noUpdateHead: true,
+        force: true,
+        filepaths: [`src/${locale}docs/master`, `src/${locale}docs/README.md`]
+    })
+    fs.appendFileSync(`src/${locale}docs/README.md`, branchTable);
 }
 
 await checkoutVersions('');
