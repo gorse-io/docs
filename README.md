@@ -1,5 +1,7 @@
 # Gorse Docs
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/2480ea13-f8c7-4c84-aa77-51f105ac5bbf/deploy-status)](https://app.netlify.com/sites/gorse-io/deploys)
+
 Official documents for Gorse recommender system.
 
 ![](assets/screenshot.png)
@@ -51,5 +53,3 @@ Welcome to translate the Gorse document into more languages on [GitLocalize](htt
 
 - The [VuePress](https://vuepress.vuejs.org/) version of documents is contributed by [@andresribeiro](https://github.com/andresribeiro).
 - The theme of VuePress is [vuepress-theme-hope](https://vuepress-theme-hope.github.io/v2/).
-
-[![](assets/powered-by-vercel.svg)](https://vercel.com?utm_source=gorse&utm_campaign=oss)

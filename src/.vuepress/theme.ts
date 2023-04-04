@@ -17,7 +17,7 @@ export default hopeTheme({
 
   pageInfo: ["Author", "Original", "Date", "Category", "Tag", "ReadingTime"],
 
-  footer: "Powered by <a target='_blank' href='https://vercel.com?utm_source=gorse&utm_campaign=oss'>▲Vercel</a>",
+  footer: "Apache 2 Licensed | Copyright © 2022-present zhenghaoz",
 
   displayFooter: true,
 
