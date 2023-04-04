@@ -7,7 +7,7 @@ heroText: Gorse
 tagline: An open-source recommender system service written in Go.
 actions:
   - text: Documentation
-    link: /docs/master/
+    link: /docs/
     type: primary
 
   - text: Live Demo

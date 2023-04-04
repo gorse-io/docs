@@ -2,6 +2,8 @@
 title: Documentation
 ---
 
+## Documentation Versions
+
 Currently, we maintain the following versions of Gorse documentation:
 
 | Version | Documentation branch | Gorse branch |
