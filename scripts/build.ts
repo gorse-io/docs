@@ -1,3 +1,4 @@
+import glob from 'glob';
 import git from 'isomorphic-git';
 import * as fs from 'fs';
 
@@ -29,6 +30,13 @@ async function checkoutVersions(locale: string) {
         let readme = fs.readFileSync(`src/${locale}docs/${version}/README.md`, 'utf8');
         readme = readme.replace(/shortTitle\:\s[\w\u4e00-\u9fa5]+/g, `shortTitle: "${version}"`);
         fs.writeFileSync(`src/${locale}docs/${version}/README.md`, readme);
+        // disable edit link
+        const mdfiles = await glob(`src/${locale}docs/${version}/**/*.md`);
+        for (const mdfile of mdfiles) {
+            let mdContent = fs.readFileSync(mdfile, 'utf8');
+            mdContent = mdContent.replace('---', '---\neditLink: false');
+            fs.writeFileSync(mdfile, mdContent);
+        }
         // appemd to branch table
         branchTable += `| [${version}](/${locale}docs/${version}/README.md) | [${branch}](https://github.com/gorse-io/docs/tree/${branch}) | [${branch}](https://github.com/gorse-io/gorse/tree/${branch}) |`
     }

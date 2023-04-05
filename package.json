@@ -16,6 +16,7 @@
     "@vuepress/client": "2.0.0-beta.61",
     "@vuepress/plugin-docsearch": "2.0.0-beta.61",
     "@vuepress/plugin-google-analytics": "2.0.0-beta.61",
+    "glob": "^9.3.4",
     "isomorphic-git": "^1.23.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.3",
