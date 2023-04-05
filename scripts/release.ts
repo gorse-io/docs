@@ -32,8 +32,10 @@ async function checkoutVersions(locale: string) {
     await checkUncommittedFiles(`src/${locale}docs/master`);
     const branches = await git.listBranches({ fs, dir: '.', remote: 'origin' })
     const versionedBranches = branches.filter(isVersionedBranch);
+    const versions = ['master'];
     for (const branch of versionedBranches) {
         const version = getVersionFromBranch(branch);
+        versions.push(version);
         await git.checkout({
             fs,
             dir: '.',
@@ -51,8 +53,6 @@ async function checkoutVersions(locale: string) {
             mdContent = mdContent.replace('---', '---\neditLink: false');
             fs.writeFileSync(mdfile, mdContent);
         }
-        // render version info
-        const versionInfo = nunjucks.render(`./scripts/templates/${locale}VERSION.md.njk`);
     }
     await git.checkout({
         fs,
@@ -61,6 +61,11 @@ async function checkoutVersions(locale: string) {
         force: true,
         filepaths: [`src/${locale}docs/master`, `src/${locale}docs/README.md`]
     })
+    for (const version of versions) {
+        // render version info
+        const versionInfo = nunjucks.render(`./scripts/templates/${locale}VERSION.md.njk`, { current_version: version, versions: versions });
+        fs.writeFileSync(`src/${locale}docs/${version}/VERSION.md`, versionInfo);
+    }
 }
 
 await checkoutVersions('');

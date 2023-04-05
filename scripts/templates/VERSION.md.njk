@@ -1,8 +1,7 @@
 ::: info Documentation Versions
 
-Current version is master, we maintain the following versions of Gorse documentation:
-
-- master
-- 0.4
+Current version is [{{ current_version }}](/docs/{{ current_version }}/), we maintain the following versions of Gorse documentation:
+{% for version in versions %}
+- [{{ version }}](/docs/{{ version }}/){% endfor %}
 
 :::

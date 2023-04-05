@@ -1,8 +1,7 @@
 ::: info 文档版本
 
-当前文档版本为master, 我们维护了以下版本的Gorse文档：
-
-- master
-- 0.4
+当前文档版本为[`{{ current_version }}`](/zh/docs/{{ current_version }}/), 我们维护了以下版本的Gorse文档：
+{% for version in versions %}
+- [{{ version }}](/zh/docs/{{ version }}/){% endfor %}
 
 :::
