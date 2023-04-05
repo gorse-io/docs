@@ -1,5 +1,6 @@
 import glob from 'glob';
 import git from 'isomorphic-git';
+import nunjucks from 'nunjucks';
 import * as fs from 'fs';
 
 function isVersionedBranch(name: string): boolean {
@@ -50,6 +51,8 @@ async function checkoutVersions(locale: string) {
             mdContent = mdContent.replace('---', '---\neditLink: false');
             fs.writeFileSync(mdfile, mdContent);
         }
+        // render version info
+        const versionInfo = nunjucks.render(`./scripts/templates/${locale}VERSION.md.njk`);
     }
     await git.checkout({
         fs,

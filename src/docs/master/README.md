@@ -1,11 +1,9 @@
 ---
 title: Documentation
-icon: explore
+shortTitle: master
 ---
 
 Welcome to the official documents for the Gorse recommender system.
-
-<!-- @include: ./VERSION.md -->
 
 ## Table of Contents
 
