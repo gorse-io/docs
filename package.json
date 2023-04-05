@@ -9,13 +9,14 @@
     "docs:clean-dev": "vuepress dev src --clean-cache",
     "docs:dev": "vuepress dev src",
     "docs:gen": "ts-node scripts/generate.ts",
-    "docs:release": "ts-node scripts/build.ts && vuepress build src"
+    "docs:release": "ts-node scripts/release.ts && vuepress build src"
   },
   "devDependencies": {
     "@faker-js/faker": "7.6.0",
     "@vuepress/client": "2.0.0-beta.61",
     "@vuepress/plugin-docsearch": "2.0.0-beta.61",
     "@vuepress/plugin-google-analytics": "2.0.0-beta.61",
+    "glob": "^9.3.4",
     "isomorphic-git": "^1.23.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.3",
