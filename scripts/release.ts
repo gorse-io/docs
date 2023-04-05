@@ -1,5 +1,6 @@
 import glob from 'glob';
 import git from 'isomorphic-git';
+import nunjucks from 'nunjucks';
 import * as fs from 'fs';
 
 function isVersionedBranch(name: string): boolean {
@@ -31,8 +32,10 @@ async function checkoutVersions(locale: string) {
     await checkUncommittedFiles(`src/${locale}docs/master`);
     const branches = await git.listBranches({ fs, dir: '.', remote: 'origin' })
     const versionedBranches = branches.filter(isVersionedBranch);
+    const versions = ['master'];
     for (const branch of versionedBranches) {
         const version = getVersionFromBranch(branch);
+        versions.push(version);
         await git.checkout({
             fs,
             dir: '.',
@@ -58,6 +61,11 @@ async function checkoutVersions(locale: string) {
         force: true,
         filepaths: [`src/${locale}docs/master`, `src/${locale}docs/README.md`]
     })
+    for (const version of versions) {
+        // render version info
+        const versionInfo = nunjucks.render(`./scripts/templates/${locale}VERSION.md.njk`, { current_version: version, versions: versions });
+        fs.writeFileSync(`src/${locale}docs/${version}/VERSION.md`, versionInfo);
+    }
 }
 
 await checkoutVersions('');

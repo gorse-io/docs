@@ -29,4 +29,4 @@ api_key = ""
 
 :::
 
-@include(./apidocs.md)
+<!-- @include: ./apidocs.md -->
