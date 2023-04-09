@@ -80,7 +80,7 @@ popular_window = "720h"
 
 ## Similarity Algorithms
 
-In some scenarios, users like specific types of items, for example, gamers like to solve puzzles or users of a video platform like to watch dancing girls.
+In some scenarios, users like specific types of items, for example, gamers like to solve puzzles and young children like to watch cartoons.
 
 ### Item Similarity
 
