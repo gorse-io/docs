@@ -13,6 +13,10 @@ actions:
   - text: Live Demo
     link: https://gitrec.gorse.io
 
+  - text: " Chat with Docs"
+    link: https://discordapp.com/users/1102376269598970006
+    icon: discord
+
 features:
   - title: Multi-source
     icon: si-glyph-multifunction-knife
