@@ -11,6 +11,9 @@ actions:
     type: primary
   - text: 在线示例
     link: "https://gitrec.gorse.io"
+  - text: " 文档咨询"
+    link: http://wpa.qq.com/msgrd?v=3&uin=3447629328&site=qq&menu=yes
+    icon: QQ
 features:
   - title: 多源
     icon: si-glyph-multifunction-knife
