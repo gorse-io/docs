@@ -9,6 +9,23 @@ The .NET SDK is under development, and APIs might be changed in later versions. 
 
 :::
 
+[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Gorse.NET)](https://www.nuget.org/packages/Gorse.NET/)
+[![Nuget](https://img.shields.io/nuget/dt/Gorse.NET)](https://www.nuget.org/packages/Gorse.NET/)
+
+## Install
+
+- Install via .NET CLI:
+
+```bash
+dotnet add package Gorse.NET
+```
+
+- Install via NuGet Package Manager:
+
+```bash
+NuGet\Install-Package Gorse.NET
+```
+
 ## Usage
 
 ```cs
