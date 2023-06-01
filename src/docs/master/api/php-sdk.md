@@ -9,6 +9,12 @@ The PHP SDK is under development, and APIs might be changed in later versions. P
 
 :::
 
+## Install
+
+```bash
+composer require gorse/php-gorse
+```
+
 ## Usage
 
 ```php

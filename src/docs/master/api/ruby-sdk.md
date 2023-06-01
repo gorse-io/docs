@@ -9,6 +9,12 @@ The Ruby SDK is under development, and APIs might be changed in later versions. 
 
 :::
 
+## Install
+
+```bash
+gem install gorse
+```
+
 ## Usage
 
 ```ruby

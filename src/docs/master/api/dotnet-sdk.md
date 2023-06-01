@@ -9,6 +9,20 @@ The .NET SDK is under development, and APIs might be changed in later versions. 
 
 :::
 
+## Install
+
+Install via .NET CLI:
+
+```bash
+dotnet add package Gorse.NET
+```
+
+Install via NuGet Package Manager:
+
+```bash
+NuGet\Install-Package Gorse.NET
+```
+
 ## Usage
 
 ```cs
