@@ -26,6 +26,12 @@ export default hopeTheme({
       // navbar
       navbar: enNavbar,
 
+      navbarLayout: {
+        start: ["Brand"],
+        center: ["Links"],
+        end: ["Language", "GitHubLink", "TwitterLink", "DiscordLink", "Outlook", "Search"],
+      },
+
       // sidebar
       sidebar: enSidebar,
 
@@ -40,6 +46,12 @@ export default hopeTheme({
     "/zh/": {
       // navbar
       navbar: zhNavbar,
+
+      navbarLayout: {
+        start: ["Brand"],
+        center: ["Links"],
+        end: ["Language", "GitHubLink", "WeChatLink", "QQLink", "Outlook", "Search"],
+      },
 
       // sidebar
       sidebar: zhSidebar,
