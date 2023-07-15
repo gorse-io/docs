@@ -33,7 +33,7 @@ esac
 # download binary
 DOWNLOAD_URL=https://github.com/gorse-io/gorse/releases/latest/download/gorse_${OS}_${ARCH}.zip
 DOWNLOAD_DST=./gorse_${OS}_${ARCH}.zip
-PLAYGROUND_BIN=./gorse-in-one_${OS}_${ARCH}
+PLAYGROUND_BIN=./gorse-in-one
 if [ -f $DOWNLOAD_DST ] && [ ! -f $PLAYGROUND_BIN ]; then
     rm $DOWNLOAD_DST
 fi
