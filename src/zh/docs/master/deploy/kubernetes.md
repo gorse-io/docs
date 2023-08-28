@@ -43,7 +43,7 @@ helm install gorse gorse-io/gorse
 卸载`gorse`部署：
 
 ```bash
-helm unistall gorse
+helm uninstall gorse
 ```
 
 该命令删除与 chart 关联的所有 Kubernetes 组件并删除 release。
