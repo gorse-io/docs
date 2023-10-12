@@ -92,7 +92,7 @@ $$
 w_l = -\log\left(\frac{|I_l|}{|I|}\right)
 $$
 
-If a label is used by more items, this user is more generic and has a lower weight.
+If a label is used by more items, this label is more generic and has a lower weight.
 
 - **User weight**: The user weight is defined as
 
