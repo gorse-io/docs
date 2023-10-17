@@ -299,7 +299,7 @@ where $\mathbf{p}_u$ is the embedding vector of the user $u$, and $\mathbf{q}_i$
 BPR[^1] (Bayesian Personalized Ranking) is a pairwise training algorithm. The training data for BPR consist of a set of triples: 
 
 $$
-D_s=\{(u,i,j)|i\in I_u\wedge I \setminus I_u\}
+D_s=\{(u,i,j)|i\in I_u\wedge j\in I \setminus I_u\}
 $$
 
 The semantics of $(u, i, j) \in D_S$ is that user $u$ is assumed to prefer $i$ over $j$. The negative cases are regarded implicitly.
