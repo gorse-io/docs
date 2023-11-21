@@ -49,9 +49,9 @@ There is an example [docker-compose.yml](https://github.com/gorse-io/gorse/blob/
 mkdir gorse
 cd gorse
 
-# Download docker-compose.yml and config.tom
+# Download docker-compose.yml and config.toml
 wget https://raw.githubusercontent.com/zhenghaoz/gorse/release-0.4/docker-compose.yml
-wget https://raw.githubusercontent.com/zhenghaoz/gorse/release-0.4/config.toml
+wget https://raw.githubusercontent.com/zhenghaoz/gorse/release-0.4/config/config.toml
 ```
 
 2. Setup the Gorse cluster using Docker Compose.
