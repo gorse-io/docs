@@ -55,7 +55,7 @@ services:
       - mysql
 ```
 
-Read [Binary [Deployment](binary.md#flags-of-gorse-in-one) for detailed information about command line flags of gorse-in-one.
+Read [Binary Deployment](binary.md#flags-of-gorse-in-one) for detailed information about command line flags of gorse-in-one.
 
 ::: details Full Example
 
