@@ -63,7 +63,7 @@ async def main():
     client = AsyncGorse('http://127.0.0.1:8087', 'api_key')
 
     # Insert feedbacks.
-    client.insert_feedbacks([
+    await client.insert_feedbacks([
         { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'vuejs:vue', 'Timestamp': '2022-02-24' },
         { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'd3:d3', 'Timestamp': '2022-02-25' },
         { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'dogfalo:materialize', 'Timestamp': '2022-02-26' },
@@ -72,7 +72,7 @@ async def main():
     ])
 
     # Get recommendation.
-    client.get_recommend('bob', n=10)
+    await client.get_recommend('bob', n=10)
 
 asyncio.run(main())
 ```
