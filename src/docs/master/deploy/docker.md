@@ -55,7 +55,7 @@ services:
       - mysql
 ```
 
-Read [Binary [Deployment](binary.md#flags-of-gorse-in-one) for detailed information about command line flags of gorse-in-one.
+Read [Binary Deployment](binary.md#flags-of-gorse-in-one) for detailed information about command line flags of gorse-in-one.
 
 ::: details Full Example
 
@@ -104,7 +104,7 @@ services:
       - mysql
 ```
 
-2. Create a configuration file `config.toml` in the same directory based on [the configurationn template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml).
+2. Create a configuration file `config.toml` in the same directory based on [the configuration template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml).
 
 3. Start all services:
 
