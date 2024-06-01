@@ -9,7 +9,7 @@
     "docs:clean-dev": "vuepress dev src --clean-cache",
     "docs:dev": "vuepress dev src",
     "docs:gen": "ts-node scripts/generate.ts",
-    "docs:release": "ts-node scripts/release.ts && vuepress build src"
+    "docs:release": "node --loader ts-node/esm scripts/release.ts && vuepress build src"
   },
   "devDependencies": {
     "@faker-js/faker": "7.6.0",
