@@ -37,4 +37,15 @@ export default defineUserConfig({
       switchLocale: "modal",
     }),
   ],
+
+  head: [
+    ["script", {
+      async: true,
+      src: "https://widget.gurubase.io/widget.latest.min.js",
+      "data-widget-id": "FubGXZNmNkHYTx7lvFf0wLfcENtPEAoyUBoronOGaE8",
+      "data-text": "Ask AI",
+      "data-margins": '{"bottom": "1rem", "right": "1rem"}',
+      id: "guru-widget-id",
+    }],
+  ]
 });
