@@ -45,6 +45,7 @@ export default defineUserConfig({
       "data-widget-id": "FubGXZNmNkHYTx7lvFf0wLfcENtPEAoyUBoronOGaE8",
       "data-text": "Ask AI",
       "data-margins": '{"bottom": "1rem", "right": "1rem"}',
+      "data-bg-color": "#0a7bf4",
       id: "guru-widget-id",
     }],
   ]

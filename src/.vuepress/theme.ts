@@ -21,6 +21,8 @@ export default hopeTheme({
 
   displayFooter: true,
 
+  backToTop: false,
+
   locales: {
     "/": {
       // navbar
