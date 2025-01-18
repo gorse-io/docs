@@ -28,6 +28,8 @@
         "children": [
             "data-objects",
             "algorithms",
+            "non-personalized",
+            "item-to-item",
             "how-it-works",
             "evaluation"
         ]
