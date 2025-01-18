@@ -18,6 +18,8 @@ Welcome to the official documents for the Gorse recommender system.
 - Concepts
   - [Data Objects](concepts/data-objects.md)
   - [Algorithms](concepts/algorithms.md)
+  - [Non-personalized Recommenders](concepts/non-personalized.md)
+  - [Item-to-Item Recommenders](concepts/item-to-item.md)
   - [How It Works](concepts/how-it-works.md)
   - [Evaluation](concepts/evaluation.md)
 - API
