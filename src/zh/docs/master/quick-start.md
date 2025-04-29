@@ -52,7 +52,7 @@ cd gorse
 
 # Download docker-compose.yml and config.tom
 wget https://raw.githubusercontent.com/zhenghaoz/gorse/release-0.4/docker-compose.yml
-wget https://raw.githubusercontent.com/zhenghaoz/gorse/release-0.4/config.toml
+wget https://raw.githubusercontent.com/zhenghaoz/gorse/release-0.4/config/config.toml
 ```
 
 1. 使用 Docker Compose 搭建 Gorse 集群。
