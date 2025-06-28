@@ -5,7 +5,7 @@ category:
 tag:
   - GitHub
 ---
-# Run RISC-V Workflows on GitHub Actions
+# RISC-V Workflows on GitHub Actions (QEMU)
 
 GitHub Actions provides various continuous integration environments for projects hosted on GitHub, including three operating systems (Linux, macOS, and Windows) and two architectures (AMD64 and ARM64). These environments are sufficient for most projects, but RISC-V developers may find it challenging to run RISC-V workflows on GitHub Actions. Commercial companies can use self-hosted runners (refer to [Supporting runners on 64bit RISC-V](https://github.com/actions/runner/issues/2157)) or service providers ([RISC-V Runners](https://www.riscvrunners.com/) and [Cloud-V](https://cloud-v.co/risc-v-cicd)), but for individual developers, this represents a significant expense.
 
