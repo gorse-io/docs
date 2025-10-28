@@ -8,7 +8,7 @@ The workflow of Gorse is depicted in the following flowchart:
 ```mermaid
 flowchart TD
     database[(Database)]--user, items and feedback-->load[Load dataset]
-    load--latest and popular items-->cache[(Cache)]
+    load--latest items-->cache[(Cache)]
     find_users--User Neighbors-->cache
     find_items--Item Neighbors-->cache
     subgraph Master Node
@@ -21,12 +21,12 @@ flowchart TD
     cache2--cached recommendations-->api[RESTful APIs]
     database2[(Database)]<--user, items and feedback-->api
     subgraph Server Node
-        api<--popular and hidden items-->local_cache[Local Cache]
+        api<--hidden items-->local_cache[Local Cache]
     end
 
     cache--user neighbors-->user_based(User Similarity-based\nRecommendation)
     cache--item neighbors-->item_based(Item Similarity-based\nRecommendation)
-    cache--latest and popular items-->fm_predict
+    cache--latest items-->fm_predict
     fm_predict--recommendation-->cache2[(Cache)]
     subgraph Worker Node
         user_based--recommendation-->fm_predict
@@ -41,7 +41,7 @@ flowchart TD
 
 ## Architecture
 
-The master node loads data from the database. In the process of loading data, popular items and the latest items are written to the cache. Then, the master node searches for neighbors and training recommendation models. In the background, the random search is used to find the optimal recommendation model for current data. The worker nodes pull recommendation models from the master node and generate recommendations for each user. The server nodes provide RESTful APIs. Workers and servers connect to the master node via GRPC, which is configured in the configuration file.
+The master node loads data from the database. In the process of loading data, the latest items are written to the cache. Then, the master node searches for neighbors and training recommendation models. In the background, the random search is used to find the optimal recommendation model for current data. The worker nodes pull recommendation models from the master node and generate recommendations for each user. The server nodes provide RESTful APIs. Workers and servers connect to the master node via GRPC, which is configured in the configuration file.
 
 ```toml
 [master]
@@ -76,7 +76,7 @@ The intermediate cache is configurable. Increasing cache size might improve reco
 ```toml
 [recommend]
 
-# The cache size for recommended/popular/latest items. The default value is 10.
+# The cache size for recommended/latest items. The default value is 10.
 cache_size = 100
 
 # Recommended cache expire time. The default value is 72h.
@@ -87,7 +87,7 @@ The recommendation flow will be introduced in the top-down method.
 
 ### Master: Neighbors and Models
 
-The master node is driven by data loading. Data loading happens in every `model_fit_period`. The latest items and popular items can be collected during loading data. Once data is loaded, the following tasks start.
+The master node is driven by data loading. Data loading happens in every `model_fit_period`. The latest items can be collected during loading data. Once data is loaded, the following tasks start.
 
 - **Find Neighbors:** User neighbors and item neighbors are found and cached.
 - **Fit MF and FM** The matrix factorization model and factorization machine model are trained and delivered to workers.
@@ -138,7 +138,7 @@ Workers nodes generate and write offline recommendations to the cache database. 
 
 ```mermaid
 flowchart TD
-    cache[(Cache)]--"latest items\n{{if enable_latest_recommend }}\n\npopular items\n{{ if enable_popular_recommend }}"-->concat
+    cache[(Cache)]--"latest items\n{{if enable_latest_recommend }}"-->concat
     cache--user neighbors-->user_based["User Similarity-based Recommendation\n{{ if enable_user_based_recommend }}"]
     cache--item neighbors-->item_based["Item Similarity-based Recommendation\n{{ if enable_item_based_recommend }}"]
     user_based--recommendation-->concat
@@ -149,11 +149,11 @@ flowchart TD
     fm--recommendation-->remove[Remove\nRead Items]
     database2[(Database)]--feedback-->remove
     remove--recommendation-->explore[Explore\nRecommendation]
-    cache2[(Cache)]--latest and popular items-->explore
+    cache2[(Cache)]--latest items-->explore
     explore--recommendation-->cache3[(Cache)]
 ```
 
-First, the worker collects candidates from the latest items, popular items, user similarity-based recommendations, item similarity-based recommendations and matrix factorization recommendations. Sources of candidates can be enabled or disabled in the configuration. Then, candidates are ranked by the factorization machine and read items are removed. If `enable_click_through_prediction` is `false`, candidates are ranked randomly. Finally, popular items and the latest items will be injected into recommendations with probabilities defined in `explore_recommend`. Offline recommendation results will be written to the cache.
+First, the worker collects candidates from the latest items, user similarity-based recommendations, item similarity-based recommendations and matrix factorization recommendations. Sources of candidates can be enabled or disabled in the configuration. Then, candidates are ranked by the factorization machine and read items are removed. If `enable_click_through_prediction` is `false`, candidates are ranked randomly. Finally, the latest items will be injected into recommendations with probabilities defined in `explore_recommend`. Offline recommendation results will be written to the cache.
 
 ```toml
 [recommend.offline]
@@ -166,9 +166,6 @@ refresh_recommend_period = "24h"
 
 # Enable latest recommendation during offline recommendation. The default value is false.
 enable_latest_recommend = true
-
-# Enable popular recommendation during offline recommendation. The default value is false.
-enable_popular_recommend = false
 
 # Enable user-based similarity recommendation during offline recommendation. The default value is false.
 enable_user_based_recommend = true
@@ -183,11 +180,10 @@ enable_collaborative_recommend = true
 # would be merged randomly. The default value is false.
 enable_click_through_prediction = true
 
-# The explore recommendation method is used to inject popular items or latest items into recommended result:
-#   popular: Recommend popular items to cold-start users.
+# The explore recommendation method is used to inject latest items into recommended result:
 #   latest: Recommend latest items to cold-start users.
-# The default values is { popular = 0.0, latest = 0.0 }.
-explore_recommend = { popular = 0.1, latest = 0.2 }
+# The default values is { latest = 0.0 }.
+explore_recommend = { latest = 0.2 }
 ```
 
 ### Server: Online Recommendation
@@ -210,7 +206,7 @@ auto_insert_item = true
 
 #### Recommendation APIs
 
-Recommendation APIs return recommendation results. For non-personalized recommendations (latest items, popular items or neighbors), the server node fetches cached recommendations from the cache database and sends responses. But the server node needs to do more work for personalized recommendations.
+Recommendation APIs return recommendation results. For non-personalized recommendations (latest items or neighbors), the server node fetches cached recommendations from the cache database and sends responses. But the server node needs to do more work for personalized recommendations.
 
 - **Recommendation:** Offline recommendations by workers are written to responses and read items will be removed. But if the offline recommendation cache is consumed, fallback recommenders will be used. Recommenders in `fallback_recommend` will be tried in order.
 
@@ -244,7 +240,6 @@ flowchart LR
 
 # The fallback recommendation method is used when cached recommendation drained out:
 #   item_based: Recommend similar items.
-#   popular: Recommend popular items.
 #   latest: Recommend latest items.
 # Recommenders are used in order. The default values is ["latest"].
 fallback_recommend = ["item_based", "latest"]
@@ -256,7 +251,7 @@ num_feedback_fallback_item_based = 10
 Besides recommendations, there are two important configurations for servers.
 
 - **Clock Error:** Gorse supports feedback with future timestamps, thus Gorse relies on a correct clock. However, clocks in different hosts might be different, `clock_error` should be the maximal difference between clocks.
-- **Cache Expiration:** Servers cache hidden items and popular items in the local cache to avoid accessing the external database too frequently. The local cache is refreshed every `cache_expire`.
+- **Cache Expiration:** Servers cache hidden items in the local cache to avoid accessing the external database too frequently. The local cache is refreshed every `cache_expire`.
 
 ```toml
 [server]

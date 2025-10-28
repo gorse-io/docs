@@ -124,12 +124,6 @@ chhttps://user:password@host[:port]/database?param1=value1&...&paramN=valueN
 `positive_feedback_ttl` | 字符串 | `0` | [正反馈的有效时间](./concepts/data-objects#time-to-live-1)
 `item_ttl` | 字符串 | `0` | [物品的有效时间](./concepts/data-objects#time-to-live)
 
-### `recommend.popular`
-
-配置项 | 类型 | 默认值 | 描述
---- | --- | --- | ---
-`popular_window` | 整型 | `4320h` | [以天为单位的热门物品的时间窗口](./concepts/algorithms#popular-items)
-
 ### `recommend.user_neighbors`
 
 配置项 | 类型 | 默认值 | 描述
@@ -176,12 +170,11 @@ chhttps://user:password@host[:port]/database?param1=value1&...&paramN=valueN
 `check_recommend_period` | 整型 | `1m` | [触发离线推荐的周期](./concepts/how-it-works#worker-offline-recommendation)
 `refresh_recommend_period` | 整型 | `24h` | [强制刷新离线推荐的周期](./concepts/how-it-works#worker-offline-recommendation)
 `enable_latest_recommend` | 布尔值 | `false` | [离线推荐时启用最新推荐](./concepts/how-it-works.html#worker-offline-recommendation)
-`enable_popular_recommend` | 布尔值 | `false` | [离线推荐时开启热门推荐](./concepts/how-it-works.html#worker-offline-recommendation)
 `enable_user_based_recommend` | 布尔值 | `false` | [在离线推荐期间启用基于相似用户的推荐](./concepts/how-it-works.html#worker-offline-recommendation)
 `enable_item_based_recommend` | 布尔值 | `false` | [在离线推荐期间启用基于相似物品的推荐](./concepts/how-it-works.html#worker-offline-recommendation)
 `enable_collaborative_recommend` | 布尔值 | `true` | [离线推荐时启用协同过滤推荐](./concepts/how-it-works.html#worker-offline-recommendation)
 `enable_click_through_prediction` | 布尔值 | `false` | [在离线推荐期间启用点击率预测。否则，多路推荐的结果将被随机合并](./concepts/how-it-works.html#worker-offline-recommendation)
-`explore_recommend` | 字段 | `{ popular = 0.0, latest = 0.0 }` | [在探索推荐阶段，将热门物品或最新物品注入推荐结果的比例](./concepts/how-it-works.html#worker-offline-recommendation)
+`explore_recommend` | 字段 | `{ latest = 0.0 }` | [在探索推荐阶段，将最新物品注入推荐结果的比例](./concepts/how-it-works.html#worker-offline-recommendation)
 
 ### `recommend.online`
 

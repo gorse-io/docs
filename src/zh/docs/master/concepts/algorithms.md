@@ -33,7 +33,7 @@ $\mathbb{I}(p)$ | 如果条件$p$满足则等于1，否则等于0
 ```toml
 [recommend]
 
-# The cache size for recommended/popular/latest items. The default value is 100.
+# The cache size for recommended/latest items. The default value is 100.
 cache_size = 100
 ```
 
@@ -52,32 +52,6 @@ cache_size = 100
 ```sql
 select item_id from items order by time_stamp desc limit <cache_size>;
 ```
-
-### 人气物品推荐
-
-许多网站向用户显示最近的热门，如Twitter的趋势。流行物品的推荐相当于以下SQL：
-
-```sql
-select item_id from (
-    select item_id, count(_) as feedback_count from feedback
-    where feedback_type in <positive_feedback_types>
-        and time_stamp >= NOW() - INTERVAL <popular_window>
-    group by item_id) t
-order by feedback_count desc limit <cache_size>;
-```
-
-::: tip
-
-配置文件中的`<popular_window> `对应的是热门物品的窗口。
-
-```toml
-[recommend.popular]
-
-# The time window of popular items. The default values is 4320h.
-popular_window = "720h"
-```
-
-:::
 
 ## 相似算法
 

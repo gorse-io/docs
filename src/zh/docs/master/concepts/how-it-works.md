@@ -77,7 +77,7 @@ Gorse 像瀑布一样工作。用户、物品和反馈是水的源头。中间�
 ```toml
 [recommend]
 
-# The cache size for recommended/popular/latest items. The default value is 10.
+# The cache size for recommended/latest items. The default value is 10.
 cache_size = 100
 
 # Recommended cache expire time. The default value is 72h.
@@ -139,7 +139,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    cache[(缓存)]--"最新物品\n{{if enable_latest_recommend }}\n\n热门物品\n{{ if enable_popular_recommend }}"-->concat
+    cache[(缓存)]--"最新物品\n{{if enable_latest_recommend }}"-->concat
     cache--相似用户-->user_based["基于相似用户的推荐\n{{ if enable_user_based_recommend }}"]
     cache--相似物品-->item_based["基于相似物品的推荐\n{{ if enable_item_based_recommend }}"]
     user_based--推荐物品-->concat
@@ -150,11 +150,11 @@ flowchart TD
     fm--推荐物品-->remove[移除已读物品]
     database2[(数据库)]--反馈-->remove
     remove--推荐物品-->explore[探索推荐]
-    cache2[(缓存)]--最新物品和热门物品-->explore
+    cache2[(缓存)]--最新物品-->explore
     explore--推荐物品-->cache3[(缓存)]
 ```
 
-首先，工作节点从最新物品、热门物品、基于用户相似性的推荐、基于物品相似性的推荐和矩阵分解推荐中收集候选物品。候选物品的来源可以在配置中启用或禁用。然后，通过因子分解机对候选物品进行排名，并删除已读物品。如果`enable_click_through_prediction`是`false`，则候选物品会被随机排序。最后，热门的物品和最新的物品将以`explore_recommend`中定义的概率被注入到推荐中。离线推荐结果将被写入到缓存。
+首先，工作节点从最新物品、基于用户相似性的推荐、基于物品相似性的推荐和矩阵分解推荐中收集候选物品。候选物品的来源可以在配置中启用或禁用。然后，通过因子分解机对候选物品进行排名，并删除已读物品。如果`enable_click_through_prediction`是`false`，则候选物品会被随机排序。最后，最新的物品将以`explore_recommend`中定义的概率被注入到推荐中。离线推荐结果将被写入到缓存。
 
 ```toml
 [recommend.offline]
@@ -167,9 +167,6 @@ refresh_recommend_period = "24h"
 
 # Enable latest recommendation during offline recommendation. The default value is false.
 enable_latest_recommend = true
-
-# Enable popular recommendation during offline recommendation. The default value is false.
-enable_popular_recommend = false
 
 # Enable user-based similarity recommendation during offline recommendation. The default value is false.
 enable_user_based_recommend = true
@@ -184,11 +181,10 @@ enable_collaborative_recommend = true
 # would be merged randomly. The default value is false.
 enable_click_through_prediction = true
 
-# The explore recommendation method is used to inject popular items or latest items into recommended result:
-#   popular: Recommend popular items to cold-start users.
+# The explore recommendation method is used to inject latest items into recommended result:
 #   latest: Recommend latest items to cold-start users.
-# The default values is { popular = 0.0, latest = 0.0 }.
-explore_recommend = { popular = 0.1, latest = 0.2 }
+# The default values is { latest = 0.0 }.
+explore_recommend = { latest = 0.2 }
 ```
 
 ### 服务节点：在线推荐
@@ -211,7 +207,7 @@ auto_insert_item = true
 
 #### 推荐API
 
-推荐 API 用于返回推荐结果。对于非个性化推荐（最新项目、热门物、相似用户和相似物品），服务器节点从缓存数据库中获取推荐然后发送响应。但是对于个性化推荐，服务节点需要做更多的工作。
+推荐 API 用于返回推荐结果。对于非个性化推荐（最新项目、相似用户和相似物品），服务器节点从缓存数据库中获取推荐然后发送响应。但是对于个性化推荐，服务节点需要做更多的工作。
 
 - **个性化推荐：** 首先拉取工作节点产生的离线推荐，然后将已读物品删除。但如果离线推荐缓存被消耗完了，将使用兜底推荐算法。也就是从前往后尝试`fallback_recommend`中的推荐算法。
 
@@ -245,7 +241,6 @@ flowchart LR
 
 # The fallback recommendation method is used when cached recommendation drained out:
 #   item_based: Recommend similar items.
-#   popular: Recommend popular items.
 #   latest: Recommend latest items.
 # Recommenders are used in order. The default values is ["latest"].
 fallback_recommend = ["item_based", "latest"]

@@ -73,8 +73,6 @@ item_ttl = 0
 --- | --- | ---
 `GET` | `/api/latest` | 获取最新的物品。
 `GET` | `/api/latest/{category}` | 获取指定品类中的最新物品。
-`GET` | `/api/popular` | 获取热门物品。
-`GET` | `/api/popular/{category}` | 获取指定品类中的热门物品。
 `GET` | `/api/recommend/{user-id}` | 获取用户推荐。
 `GET` | `/api/recommend/{user-id}/{category}` | 获取指定品类下的用户推荐。
 `GET` | `/api/item/{item-id}/neighbors` | 获取物品的相似物品。

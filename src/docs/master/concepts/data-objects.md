@@ -71,8 +71,6 @@ Multiple categories can be distinguished by topics such as food, travel, etc., o
 |-|-|-|
 | `GET` | `/api/latest` | Get latest items. |
 | `GET` | `/api/latest/{category}` | Get latest items in specified category. |
-| `GET` | `/api/popular` | Get popular items. |
-| `GET` | `/api/popular/{category}` | Get popular items in specified category. |
 | `GET` | `/api/recommend/{user-id}` | Get recommendation for user. |
 | `GET` | `/api/recommend/{user-id}/{category}` | Get recommendation for user in specified category. |
 | `GET` | `/api/item/{item-id}/neighbors` | Get neighbors of a item. |

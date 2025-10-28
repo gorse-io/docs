@@ -122,12 +122,6 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 | `positive_feedback_ttl` | string | `0` | [Time-to-live of positive feedback](./concepts/data-objects#time-to-live-1) |
 | `item_ttl` | string | `0` | [Time-to-live of items](./concepts/data-objects#time-to-live) |
 
-### `recommend.popular`
-
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `popular_window` | integer | `4320h` | [Time window of popular items in days](./concepts/algorithms#popular-items) |
-
 ### `recommend.user_neighbors`
 
 | Key | Type | Default | Description |
@@ -174,12 +168,11 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 | `check_recommend_period` | integer | `1m` | [Period to check recommendation for users](./concepts/how-it-works#worker-offline-recommendation) |
 | `refresh_recommend_period` | integer | `24h` | [Period to refresh offline recommendation cache](./concepts/how-it-works#worker-offline-recommendation) |
 | `enable_latest_recommend` | boolean | `false` | [Enable latest recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
-| `enable_popular_recommend` | boolean | `false` | [Enable popular recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
 | `enable_user_based_recommend` | boolean | `false` | [Enable user-based similarity recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
 | `enable_item_based_recommend` | boolean | `false` | [Enable item-based similarity recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
 | `enable_collaborative_recommend` | boolean | `true` | [Enable collaborative filtering recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
 | `enable_click_through_prediction` | boolean | `false` | [Enable click-though rate prediction during offline recommendation. Otherwise, results from multi-way recommendation would be merged randomly](./concepts/how-it-works.html#worker-offline-recommendation) |
-| `explore_recommend` | map | `{ popular = 0.0, latest = 0.0 }` | [The explore recommendation method is used to inject popular items or latest items into recommended result](./concepts/how-it-works.html#worker-offline-recommendation) |
+| `explore_recommend` | map | `{ latest = 0.0 }` | [The explore recommendation method is used to inject latest items into recommended result](./concepts/how-it-works.html#worker-offline-recommendation) |
 
 ### `recommend.online`
 

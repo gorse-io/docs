@@ -32,7 +32,7 @@ The `<cache_size>` comes from the configuration file:
 ```toml
 [recommend]
 
-# The cache size for recommended/popular/latest items. The default value is 100.
+# The cache size for recommended/latest items. The default value is 100.
 cache_size = 100
 ```
 
@@ -51,32 +51,6 @@ The latest items recommendation is equivalent to the following SQL:
 ```sql
 select item_id from items order by time_stamp desc limit <cache_size>;
 ```
-
-### Popular Items
-
-Many websites show recent popular items to users such as Twitter trending. The popular items recommendation is equivalent to the following SQL:
-
-```sql
-select item_id from (
-    select item_id, count(*) as feedback_count from feedback 
-    where feedback_type in <positive_feedback_types> 
-        and time_stamp >= NOW() - INTERVAL <popular_window> 
-    group by item_id) t
-order by feedback_count desc limit <cache_size>;
-```
-
-::: tip
-
-The `<popular_window> ` in the configuration file corresponds to the window of popular items.
-
-```toml
-[recommend.popular]
-
-# The time window of popular items. The default values is 4320h.
-popular_window = "720h"
-```
-
-:::
 
 ## Similarity Algorithms
 
