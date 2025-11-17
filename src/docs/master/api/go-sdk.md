@@ -5,23 +5,23 @@ icon: go
 
 ::: warning
 
-The Go SDK is under development, and APIs might be changed in later versions. Pull requests are welcomed: https://github.com/gorse-io/gorse/tree/master/client
+The Go SDK is under development, and APIs might be changed in later versions. Pull requests are welcomed: https://github.com/gorse-io/gorse-go
 
 :::
 
-[![GoDoc](https://godoc.org/github.com/zhenghaoz/gorse?status.svg)](https://pkg.go.dev/github.com/zhenghaoz/gorse/client)
-[![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/gorse-io/gorse)](https://pkg.go.dev/github.com/zhenghaoz/gorse/client)
+[![GoDoc](https://godoc.org/github.com/gorse-io/gorse-go?status.svg)](https://pkg.go.dev/github.com/gorse-io/gorse-go)
+[![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/gorse-io/gorse-go)](https://pkg.go.dev/github.com/gorse-io/gorse-go)
 
 ## Install
 
 ```bash
-go get github.com/zhenghaoz/gorse/client@master
+go get github.com/zhenghaoz/gorse-io/gorse-go
 ```
 
 ## Usage
 
 ```go
-import "github.com/zhenghaoz/gorse/client"
+import client "github.com/gorse-io/gorse-go"
 
 func main() {
     // Create a client
