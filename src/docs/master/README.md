@@ -5,8 +5,6 @@ icon: explore
 
 Welcome to the official documents for the Gorse recommender system.
 
-<!-- @include: ./VERSION.md -->
-
 ## Table of Contents
 
 - [Quick Start](quick-start.md)
