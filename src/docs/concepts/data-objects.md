@@ -63,7 +63,7 @@ item_ttl = 0
 
 Multi-categories recommendations are common, take YouTube for example, where multiple recommendation categories are provided on the homepage.
 
-![](../../../img/youtube-topics.png)
+![](../../img/youtube-topics.png)
 
 Multiple categories can be distinguished by topics such as food, travel, etc., or by forms, e.g. live, short and long videos. Items will appear in the global recommendation stream, and in addition, the `Categories`` field determines which recommendation categories the items should appear in. For each recommendation API, there are a global version and a categorized version:
 
@@ -80,7 +80,7 @@ Multiple categories can be distinguished by topics such as food, travel, etc., o
 
 For example, for a live badminton match, you can set its `Categories` to "Live" and "Sports". In this way, in addition to the default recommendation stream, the user can find the live stream in the "Live" and "Sports" recommendation categories.
 
-![](../../../img/youtube-live.png)
+![](../../img/youtube-live.png)
 
 ::: warning
 
@@ -169,8 +169,8 @@ Positive feedback can be inserted into the recommender system when the user take
 
 ::: center
 
-![](../../../img/tiktok.jpg =300x)
-![](../../../img/youtube-mobile.jpg =300x)
+![](../../img/tiktok.jpg =300x)
+![](../../img/youtube-mobile.jpg =300x)
 
 :::
 

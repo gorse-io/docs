@@ -65,7 +65,7 @@ item_ttl = 0
 
 多品类推荐很常见，以YouTube为例，首页提供多个主题推荐。
 
-![](../../../../img/youtube-topics.png)
+![](../../../img/youtube-topics.png)
 
 物品品类可以根据主题区分，例如美食、旅游等，也可以根据形式区分，例如直播、短视频和长视频。物品除了出现在全局推荐流中外，`Categories`字段决定了物品应出现在哪些品类推荐流中。对于每个推荐 API，都有一个全局推荐版本和一个品类推荐版本：
 
@@ -82,7 +82,7 @@ item_ttl = 0
 
 例如，对于羽毛球比赛直播，您可以将其`Categories`设置为“直播”和“体育”。这样，除了默认的推荐流之外，用户还可以在“直播”和“体育”推荐类别中找到直播流。
 
-![](../../../../img/youtube-live.png)
+![](../../../img/youtube-live.png)
 
 ::: warning
 
@@ -171,7 +171,7 @@ curl -X POST "http://127.0.0.1:8088/api/feedback" \
 
 ::: center
 
-![](../../../../img/tiktok.jpg =300x) ![](../../../../img/youtube-mobile.jpg =300x)
+![](../../../img/tiktok.jpg =300x) ![](../../../img/youtube-mobile.jpg =300x)
 
 :::
 
