@@ -126,11 +126,11 @@ Restarting gorse_worker_1 ... done
 
 在浏览器中打开[http://127.0.0.1:8088](http://127.0.0.1:8088) ，仪表盘汇总了 Gorse 中的所有状态和数据。
 
-![](../../../img/dashboard-overview.png)
+![](../../img/dashboard-overview.png)
 
 等待*除了“Searching collaborative filtering model”和“Searching click-through prediction model”外*的所有任务完成。
 
-![](../../../img/dashboard-tasks.png)
+![](../../img/dashboard-tasks.png)
 
 假设 Bob 是一名前端开发人员，他在 GitHub 中点赞过为多个前端仓库。我们通过 RESTful API 将他的点赞插入 Gorse。
 
