@@ -1,16 +1,79 @@
-import fs from 'fs';
-import { sidebar, SidebarItem } from "vuepress-theme-hope";
+import { sidebar } from "vuepress-theme-hope";
 
-var sidebars = {}
-
-const versions = fs.readdirSync('src/docs/', { withFileTypes: true })
-    .filter((item) => item.isDirectory())
-    .map((item) => item.name);
-for (const version of versions) {
-    if (fs.existsSync(`src/docs/${version}/sidebar.json`)) {
-        const text = fs.readFileSync(`src/docs/${version}/sidebar.json`, 'utf-8');
-        sidebars[`/docs/${version}/`] = JSON.parse(text) as SidebarItem;
-    }
-}
-
-export const enSidebar = sidebar(sidebars);
+export const enSidebar = sidebar({
+    "/docs/": [
+        {
+            "text": "Quick Start",
+            "icon": "launch",
+            "link": "quick-start"
+        },
+        {
+            "text": "Deploy",
+            "icon": "start",
+            "collapsible": true,
+            "prefix": "deploy/",
+            "children": [
+                "binary",
+                "docker",
+                "kubernetes"
+            ]
+        },
+        {
+            "text": "Configuration",
+            "icon": "config_s",
+            "link": "config"
+        },
+        {
+            "text": "Concepts",
+            "icon": "idea",
+            "collapsible": true,
+            "prefix": "concepts/",
+            "children": [
+                "data-objects",
+                "algorithms",
+                "non-personalized",
+                "item-to-item",
+                "external",
+                "how-it-works",
+                "evaluation"
+            ]
+        },
+        {
+            "text": "API",
+            "icon": "api",
+            "collapsible": true,
+            "prefix": "api/",
+            "children": [
+                "restful-api",
+                "go-sdk",
+                "python-sdk",
+                "typescript-sdk",
+                "java-sdk",
+                "rust-sdk",
+                "php-sdk",
+                "ruby-sdk",
+                "dotnet-sdk"
+            ]
+        },
+        {
+            "text": "Gorse Dashboard",
+            "icon": "dashboard",
+            "link": "gorse-dashboard"
+        },
+        {
+            "text": "Benchmark",
+            "icon": "dashboard-fill",
+            "link": "benchmark/"
+        },
+        {
+            "text": "Contribution Guide",
+            "icon": "pullrequest",
+            "link": "contribution-guide/"
+        },
+        {
+            "text": "FAQ",
+            "icon": "faq",
+            "link": "faq/"
+        }
+    ]
+});
