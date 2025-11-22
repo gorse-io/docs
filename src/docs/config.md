@@ -3,7 +3,7 @@ icon: config_s
 ---
 # Configuration
 
-These configuration items without default values must be filled. It's highly recommended to create a new config file based on [the configuration template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml). *The "description" for each option links to the detailed usage of this option.*
+These configuration items without default values must be filled. It's highly recommended to create a new config file based on [the configuration template](https://github.com/gorse-io/gorse/blob/master/config/config.toml). *The "description" for each option links to the detailed usage of this option.*
 
 ## `database`
 
@@ -122,29 +122,38 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 | `positive_feedback_ttl` | string | `0` | [Time-to-live of positive feedback](./concepts/data-objects#time-to-live-1) |
 | `item_ttl` | string | `0` | [Time-to-live of items](./concepts/data-objects#time-to-live) |
 
-### `recommend.popular`
+### `[[recommend.non-personalized]]`
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `popular_window` | integer | `4320h` | [Time window of popular items in days](./concepts/algorithms#popular-items) |
+| `name` | string | | The name of [non-personalized recommender](concepts/non-personalized.md) |
+| `score` | string | | The score function in the [Expr](https://expr-lang.org/) language |
+| `filter ` | string | | The filter function in the [Expr](https://expr-lang.org/) language |
 
-### `recommend.user_neighbors`
+### `[[recommend.user-to-user]]`
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | The name of [user-to-user recommender](concepts/user-to-user.md) |
 | `neighbor_type` | string | `"auto"` | [The type of neighbors for users](./concepts/algorithms#item-similarity) |
 | `enable_index` | boolean | `false` | [Enable approximate item neighbor searching using clustering index](./concepts/algorithms#clustering-index) |
 | `index_recall` | float | `0.8` | [Minimal recall for approximate item neighbor searching](./concepts/algorithms#clustering-index) |
 | `index_fit_epoch` | integer | `3` | [Maximal number of fit epochs for approximate item neighbor searching clustering index](./concepts/algorithms#clustering-index) |
 
-### `recommend.item_neighbors`
+### `[[recommend.item-to-item]]`
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `neighbor_type` | string | `"auto"` | [The type of neighbors for items](./concepts/algorithms#user-similarity) |
-| `enable_index` | boolean | `false` | [Enable approximate item neighbor searching using clustering index](./concepts/algorithms#clustering-index) |
-| `index_recall` | float | `0.8` | [Minimal recall for approximate user neighbor searching](./concepts/algorithms#clustering-index) |
-| `index_fit_epoch` | integer | `3` | [Maximal number of fit epochs for approximate user neighbor searching clustering index](./concepts/algorithms#clustering-index) |
+| `name` | string | | The name of [item-to-item recommender](concepts/item-to-item.md) |
+| `type` | string | | The similarity type of neighbors. |
+| `column` | string | | The field used to calculate the similarity. |
+
+### `[[recommend.external]]`
+
+| Key | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | string | | The name of [external recommender](concepts/external.md) |
+| `script` | string | | The script to fetch external recommended items |
 
 ### `recommend.collaborative`
 
@@ -159,7 +168,7 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 | `index_recall` | float | `0.9` | [Minimal recall for approximate collaborative filtering recommend](./concepts/algorithms#matrix-factorization) |
 | `index_fit_epoch` | integer | `3` | [Maximal number of fit epochs for approximate collaborative filtering recommend HNSW index](./concepts/algorithms#matrix-factorization) |
 
-### `recommend.replacement`
+### `[recommend.replacement]`
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -181,12 +190,21 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 | `enable_click_through_prediction` | boolean | `false` | [Enable click-though rate prediction during offline recommendation. Otherwise, results from multi-way recommendation would be merged randomly](./concepts/how-it-works.html#worker-offline-recommendation) |
 | `explore_recommend` | map | `{ popular = 0.0, latest = 0.0 }` | [The explore recommendation method is used to inject popular items or latest items into recommended result](./concepts/how-it-works.html#worker-offline-recommendation) |
 
-### `recommend.online`
+### `[recommend.fallback]`
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `fallback_recommend` | strings | `["latest"]` | [Source of recommendation when personalized recommendation exhausted](./concepts/how-it-works.html#server-online-recommendation) |
-| `num_feedback_fallback_item_based` | integer | `10` | [The number of feedback used in fallback item-based similar recommendation](./concepts/how-it-works.html#server-online-recommendation) |
+| `recommenders` | strings | `["latest"]` | [Source of recommendation when personalized recommendation exhausted](./concepts/how-it-works.html#server-online-recommendation) |
+
+## `[oidc]`
+
+| Key | Type | Default | Description |
+| --- | --- | --- | --- |
+| `enable` | boolean | `false` | Enable OpenID Connect (OIDC) authentication. |
+| `issuer` | string | | The issuer of the OAuth provider. |
+| `client_id` | string | | Public identifier of the OAuth application. |
+| `client_secret` | string | | Token access to the OAuth application. |
+| `redirect_url` | string | | URL used to redirect after authenticated. |
 
 ## Environment Variables
 

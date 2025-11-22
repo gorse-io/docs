@@ -46,18 +46,18 @@ There is an example [docker-compose.yml](https://github.com/gorse-io/gorse/blob/
 
 ```bash
 # Create a new directory
-mkdir gorse
-cd gorse
+mkdir github
+cd github
 
 # Download docker-compose.yml and config.toml
-wget https://raw.githubusercontent.com/zhenghaoz/gorse/release-0.4/docker-compose.yml
-wget https://raw.githubusercontent.com/zhenghaoz/gorse/release-0.4/config/config.toml
+wget https://raw.githubusercontent.com/gorse-io/gorse/master/docker-compose.yml
+wget https://raw.githubusercontent.com/gorse-io/gorse/master/config/config.toml -P config
 ```
 
 2. Setup the Gorse cluster using Docker Compose.
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 ::: details Expected outputs
@@ -73,14 +73,17 @@ Creating gorse_redis_1  ... done
 
 :::
 
-3. Download the SQL file [github.sql](https://cdn.gorse.io/example/github.sql) and import to the MySQL instance. This dataset consists of GitHub users, GitHub repositories and interactions between users and repositories.
+3. Download the dump file [github.bin.gz](https://cdn.gorse.io/example/github.bin.gz) and import to Gorse. This dataset consists of GitHub users, GitHub repositories and interactions between users and repositories.
 
 ```bash
 # Download sample data.
-wget https://cdn.gorse.io/example/github.sql
+wget https://cdn.gorse.io/example/github.bin.gz
+
+# Decompress sample data.
+gzip -d github.bin.gz
 
 # Import sample data.
-mysql -h 127.0.0.1 -u gorse -pgorse_pass gorse < github.sql
+curl -X POST --data-binary @github.bin http://localhost:8088/api/restore
 ```
 
 There are three kinds of interactions (called "feedbacks" in Gorse) between users and repositories in this dataset.
@@ -104,7 +107,7 @@ read_feedback_types = ["read"]
 4. Restart the master node to reload imported data immediately.
 
 ```bash
-docker-compose restart
+docker compose restart master
 ```
 
 ::: details Expected outputs

@@ -3,30 +3,25 @@ icon: faq
 ---
 # Frequently Asked Questions
 
-These frequently asked questions are collected from issues, emails and chats. Feel free to ask more questions via [issue](https://github.com/zhenghaoz/gorse/issues), [email](mailto:support@gorse.io), [Discord](https://discord.com/channels/830635934210588743/) (for English) or [QQ](https://qm.qq.com/cgi-bin/qm/qr?k=lOERnxfAM2U2rj4C9Htv9T68SLIXg6uk&jump_from=webapi) (for Chinese).
+These frequently asked questions are collected from issues, emails, and chats. Feel free to ask more questions via [issue](https://github.com/gorse-io/gorse/issues), [Discord](https://discord.com/channels/830635934210588743/) (for English) or [WeChat](/weixin.jpg) (for Chinese).
 
-### 1. How to address the cold-start problem?
-
-Use `explore_recommend` to inject the latest items or recently popular items into a recommendation. Also, item labels are helpful to rank new items in a recommendation. For example:
-
-It means the latest items are inserted into recommended items list in a probability of 0.2 and recently popular items are inserted into recommended items list in a probability of 0.1.
-
-### 2. How to keep track of items recommended to each user?
+### 1. How to keep track of items recommended to each user?
 
 There are two options:
 
-1. Insert read-type feedback to Gorse when an item is shown to a user. This is the way the official demo [zhenghaoz/gitrec](https://github.com/zhenghaoz/gitrec) tracks user-seen recommendations.
-2. Use `write-back-type` and `write-back-delay` parameters to write back recommendations as read feedbacks to Gorse, eg:
+1. Insert read-type feedback to Gorse when an item is shown to a user. This is the way the official demo [gorse-io/gitrec](https://github.com/gorse-io/gitrec) tracks user-seen recommendations.
+2. Use `write-back-type` and `write-back-delay` parameters to write back recommendations as read feedback to Gorse, e.g.
 
 ```bash
 curl -i -H "Accept: application/json" \
-    -X GET http://127.0.0.1:8088//api/recommend/0?write-back-type=read&write-back-delay=10s
+    -X GET http://localhost:8088//api/recommend/0?write-back-type=read&write-back-delay=10s
 ```
 
-The 1st option is more accurate since it is done by the front end but the 2nd option is more convenient.
-### 3. What does "no feedback found" mean?
+The 1st option is more accurate since it is done by the frontend but the 2nd option is more convenient.
 
-If "collaborative filtering" tasks report no feedback found, it means there is no positive feedback in the database. The definition of positive feedback types and read feedback types are in the configuration file:
+### 2. What does "no feedback found" mean?
+
+If "training collaborative filtering model" tasks report no feedback found, it means there is no positive feedback in the database. The definition of positive feedback types and read feedback types are in the configuration file:
 
 ```toml
 # The feedback types for positive events.
@@ -36,6 +31,6 @@ positive_feedback_types = ["star","like"]
 read_feedback_types = ["read"]
 ```
 
-If "click-through rate prediction" tasks report no feedback found. It means there is no negative feedback in the database. The negative feedbacks are these read feedback without positive feedback.
+If "training click-through rate model" tasks report no feedback found. It means there is no negative feedback in the database. The negative feedback are these read feedback without positive feedback.
 
 If you don't have any feedback, don't worry. There are fallback recommenders to handle the cold-start problem.

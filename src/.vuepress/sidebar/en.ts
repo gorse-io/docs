@@ -33,6 +33,7 @@ export const enSidebar = sidebar({
                 "algorithms",
                 "non-personalized",
                 "item-to-item",
+                "user-to-user",
                 "external",
                 "how-it-works",
                 "evaluation"

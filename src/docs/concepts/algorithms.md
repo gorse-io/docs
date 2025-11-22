@@ -193,51 +193,6 @@ neighbor_type = "similar"
 
 If users are attached to high-quality labels, `similar` is the best choice. If users have no labels, use `related`. For other situations, consider `auto`.
 
-### Clustering Index
-
-Gorse needs to generate neighbors for each user and item, but it is an expensive procedure. The complexity to generate neighbors for all items is $O(|I|^2)$ by brute force (for simplicity, assume the complexity of similarity calculation is constant). The clustering index[^9] is more efficient to search neighbors for each item with acceptable precision decay. The usage of the clustering index consists of two steps:
-
-1. **Clustering:** The *spherical k-means* algorithm is used to cluster items to $k$ clusters with centroids $c_i$ ($i\in\{1.\dots,K\}$). Then, each item $j$ belongs to $a_j$-th cluster.
-
-> - $a_j \leftarrow \text{rand}(k)$
-> - **while** $c_i$ or $a_j$ changed at previous step **do**
->   - $c_i \leftarrow$ the centroid of items belong to $i$-th cluster  
->   - $a_j \leftarrow \argmax_{i\in\{1,\dots,K\}}s_{c_i j}$
-> - **end while**
-
-2. **Search:** For searching neighbors for item $i'$.
-
-> - Step 1, find the nearest $L$ centroid to item $i'$.
-> - Step 2, find the nearest $n$ items to item $i'$ on $L$ clusters.
-
-The time complexity is $O(|I|TK+|I|L/K)$, where $T$ is the maximal number of iterations to stop the clustering algorithm. In Gorse implementation, $K = \sqrt{|I|}$, the time complexity becomes $O(\sqrt{|I|}(|I|T+L))$. Hence, the clustering index is efficient if $T \ll \sqrt{|T|}$.
-
-The clustering index can be switched on and off by `enable_index`, which is turned on by default. The clustering index needs to set the parameter $L$, which is the number of clusters to query. Too small $L$ will cause the index to fail to reach the required recall, while too large $L$ will reduce the performance. The construction process tries to increase $L$. If the query recall reaches `index_recall`, or the growth epochs reach `index_fit_epoch`, the build process stops increasing $L$.
-
-```toml
-[recommend.item_neighbors]
-
-# Enable approximate item neighbor searching using vector index. The default value is true.
-enable_index = true
-
-# Minimal recall for approximate item neighbor searching. The default value is 0.8.
-index_recall = 0.8
-
-# Maximal number of fit epochs for approximate item neighbor searching vector index. The default value is 3.
-index_fit_epoch = 3
-
-[recommend.user_neighbors]
-
-# Enable approximate user neighbor searching using vector index. The default value is true.
-enable_index = true
-
-# Minimal recall for approximate user neighbor searching. The default value is 0.8.
-index_recall = 0.8
-
-# Maximal number of fit epochs for approximate user neighbor searching vector index. The default value is 3.
-index_fit_epoch = 3
-```
-
 ## Personalized Algorithms
 
 There are lots of fancy recommendation algorithms these days and most of them are based on deep learning[^4]. However, we believe traditional methods without deep learning are sufficient to achieve compromising recommendation performance.

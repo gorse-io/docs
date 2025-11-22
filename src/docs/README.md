@@ -18,6 +18,7 @@ Welcome to the official documents for the Gorse recommender system.
   - [Algorithms](concepts/algorithms.md)
   - [Non-personalized Recommenders](concepts/non-personalized.md)
   - [Item-to-Item Recommenders](concepts/item-to-item.md)
+  - [User-to-User Recommenders](concepts/user-to-user.md)
   - [External Recommenders](concepts/external.md)
   - [How It Works](concepts/how-it-works.md)
   - [Evaluation](concepts/evaluation.md)
