@@ -28,5 +28,3 @@ api_key = ""
 ```
 
 :::
-
-<!-- @include: ./apidocs.md -->
