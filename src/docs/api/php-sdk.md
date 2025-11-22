@@ -9,8 +9,7 @@ The PHP SDK is under development, and APIs might be changed in later versions. P
 
 :::
 
-[![Packagist Version](https://img.shields.io/packagist/v/gorse/php-gorse)](https://packagist.org/packages/gorse/php-gorse)
-[![Packagist Downloads](https://img.shields.io/packagist/dt/gorse/php-gorse)](https://packagist.org/packages/gorse/php-gorse)
+[![Packagist Version](https://img.shields.io/packagist/v/gorse/php-gorse)](https://packagist.org/packages/gorse/php-gorse)[![Packagist Downloads](https://img.shields.io/packagist/dt/gorse/php-gorse)](https://packagist.org/packages/gorse/php-gorse)
 
 ## Install
 

@@ -9,8 +9,7 @@ The Java SDK is under development, and APIs might be changed in later versions. 
 
 :::
 
-[![Maven Central](https://img.shields.io/maven-central/v/io.gorse/gorse-client)](https://mvnrepository.com/artifact/io.gorse/gorse-client)
-[![GitHub](https://img.shields.io/github/license/gorse-io/gorse4j)](https://github.com/gorse-io/gorse4j)
+[![Maven Central](https://img.shields.io/maven-central/v/io.gorse/gorse-client)](https://mvnrepository.com/artifact/io.gorse/gorse-client)[![GitHub](https://img.shields.io/github/license/gorse-io/gorse4j)](https://github.com/gorse-io/gorse4j)
 
 ## Install
 

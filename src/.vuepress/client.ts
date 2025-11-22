@@ -1,4 +1,4 @@
-import { defineClientConfig } from "@vuepress/client";
+import { defineClientConfig } from "vuepress/client";
 
 import DiscordLink from "./components/DiscordLink.js";
 import GitHubLink from "./components/GitHubLink.js";

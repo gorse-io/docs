@@ -1,31 +1,34 @@
 {
   "name": "gorse",
-  "version": "0.4.0",
-  "description": "A project of vuepress-theme-hope",
+  "description": "Gorse open source recommeder system engine",
+  "version": "2.0.0",
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
-    "docs:build": "vuepress build src",
-    "docs:clean-dev": "vuepress dev src --clean-cache",
-    "docs:dev": "vuepress dev src",
-    "docs:gen": "ts-node scripts/generate.ts"
+    "docs:build": "vuepress-vite build src",
+    "docs:clean-dev": "vuepress-vite dev src --clean-cache",
+    "docs:dev": "vuepress-vite dev src",
+    "docs:update-package": "pnpm dlx vp-update"
   },
   "devDependencies": {
-    "@faker-js/faker": "7.6.0",
-    "@vuepress/client": "2.0.0-beta.62",
-    "@vuepress/plugin-docsearch": "2.0.0-beta.62",
-    "@vuepress/plugin-google-analytics": "2.0.0-beta.62",
-    "glob": "^9.3.4",
-    "isomorphic-git": "^1.23.0",
-    "nunjucks": "^3.2.3",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.0.3",
-    "vue": "^3.2.47",
-    "vuepress": "2.0.0-beta.62",
-    "vuepress-plugin-md-enhance": "2.0.0-beta.221",
-    "vuepress-plugin-redirect": "2.0.0-beta.221",
-    "vuepress-theme-hope": "2.0.0-beta.221",
-    "vuepress-vite": "2.0.0-beta.62"
+    "@vuepress/bundler-vite": "2.0.0-rc.26",
+    "@vuepress/plugin-back-to-top": "2.0.0-rc.118",
+    "@vuepress/plugin-docsearch": "2.0.0-rc.118",
+    "@vuepress/plugin-google-analytics": "2.0.0-rc.118",
+    "@vuepress/plugin-redirect": "2.0.0-rc.118",
+    "echarts": "^6.0.0",
+    "flowchart": "^1.2.0",
+    "flowchart.ts": "^3.0.1",
+    "katex": "^0.16.25",
+    "mermaid": "^11.12.1",
+    "sass-embedded": "^1.93.2",
+    "vue": "^3.5.22",
+    "vuepress": "2.0.0-rc.26",
+    "vuepress-theme-hope": "2.0.0-rc.98"
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
 }

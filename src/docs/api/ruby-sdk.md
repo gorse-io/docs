@@ -9,8 +9,7 @@ The Ruby SDK is under development, and APIs might be changed in later versions. 
 
 :::
 
-[![Gem](https://img.shields.io/gem/v/gorse)](https://rubygems.org/gems/gorse)
-[![Gem](https://img.shields.io/gem/dt/gorse)](https://rubygems.org/gems/gorse)
+[![Gem](https://img.shields.io/gem/v/gorse)](https://rubygems.org/gems/gorse)[![Gem](https://img.shields.io/gem/dt/gorse)](https://rubygems.org/gems/gorse)
 
 ## Install
 

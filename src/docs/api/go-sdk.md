@@ -9,8 +9,7 @@ The Go SDK is under development, and APIs might be changed in later versions. Pu
 
 :::
 
-[![GoDoc](https://godoc.org/github.com/gorse-io/gorse-go?status.svg)](https://pkg.go.dev/github.com/gorse-io/gorse-go)
-[![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/gorse-io/gorse-go)](https://pkg.go.dev/github.com/gorse-io/gorse-go)
+[![GoDoc](https://godoc.org/github.com/gorse-io/gorse-go?status.svg)](https://pkg.go.dev/github.com/gorse-io/gorse-go)[![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/gorse-io/gorse-go)](https://pkg.go.dev/github.com/gorse-io/gorse-go)
 
 ## Install
 

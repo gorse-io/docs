@@ -9,8 +9,7 @@ The Python SDK is under development, and APIs might be changed in later versions
 
 :::
 
-[![PyPI](https://img.shields.io/pypi/v/pygorse)](https://pypi.org/project/PyGorse/)
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/PyGorse)](https://pypi.org/project/PyGorse/)
+[![PyPI](https://img.shields.io/pypi/v/pygorse)](https://pypi.org/project/PyGorse/)[![PyPI - Downloads](https://img.shields.io/pypi/dm/PyGorse)](https://pypi.org/project/PyGorse/)
 
 ## Install
 

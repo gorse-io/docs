@@ -3,9 +3,9 @@ import { type FunctionalComponent, h } from "vue";
 const DiscordLink: FunctionalComponent = () =>
   h(
     "div",
-    { class: "nav-item vp-repo" },
+    { class: "vp-nav-item vp-action" },
     h("a", {
-      class: "vp-repo-link",
+      class: "vp-action-link",
       href: "https://discord.gg/x6gAtNNkAE",
       target: "_blank",
       rel: "noopener noreferrer",
