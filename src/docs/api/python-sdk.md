@@ -37,13 +37,35 @@ from gorse import Gorse
 # Create a blocking client.
 client = Gorse('http://127.0.0.1:8087', 'api_key')
 
+# Insert a user.
+client.insert_user({
+    'UserId': 'bob',
+    'Labels': {
+        'company': 'gorse',
+        'location': 'hangzhou, china'
+    },
+    'Comment': 'Bob is a software engineer.'
+})
+
+# Insert an item.
+client.insert_item({
+    'ItemId': 'gorse-io:gorse',
+    'IsHidden': False,
+    'Labels': {
+        'topics': ['recommendation', 'machine-learning']
+    },
+    'Categories': ['go'],
+    'Timestamp': '2022-02-22',
+    'Comment': 'Gorse is an open-source recommender system.'
+})
+
 # Insert feedbacks.
 client.insert_feedbacks([
-    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'vuejs:vue', 'Timestamp': '2022-02-24' },
-    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'd3:d3', 'Timestamp': '2022-02-25' },
-    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'dogfalo:materialize', 'Timestamp': '2022-02-26' },
-    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'mozilla:pdf.js', 'Timestamp': '2022-02-27' },
-    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'moment:moment', 'Timestamp': '2022-02-28' }
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'ollama:ollama', 'Value': 1.0, 'Timestamp': '2022-02-24' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'huggingface:transformers', 'Value': 1.0, 'Timestamp': '2022-02-25' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'rasbt:llms-from-scratch', 'Value': 1.0, 'Timestamp': '2022-02-26' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'vllm-project:vllm', 'Value': 1.0, 'Timestamp': '2022-02-27' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'hiyouga:llama-factory', 'Value': 1.0, 'Timestamp': '2022-02-28' }
 ])
 
 # Get recommendation.
@@ -60,15 +82,6 @@ from gorse import AsyncGorse
 async def main():
     # Create an async client.
     client = AsyncGorse('http://127.0.0.1:8087', 'api_key')
-
-    # Insert feedbacks.
-    await client.insert_feedbacks([
-        { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'vuejs:vue', 'Timestamp': '2022-02-24' },
-        { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'd3:d3', 'Timestamp': '2022-02-25' },
-        { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'dogfalo:materialize', 'Timestamp': '2022-02-26' },
-        { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'mozilla:pdf.js', 'Timestamp': '2022-02-27' },
-        { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'moment:moment', 'Timestamp': '2022-02-28' }
-    ])
 
     # Get recommendation.
     await client.get_recommend('bob', n=10)
