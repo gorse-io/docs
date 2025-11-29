@@ -17,7 +17,7 @@ curl -H "X-API-Key: *****"  http://127.0.0.1:8087/api/recommend/bob?n=10
 
 ::: tip
 
-The API key is defined in the configuration file:
+The API key is defined in [the configuration file](/docs/config):
 
 ```toml
 [server]

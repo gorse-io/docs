@@ -54,21 +54,9 @@ Gorse is an open-source recommendation system written in Go. Gorse aims to be a 
 
 The playground mode has been prepared for beginners. Just set up a recommender system for GitHub repositories by following the commands.
 
-::: code-tabs#setup
-
-@tab:active Bash
-
-```bash
-curl -fsSL https://gorse.io/playground | bash
-```
-
-@tab Docker
-
 ```bash
 docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
 ```
-
-:::
 
 The playground mode will download data from [GitRec][gitrec] and import it into Gorse. The dashboard is available at http://localhost:8088.
 

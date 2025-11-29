@@ -16,21 +16,9 @@ Gorse supports to be single node or multiple nodes. This section demonstrates ho
 
 Use the following command to setup a Gorse all-in-one node.
 
-::: code-tabs#setup
-
-@tab:active Bash
-
-```bash
-curl -fsSL https://gorse.io/playground | bash
-```
-
-@tab Docker
-
 ```bash
 docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
 ```
-
-:::
 
 ::: tip
 
