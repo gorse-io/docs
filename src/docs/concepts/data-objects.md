@@ -3,7 +3,7 @@ icon: model
 ---
 # Data Objects
 
-There are only three kinds of data objects in Gorse: users, items and feedbacks.
+There are only three kinds of data objects in Gorse: users, items, and feedback.
 
 ## User
 
