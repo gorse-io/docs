@@ -1,0 +1,6 @@
+---
+icon: api
+---
+# API
+
+<Catalog />

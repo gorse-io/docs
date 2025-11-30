@@ -1,6 +1,113 @@
 {
  "swagger": "2.0",
  "paths": {
+  "/api/collaborative-filtering/{user-id}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "deprecated"
+    ],
+    "summary": "Get the collaborative filtering recommendation for a user",
+    "operationId": "getCollaborativeFiltering",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "ID of the user to get recommendation",
+      "name": "user-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned items",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Offset of returned items",
+      "name": "offset",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/cache.Score"
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/collaborative-filtering/{user-id}/{category}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "deprecated"
+    ],
+    "summary": "Get the collaborative filtering recommendation for a user",
+    "operationId": "getCollaborativeFiltering",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "ID of the user to get recommendation",
+      "name": "user-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "Category of returned items.",
+      "name": "category",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned items",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Offset of returned items",
+      "name": "offset",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/cache.Score"
+       }
+      }
+     }
+    }
+   }
+  },
   "/api/feedback": {
    "get": {
     "produces": [
@@ -386,113 +493,6 @@
     }
    }
   },
-  "/api/intermediate/recommend/{user-id}": {
-   "get": {
-    "produces": [
-     "application/json"
-    ],
-    "tags": [
-     "deprecated"
-    ],
-    "summary": "Get the collaborative filtering recommendation for a user",
-    "operationId": "getCollaborative",
-    "parameters": [
-     {
-      "type": "string",
-      "description": "API key",
-      "name": "X-API-Key",
-      "in": "header"
-     },
-     {
-      "type": "string",
-      "description": "ID of the user to get recommendation",
-      "name": "user-id",
-      "in": "path",
-      "required": true
-     },
-     {
-      "type": "integer",
-      "description": "Number of returned items",
-      "name": "n",
-      "in": "query"
-     },
-     {
-      "type": "integer",
-      "description": "Offset of returned items",
-      "name": "offset",
-      "in": "query"
-     }
-    ],
-    "responses": {
-     "200": {
-      "description": "OK",
-      "schema": {
-       "type": "array",
-       "items": {
-        "$ref": "#/definitions/cache.Scored"
-       }
-      }
-     }
-    }
-   }
-  },
-  "/api/intermediate/recommend/{user-id}/{category}": {
-   "get": {
-    "produces": [
-     "application/json"
-    ],
-    "tags": [
-     "deprecated"
-    ],
-    "summary": "Get the collaborative filtering recommendation for a user",
-    "operationId": "getCollaborative",
-    "parameters": [
-     {
-      "type": "string",
-      "description": "API key",
-      "name": "X-API-Key",
-      "in": "header"
-     },
-     {
-      "type": "string",
-      "description": "ID of the user to get recommendation",
-      "name": "user-id",
-      "in": "path",
-      "required": true
-     },
-     {
-      "type": "string",
-      "description": "Category of returned items.",
-      "name": "category",
-      "in": "path",
-      "required": true
-     },
-     {
-      "type": "integer",
-      "description": "Number of returned items",
-      "name": "n",
-      "in": "query"
-     },
-     {
-      "type": "integer",
-      "description": "Offset of returned items",
-      "name": "offset",
-      "in": "query"
-     }
-    ],
-    "responses": {
-     "200": {
-      "description": "OK",
-      "schema": {
-       "type": "array",
-       "items": {
-        "$ref": "#/definitions/cache.Scored"
-       }
-      }
-     }
-    }
-   }
-  },
   "/api/item": {
    "post": {
     "produces": [
@@ -524,6 +524,63 @@
       "description": "OK",
       "schema": {
        "$ref": "#/definitions/server.Success"
+      }
+     }
+    }
+   }
+  },
+  "/api/item-to-item/{name}/{item-id}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "recommendation"
+    ],
+    "summary": "Get item-to-item recommendation.",
+    "operationId": "getItemToItem",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "Name of the item-to-item recommendation",
+      "name": "name",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "ID of the item to get neighbors",
+      "name": "item-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned items",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Offset of returned items",
+      "name": "offset",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/cache.Score"
+       }
       }
      }
     }
@@ -811,7 +868,7 @@
     "tags": [
      "recommendation"
     ],
-    "summary": "get neighbors of a item",
+    "summary": "Get neighbors of a item",
     "operationId": "getItemNeighbors",
     "parameters": [
      {
@@ -846,7 +903,7 @@
       "schema": {
        "type": "array",
        "items": {
-        "$ref": "#/definitions/cache.Scored"
+        "$ref": "#/definitions/cache.Score"
        }
       }
      }
@@ -903,7 +960,7 @@
       "schema": {
        "type": "array",
        "items": {
-        "$ref": "#/definitions/cache.Scored"
+        "$ref": "#/definitions/cache.Score"
        }
       }
      }
@@ -1005,6 +1062,12 @@
       "in": "header"
      },
      {
+      "type": "string",
+      "description": "Category of returned items",
+      "name": "category",
+      "in": "query"
+     },
+     {
       "type": "integer",
       "description": "Number of returned items",
       "name": "n",
@@ -1029,7 +1092,7 @@
       "schema": {
        "type": "array",
        "items": {
-        "$ref": "#/definitions/cache.Scored"
+        "$ref": "#/definitions/cache.Score"
        }
       }
      }
@@ -1085,7 +1148,7 @@
       "schema": {
        "type": "array",
        "items": {
-        "$ref": "#/definitions/cache.Scored"
+        "$ref": "#/definitions/cache.Score"
        }
       }
      }
@@ -1129,14 +1192,14 @@
       "schema": {
        "type": "array",
        "items": {
-        "$ref": "#/definitions/server.Measurement"
+        "$ref": "#/definitions/cache.TimeSeriesPoint"
        }
       }
      }
     }
    }
   },
-  "/api/popular": {
+  "/api/non-personalized/{name}": {
    "get": {
     "produces": [
      "application/json"
@@ -1144,57 +1207,8 @@
     "tags": [
      "recommendation"
     ],
-    "summary": "Get popular items.",
-    "operationId": "getPopular",
-    "parameters": [
-     {
-      "type": "string",
-      "description": "API key",
-      "name": "X-API-Key",
-      "in": "header"
-     },
-     {
-      "type": "integer",
-      "description": "Number of returned recommendations",
-      "name": "n",
-      "in": "query"
-     },
-     {
-      "type": "integer",
-      "description": "Offset of returned recommendations",
-      "name": "offset",
-      "in": "query"
-     },
-     {
-      "type": "string",
-      "description": "Remove read items of a user",
-      "name": "user-id",
-      "in": "query"
-     }
-    ],
-    "responses": {
-     "200": {
-      "description": "OK",
-      "schema": {
-       "type": "array",
-       "items": {
-        "$ref": "#/definitions/cache.Scored"
-       }
-      }
-     }
-    }
-   }
-  },
-  "/api/popular/{category}": {
-   "get": {
-    "produces": [
-     "application/json"
-    ],
-    "tags": [
-     "recommendation"
-    ],
-    "summary": "Get popular items in category.",
-    "operationId": "getPopular",
+    "summary": "Get non-personalized recommendations.",
+    "operationId": "getNonPersonalized",
     "parameters": [
      {
       "type": "string",
@@ -1206,18 +1220,17 @@
       "type": "string",
       "description": "Category of returned items.",
       "name": "category",
-      "in": "path",
-      "required": true
+      "in": "query"
      },
      {
       "type": "integer",
-      "description": "Number of returned items",
+      "description": "Number of returned users",
       "name": "n",
       "in": "query"
      },
      {
       "type": "integer",
-      "description": "Offset of returned items",
+      "description": "Offset of returned users",
       "name": "offset",
       "in": "query"
      },
@@ -1234,7 +1247,7 @@
       "schema": {
        "type": "array",
        "items": {
-        "$ref": "#/definitions/cache.Scored"
+        "$ref": "#/definitions/cache.Score"
        }
       }
      }
@@ -1264,6 +1277,12 @@
       "name": "user-id",
       "in": "path",
       "required": true
+     },
+     {
+      "type": "string",
+      "description": "Category of the returned items (support multi-categories filtering)",
+      "name": "category",
+      "in": "query"
      },
      {
       "type": "string",
@@ -1419,7 +1438,7 @@
       "schema": {
        "type": "array",
        "items": {
-        "$ref": "#/definitions/cache.Scored"
+        "$ref": "#/definitions/cache.Score"
        }
       }
      }
@@ -1480,7 +1499,7 @@
       "schema": {
        "type": "array",
        "items": {
-        "$ref": "#/definitions/cache.Scored"
+        "$ref": "#/definitions/cache.Score"
        }
       }
      }
@@ -1518,6 +1537,63 @@
       "description": "OK",
       "schema": {
        "$ref": "#/definitions/server.Success"
+      }
+     }
+    }
+   }
+  },
+  "/api/user-to-user/neighbors/{user-id}": {
+   "get": {
+    "produces": [
+     "application/json"
+    ],
+    "tags": [
+     "recommendation"
+    ],
+    "summary": "Get user-to-user recommendation.",
+    "operationId": "getUserNeighbors",
+    "parameters": [
+     {
+      "type": "string",
+      "description": "API key",
+      "name": "X-API-Key",
+      "in": "header"
+     },
+     {
+      "type": "string",
+      "description": "Name of the user-to-user recommendation",
+      "name": "name",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "string",
+      "description": "ID of the user to get neighbors",
+      "name": "user-id",
+      "in": "path",
+      "required": true
+     },
+     {
+      "type": "integer",
+      "description": "Number of returned users",
+      "name": "n",
+      "in": "query"
+     },
+     {
+      "type": "integer",
+      "description": "Offset of returned users",
+      "name": "offset",
+      "in": "query"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "schema": {
+       "type": "array",
+       "items": {
+        "$ref": "#/definitions/cache.Score"
+       }
       }
      }
     }
@@ -1758,7 +1834,7 @@
       "schema": {
        "type": "array",
        "items": {
-        "$ref": "#/definitions/cache.Scored"
+        "$ref": "#/definitions/cache.Score"
        }
       }
      }
@@ -1844,7 +1920,7 @@
   }
  },
  "definitions": {
-  "cache.Scored": {
+  "cache.Score": {
    "required": [
     "Id",
     "Score"
@@ -1859,11 +1935,32 @@
     }
    }
   },
+  "cache.TimeSeriesPoint": {
+   "required": [
+    "Name",
+    "Timestamp",
+    "Value"
+   ],
+   "properties": {
+    "Name": {
+     "type": "string"
+    },
+    "Timestamp": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "Value": {
+     "type": "number",
+     "format": "double"
+    }
+   }
+  },
   "data.Feedback": {
    "required": [
+    "ItemId",
     "FeedbackType",
     "UserId",
-    "ItemId",
+    "Value",
     "Timestamp",
     "Comment"
    ],
@@ -1883,6 +1980,10 @@
     },
     "UserId": {
      "type": "string"
+    },
+    "Value": {
+     "type": "number",
+     "format": "double"
     }
    }
   },
@@ -1930,10 +2031,7 @@
      "type": "string"
     },
     "Labels": {
-     "type": "array",
-     "items": {
-      "type": "string"
-     }
+     "$ref": "#/definitions/data.Item.Labels"
     },
     "Timestamp": {
      "type": "string",
@@ -1941,6 +2039,7 @@
     }
    }
   },
+  "data.Item.Labels": {},
   "data.ItemPatch": {
    "required": [
     "IsHidden",
@@ -1963,10 +2062,7 @@
      "type": "boolean"
     },
     "Labels": {
-     "type": "array",
-     "items": {
-      "type": "string"
-     }
+     "$ref": "#/definitions/data.ItemPatch.Labels"
     },
     "Timestamp": {
      "type": "string",
@@ -1974,11 +2070,11 @@
     }
    }
   },
+  "data.ItemPatch.Labels": {},
   "data.User": {
    "required": [
     "UserId",
     "Labels",
-    "Subscribe",
     "Comment"
    ],
    "properties": {
@@ -1986,26 +2082,17 @@
      "type": "string"
     },
     "Labels": {
-     "type": "array",
-     "items": {
-      "type": "string"
-     }
-    },
-    "Subscribe": {
-     "type": "array",
-     "items": {
-      "type": "string"
-     }
+     "$ref": "#/definitions/data.User.Labels"
     },
     "UserId": {
      "type": "string"
     }
    }
   },
+  "data.User.Labels": {},
   "data.UserPatch": {
    "required": [
     "Labels",
-    "Subscribe",
     "Comment"
    ],
    "properties": {
@@ -2013,24 +2100,17 @@
      "type": "string"
     },
     "Labels": {
-     "type": "array",
-     "items": {
-      "type": "string"
-     }
-    },
-    "Subscribe": {
-     "type": "array",
-     "items": {
-      "type": "string"
-     }
+     "$ref": "#/definitions/data.UserPatch.Labels"
     }
    }
   },
+  "data.UserPatch.Labels": {},
   "server.Feedback": {
    "required": [
+    "UserId",
     "ItemId",
     "FeedbackType",
-    "UserId",
+    "Value",
     "Timestamp",
     "Comment"
    ],
@@ -2049,6 +2129,10 @@
     },
     "UserId": {
      "type": "string"
+    },
+    "Value": {
+     "type": "number",
+     "format": "double"
     }
    }
   },
@@ -2109,26 +2193,6 @@
      "items": {
       "$ref": "#/definitions/data.Item"
      }
-    }
-   }
-  },
-  "server.Measurement": {
-   "required": [
-    "Name",
-    "Timestamp",
-    "Value"
-   ],
-   "properties": {
-    "Name": {
-     "type": "string"
-    },
-    "Timestamp": {
-     "type": "string",
-     "format": "date-time"
-    },
-    "Value": {
-     "type": "number",
-     "format": "float"
     }
    }
   },

@@ -23,10 +23,10 @@ git clone git@github.com:gorse-io/docs.git
 cd docs
 
 # Install dependencies
-yarn install
+pnpm install
 
 # Run Gorse Docs on http://localhost:8080
-yarn docs:dev
+pnpm docs:dev
 ```
 
 ## Deployment
@@ -36,18 +36,10 @@ Gorse Docs is deployed as a static website. The main branch is deployed at https
 You can build the static website like this:
 
 ```bash
- yarn docs:build
+pnpm docs:build
 ```
 
 The static files will be available in `.vuepress/dist`.
-
-## Localization
-
-Welcome to translate the Gorse document into more languages on [GitLocalize](https://gitlocalize.com/repo/8172).
-
-| Language | Progress |
-| --- | --- |
-| Chinese | [![gitlocalized ](https://gitlocalize.com/repo/8172/zh/badge.svg)](https://gitlocalize.com/repo/8172/zh?utm_source=badge) |
 
 ## Acknowledgments
 
