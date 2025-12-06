@@ -7,9 +7,9 @@
      "application/json"
     ],
     "tags": [
-     "deprecated"
+     "recommendation"
     ],
-    "summary": "Get the collaborative filtering recommendation for a user",
+    "summary": "Get collaborative filtering recommendation for a user.",
     "operationId": "getCollaborativeFiltering",
     "parameters": [
      {
@@ -20,7 +20,7 @@
      },
      {
       "type": "string",
-      "description": "ID of the user to get recommendation",
+      "description": "User ID",
       "name": "user-id",
       "in": "path",
       "required": true
@@ -35,6 +35,18 @@
       "type": "integer",
       "description": "Offset of returned items",
       "name": "offset",
+      "in": "query"
+     },
+     {
+      "type": "string",
+      "description": "Category of returned items.",
+      "name": "category",
+      "in": "query"
+     },
+     {
+      "type": "string",
+      "description": "Remove read items of a user",
+      "name": "user-id",
       "in": "query"
      }
     ],
@@ -57,10 +69,11 @@
      "application/json"
     ],
     "tags": [
-     "deprecated"
+     "recommendation"
     ],
-    "summary": "Get the collaborative filtering recommendation for a user",
+    "summary": "Get the collaborative filtering recommendation for a user.",
     "operationId": "getCollaborativeFiltering",
+    "deprecated": true,
     "parameters": [
      {
       "type": "string",
@@ -70,7 +83,7 @@
      },
      {
       "type": "string",
-      "description": "ID of the user to get recommendation",
+      "description": "User ID",
       "name": "user-id",
       "in": "path",
       "required": true
@@ -92,6 +105,12 @@
       "type": "integer",
       "description": "Offset of returned items",
       "name": "offset",
+      "in": "query"
+     },
+     {
+      "type": "string",
+      "description": "Remove read items of a user",
+      "name": "user-id",
       "in": "query"
      }
     ],
@@ -116,7 +135,7 @@
     "tags": [
      "feedback"
     ],
-    "summary": "Get feedbacks.",
+    "summary": "List feedbacks.",
     "operationId": "getFeedback",
     "parameters": [
      {
@@ -191,7 +210,7 @@
     "tags": [
      "feedback"
     ],
-    "summary": "Insert feedbacks. Ignore insertion if feedback exists.",
+    "summary": "Insert feedbacks. Accumulate value if feedback already exists.",
     "operationId": "func1",
     "parameters": [
      {
@@ -230,7 +249,7 @@
     "tags": [
      "feedback"
     ],
-    "summary": "Get feedbacks with feedback type.",
+    "summary": "List feedbacks with feedback type.",
     "operationId": "getTypedFeedback",
     "parameters": [
      {
@@ -241,7 +260,7 @@
      },
      {
       "type": "string",
-      "description": "Type of returned feedbacks",
+      "description": "Feedback type",
       "name": "feedback-type",
       "in": "path",
       "required": true
@@ -288,21 +307,21 @@
      },
      {
       "type": "string",
-      "description": "Type of returned feedbacks",
+      "description": "Feedback type",
       "name": "feedback-type",
       "in": "path",
       "required": true
      },
      {
       "type": "string",
-      "description": "User ID of returned feedbacks",
+      "description": "User ID",
       "name": "user-id",
       "in": "path",
       "required": true
      },
      {
       "type": "string",
-      "description": "Item ID of returned feedbacks",
+      "description": "Item ID",
       "name": "item-id",
       "in": "path",
       "required": true
@@ -335,21 +354,21 @@
      },
      {
       "type": "string",
-      "description": "Type of returned feedbacks",
+      "description": "Feedback type",
       "name": "feedback-type",
       "in": "path",
       "required": true
      },
      {
       "type": "string",
-      "description": "User ID of returned feedbacks",
+      "description": "User ID",
       "name": "user-id",
       "in": "path",
       "required": true
      },
      {
       "type": "string",
-      "description": "Item ID of returned feedbacks",
+      "description": "Item ID",
       "name": "item-id",
       "in": "path",
       "required": true
@@ -359,7 +378,7 @@
      "200": {
       "description": "OK",
       "schema": {
-       "$ref": "#/definitions/data.Feedback"
+       "$ref": "#/definitions/server.Success"
       }
      }
     }
@@ -373,7 +392,7 @@
     "tags": [
      "feedback"
     ],
-    "summary": "Get feedbacks between a user and a item.",
+    "summary": "List feedbacks between a user and a item.",
     "operationId": "getUserItemFeedback",
     "parameters": [
      {
@@ -384,14 +403,14 @@
      },
      {
       "type": "string",
-      "description": "User ID of returned feedbacks",
+      "description": "User ID",
       "name": "user-id",
       "in": "path",
       "required": true
      },
      {
       "type": "string",
-      "description": "Item ID of returned feedbacks",
+      "description": "Item ID",
       "name": "item-id",
       "in": "path",
       "required": true
@@ -427,14 +446,14 @@
      },
      {
       "type": "string",
-      "description": "User ID of returned feedbacks",
+      "description": "User ID",
       "name": "user-id",
       "in": "path",
       "required": true
      },
      {
       "type": "string",
-      "description": "Item ID of returned feedbacks",
+      "description": "Item ID",
       "name": "item-id",
       "in": "path",
       "required": true
@@ -444,10 +463,7 @@
      "200": {
       "description": "OK",
       "schema": {
-       "type": "array",
-       "items": {
-        "$ref": "#/definitions/data.Feedback"
-       }
+       "$ref": "#/definitions/server.Success"
       }
      }
     }
@@ -501,7 +517,7 @@
     "tags": [
      "items"
     ],
-    "summary": "Insert an item. Overwrite if the item exists.",
+    "summary": "Insert an item.",
     "operationId": "insertItem",
     "parameters": [
      {
@@ -555,7 +571,7 @@
      },
      {
       "type": "string",
-      "description": "ID of the item to get neighbors",
+      "description": "Item ID",
       "name": "item-id",
       "in": "path",
       "required": true
@@ -570,6 +586,18 @@
       "type": "integer",
       "description": "Offset of returned items",
       "name": "offset",
+      "in": "query"
+     },
+     {
+      "type": "string",
+      "description": "Category of returned items",
+      "name": "category",
+      "in": "query"
+     },
+     {
+      "type": "string",
+      "description": "Remove read items of a user",
+      "name": "user-id",
       "in": "query"
      }
     ],
@@ -594,7 +622,7 @@
     "tags": [
      "items"
     ],
-    "summary": "Get a item.",
+    "summary": "Get an item.",
     "operationId": "getItem",
     "parameters": [
      {
@@ -605,7 +633,7 @@
      },
      {
       "type": "string",
-      "description": "ID of the item to get.",
+      "description": "Item ID.",
       "name": "item-id",
       "in": "path",
       "required": true
@@ -638,7 +666,7 @@
      },
      {
       "type": "string",
-      "description": "ID of the item to delete",
+      "description": "Item ID",
       "name": "item-id",
       "in": "path",
       "required": true
@@ -671,7 +699,7 @@
      },
      {
       "type": "string",
-      "description": "ID of the item to modify",
+      "description": "Item ID",
       "name": "item-id",
       "in": "path",
       "required": true
@@ -714,7 +742,7 @@
      },
      {
       "type": "string",
-      "description": "ID of the item to insert category",
+      "description": "Item ID",
       "name": "item-id",
       "in": "path",
       "required": true
@@ -754,7 +782,7 @@
      },
      {
       "type": "string",
-      "description": "ID of the item to delete categoryßßß",
+      "description": "Item ID",
       "name": "item-id",
       "in": "path",
       "required": true
@@ -796,7 +824,7 @@
      },
      {
       "type": "string",
-      "description": "Item ID of returned feedbacks",
+      "description": "Item ID",
       "name": "item-id",
       "in": "path",
       "required": true
@@ -834,14 +862,14 @@
      },
      {
       "type": "string",
-      "description": "Item ID of returned feedbacks",
+      "description": "Item ID",
       "name": "item-id",
       "in": "path",
       "required": true
      },
      {
       "type": "string",
-      "description": "Type of returned feedbacks",
+      "description": "Feedback type",
       "name": "feedback-type",
       "in": "path",
       "required": true
@@ -879,7 +907,7 @@
      },
      {
       "type": "string",
-      "description": "ID of the item to get neighbors",
+      "description": "Item ID",
       "name": "item-id",
       "in": "path",
       "required": true
@@ -894,6 +922,18 @@
       "type": "integer",
       "description": "Offset of returned items",
       "name": "offset",
+      "in": "query"
+     },
+     {
+      "type": "string",
+      "description": "Category of returned items",
+      "name": "category",
+      "in": "query"
+     },
+     {
+      "type": "string",
+      "description": "Remove read items of a user",
+      "name": "user-id",
       "in": "query"
      }
     ],
@@ -920,6 +960,7 @@
     ],
     "summary": "Get neighbors of a item in category.",
     "operationId": "getItemNeighbors",
+    "deprecated": true,
     "parameters": [
      {
       "type": "string",
@@ -929,7 +970,7 @@
      },
      {
       "type": "string",
-      "description": "ID of the item to get neighbors",
+      "description": "Item ID",
       "name": "item-id",
       "in": "path",
       "required": true
@@ -951,6 +992,12 @@
       "type": "integer",
       "description": "Offset of returned items",
       "name": "offset",
+      "in": "query"
+     },
+     {
+      "type": "string",
+      "description": "Remove read items of a user",
+      "name": "user-id",
       "in": "query"
      }
     ],
@@ -975,7 +1022,7 @@
     "tags": [
      "items"
     ],
-    "summary": "Get items.",
+    "summary": "List items.",
     "operationId": "getItems",
     "parameters": [
      {
@@ -1013,7 +1060,7 @@
     "tags": [
      "items"
     ],
-    "summary": "Insert items. Overwrite if items exist",
+    "summary": "Insert items.",
     "operationId": "insertItems",
     "parameters": [
      {
@@ -1052,7 +1099,7 @@
     "tags": [
      "recommendation"
     ],
-    "summary": "Get the latest items.",
+    "summary": "Get latest items.",
     "operationId": "getLatest",
     "parameters": [
      {
@@ -1109,6 +1156,7 @@
     ],
     "summary": "Get the latest items in category.",
     "operationId": "getLatest",
+    "deprecated": true,
     "parameters": [
      {
       "type": "string",
@@ -1149,50 +1197,6 @@
        "type": "array",
        "items": {
         "$ref": "#/definitions/cache.Score"
-       }
-      }
-     }
-    }
-   }
-  },
-  "/api/measurements/{name}": {
-   "get": {
-    "produces": [
-     "application/json"
-    ],
-    "tags": [
-     "measurements"
-    ],
-    "summary": "Get measurements.",
-    "operationId": "getMeasurements",
-    "parameters": [
-     {
-      "type": "string",
-      "description": "API key",
-      "name": "X-API-Key",
-      "in": "header"
-     },
-     {
-      "type": "string",
-      "description": "Name of returned measurements",
-      "name": "name",
-      "in": "path",
-      "required": true
-     },
-     {
-      "type": "integer",
-      "description": "Number of returned measurements",
-      "name": "n",
-      "in": "query"
-     }
-    ],
-    "responses": {
-     "200": {
-      "description": "OK",
-      "schema": {
-       "type": "array",
-       "items": {
-        "$ref": "#/definitions/cache.TimeSeriesPoint"
        }
       }
      }
@@ -1273,7 +1277,7 @@
      },
      {
       "type": "string",
-      "description": "ID of the user to get recommendation",
+      "description": "User ID",
       "name": "user-id",
       "in": "path",
       "required": true
@@ -1332,6 +1336,7 @@
     ],
     "summary": "Get recommendation for user.",
     "operationId": "getRecommend",
+    "deprecated": true,
     "parameters": [
      {
       "type": "string",
@@ -1341,7 +1346,7 @@
      },
      {
       "type": "string",
-      "description": "ID of the user to get recommendation",
+      "description": "User ID",
       "name": "user-id",
       "in": "path",
       "required": true
@@ -1455,6 +1460,7 @@
     ],
     "summary": "Get recommendation for session.",
     "operationId": "sessionRecommend",
+    "deprecated": true,
     "parameters": [
      {
       "type": "string",
@@ -1542,7 +1548,7 @@
     }
    }
   },
-  "/api/user-to-user/neighbors/{user-id}": {
+  "/api/user-to-user/{name}/{user-id}": {
    "get": {
     "produces": [
      "application/json"
@@ -1551,7 +1557,7 @@
      "recommendation"
     ],
     "summary": "Get user-to-user recommendation.",
-    "operationId": "getUserNeighbors",
+    "operationId": "getUserToUser",
     "parameters": [
      {
       "type": "string",
@@ -1568,7 +1574,7 @@
      },
      {
       "type": "string",
-      "description": "ID of the user to get neighbors",
+      "description": "User ID",
       "name": "user-id",
       "in": "path",
       "required": true
@@ -1618,7 +1624,7 @@
      },
      {
       "type": "string",
-      "description": "ID of the user to get",
+      "description": "User ID",
       "name": "user-id",
       "in": "path",
       "required": true
@@ -1640,7 +1646,7 @@
     "tags": [
      "users"
     ],
-    "summary": "Delete a user and his or her feedback.",
+    "summary": "Delete a user. His or her feedback will also be deleted.",
     "operationId": "deleteUser",
     "parameters": [
      {
@@ -1651,7 +1657,7 @@
      },
      {
       "type": "string",
-      "description": "ID of the user to delete",
+      "description": "User ID",
       "name": "user-id",
       "in": "path",
       "required": true
@@ -1684,7 +1690,7 @@
      },
      {
       "type": "string",
-      "description": "ID of the user to modify",
+      "description": "User ID",
       "name": "user-id",
       "in": "path",
       "required": true
@@ -1727,7 +1733,7 @@
      },
      {
       "type": "string",
-      "description": "User ID of returned feedbacks",
+      "description": "User ID",
       "name": "user-id",
       "in": "path",
       "required": true
@@ -1765,14 +1771,14 @@
      },
      {
       "type": "string",
-      "description": "User ID of returned feedbacks",
+      "description": "User ID",
       "name": "user-id",
       "in": "path",
       "required": true
      },
      {
       "type": "string",
-      "description": "Type of returned feedbacks",
+      "description": "Feedback type",
       "name": "feedback-type",
       "in": "path",
       "required": true
@@ -1810,7 +1816,7 @@
      },
      {
       "type": "string",
-      "description": "ID of the user to get neighbors",
+      "description": "User ID",
       "name": "user-id",
       "in": "path",
       "required": true
@@ -1849,7 +1855,7 @@
     "tags": [
      "users"
     ],
-    "summary": "Get users.",
+    "summary": "List users.",
     "operationId": "getUsers",
     "parameters": [
      {
@@ -1935,33 +1941,14 @@
     }
    }
   },
-  "cache.TimeSeriesPoint": {
-   "required": [
-    "Name",
-    "Timestamp",
-    "Value"
-   ],
-   "properties": {
-    "Name": {
-     "type": "string"
-    },
-    "Timestamp": {
-     "type": "string",
-     "format": "date-time"
-    },
-    "Value": {
-     "type": "number",
-     "format": "double"
-    }
-   }
-  },
   "data.Feedback": {
    "required": [
-    "ItemId",
     "FeedbackType",
     "UserId",
+    "ItemId",
     "Value",
     "Timestamp",
+    "Updated",
     "Comment"
    ],
    "properties": {
@@ -1975,6 +1962,10 @@
      "type": "string"
     },
     "Timestamp": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "Updated": {
      "type": "string",
      "format": "date-time"
     },
@@ -2107,9 +2098,9 @@
   "data.UserPatch.Labels": {},
   "server.Feedback": {
    "required": [
+    "FeedbackType",
     "UserId",
     "ItemId",
-    "FeedbackType",
     "Value",
     "Timestamp",
     "Comment"

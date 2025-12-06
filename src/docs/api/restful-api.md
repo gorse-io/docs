@@ -31,34 +31,22 @@ api_key = ""
 
 ## API Endpoints
 
-::: details `GET /api/collaborative-filtering/{user-id}` Get the collaborative filtering recommendation for a user
+::: details `GET /api/collaborative-filtering/{user-id}` Get collaborative filtering recommendation for a user.
 
 **Parameters:**
 
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| user-id | path | string | ID of the user to get recommendation |
+| user-id | path | string | User ID |
 | n | query | integer | Number of returned items |
 | offset | query | integer | Offset of returned items |
+| category | query | string | Category of returned items. |
+| user-id | query | string | Remove read items of a user |
 
 :::
 
-::: details `GET /api/collaborative-filtering/{user-id}/{category}` Get the collaborative filtering recommendation for a user
-
-**Parameters:**
-
-| Name | In | Type | Description |
-| ---- | -- | ---- | ----------- |
-| X-API-Key | header | string | API key |
-| user-id | path | string | ID of the user to get recommendation |
-| category | path | string | Category of returned items. |
-| n | query | integer | Number of returned items |
-| offset | query | integer | Offset of returned items |
-
-:::
-
-::: details `GET /api/feedback` Get feedbacks.
+::: details `GET /api/feedback` List feedbacks.
 
 **Parameters:**
 
@@ -81,7 +69,7 @@ api_key = ""
 
 :::
 
-::: details `POST /api/feedback` Insert feedbacks. Ignore insertion if feedback exists.
+::: details `POST /api/feedback` Insert feedbacks. Accumulate value if feedback already exists.
 
 **Parameters:**
 
@@ -92,14 +80,14 @@ api_key = ""
 
 :::
 
-::: details `GET /api/feedback/{feedback-type}` Get feedbacks with feedback type.
+::: details `GET /api/feedback/{feedback-type}` List feedbacks with feedback type.
 
 **Parameters:**
 
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| feedback-type | path | string | Type of returned feedbacks |
+| feedback-type | path | string | Feedback type |
 | cursor | query | string | Cursor for the next page |
 | n | query | integer | Number of returned feedbacks |
 
@@ -112,9 +100,9 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| feedback-type | path | string | Type of returned feedbacks |
-| user-id | path | string | User ID of returned feedbacks |
-| item-id | path | string | Item ID of returned feedbacks |
+| feedback-type | path | string | Feedback type |
+| user-id | path | string | User ID |
+| item-id | path | string | Item ID |
 
 :::
 
@@ -125,21 +113,21 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| feedback-type | path | string | Type of returned feedbacks |
-| user-id | path | string | User ID of returned feedbacks |
-| item-id | path | string | Item ID of returned feedbacks |
+| feedback-type | path | string | Feedback type |
+| user-id | path | string | User ID |
+| item-id | path | string | Item ID |
 
 :::
 
-::: details `GET /api/feedback/{user-id}/{item-id}` Get feedbacks between a user and a item.
+::: details `GET /api/feedback/{user-id}/{item-id}` List feedbacks between a user and a item.
 
 **Parameters:**
 
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| user-id | path | string | User ID of returned feedbacks |
-| item-id | path | string | Item ID of returned feedbacks |
+| user-id | path | string | User ID |
+| item-id | path | string | Item ID |
 
 :::
 
@@ -150,8 +138,8 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| user-id | path | string | User ID of returned feedbacks |
-| item-id | path | string | Item ID of returned feedbacks |
+| user-id | path | string | User ID |
+| item-id | path | string | Item ID |
 
 :::
 
@@ -167,7 +155,7 @@ api_key = ""
 
 :::
 
-::: details `POST /api/item` Insert an item. Overwrite if the item exists.
+::: details `POST /api/item` Insert an item.
 
 **Parameters:**
 
@@ -186,20 +174,22 @@ api_key = ""
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
 | name | path | string | Name of the item-to-item recommendation |
-| item-id | path | string | ID of the item to get neighbors |
+| item-id | path | string | Item ID |
 | n | query | integer | Number of returned items |
 | offset | query | integer | Offset of returned items |
+| category | query | string | Category of returned items |
+| user-id | query | string | Remove read items of a user |
 
 :::
 
-::: details `GET /api/item/{item-id}` Get a item.
+::: details `GET /api/item/{item-id}` Get an item.
 
 **Parameters:**
 
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| item-id | path | string | ID of the item to get. |
+| item-id | path | string | Item ID. |
 
 :::
 
@@ -210,7 +200,7 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| item-id | path | string | ID of the item to delete |
+| item-id | path | string | Item ID |
 
 :::
 
@@ -221,7 +211,7 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| item-id | path | string | ID of the item to modify |
+| item-id | path | string | Item ID |
 | body | body | `ItemPatch` |  |
 
 :::
@@ -233,7 +223,7 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| item-id | path | string | ID of the item to insert category |
+| item-id | path | string | Item ID |
 | category | path | string | Category to insert |
 
 :::
@@ -245,7 +235,7 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| item-id | path | string | ID of the item to delete categoryßßß |
+| item-id | path | string | Item ID |
 | category | path | string | Category to delete |
 
 :::
@@ -257,7 +247,7 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| item-id | path | string | Item ID of returned feedbacks |
+| item-id | path | string | Item ID |
 
 :::
 
@@ -268,8 +258,8 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| item-id | path | string | Item ID of returned feedbacks |
-| feedback-type | path | string | Type of returned feedbacks |
+| item-id | path | string | Item ID |
+| feedback-type | path | string | Feedback type |
 
 :::
 
@@ -280,27 +270,15 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| item-id | path | string | ID of the item to get neighbors |
+| item-id | path | string | Item ID |
 | n | query | integer | Number of returned items |
 | offset | query | integer | Offset of returned items |
+| category | query | string | Category of returned items |
+| user-id | query | string | Remove read items of a user |
 
 :::
 
-::: details `GET /api/item/{item-id}/neighbors/{category}` Get neighbors of a item in category.
-
-**Parameters:**
-
-| Name | In | Type | Description |
-| ---- | -- | ---- | ----------- |
-| X-API-Key | header | string | API key |
-| item-id | path | string | ID of the item to get neighbors |
-| category | path | string | Category of returned items |
-| n | query | integer | Number of returned items |
-| offset | query | integer | Offset of returned items |
-
-:::
-
-::: details `GET /api/items` Get items.
+::: details `GET /api/items` List items.
 
 **Parameters:**
 
@@ -312,7 +290,7 @@ api_key = ""
 
 :::
 
-::: details `POST /api/items` Insert items. Overwrite if items exist
+::: details `POST /api/items` Insert items.
 
 **Parameters:**
 
@@ -323,7 +301,7 @@ api_key = ""
 
 :::
 
-::: details `GET /api/latest` Get the latest items.
+::: details `GET /api/latest` Get latest items.
 
 **Parameters:**
 
@@ -334,32 +312,6 @@ api_key = ""
 | n | query | integer | Number of returned items |
 | offset | query | integer | Offset of returned items |
 | user-id | query | string | Remove read items of a user |
-
-:::
-
-::: details `GET /api/latest/{category}` Get the latest items in category.
-
-**Parameters:**
-
-| Name | In | Type | Description |
-| ---- | -- | ---- | ----------- |
-| X-API-Key | header | string | API key |
-| category | path | string | Category of returned items. |
-| n | query | integer | Number of returned items |
-| offset | query | integer | Offset of returned items |
-| user-id | query | string | Remove read items of a user |
-
-:::
-
-::: details `GET /api/measurements/{name}` Get measurements.
-
-**Parameters:**
-
-| Name | In | Type | Description |
-| ---- | -- | ---- | ----------- |
-| X-API-Key | header | string | API key |
-| name | path | string | Name of returned measurements |
-| n | query | integer | Number of returned measurements |
 
 :::
 
@@ -384,24 +336,8 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| user-id | path | string | ID of the user to get recommendation |
+| user-id | path | string | User ID |
 | category | query | string | Category of the returned items (support multi-categories filtering) |
-| write-back-type | query | string | Type of write back feedback |
-| write-back-delay | query | string | Timestamp delay of write back feedback (format 0h0m0s) |
-| n | query | integer | Number of returned items |
-| offset | query | integer | Offset of returned items |
-
-:::
-
-::: details `GET /api/recommend/{user-id}/{category}` Get recommendation for user.
-
-**Parameters:**
-
-| Name | In | Type | Description |
-| ---- | -- | ---- | ----------- |
-| X-API-Key | header | string | API key |
-| user-id | path | string | ID of the user to get recommendation |
-| category | path | string | Category of the returned items |
 | write-back-type | query | string | Type of write back feedback |
 | write-back-delay | query | string | Timestamp delay of write back feedback (format 0h0m0s) |
 | n | query | integer | Number of returned items |
@@ -422,20 +358,6 @@ api_key = ""
 
 :::
 
-::: details `POST /api/session/recommend/{category}` Get recommendation for session.
-
-**Parameters:**
-
-| Name | In | Type | Description |
-| ---- | -- | ---- | ----------- |
-| X-API-Key | header | string | API key |
-| category | path | string | Category of the returned items |
-| n | query | integer | Number of returned items |
-| offset | query | integer | Offset of returned items |
-| body | body | `[]Feedback` |  |
-
-:::
-
 ::: details `POST /api/user` Insert a user.
 
 **Parameters:**
@@ -447,7 +369,7 @@ api_key = ""
 
 :::
 
-::: details `GET /api/user-to-user/neighbors/{user-id}` Get user-to-user recommendation.
+::: details `GET /api/user-to-user/{name}/{user-id}` Get user-to-user recommendation.
 
 **Parameters:**
 
@@ -455,7 +377,7 @@ api_key = ""
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
 | name | path | string | Name of the user-to-user recommendation |
-| user-id | path | string | ID of the user to get neighbors |
+| user-id | path | string | User ID |
 | n | query | integer | Number of returned users |
 | offset | query | integer | Offset of returned users |
 
@@ -468,18 +390,18 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| user-id | path | string | ID of the user to get |
+| user-id | path | string | User ID |
 
 :::
 
-::: details `DELETE /api/user/{user-id}` Delete a user and his or her feedback.
+::: details `DELETE /api/user/{user-id}` Delete a user. His or her feedback will also be deleted.
 
 **Parameters:**
 
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| user-id | path | string | ID of the user to delete |
+| user-id | path | string | User ID |
 
 :::
 
@@ -490,7 +412,7 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| user-id | path | string | ID of the user to modify |
+| user-id | path | string | User ID |
 | body | body | `UserPatch` |  |
 
 :::
@@ -502,7 +424,7 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| user-id | path | string | User ID of returned feedbacks |
+| user-id | path | string | User ID |
 
 :::
 
@@ -513,8 +435,8 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| user-id | path | string | User ID of returned feedbacks |
-| feedback-type | path | string | Type of returned feedbacks |
+| user-id | path | string | User ID |
+| feedback-type | path | string | Feedback type |
 
 :::
 
@@ -525,13 +447,13 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| user-id | path | string | ID of the user to get neighbors |
+| user-id | path | string | User ID |
 | n | query | integer | Number of returned users |
 | offset | query | integer | Offset of returned users |
 
 :::
 
-::: details `GET /api/users` Get users.
+::: details `GET /api/users` List users.
 
 **Parameters:**
 

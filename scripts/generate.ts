@@ -7,6 +7,9 @@ function generate(spec: string, header: string): string {
   for (const path in apiSpec.paths) {
     for (const method in apiSpec.paths[path]) {
       const endpoint = apiSpec.paths[path][method];
+      if (endpoint.deprecated) {
+        continue;
+      }
       output += `::: details \`${method.toUpperCase()} ${path}\` ${endpoint.summary || ''}\n\n`;
       if (endpoint.parameters && endpoint.parameters.length > 0) {
         output += '**Parameters:**\n\n';

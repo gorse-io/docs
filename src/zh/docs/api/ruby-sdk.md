@@ -6,11 +6,17 @@ icon: ruby
 
 ::: warning
 
-Ruby SDK 尚未发布。如有兴趣请联系我们：
-
-[](https://discord.gg/x6gAtNNkAE)![Discord](https://img.shields.io/discord/830635934210588743) <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=lOERnxfAM2U2rj4C9Htv9T68SLIXg6uk&amp;jump_from=webapi"></a><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" title="Gorse推荐系统交流群" alt="Gorse推荐系统交流群">
+Ruby SDK 正在开发中， API 可能会在以后的版本中更改。欢迎参与贡献：https://github.com/gorse-io/gorse-rb
 
 :::
+
+[![Gem](https://img.shields.io/gem/v/gorse)](https://rubygems.org/gems/gorse)[![Gem](https://img.shields.io/gem/dt/gorse)](https://rubygems.org/gems/gorse)
+
+## 安装
+
+```bash
+gem install gorse
+```
 
 ## 用法
 
@@ -19,13 +25,37 @@ require 'gorse'
 
 client = Gorse.new('http://127.0.0.1:8087', 'api_key')
 
+# Insert a user
+client.insert_user({
+    'UserId' => 'bob',
+    'Labels' => {
+        'company' => 'gorse',
+        'location' => 'hangzhou, china'
+    },
+    'Comment' => 'Bob is a software engineer.'
+})
+
+# Insert an item
+client.insert_item({
+    'ItemId' => 'gorse-io:gorse',
+    'IsHidden' => false,
+    'Labels' => {
+        'topics' => ['recommendation', 'machine-learning']
+    },
+    'Categories' => ['go']
+    'Timestamp' => '2022-02-22',
+    'Comment' => 'Gorse is an open-source recommender system.'
+})
+
+# Insert feedbacks
 client.insert_feedback([
-    Feedback.new("star", "bob", "vuejs:vue", "2022-02-24"),
-    Feedback.new("star", "bob", "d3:d3", "2022-02-25"),
-    Feedback.new("star", "bob", "dogfalo:materialize", "2022-02-26"),
-    Feedback.new("star", "bob", "mozilla:pdf.js", "2022-02-27"),
-    Feedback.new("star", "bob", "moment:moment", "2022-02-28")
+    { 'FeedbackType' => 'star', 'UserId' => 'bob', 'ItemId' => 'ollama:ollama' , 'Value' => 1.0, 'Timestamp' => '2022-02-24' },
+    { 'FeedbackType' => 'star', 'UserId' => 'bob', 'ItemId' => 'huggingface:transformers' , 'Value' => 1.0, 'Timestamp' => '2022-02-25' },
+    { 'FeedbackType' => 'star', 'UserId' => 'bob', 'ItemId' => 'rasbt:llms-from-scratch', 'Value' => 1.0, 'Timestamp' => '2022-02-26' },
+    { 'FeedbackType' => 'star', 'UserId' => 'bob', 'ItemId' => 'vllm-project:vllm', 'Value' => 1.0, 'Timestamp' => '2022-02-27' },
+    { 'FeedbackType' => 'star', 'UserId' => 'bob', 'ItemId' => 'hiyouga:llama-factory', 'Value' => 1.0, 'Timestamp' => '2022-02-28' }
 ])
 
-client.get_recommend('10')
+# Get recommendation
+client.get_recommend('bob')
 ```

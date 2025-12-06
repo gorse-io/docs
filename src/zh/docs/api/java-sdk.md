@@ -10,7 +10,7 @@ Java SDK正在开发中，后续版本可能会更改API。欢迎贡献代码：
 
 :::
 
-[](https://mvnrepository.com/artifact/io.gorse/gorse-client)![Maven Central](https://img.shields.io/maven-central/v/io.gorse/gorse-client)
+[![Maven Central](https://img.shields.io/maven-central/v/io.gorse/gorse-client)](https://mvnrepository.com/artifact/io.gorse/gorse-client)[![GitHub](https://img.shields.io/github/license/gorse-io/gorse4j)](https://github.com/gorse-io/gorse4j)
 
 ## 安装
 
@@ -22,34 +22,34 @@ Java SDK正在开发中，后续版本可能会更改API。欢迎贡献代码：
 <dependency>
     <groupId>io.gorse</groupId>
     <artifactId>gorse-client</artifactId>
-    <version>0.4.0</version>
+    <version>0.5.0</version>
 </dependency>
 ```
 
 @tab Gradle
 
 ```groovy
-implementation 'io.gorse:gorse-client:0.4.0'
+implementation 'io.gorse:gorse-client:0.5.0'
 ```
 
 @tab SBT
 
 ```scala
-libraryDependencies += "io.gorse" % "gorse-client" % "0.4.0"
+libraryDependencies += "io.gorse" % "gorse-client" % "0.5.0"
 ```
 
 @tab Grape
 
 ```groovy
 @Grapes(
-    @Grab(group='io.gorse', module='gorse-client', version='0.4.0')
+    @Grab(group='io.gorse', module='gorse-client', version='0.5.0')
 )
 ```
 
 @tab Leiningen
 
 ```clojure
-[io.gorse/gorse-client "0.4.0"]
+[io.gorse/gorse-client "0.5.0"]
 ```
 
 :::
@@ -65,15 +65,29 @@ public class Main {
         // Create a client.
         Gorse client = new Gorse("http://127.0.0.1:8087", "api_key");
 
+        // Insert a user.
+        client.insertUser(new User("bob", Map.of(
+            "company", "gorse",
+            "location", "hangzhou, china"
+        )));
+
+        // Insert an item.
+        client.insertItem(new Item("gorse-io:gorse", false, Map.of(
+            "topics", List.of("recommendation", "machine-learning")
+        ), List.of("go"), "2022-02-22", "Gorse is an open-source recommender system."));
+
         // Insert feedback.
         List<Feedback> feedbacks = List.of(
-                new Feedback("read", "100", "300", "2022-11-20T13:55:27Z"),
-                new Feedback("read", "100", "400", "2022-11-20T13:55:27Z")
+            new Feedback("star", "bob", "ollama:ollama", 1.0, "2022-02-24"),
+            new Feedback("star", "bob", "huggingface:transformers", 1.0, "2022-02-25"),
+            new Feedback("star", "bob", "rasbt:llms-from-scratch", 1.0, "2022-02-26"),
+            new Feedback("star", "bob", "vllm-project:vllm", 1.0, "2022-02-27"),
+            new Feedback("star", "bob", "hiyouga:llama-factory", 1.0, "2022-02-28")
         );
         client.insertFeedback(feedbacks);
 
         // Get recommendation.
-        client.getRecommend("100");
+        client.getRecommend("bob");
     }
 }
 ```

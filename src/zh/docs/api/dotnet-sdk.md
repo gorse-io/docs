@@ -6,11 +6,25 @@ icon: dot-net
 
 ::: warning
 
-.NET SDK 尚未发布。如有兴趣请联系我们：
-
-[](https://discord.gg/x6gAtNNkAE)![Discord](https://img.shields.io/discord/830635934210588743) <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=lOERnxfAM2U2rj4C9Htv9T68SLIXg6uk&amp;jump_from=webapi"></a><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" title="Gorse推荐系统交流群" alt="Gorse推荐系统交流群">
+.NET SDK 正在开发中， API 可能会在以后的版本中更改。欢迎参与贡献：https://github.com/gorse-io/Gorse.NET
 
 :::
+
+[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Gorse.NET)](https://www.nuget.org/packages/Gorse.NET/)[![Nuget](https://img.shields.io/nuget/dt/Gorse.NET)](https://www.nuget.org/packages/Gorse.NET/)
+
+## 安装
+
+- 通过 .NET CLI 安装：
+
+```bash
+dotnet add package Gorse.NET
+```
+
+- 通过 NuGet 包管理器安装：
+
+```bash
+NuGet\Install-Package Gorse.NET
+```
 
 ## 用法
 
@@ -19,14 +33,35 @@ using Gorse.NET;
 
 var client = new Gorse("http://127.0.0.1:8087", "api_key");
 
-client.InsertFeedback(new Feedback[]
+// Insert a user
+client.InsertUser(new User
 {
-    new Feedback{FeedbackType="star", UserId="bob", ItemId="vuejs:vue", Timestamp="2022-02-24"},
-    new Feedback{FeedbackType="star", UserId="bob", ItemId="d3:d3", Timestamp="2022-02-25"},
-    new Feedback{FeedbackType="star", UserId="bob", ItemId="dogfalo:materialize", Timestamp="2022-02-26"},
-    new Feedback{FeedbackType="star", UserId="bob", ItemId="mozilla:pdf.js", Timestamp="2022-02-27"},
-    new Feedback{FeedbackType="star", UserId="bob", ItemId="moment:moment", Timestamp="2022-02-28"},
+    UserId = "bob",
+    Labels = new { company = "gorse", location = "hangzhou, china" },
+    Comment = "Bob is a software engineer."
 });
 
-client.GetRecommend("10");
+// Insert an item
+client.InsertItem(new Item
+{
+    ItemId = "gorse-io:gorse",
+    IsHidden = false,
+    Labels = new { topics = new[] { "recommendation", "machine-learning" } },
+    Categories = new[] { "go" },
+    Timestamp = "2022-02-22",
+    Comment = "Gorse is an open-source recommender system."
+}
+
+// Insert feedback
+client.InsertFeedback(new Feedback[]
+{
+    new Feedback{FeedbackType="star", UserId="bob", ItemId="ollama:ollama", Value=1.0, Timestamp="2022-02-24"},
+    new Feedback{FeedbackType="star", UserId="bob", ItemId="huggingface:transformers", Value=1.0, Timestamp="2022-02-25"},
+    new Feedback{FeedbackType="star", UserId="bob", ItemId="rasbt:llms-from-scratch", Value=1.0, Timestamp="2022-02-26"},
+    new Feedback{FeedbackType="star", UserId="bob", ItemId="vllm-project:vllm", Value=1.0, Timestamp="2022-02-27"},
+    new Feedback{FeedbackType="star", UserId="bob", ItemId="hiyouga:llama-factory", Value=1.0, Timestamp="2022-02-28"}
+});
+
+// Get recommendations
+client.GetRecommend("bob");
 ```
