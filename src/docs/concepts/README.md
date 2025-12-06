@@ -1,0 +1,6 @@
+---
+icon: idea
+---
+# Concepts
+
+<Catalog />

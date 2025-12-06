@@ -30,12 +30,20 @@ export const enSidebar = sidebar({
       "prefix": "concepts/",
       "children": [
         "data-objects",
-        "algorithms",
+        {
+          "text": "Recommenders",
+          "icon": "recommend-fill",
+          "collapsible": true,
+          "prefix": "recommenders/",
+          "children": [
         "non-personalized",
         "item-to-item",
         "user-to-user",
         "collaborative",
-        "external",
+            "external"
+          ]
+        },
+        "algorithms",
         "how-it-works",
         "evaluation"
       ]

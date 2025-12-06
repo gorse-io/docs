@@ -1,5 +1,5 @@
 ---
-icon: model
+icon: collaborate_sider
 shortTitle: Collaborative
 ---
 # Collaborative Filtering

@@ -1,5 +1,5 @@
 ---
-icon: search
+icon: boxes
 shortTitle: Item-to-Item
 ---
 # Item-to-Item Recommenders

@@ -1,8 +1,8 @@
 ---
 icon: code
-shortTitle: External
+shortTitle: External API
 ---
-# External Recommenders
+# External API Recommenders
 
 Although Gorse already offers several recommenders, the recommendation logic in production is something Gorse cannot fully encompass. For example, YouTube adds new videos from followed creators to recommendation, and Steam adds DLCs for games a user owns to recommendation. The external recommender executes a JavaScript script to access an external HTTP endpoint and retrieve recommendation.
 

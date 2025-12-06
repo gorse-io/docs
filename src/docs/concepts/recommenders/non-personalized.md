@@ -1,10 +1,10 @@
 ---
-icon: ranking-list-fill
+icon: rankfill
 shortTitle: Non-personalized
 ---
 # Non-personalized Recommenders
 
-Gorse recommender system offers two non-personalized recommenders: the latest recommender and the popular recommender. However, they are not flexible enough. To improve the flexibility of non-personalized recommendations, Gorse provides a new implementation of non-personalized recommenders.
+Gorse recommender system offers a default non-personalized recommenders, the latest recommender. However, it is not flexible enough. To improve the flexibility of non-personalized recommendations, Gorse provides a new implementation of non-personalized recommenders.
 
 ## Configuration
 
