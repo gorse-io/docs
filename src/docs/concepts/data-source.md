@@ -1,7 +1,7 @@
 ---
-icon: model
+icon: data
 ---
-# Data Objects
+# Data Source
 
 There are only three kinds of data objects in Gorse: users, items, and feedback.
 

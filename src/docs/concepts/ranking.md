@@ -1,7 +1,7 @@
 ---
-icon: zhinengsuanfa
+icon: sort
 ---
-# Algorithms
+# Ranking
 
 ### Factorization Machines
 

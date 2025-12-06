@@ -1,7 +1,7 @@
 ---
-icon: process
+icon: pipeline
 ---
-# How It Works
+# Pipeline
 
 The workflow of Gorse is depicted in the following flowchart:
 

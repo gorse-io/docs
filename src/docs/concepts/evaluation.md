@@ -1,5 +1,5 @@
 ---
-icon: chart
+icon: evaluate_fill
 ---
 # Evaluation
 

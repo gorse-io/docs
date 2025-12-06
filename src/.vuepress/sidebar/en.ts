@@ -15,7 +15,8 @@ export const enSidebar = sidebar({
       "children": [
         "binary",
         "docker",
-        "kubernetes"
+        "kubernetes",
+        "upgrade"
       ]
     },
     {
@@ -29,22 +30,23 @@ export const enSidebar = sidebar({
       "collapsible": true,
       "prefix": "concepts/",
       "children": [
-        "data-objects",
+        "pipeline",
+        "data-source",
         {
           "text": "Recommenders",
           "icon": "recommend-fill",
           "collapsible": true,
           "prefix": "recommenders/",
           "children": [
-        "non-personalized",
-        "item-to-item",
-        "user-to-user",
-        "collaborative",
+            "non-personalized",
+            "item-to-item",
+            "user-to-user",
+            "collaborative",
             "external"
           ]
         },
-        "algorithms",
-        "how-it-works",
+        "replacement",
+        "ranking",
         "evaluation"
       ]
     },

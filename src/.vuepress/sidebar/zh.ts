@@ -32,6 +32,19 @@ export const zhSidebar = sidebar({
         "data-objects",
         "algorithms",
         "how-it-works",
+        {
+          "text": "推荐算法",
+          "icon": "recommend-fill",
+          "collapsible": true,
+          "prefix": "recommenders/",
+          "children": [
+            "non-personalized",
+            "item-to-item",
+            "user-to-user",
+            "collaborative",
+            "external"
+          ]
+        },
         "evaluation"
       ]
     },

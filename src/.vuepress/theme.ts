@@ -153,7 +153,7 @@ export default hopeTheme({
     },
 
     icon: {
-      assets: "https://at.alicdn.com/t/c/font_3748819_i5l420uzwp.css",
+      assets: "https://at.alicdn.com/t/c/font_3748819_efaqjm50xcu.css",
     },
 
     // Install @vuepress/plugin-pwa and uncomment these if you want a PWA
