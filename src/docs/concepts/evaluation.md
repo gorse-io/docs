@@ -61,23 +61,4 @@ $$
 
 where $\mathbb{I}(i=\hat I^{(10)}_{u,i})$ is the $i$-th item in the top 10 recommendations.
 
-### Clustering Index and HNSW Index
-
-The clustering index is used to speed up searching user (item) neighbors, while the HNSW index is used to accelerate recommendations from matrix factorization. The quality of an index is evaluated by the recall:
-
-$$
-\text{recall@n}=\frac{|\text{top n by index}|}{|\text{top n by brute force}|}
-$$
-
-::: tip
-
-The recalls of indices are listed in the "System Status" section of the dashboard homepage.
-
-![](../../img/evaluation-neighbor-index-recall.jpeg =400x)
-![](../../img/evaluation-mf-index-recall.jpeg =400x)
-
-If the recall of an index is extremely low, consider turning off the index.
-
-:::
-
 [^1]: He, Xiangnan, et al. "Neural collaborative filtering." Proceedings of the 26th international conference on world wide web. 2017.

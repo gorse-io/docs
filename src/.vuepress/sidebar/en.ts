@@ -30,8 +30,8 @@ export const enSidebar = sidebar({
       "collapsible": true,
       "prefix": "concepts/",
       "children": [
-        "pipeline",
         "data-source",
+        "pipeline",
         {
           "text": "Recommenders",
           "icon": "recommend-fill",
@@ -45,8 +45,8 @@ export const enSidebar = sidebar({
             "external"
           ]
         },
-        "replacement",
         "ranking",
+        "replacement",
         "evaluation"
       ]
     },
