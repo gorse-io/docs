@@ -4,10 +4,11 @@ shortTitle: Collaborative
 ---
 # Collaborative Filtering
 
+Gorse uses matrix factorization[^3] as the collaborative filtering algorithm to provide personalized recommendations. Matrix factorization is a widely used technique in recommender systems that models user-item interactions by representing both users and items in a shared latent space.
 
-### Matrix Factorization
+## Matrix Factorization
 
-In matrix factorization models, items and users are represented by vectors. The probability that a user $u$ likes an item $i$ is predicted by the dot product of two vectors.
+In matrix factorization, items and users are represented by vectors. The probability that a user $u$ likes an item $i$ is predicted by the dot product of two vectors.
 
 $$
 \hat y_{ui}=\mathbf{p}_u^T \mathbf{q}_i
@@ -160,6 +161,17 @@ where $s^p_{kf}$ denotes the $(k, f)^\text{th}$ element of the $\mathbf{S}^p$ ca
 >   - **end**
 > - **return** $\mathbf{P}$ and $\mathbf{Q}$
 
+## Configuration
+
+The configurations for collaborative filtering are all about model fitting and hyperparameter optimization.
+- `fit_period` is the period for model fitting. Defaults to `60m`.
+- `fit_epoch` is the number of epochs for model fitting. Defaults to `100`.
+- `optimize_period` is the period for hyperparameter optimization. Defaults to `180m`.
+- `optimize_trials` is the number of trials for hyperparameter optimization. Defaults to `10`.
+- `early_stopping.patience` is the number of epochs with no improvement after which training will be stopped. Defaults to `10`.
+
 [^1]: Rendle, Steffen, et al. "BPR: Bayesian personalized ranking from implicit feedback." Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.
 
 [^2]: He, Xiangnan, et al. "Fast matrix factorization for online recommendation with implicit feedback." Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016.
+
+[^3]: Funk, Simon. "Netflix Update: Try This at Home." The Sifter. December 11, 2006. https://sifter.org/~simon/journal/20061211.html.

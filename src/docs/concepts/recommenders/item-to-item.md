@@ -8,7 +8,7 @@ Recommending similar items based on user preferred items is a simple and effecti
 
 ## Configuration
 
-The new item-to-item recommenders need to be explicitly configured. The following three fields need to be filled in:
+The item-to-item recommenders need to be explicitly configured. The following three fields need to be filled in:
 - `name` is the name of the recommender.
 - `type` is the similarity type, and the following values are supported:
   - `embedding` is the Euclidean distance between embedding vectors.
@@ -76,9 +76,19 @@ $$
 
 where $U_i$ and $U_j$ represent the user sets of item $i$ and item $j$ respectively. One drawback of users similarity is that it tends to recommend popular items because popular items always have a high overlap of users with other items.
 
+### Recommendation
+
+The item-to-item recommender first retrieves the user's positive feedback, then finds similar items for each of the items with positive feedback, and finally sums up the similarity scores of the same item to get the final recommendation score:
+
+$$
+\sum_{j \in F_u} s_{ij}
+$$
+
+where $F_u$ represents the set of items with positive feedback from user $u$, and $s_{ij}$ represents the similarity between item $i$ and item $j$.
+
 ## API
 
-You can access item-to-item recommendations through the following API:
+You can access similar items through the following API:
 
 ```bash
 curl http://localhost:8087/api/item-to-item/<name>/<item-id>

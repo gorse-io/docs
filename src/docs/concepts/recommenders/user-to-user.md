@@ -8,7 +8,7 @@ If two users have similar preferences, they are likely to like the same items. G
 
 ## Configuration
 
-The new user-to-user recommenders need to be explicitly configured. The following three fields need to be filled in:
+The user-to-user recommenders need to be explicitly configured. The following three fields need to be filled in:
 - `name` is the name of the recommender.
 - `type` is the similarity type, and the following values are supported:
   - `embedding` is the Euclidean distance between embedding vectors.
@@ -37,7 +37,7 @@ $$
 If a tag is used by more users, this tag is more generic and has a lower weight. Then, calculates similarity based on label overlap between users
 
 $$
-s_{uv} = \frac{\sum_{l\in L_u \cap L_v}w_l}{\sqrt{\sum_{l\in L_u}w_l^2}\sqrt{\sum_{l\in L_v}w_l^2}}
+\frac{\sum_{l\in L_u \cap L_v}w_l}{\sqrt{\sum_{l\in L_u}w_l^2}\sqrt{\sum_{l\in L_v}w_l^2}}
 $$
 
 ### Items Similarity
@@ -53,8 +53,26 @@ $$
 If an item has more users, it means that this item is popular but has a lower weight to characterize users' preferences. Then, calculates similarity based on item overlap between users.
 
 $$
-s_{uv} = \frac{\sum_{i\in I_u \cap I_v}w_i}{\sqrt{\sum_{i\in I_u}w_i^2}\sqrt{\sum_{i\in I_v}w_i^2}}
+\frac{\sum_{i\in I_u \cap I_v}w_i}{\sqrt{\sum_{i\in I_u}w_i^2}\sqrt{\sum_{i\in I_v}w_i^2}}
 $$
+
+## Recommendation
+
+The user-to-user recommender first finds similar users for the target user, then sums up items from positive feedback of similar users, and finally ranks items by similarity scores to get the final recommendation score:
+
+$$
+\sum_{v \in S_u} s_{uv} \cdot \mathbf{1}_{i \in I_v}
+$$
+
+where $S_u$ represents the set of similar users of user $u$, $s_{uv}$ represents the similarity between user $u$ and user $v$, and $\mathbf{1}_{i \in I_v}$ is an indicator function that equals 1 if item $i$ is in the positive feedback set of user $v$.
+
+## API
+
+You can access similar users through the following API:
+
+```bash
+curl http://localhost:8087/api/user-to-user/<name>/<user-id>
+```
 
 ## Examples
 
