@@ -71,11 +71,6 @@ export const zhSidebar = sidebar({
       "link": "gorse-dashboard"
     },
     {
-      "text": "性能对比",
-      "icon": "dashboard-fill",
-      "link": "benchmark"
-    },
-    {
       "text": "贡献指南",
       "icon": "pullrequest",
       "link": "contribution-guide"

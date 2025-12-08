@@ -44,4 +44,3 @@ You can start from any one of the following items to help improve Gorse document
 - Fix typos or format (punctuation, space, indentation, code block, etc.)
 - Fix or update inappropriate or outdated descriptions
 - Add missing content (sentence, paragraph, or a new document)
-- [Translate docs changes from English to Chinese](https://gitlocalize.com/repo/8172/zh?utm_source=badge)

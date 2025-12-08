@@ -73,11 +73,6 @@ export const enSidebar = sidebar({
       "link": "gorse-dashboard"
     },
     {
-      "text": "Benchmark",
-      "icon": "dashboard-fill",
-      "link": "benchmark"
-    },
-    {
       "text": "Contribution Guide",
       "icon": "pullrequest",
       "link": "contribution-guide"
