@@ -102,11 +102,7 @@ The following is an example from [GitRec](https://gitrec.gorse.io/) fetching rep
 
 ```toml
 [[recommend.external]]
-
-# The name of the external recommender.
 name = "trending"
-
-# The script to fetch external recommended items. The script should return a list of item IDs.
 script = """
 const body = fetch("https://cdn.jsdelivr.net/gh/isboyjc/github-trending-api/data/daily/all.json").body;
 const data = JSON.parse(body);

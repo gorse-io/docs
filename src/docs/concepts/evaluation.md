@@ -17,8 +17,6 @@ where $R^r_u$ is the set of read feedback from user $u$, and $R^p_U$ is the set 
 
 For example, there are two positive feedback types (like and star) in [GitRec](https://gitrec.gorse.io/#/). Thus, the like rate and star rate are shown on the overview page of the dashboard.
 
-![](../../img/dashboard-overview.png)
-
 ## Offline Evaluation
 
 Offline evaluation is used to estimate the performance of an individual algorithm. It allows users to inspect the status of an individual algorithm. Thus, this section is organized by different algorithms.

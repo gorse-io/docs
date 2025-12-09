@@ -170,6 +170,20 @@ The configurations for collaborative filtering are all about model fitting and h
 - `optimize_trials` is the number of trials for hyperparameter optimization. Defaults to `10`.
 - `early_stopping.patience` is the number of epochs with no improvement after which training will be stopped. Defaults to `10`.
 
+## Example
+
+In the demo project [GitRec](https://gitrec.gorse.io/), the collaborative filtering is configured as follows:
+
+```toml
+[recommend.collaborative]
+fit_period = "60m"
+fit_epoch = 100
+optimize_period = "360m"
+optimize_trials = 10
+[recommend.collaborative.early_stopping]
+patience = 10
+```
+
 [^1]: Rendle, Steffen, et al. "BPR: Bayesian personalized ranking from implicit feedback." Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.
 
 [^2]: He, Xiangnan, et al. "Fast matrix factorization for online recommendation with implicit feedback." Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016.
