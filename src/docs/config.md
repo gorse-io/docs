@@ -82,7 +82,7 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 
 :::
 
-## `master`
+## `[master]`
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |

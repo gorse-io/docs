@@ -51,6 +51,5 @@ docker-compose up -d
 
 # Test
 export GORSE_SERVER_ENDPOINT=http://localhost:8087
-export GORSE_DASHBOARD_ENDPOINT=http://localhost:8088
 go test ./client/
 ```
