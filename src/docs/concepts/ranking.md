@@ -3,6 +3,38 @@ icon: sort
 ---
 # Ranking
 
+Gorse merges recommendation from multiple recommenders and ranks them to produce the final recommendation list.
+
+## Configuration
+
+- `type` is the ranker type. The supported ranker is:
+  - `none` means no ranking is performed.
+  - `fm` uses factorization machines to rank recommended items.
+- `recommenders` are the names of recommenders whose recommendations are merged and ranked. Values should be one of the following:
+  - `latest` uses the latest items recommender.
+  - `collaborative` uses the collaborative filtering recommender.
+  - `non-personalized/NAME` uses a non-personalized recommender with name `NAME`.
+  - `item-to-item/NAME` uses an item-to-item recommender with name `NAME`.
+  - `user-to-user/NAME` uses a user-to-user recommender with name `NAME`.
+- `early_stopping.patience` is the number of epochs with no improvement after which factoring machine training will be stopped. Defaults to `10`.
+
+## Example
+
+In the demo project [GitRec](https://gitrec.gorse.io/), factorization machines are used to rank recommended items from multiple recommenders:
+- Latest repositories from the latest items recommender.
+- Collaborative filtering recommendations.
+- Most starred repositories in the past week from the non-personalized recommender.
+- Similar repositories from the item-to-item recommender.
+- Repositories from positive feedback of similar users from the user-to-user recommender.
+
+```toml
+[recommend.ranker]
+type = "fm"
+recommenders = ["latest", "collaborative", "non-personalized/most_starred_weekly", "item-to-item/neighbors", "user-to-user/neighbors"]
+```
+
+## Algorithms
+
 ### Factorization Machines
 
 User labels and item labels are important information for personalized recommendations, but matrix factorization only handles user embedding and item embedding. Factorization machines^3 generate recommendations with rich features such as user features and item features.

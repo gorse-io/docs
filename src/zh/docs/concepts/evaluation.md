@@ -16,8 +16,6 @@ $$ \text{positive rate}=\frac{1}{|U|}\sum_{i\in |U|}\frac{|R^p_u|}{|R^r_u|} $$
 
 例如，在[GitRec](https://gitrec.gorse.io/#/)中有两种正反馈类型（“喜欢”和“点赞”）。因此，喜欢率和点赞率显示在控制台的概览页面上。
 
-![](../../../img/dashboard-overview.png)
-
 ## 离线评估
 
 离线评估用于评估单个算法的推荐能力。它允许用户检查单个算法的状态。因此，本节按照不同的算法组织。

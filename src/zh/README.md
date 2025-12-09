@@ -62,8 +62,6 @@ docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
 
 Playground模式将从[GitRec]下载数据并导入到Gorse中。仪表板可以通过http://localhost:8088访问。
 
-![](../img/dashboard-overview.png =570x) ![](../img/dashboard-tasks.png =570x)
-
 在“任务”页面上完成“查找临近的物品”任务后，尝试向Gorse插入一些反馈。假设Bob是GitHub中几个前端仓库的前端开发人员。我们把他的star行为的反馈写入Gorse。
 
 ::: code-tabs#example

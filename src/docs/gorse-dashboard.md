@@ -17,6 +17,8 @@ The default configuration allows access to the console without authorization.
 
 ## Guide
 
+The dashboard provides various features for monitoring and managing the recommendation system. The main features are described below.
+
 ### System Overview
 
 In the "Overview" page of the dashboard, you can view the overall status of the system, including:

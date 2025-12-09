@@ -116,11 +116,7 @@ Gorse generate recommendations for users after feedbacks from users are inserted
 
 Open [http://127.0.0.1:8088](http://127.0.0.1:8088) in browser and the dashboard summarizes all status and data in Gorse.
 
-![](../img/dashboard-overview.png)
-
 Wait for all tasks *except "Searching collaborative filtering model" and "Searching click-through prediction model"* completed.
-
-![](../img/dashboard-tasks.png)
 
 Suppose Bob is a frontend developers who starred several frontend repositories in GitHub. We insert his star feedback to Gorse via the RESTful API.
 
