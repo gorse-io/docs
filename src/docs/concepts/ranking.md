@@ -9,7 +9,7 @@ Gorse merges recommendation from multiple recommenders and ranks them to produce
 
 - `type` is the ranker type. The supported ranker is:
   - `none` means no ranking is performed.
-  - `fm` uses factorization machines to rank recommended items.
+  - `fm` uses factorization machines[^1] to rank recommended items.
 - `recommenders` are the names of recommenders whose recommendations are merged and ranked. Values should be one of the following:
   - `latest` uses the latest items recommender.
   - `collaborative` uses the collaborative filtering recommender.
@@ -79,3 +79,5 @@ x_i\sum^n_{j=1}v_{j,f}x_j-v_{i,f}x^2_i,&\text{if }\theta\text{ is }v_{i,f}
 $$
 
 Hyper-parameters are optimized by random search and the configuration `recommend.collaborative` is reused.
+
+[^1]: Rendle, Steffen. "Factorization machines." 2010 IEEE International conference on data mining. IEEE, 2010.
