@@ -118,22 +118,7 @@ docker-compose up -d
 
 Gorse worker nodes and server nodes have horizontal scalability. Increase the number of server nodes to improve online recommendation throughput, while increase the number of worker nodes to improve offline recommendation throughput.
 
-```mermaid
-flowchart RL
-  master(Master Node)
-  server_0(Server Node 0)
-  server_1(Server Node 1)
-  server_2(Server Node 2)
-  worker_0(Worker Node 0)
-  worker_1(Worker Node 1)
-  worker_2(Worker Node 2)
-  server_0 --- |gRPC| master
-  server_1 --- |gRPC| master
-  server_2 --- |gRPC| master
-  worker_0 --- |gRPC| master
-  worker_1 --- |gRPC| master
-  worker_2 --- |gRPC| master
-```
+![](../../img/cluster.drawio.svg)
 
 There is an example of a Gorse cluster with one master node, one server node and one worker node:
 
@@ -348,7 +333,7 @@ docker-compose up -d
 
 Command line flags of the master node:
 
-| <FontIcon icon="rightarrow"/> | Flag | Default Value | Description |
+| ::rightarrow:: | Flag | Default Value | Description |
 |-|-|-|-|
 | | `--cache-path` | `worker_cache.data` | Cache file path. |
 | `-c` | `--config` | | Configuration file path. |
@@ -362,7 +347,7 @@ Command line flags of the master node:
 
 Command line flags of the server node:
 
-| <FontIcon icon="rightarrow"/> | Flag | Default Value | Description |
+| ::rightarrow:: | Flag | Default Value | Description |
 |-|-|-|-|
 | | `--cache-path` | `worker_cache.data` | Cache file path. |
 | | `--debug` | | Debug log mode. |
@@ -379,7 +364,7 @@ Command line flags of the server node:
 
 Command line flags of the worker node:
 
-| <FontIcon icon="rightarrow"/> | Flag | Default Value | Description |
+| ::rightarrow:: | Flag | Default Value | Description |
 |-|-|-|-|
 | | `--cache-path` | `worker_cache.data` | Cache file path. |
 | | `--debug` | | Debug log mode. |

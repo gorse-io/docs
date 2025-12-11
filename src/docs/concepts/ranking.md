@@ -37,9 +37,7 @@ recommenders = ["latest", "collaborative", "non-personalized/most_starred_weekly
 
 ### Factorization Machines
 
-User labels and item labels are important information for personalized recommendations, but matrix factorization only handles user embedding and item embedding. Factorization machines^3 generate recommendations with rich features such as user features and item features.
-
-Different from the learning algorithms for matrix factorization, negative feedbacks are used in factorization machine training. The training dataset is constructed by
+Different from the learning algorithms for matrix factorization, negative feedback are used in factorization machine training. The training dataset is constructed by
 
 $$
 D=\{((x_1,\dots,x_f,\dots,x_F),1)|(u,i)\in R\}\cup\{((x_1,\dots,x_f,\dots,x_F),0)|(u,i)\in\not R\}
@@ -77,7 +75,5 @@ x_i,&\text{if }\theta\text{ is }w_i\\
 x_i\sum^n_{j=1}v_{j,f}x_j-v_{i,f}x^2_i,&\text{if }\theta\text{ is }v_{i,f}
 \end{cases}
 $$
-
-Hyper-parameters are optimized by random search and the configuration `recommend.collaborative` is reused.
 
 [^1]: Rendle, Steffen. "Factorization machines." 2010 IEEE International conference on data mining. IEEE, 2010.

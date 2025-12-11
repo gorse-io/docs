@@ -126,11 +126,13 @@ Positive feedback can be inserted into the recommender system when the user take
 
 ::: center
 
-![ =300x](../../img/tiktok.jpg) ![ =300x](../../img/youtube-mobile.jpg)
+![](../../img/tiktok.svg)
 
 :::
 
 - **List mode:** The most typical application is YouTube, where the user is not considered "read" after looking at multiple videos in the list. When there are more than one videos, the user's attention is not able to browse the whole list. Moreover, if the read content is quickly discarded in the list mode, the recommended content is consumed too fast. Therefore, the best solution is to write a "read" feedback with a future timestamp to the recommender system when the item is presented to the user in the stream, and the "read" feedback will take effect when the time has reached the timestamp, and the read content will no longer be presented to the user.
+
+![](../../img/youtube.svg)
 
 #### Automatic Read
 

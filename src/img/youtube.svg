@@ -1,0 +1,163 @@
+<svg width="1280" height="800" viewBox="0 0 1280 800" xmlns="http://www.w3.org/2000/svg"
+  style="font-family: Roboto, Arial, sans-serif;">
+  <rect width="100%" height="100%" fill="#F9F9F9" />
+
+  <g id="navbar">
+    <rect width="1280" height="56" fill="#FFFFFF" />
+
+    <g transform="translate(16, 12)">
+      <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="#0F0F0F" />
+
+      <g transform="translate(40, 2)">
+        <rect width="38" height="26" rx="6" fill="#FF0000" />
+        <path d="M16 8l9 5-9 5z" fill="#FFFFFF" />
+        <text x="44" y="20" font-size="20" font-weight="bold" letter-spacing="-0.5" fill="#212121">YouTube</text>
+      </g>
+    </g>
+
+    <g transform="translate(380, 8)">
+      <rect width="540" height="40" rx="2" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="1" />
+      <rect width="540" height="40" rx="2" fill="#F0F0F0" clip-path="inset(1px 1px 1px 1px)" />
+
+      <text x="16" y="25" font-size="16" fill="#888888">Search</text>
+
+      <g transform="translate(476, 0)">
+        <rect width="64" height="40" rx="0 2 2 0" fill="#F8F8F8" stroke="#CCCCCC" stroke-width="1" />
+        <path transform="translate(20, 8)"
+          d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+          fill="#606060" />
+      </g>
+
+      <circle cx="570" cy="20" r="20" fill="#F9F9F9" />
+      <path transform="translate(558, 8)"
+        d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15c-.08-.49-.49-.85-.98-.85-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08c3.02-.43 5.42-2.78 5.91-5.78.09-.6-.39-1.14-1-1.14z"
+        fill="#0F0F0F" />
+    </g>
+
+    <g transform="translate(1080, 12)">
+      <path transform="translate(0, 4)"
+        d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4zM14 13h-3v3H9v-3H6v-2h3V8h2v3h3v2z"
+        fill="#0F0F0F" />
+      <path transform="translate(50, 4)"
+        d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"
+        fill="#0F0F0F" />
+      <circle cx="130" cy="16" r="16" fill="#5555FF" />
+      <text x="130" y="21" font-size="14" fill="white" text-anchor="middle">U</text>
+    </g>
+  </g>
+
+  <g id="sidebar" transform="translate(0, 56)">
+    <rect width="72" height="744" fill="#FFFFFF" />
+
+    <g transform="translate(0, 0)">
+      <rect width="72" height="74" fill="#F2F2F2" />
+      <path transform="translate(24, 16)" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="#FF0000" />
+      <text x="36" y="54" font-size="10" fill="#0F0F0F" text-anchor="middle">Home</text>
+    </g>
+    <g transform="translate(0, 74)">
+      <path transform="translate(24, 16)"
+        d="M17.77 10.32l-1.2-.5L18 9.06c1.84-.96 2.53-3.23 1.56-5.06s-3.23-2.53-5.06-1.56L10 4.69v-.35C10 2.28 8.28.56 6.15.56S2.31 2.28 2.31 4.39v.35l-1.2.5c-1.84.96-2.53 3.23-1.56 5.06s3.23 2.53 5.06 1.56l4.5-2.25v.35c0 2.07 1.72 3.79 3.85 3.79s3.85-1.72 3.85-3.85v-.35l1.2-.5c1.84-.96 2.53-3.23 1.56-5.06s-3.23-2.53-5.06-1.56zM10 12.94L5.38 10.5v-4.5l4.62 2.44v4.5zm4.62-2.44l-4.62 2.44v-4.5l4.62-2.44v4.5z"
+        fill="#0F0F0F" />
+      <text x="36" y="54" font-size="10" fill="#0F0F0F" text-anchor="middle">Shorts</text>
+    </g>
+    <g transform="translate(0, 148)">
+      <path transform="translate(24, 16)"
+        d="M18.7 8.7H5.3V7h13.4v1.7zm-1.7-5.3H7v1.7h10V3.4zm3.3 8.6v8.3H3.7v-8.3H2v10h18.3v-10h-1.7zm-4.2 0L12 16 7.9 12h8.1z"
+        fill="#0F0F0F" />
+      <text x="36" y="54" font-size="10" fill="#0F0F0F" text-anchor="middle">Subscriptions</text>
+    </g>
+    <g transform="translate(0, 222)">
+      <path transform="translate(24, 16)"
+        d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12zM12 5.5v9l6-4.5z"
+        fill="#0F0F0F" />
+      <text x="36" y="54" font-size="10" fill="#0F0F0F" text-anchor="middle">Library</text>
+    </g>
+  </g>
+
+  <g id="content" transform="translate(72, 56)">
+
+    <g id="chips-bar" transform="translate(0, 0)">
+      <rect width="1208" height="56" fill="#FFFFFF" />
+      <rect x="24" y="12" width="44" height="32" rx="8" fill="#0F0F0F" />
+      <text x="46" y="32" font-size="14" fill="#FFFFFF" text-anchor="middle">All</text>
+
+      <rect x="80" y="12" width="76" height="32" rx="8" fill="#F2F2F2" stroke="#E5E5E5" />
+      <text x="118" y="32" font-size="14" fill="#0F0F0F" text-anchor="middle">Gaming</text>
+
+      <rect x="168" y="12" width="60" height="32" rx="8" fill="#F2F2F2" stroke="#E5E5E5" />
+      <text x="198" y="32" font-size="14" fill="#0F0F0F" text-anchor="middle">Music</text>
+
+      <rect x="240" y="12" width="70" height="32" rx="8" fill="#F2F2F2" stroke="#E5E5E5" />
+      <text x="275" y="32" font-size="14" fill="#0F0F0F" text-anchor="middle">Mixes</text>
+
+      <rect x="322" y="12" width="55" height="32" rx="8" fill="#F2F2F2" stroke="#E5E5E5" />
+      <text x="349" y="32" font-size="14" fill="#0F0F0F" text-anchor="middle">Live</text>
+    </g>
+
+    <g transform="translate(24, 80)">
+
+      <g transform="translate(0, 0)">
+        <rect width="360" height="202" rx="12" fill="#AAAAAA" />
+        <rect x="316" y="174" width="40" height="20" rx="4" fill="black" opacity="0.8" />
+        <text x="336" y="188" font-size="12" fill="white" text-anchor="middle">12:34</text>
+
+        <g transform="translate(0, 214)">
+          <circle cx="18" cy="18" r="18" fill="#FF5733" />
+
+          <g transform="translate(48, 0)">
+            <text x="0" y="16" font-size="16" font-weight="bold" fill="#0F0F0F">Building an SVG YouTube UI
+              from Scratch</text>
+            <text x="0" y="38" font-size="14" fill="#606060">SVG Tutorials ✔</text>
+            <text x="0" y="56" font-size="14" fill="#606060">1.2M views • 2 days ago</text>
+          </g>
+        </g>
+      </g>
+
+      <g transform="translate(384, 0)">
+        <rect width="360" height="202" rx="12" fill="#888888" />
+        <rect x="320" y="174" width="36" height="20" rx="4" fill="black" opacity="0.8" />
+        <text x="338" y="188" font-size="12" fill="white" text-anchor="middle">8:01</text>
+        <g transform="translate(0, 214)">
+          <circle cx="18" cy="18" r="18" fill="#33FF57" />
+          <g transform="translate(48, 0)">
+            <text x="0" y="16" font-size="16" font-weight="bold" fill="#0F0F0F">Lofi Hip Hop Radio - Beats
+              to Relax/Study</text>
+            <text x="0" y="38" font-size="14" fill="#606060">Lofi Girl ✔</text>
+            <text x="0" y="56" font-size="14" fill="#606060">25K watching</text>
+          </g>
+        </g>
+      </g>
+
+      <g transform="translate(768, 0)">
+        <rect width="360" height="202" rx="12" fill="#666666" />
+        <rect x="316" y="174" width="40" height="20" rx="4" fill="black" opacity="0.8" />
+        <text x="336" y="188" font-size="12" fill="white" text-anchor="middle">45:10</text>
+        <g transform="translate(0, 214)">
+          <circle cx="18" cy="18" r="18" fill="#3357FF" />
+          <g transform="translate(48, 0)">
+            <text x="0" y="16" font-size="16" font-weight="bold" fill="#0F0F0F">The History of Vector
+              Graphics</text>
+            <text x="0" y="38" font-size="14" fill="#606060">Tech History Channel</text>
+            <text x="0" y="56" font-size="14" fill="#606060">500K views • 3 weeks ago</text>
+          </g>
+        </g>
+      </g>
+
+      <g transform="translate(0, 300)">
+        <rect width="360" height="202" rx="12" fill="#999999" />
+        <rect x="320" y="174" width="36" height="20" rx="4" fill="black" opacity="0.8" />
+        <text x="338" y="188" font-size="12" fill="white" text-anchor="middle">3:45</text>
+        <g transform="translate(0, 214)">
+          <circle cx="18" cy="18" r="18" fill="#FF33A8" />
+          <g transform="translate(48, 0)">
+            <text x="0" y="16" font-size="16" font-weight="bold" fill="#0F0F0F">New Camera Gear Review
+              2025</text>
+            <text x="0" y="38" font-size="14" fill="#606060">Tech Reviews</text>
+            <text x="0" y="56" font-size="14" fill="#606060">100K views • 5 hours ago</text>
+          </g>
+        </g>
+      </g>
+
+    </g>
+  </g>
+</svg>
