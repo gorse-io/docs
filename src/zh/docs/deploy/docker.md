@@ -27,49 +27,17 @@ Docker镜像 | 版本 | 镜像大小 | 拉取次数
 
 ## 在Docker上部署多合一节点
 
-单节点部署时，可以使用 gorse-in-one 的 Docker 镜像。单节点部署的`docker-compose.yaml`示例如下：
-
-```yaml
-version: "3"
-services:
-  gorse:
-    image: zhenghaoz/gorse-in-one
-    restart: unless-stopped
-    ports:
-      - 8086:8086   # gRPC port
-      - 8088:8088   # HTTP port
-    environment:
-      # Use Redis as cache storage backend.
-      GORSE_CACHE_STORE: redis://redis:6379
-      # Use MySQL as data storage backend.
-      GORSE_DATA_STORE: mysql://gorse:gorse_pass@tcp(mysql:3306)/gorse?parseTime=true
-    command: >
-      -c /etc/gorse/config.toml
-      --log-path /var/log/gorse/master.log
-      --cache-path /var/lib/gorse/master_cache.data
-    volumes:
-      # Mount the configuration file.
-      - ./config.toml:/etc/gorse/config.toml
-    depends_on:
-      - redis
-      - mysql
-```
-
-阅读[二进制部署](binary.md#flags-of-gorse-in-one)以获取有关 gorse-in-one 命令行参数的详细信息。
-
-::: details 完整示例
+单节点部署时，可以使用 gorse-in-one 的 Docker 镜像。
 
 1. 使用以下内容创建`docker-compose.yaml` ：
 
+::: code-tabs#example
+
+@tab:active MySQL
+
 ```yaml
 version: "3"
 services:
-  redis:
-    image: redis
-    restart: unless-stopped
-    ports:
-      - 6379:6379
-
   mysql:
     image: mysql/mysql-server
     restart: unless-stopped
@@ -80,6 +48,8 @@ services:
       MYSQL_DATABASE: gorse
       MYSQL_USER: gorse
       MYSQL_PASSWORD: gorse_pass
+    volumes:
+      - mysql_data:/var/lib/mysql
 
   gorse:
     image: zhenghaoz/gorse-in-one
@@ -88,8 +58,8 @@ services:
       - 8086:8086   # gRPC port
       - 8088:8088   # HTTP port
     environment:
-      # Use Redis as cache storage backend.
-      GORSE_CACHE_STORE: redis://redis:6379
+      # Use MySQL as cache storage backend.
+      GORSE_CACHE_STORE: mysql://gorse:gorse_pass@tcp(mysql:3306)/gorse?parseTime=true
       # Use MySQL as data storage backend.
       GORSE_DATA_STORE: mysql://gorse:gorse_pass@tcp(mysql:3306)/gorse?parseTime=true
     command: >
@@ -100,16 +70,94 @@ services:
       # Mount the configuration file.
       - ./config.toml:/etc/gorse/config.toml
     depends_on:
-      - redis
       - mysql
+
+volumes:
+  mysql_data:
 ```
 
-1. 基于[配置文件模板](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml)在同一目录下创建配置文件 `config.toml` 。
+@tab PostgreSQL
 
-2. 启动所有服务：
+```yaml
+version: "3"
+services:
+  postgres:
+    image: postgres:10.0
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: gorse
+      POSTGRES_USER: gorse
+      POSTGRES_PASSWORD: gorse_pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
-```bash
-docker-compose up -d
+  gorse:
+    image: zhenghaoz/gorse-in-one
+    restart: unless-stopped
+    ports:
+      - 8086:8086   # gRPC port
+      - 8088:8088   # HTTP port
+    environment:
+      # Use PostgreSQL as cache storage backend.
+      GORSE_CACHE_STORE: postgres://gorse:gorse_pass@postgres/gorse?sslmode=disable
+      # Use PostgreSQL as data storage backend.
+      GORSE_DATA_STORE: postgres://gorse:gorse_pass@postgres/gorse?sslmode=disable
+    command: >
+      -c /etc/gorse/config.toml
+      --log-path /var/log/gorse/master.log
+      --cache-path /var/lib/gorse/master_cache.data
+    volumes:
+      # Mount the configuration file.
+      - ./config.toml:/etc/gorse/config.toml
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+```
+
+@tab MongoDB
+
+```yaml
+version: "3"
+services:
+  mongo:
+    image: mongo:4.0
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_DATABASE: gorse
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongo_data:/data/db
+
+  gorse:
+    image: zhenghaoz/gorse-in-one
+    restart: unless-stopped
+    ports:
+      - 8086:8086   # gRPC port
+      - 8088:8088   # HTTP port
+    environment:
+      # Use MongoDB as cache storage backend.
+      GORSE_CACHE_STORE: mongodb://root:password@mongo:27017/gorse?authSource=admin&connect=direct
+      # Use MongoDB as data storage backend.
+      GORSE_DATA_STORE: mongodb://root:password@mongo:27017/gorse?authSource=admin&connect=direct
+    command: >
+      -c /etc/gorse/config.toml
+      --log-path /var/log/gorse/master.log
+      --cache-path /var/lib/gorse/master_cache.data
+    volumes:
+      # Mount the configuration file.
+      - ./config.toml:/etc/gorse/config.toml
+    depends_on:
+      - mongo
+
+volumes:
+  mongo_data:
 ```
 
 :::
@@ -137,77 +185,11 @@ flowchart RL
 
 这是一个带有一个主节点、一个服务器节点和一个工作节点的 Gorse 集群的示例：
 
-```yaml
-version: "3"
-services:
-  worker:
-    image: zhenghaoz/gorse-worker
-    restart: unless-stopped
-    ports:
-      - 8089:8089 # Prometheus metrics export port.
-    command: >
-      --master-host master --master-port 8086
-      --http-host 0.0.0.0 --http-port 8089
-      --log-path /var/log/gorse/worker.log
-      --cache-path /var/lib/gorse/worker_cache.data
-    volumes:
-      - gorse_log:/var/log/gorse    # Mount log files in volume.
-      - worker_data:/var/lib/gorse  # Mount cache files in volume.
-    depends_on:
-      - master
-
-  server:
-    image: zhenghaoz/gorse-server
-    restart: unless-stopped
-    ports:
-      - 8087:8087 # RESTful APIs and Prometheus metrics export port.
-    command: >
-      --master-host master --master-port 8086
-      --http-host 0.0.0.0 --http-port 8087
-      --log-path /var/log/gorse/server.log
-      --cache-path /var/lib/gorse/server_cache.data
-    volumes:
-      - gorse_log:/var/log/gorse    # Mount log files in volume.
-      - server_data:/var/lib/gorse  # Mount cache files in volume.
-    depends_on:
-      - master
-
-  master:
-    image: zhenghaoz/gorse-master
-    restart: unless-stopped
-    ports:
-      - 8086:8086 # HTTP port
-      - 8088:8088 # gRPC port
-    environment:
-      # Use Redis as cache storage backend.
-      GORSE_CACHE_STORE: redis://redis:6379
-      # Use MySQL as data storage backend.
-      GORSE_DATA_STORE: mysql://gorse:gorse_pass@tcp(mysql:3306)/gorse
-    command: >
-      -c /etc/gorse/config.toml
-      --log-path /var/log/gorse/master.log
-      --cache-path /var/lib/gorse/master_cache.data
-    volumes:
-      # Mount the configuration file.
-      - ./config/config.toml:/etc/gorse/config.toml
-      # Mount log files in volume.
-      - gorse_log:/var/log/gorse
-      # Mount cache files in volume.
-      - master_data:/var/lib/gorse
-    depends_on:
-      - redis
-      - mysql
-
-volumes:
-  worker_data:
-  server_data:
-  master_data:
-  gorse_log:
-```
-
-::: details 完整示例
-
 1. 使用以下内容创建`docker-compose.yaml` ：
+
+::: code-tabs#example
+
+@tab:active MySQL
 
 ```yaml
 version: "3"
@@ -230,39 +212,6 @@ services:
       MYSQL_PASSWORD: gorse_pass
     volumes:
       - mysql_data:/var/lib/mysql
-
-  # postgres:
-  #   image: postgres:10.0
-  #   ports:
-  #     - 5432:5432
-  #   environment:
-  #     POSTGRES_DB: gorse
-  #     POSTGRES_USER: gorse
-  #     POSTGRES_PASSWORD: gorse_pass
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data
-
-  # mongo:
-  #   image: mongo:4.0
-  #   ports:
-  #     - 27017:27017
-  #   environment:
-  #     MONGO_INITDB_DATABASE: gorse
-  #     MONGO_INITDB_ROOT_USERNAME: root
-  #     MONGO_INITDB_ROOT_PASSWORD: password
-  #   volumes:
-  #     - mongo_data:/data/db
-
-  # clickhouse:
-  #   image: yandex/clickhouse-server:21.10
-  #   ports:
-  #     - 8123:8123
-  #   environment:
-  #     CLICKHOUSE_DB: gorse
-  #     CLICKHOUSE_USER: gorse
-  #     CLICKHOUSE_PASSWORD: gorse_pass
-  #   volumes:
-  #     - clickhouse_data:/var/lib/clickhouse
 
   worker:
     image: zhenghaoz/gorse-worker
@@ -305,9 +254,6 @@ services:
     environment:
       GORSE_CACHE_STORE: redis://redis:6379
       GORSE_DATA_STORE: mysql://gorse:gorse_pass@tcp(mysql:3306)/gorse
-      # GORSE_DATA_STORE: postgres://gorse:gorse_pass@postgres/gorse?sslmode=disable
-      # GORSE_DATA_STORE: mongodb://root:password@mongo:27017/gorse?authSource=admin&connect=direct
-      # GORSE_DATA_STORE: clickhouse://gorse:gorse_pass@clickhouse:8123/gorse
     command: >
       -c /etc/gorse/config.toml
       --log-path /var/log/gorse/master.log
@@ -319,9 +265,6 @@ services:
     depends_on:
       - redis
       - mysql
-      # - postgres
-      # - mongo
-      # - clickhouse
 
 volumes:
   worker_data:
@@ -329,20 +272,171 @@ volumes:
   master_data:
   gorse_log:
   mysql_data:
-  # postgres_data:
-  # mongo_data:
-  # clickhouse_data:
 ```
 
-1. 基于[配置文件模板](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml)在同一目录下创建配置文件 `config.toml` 。
+@tab PostgreSQL
 
-2. 启动所有服务：
+```yaml
+version: "3"
+services:
+  postgres:
+    image: postgres:10.0
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: gorse
+      POSTGRES_USER: gorse
+      POSTGRES_PASSWORD: gorse_pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  worker:
+    image: zhenghaoz/gorse-worker
+    restart: unless-stopped
+    ports:
+      - 8089:8089
+    command: >
+      --master-host master --master-port 8086 
+      --http-host 0.0.0.0 --http-port 8089
+      --log-path /var/log/gorse/worker.log 
+      --cache-path /var/lib/gorse/worker_cache.data
+    volumes:
+      - gorse_log:/var/log/gorse
+      - worker_data:/var/lib/gorse
+    depends_on:
+      - master
+
+  server:
+    image: zhenghaoz/gorse-server
+    restart: unless-stopped
+    ports:
+      - 8087:8087
+    command: >
+      --master-host master --master-port 8086 
+      --http-host 0.0.0.0 --http-port 8087
+      --log-path /var/log/gorse/server.log 
+      --cache-path /var/lib/gorse/server_cache.data
+    volumes:
+      - gorse_log:/var/log/gorse
+      - server_data:/var/lib/gorse
+    depends_on:
+      - master
+
+  master:
+    image: zhenghaoz/gorse-master
+    restart: unless-stopped
+    ports:
+      - 8086:8086
+      - 8088:8088
+    environment:
+      GORSE_CACHE_STORE: postgres://gorse:gorse_pass@postgres/gorse?sslmode=disable
+      GORSE_DATA_STORE: postgres://gorse:gorse_pass@postgres/gorse?sslmode=disable
+    command: >
+      -c /etc/gorse/config.toml 
+      --log-path /var/log/gorse/master.log 
+      --cache-path /var/lib/gorse/master_cache.data
+    volumes:
+      - ./config/config.toml:/etc/gorse/config.toml
+      - gorse_log:/var/log/gorse
+      - master_data:/var/lib/gorse
+    depends_on:
+      - postgres
+
+volumes:
+  worker_data:
+  server_data:
+  master_data:
+  gorse_log:
+  postgres_data:
+```
+
+@tab MongoDB
+
+```yaml
+version: "3"
+services:
+  mongo:
+    image: mongo:4.0
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_DATABASE: gorse
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongo_data:/data/db
+
+  worker:
+    image: zhenghaoz/gorse-worker
+    restart: unless-stopped
+    ports:
+      - 8089:8089
+    command: >
+      --master-host master --master-port 8086 
+      --http-host 0.0.0.0 --http-port 8089
+      --log-path /var/log/gorse/worker.log 
+      --cache-path /var/lib/gorse/worker_cache.data
+    volumes:
+      - gorse_log:/var/log/gorse
+      - worker_data:/var/lib/gorse
+    depends_on:
+      - master
+
+  server:
+    image: zhenghaoz/gorse-server
+    restart: unless-stopped
+    ports:
+      - 8087:8087
+    command: >
+      --master-host master --master-port 8086 
+      --http-host 0.0.0.0 --http-port 8087
+      --log-path /var/log/gorse/server.log 
+      --cache-path /var/lib/gorse/server_cache.data
+    volumes:
+      - gorse_log:/var/log/gorse
+      - server_data:/var/lib/gorse
+    depends_on:
+      - master
+
+  master:
+    image: zhenghaoz/gorse-master
+    restart: unless-stopped
+    ports:
+      - 8086:8086
+      - 8088:8088
+    environment:
+      GORSE_CACHE_STORE: mongodb://root:password@mongo:27017/gorse?authSource=admin&connect=direct
+      GORSE_DATA_STORE: mongodb://root:password@mongo:27017/gorse?authSource=admin&connect=direct
+    command: >
+      -c /etc/gorse/config.toml 
+      --log-path /var/log/gorse/master.log 
+      --cache-path /var/lib/gorse/master_cache.data
+    volumes:
+      - ./config/config.toml:/etc/gorse/config.toml
+      - gorse_log:/var/log/gorse
+      - master_data:/var/lib/gorse
+    depends_on:
+      - mongo
+
+volumes:
+  worker_data:
+  server_data:
+  master_data:
+  gorse_log:
+  mongo_data:
+```
+
+:::
+
+2. 基于[配置文件模板](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml)在同一目录下创建配置文件 `config.toml` 。
+
+3. 启动所有服务：
 
 ```bash
 docker-compose up -d
 ```
-
-:::
 
 ### 命令行参数
 

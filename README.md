@@ -4,8 +4,6 @@
 
 Official documents for Gorse recommender system.
 
-![](assets/screenshot.png)
-
 ## Setup environment
 
 This is a [VuePress](https://vuepress.vuejs.org/) project, so you need to install:

@@ -5,15 +5,15 @@ icon: config_s
 
 These configuration items without default values must be filled. It's highly recommended to create a new config file based on [the configuration template](https://github.com/gorse-io/gorse/blob/master/config/config.toml). *The "description" for each option links to the detailed usage of this option.*
 
-## `database`
+## `[database]`
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `data_store` | string |     | Database for data storage, supports MySQL, PostgreSQL, ClickHouse and MongoDB. |
-| `cache_store` | string |     | Database for cache storage, supports MySQL, PostgreSQL, MongoDB and Redis. |
-| `table_prefix` | string | | Naming prefix for tables (collections, keys) in databases. |
-| `cache_table_prefix` | string | | Naming prefix for tables (collections, keys) in cache storage databases. If empty, `table_prefix` is used. |
-| `data_table_prefix` | string | | Naming prefix for tables (collections, keys) in data storage databases. If empty, `table_prefix` is used. |
+| `data_store` | string |     | Database for data storage. |
+| `cache_store` | string |     | Database for cache storage. |
+| `table_prefix` | string | | Naming prefix for tables in databases. |
+| `cache_table_prefix` | string | `table_prefix` | Naming prefix for tables in cache storage databases. |
+| `data_table_prefix` | string | `table_prefix` | Naming prefix for tables in data storage databases. |
 
 The DSN (Database Source Name) format of the `data_store` and `cache_store` is as follows.
 

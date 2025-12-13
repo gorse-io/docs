@@ -20,13 +20,13 @@ Gorse depends on the following software:
 
 The minimal versions of dependent software are as follows:
 
-| Software    | Minimal Version | Compatible Product |
-|-------------|-----------------|-|
-| Redis       | 5.0             | |
-| MySQL       | 5.7             | MariaDB >= 10.2 |
-| PostgresSQL | 10.0            | |
-| ClickHouse  | 21.10           | |
-| MongoDB     | 4.0             | |
+| Software   | Minimal Version | Compatible Product |
+|------------|-----------------|--------------------|
+| Redis      | 5.0             | Kvrocks >= 2.14.0  |
+| MySQL      | 5.7             | MariaDB >= 10.2    |
+| PostgreSQL | 10.0            |                    |
+| ClickHouse | 21.10           |                    |
+| MongoDB    | 4.0             |                    |
 
 ## Run Gorse-in-one
 
@@ -95,7 +95,7 @@ Expand-Archive gorse.zip -DestinationPath $env:ProgramFiles/Gorse/bin
 
 :::
 
-3. Create a configuration file `config.toml` based on [the configuration template](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml).
+3. Create a configuration file `config.toml` based on [the configuration template](https://github.com/gorse-io/gorse/blob/master/config/config.toml).
 
 4. Run Gorse-in-one.
 
@@ -125,20 +125,19 @@ gorse-in-one -c config.toml
 
 There are command line flags for Gorse-in-one:
 
-| <FontIcon icon="rightarrow"/> | Flag | Default Value | Description |
-|-|-|-|-|
-| `-c` | `-c,--config` | | Configuration file path. |
-| | `--debug` | | Debug log mode. |
-| `-h` | `--help` | | Help for gorse-in-one. |
-| | `--log-path` | | Path of log file. |
-| | `--log-max-size` | | Maximum size in megabytes of the log file. |
-| | `--log-max-age` | | Maximum number of days to retain old log files. |
-| | `--log-max-backups` | | Maximum number of old log files to retain. |
-| | `--master-cache-path` | `master_cache.data` | Master node cache path. |
-| | `--playground` | | Playground mode. |
-| `-v` | `--version` | | Gorse version. |
-| | `--worker-cache-path` | `worker_cache.data` | Worker node cache path. |
-| | `--worker-jobs` | `1` |  Worker node working jobs. |
+| ::rightarrow:: | Flag                  | Default Value       | Description                                     |
+|----------------|-----------------------|---------------------|-------------------------------------------------|
+| `-c`           | `--config`            |                     | Configuration file path.                        |
+|                | `--debug`             |                     | Debug log mode.                                 |
+| `-h`           | `--help`              |                     | Help for gorse-in-one.                          |
+|                | `--log-path`          |                     | Path of log file.                               |
+|                | `--log-max-size`      |                     | Maximum size in megabytes of the log file.      |
+|                | `--log-max-age`       |                     | Maximum number of days to retain old log files. |
+|                | `--log-max-backups`   |                     | Maximum number of old log files to retain.      |
+|                | `--master-cache-path` | `master_cache.data` | Master node cache path.                         |
+| `-v`           | `--version`           |                     | Gorse version.                                  |
+|                | `--worker-cache-path` | `worker_cache.data` | Worker node cache path.                         |
+|                | `--worker-jobs`       | `1`                 | Worker node working jobs.                       |
 
 ## Setup Systemd (Linux)
 

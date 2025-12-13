@@ -4,7 +4,7 @@ icon: home
 title: Home
 heroImage: /logo.png
 heroText: Gorse
-tagline: An open-source recommender system service written in Go.
+tagline: Gorse open-source recommender system engine written in Go
 actions:
   - text: Documentation
     link: /docs/
@@ -16,13 +16,13 @@ actions:
 features:
   - title: Multi-source
     icon: si-glyph-multifunction-knife
-    details: Recommend items from Popular, latest, user-based, item-based and collaborative filtering.
+    details: Recommend items from latest, user-to-user, item-to-item and collaborative filtering and etc.
 
   - title: AutoML
     icon: brightness-auto
-    details: Search the best recommendation model automatically in the background.
+    details: Search the best recommendation model automatically.
 
-  - title: Distributed prediction
+  - title: Distributed
     icon: cluster
     details: Support horizontal scaling in the recommendation stage after single node training.
 
@@ -30,17 +30,17 @@ features:
     icon: http
     details: Expose RESTful APIs for data CRUD and recommendation requests.
 
-  - title: Multi-database support
+  - title: Cross database
     icon: database
-    details: Support Redis, MySQL, Postgres, MongoDB, and ClickHouse as its storage backend.
+    details: Support Redis, MySQL, Postgres, MongoDB, and ClickHouse.
 
   - title: Online evaluation
     icon: chart
-    details: Analyze online recommendation performance from recently inserted feedback.
+    details: Analyze online recommendation performance from recently user feedback.
 
-  - title: Dashboard
+  - title: GUI dashboard
     icon: dashboard
-    details: Provide GUI for data management, system monitoring, and cluster status checking.
+    details: Provide GUI dashboard for data management and system monitoring.
 
   - title: Open source
     icon: open-source-fill
@@ -58,9 +58,9 @@ The playground mode has been prepared for beginners. Just set up a recommender s
 docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
 ```
 
-The playground mode will download data from [GitRec][gitrec] and import it into Gorse. The dashboard is available at http://localhost:8088.
+The playground mode will download data from [GitRec](https://gitrec.gorse.io) and import it into Gorse. The dashboard is available at http://localhost:8088.
 
-After the "Find neighbors of items" task is completed on the "Tasks" page, try to insert several feedbacks into Gorse. Suppose Bob is a frontend developer who starred several frontend repositories in GitHub. We insert his star feedback to Gorse.
+After the "Generate item-to-item recommendation" task is completed on the "Tasks" page, try to insert several feedbacks into Gorse. Suppose Bob is a developer who interested in LLM related repositories. We insert his star feedback to Gorse.
 
 ::: code-tabs#example
 
@@ -69,11 +69,11 @@ After the "Find neighbors of items" task is completed on the "Tasks" page, try t
 ```bash
 read -d '' JSON << EOF
 [
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"vuejs:vue\", \"Timestamp\": \"2022-02-24\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"d3:d3\", \"Timestamp\": \"2022-02-25\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"dogfalo:materialize\", \"Timestamp\": \"2022-02-26\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"mozilla:pdf.js\", \"Timestamp\": \"2022-02-27\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"moment:moment\", \"Timestamp\": \"2022-02-28\" }
+    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"ollama:ollama\", \"Value\": 1.0, \"Timestamp\": \"2022-02-24\" },
+    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"huggingface:transformers\", \"Value\": 1.0, \"Timestamp\": \"2022-02-25\" },
+    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"rasbt:llms-from-scratch\", \"Value\": 1.0, \"Timestamp\": \"2022-02-26\" },
+    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"vllm-project:vllm\", \"Value\": 1.0, \"Timestamp\": \"2022-02-27\" },
+    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"hiyouga:llama-factory\", \"Value\": 1.0, \"Timestamp\": \"2022-02-28\" }
 ]
 EOF
 
@@ -90,11 +90,11 @@ import "github.com/zhenghaoz/gorse/client"
 gorse := client.NewGorseClient("http://127.0.0.1:8088", "")
 
 gorse.InsertFeedback([]client.Feedback{
-    {FeedbackType: "star", UserId: "bob", ItemId: "vuejs:vue", Timestamp: "2022-02-24"},
-    {FeedbackType: "star", UserId: "bob", ItemId: "d3:d3", Timestamp: "2022-02-25"},
-    {FeedbackType: "star", UserId: "bob", ItemId: "dogfalo:materialize", Timestamp: "2022-02-26"},
-    {FeedbackType: "star", UserId: "bob", ItemId: "mozilla:pdf.js", Timestamp: "2022-02-27"},
-    {FeedbackType: "star", UserId: "bob", ItemId: "moment:moment", Timestamp: "2022-02-28"},
+    {FeedbackType: "star", UserId: "bob", ItemId: "ollama:ollama", Value: 1.0, Timestamp: "2022-02-24"},
+    {FeedbackType: "star", UserId: "bob", ItemId: "huggingface:transformers", Value: 1.0, Timestamp: "2022-02-25"},
+    {FeedbackType: "star", UserId: "bob", ItemId: "rasbt:llms-from-scratch", Value: 1.0, Timestamp: "2022-02-26"},
+    {FeedbackType: "star", UserId: "bob", ItemId: "vllm-project:vllm", Value: 1.0, Timestamp: "2022-02-27"},
+    {FeedbackType: "star", UserId: "bob", ItemId: "hiyouga:llama-factory", Value: 1.0, Timestamp: "2022-02-28"},
 })
 ```
 
@@ -106,11 +106,11 @@ from gorse import Gorse
 client = Gorse('http://127.0.0.1:8088', '')
 
 client.insert_feedbacks([
-    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'vuejs:vue', 'Timestamp': '2022-02-24' },
-    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'd3:d3', 'Timestamp': '2022-02-25' },
-    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'dogfalo:materialize', 'Timestamp': '2022-02-26' },
-    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'mozilla:pdf.js', 'Timestamp': '2022-02-27' },
-    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'moment:moment', 'Timestamp': '2022-02-28' }
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'ollama:ollama', 'Value': 1.0, 'Timestamp': '2022-02-24' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'huggingface:transformers', 'Value': 1.0, 'Timestamp': '2022-02-25' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'rasbt:llms-from-scratch', 'Value': 1.0, 'Timestamp': '2022-02-26' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'vllm-project:vllm', 'Value': 1.0, 'Timestamp': '2022-02-27' },
+    { 'FeedbackType': 'star', 'UserId': 'bob', 'ItemId': 'hiyouga:llama-factory', 'Value': 1.0, 'Timestamp': '2022-02-28' }
 ])
 ```
 
@@ -122,11 +122,11 @@ import { Gorse } from "gorsejs";
 const client = new Gorse({ endpoint: "http://127.0.0.1:8088", secret: "" });
 
 await client.insertFeedbacks([
-    { FeedbackType: 'star', UserId: 'bob', ItemId: 'vuejs:vue', Timestamp: '2022-02-24' },
-    { FeedbackType: 'star', UserId: 'bob', ItemId: 'd3:d3', Timestamp: '2022-02-25' },
-    { FeedbackType: 'star', UserId: 'bob', ItemId: 'dogfalo:materialize', Timestamp: '2022-02-26' },
-    { FeedbackType: 'star', UserId: 'bob', ItemId: 'mozilla:pdf.js', Timestamp: '2022-02-27' },
-    { FeedbackType: 'star', UserId: 'bob', ItemId: 'moment:moment', Timestamp: '2022-02-28' }
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'ollama:ollama', Value: 1.0, Timestamp: '2022-02-24' },
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'huggingface:transformers', Value: 1.0, Timestamp: '2022-02-25' },
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'rasbt:llms-from-scratch', Value: 1.0, Timestamp: '2022-02-26' },
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'vllm-project:vllm', Value: 1.0, Timestamp: '2022-02-27' },
+    { FeedbackType: 'star', UserId: 'bob', ItemId: 'hiyouga:llama-factory', Value: 1.0, Timestamp: '2022-02-28' }
 ]);
 ```
 
@@ -138,11 +138,11 @@ import io.gorse.gorse4j.*;
 Gorse client = new Gorse(GORSE_ENDPOINT, GORSE_API_KEY);
 
 List<Feedback> feedbacks = List.of(
-        new Feedback("star", "bob", "vuejs:vue", "2022-02-24"),
-        new Feedback("star", "bob", "d3:d3", "2022-02-25"),
-        new Feedback("star", "bob", "dogfalo:materialize", "2022-02-26"),
-        new Feedback("star", "bob", "mozilla:pdf.js", "2022-02-27"),
-        new Feedback("star", "bob", "moment:moment", "2022-02-28")
+        new Feedback("star", "bob", "ollama:ollama", 1.0, "2022-02-24"),
+        new Feedback("star", "bob", "huggingface:transformers", 1.0, "2022-02-25"),
+        new Feedback("star", "bob", "rasbt:llms-from-scratch", 1.0, "2022-02-26"),
+        new Feedback("star", "bob", "vllm-project:vllm", 1.0, "2022-02-27"),
+        new Feedback("star", "bob", "hiyouga:llama-factory", 1.0, "2022-02-28")
 );
 client.insertFeedback(feedbacks);
 ```
@@ -155,11 +155,41 @@ use gorse_rs::{Feedback, Gorse};
 let client = Gorse::new("http://127.0.0.1:8088", "");
 
 let feedback = vec![
-    Feedback::new("star", "bob", "vuejs:vue", "2022-02-24"),
-    Feedback::new("star", "bob", "d3:d3", "2022-02-25"),
-    Feedback::new("star", "bob", "dogfalo:materialize", "2022-02-26"),
-    Feedback::new("star", "bob", "mozilla:pdf.js", "2022-02-27"),
-    Feedback::new("star", "bob", "moment:moment", "2022-02-28")
+    Feedback {
+        feedback_type: "star".into(),
+        user_id: "bob".into(),
+        item_id: "ollama:ollama".into(),
+        value: 1.0,
+        timestamp: "2022-02-24".into(),
+    },
+    Feedback {
+        feedback_type: "star".into(),
+        user_id: "bob".into(),
+        item_id: "huggingface:transformers".into(),
+        value: 1.0,
+        timestamp: "2022-02-25".into(),
+    },
+    Feedback {
+        feedback_type: "star".into(),
+        user_id: "bob".into(),
+        item_id: "rasbt:llms-from-scratch".into(),
+        value: 1.0,
+        timestamp: "2022-02-26".into(),
+    },
+    Feedback {
+        feedback_type: "star".into(),
+        user_id: "bob".into(),
+        item_id: "vllm-project:vllm".into(),
+        value: 1.0,
+        timestamp: "2022-02-27".into(),
+    },
+    Feedback {
+        feedback_type: "star".into(),
+        user_id: "bob".into(),
+        item_id: "hiyouga:llama-factory".into(),
+        value: 1.0,
+        timestamp: "2022-02-28".into(),
+    },
 ];
 client.insert_feedback(&feedback).await;
 ```
@@ -172,11 +202,11 @@ require 'gorse'
 client = Gorse.new('http://127.0.0.1:8088', 'api_key')
 
 client.insert_feedback([
-    Feedback.new("star", "bob", "vuejs:vue", "2022-02-24"),
-    Feedback.new("star", "bob", "d3:d3", "2022-02-25"),
-    Feedback.new("star", "bob", "dogfalo:materialize", "2022-02-26"),
-    Feedback.new("star", "bob", "mozilla:pdf.js", "2022-02-27"),
-    Feedback.new("star", "bob", "moment:moment", "2022-02-28")
+    { 'FeedbackType' => 'star', 'UserId' => 'bob', 'ItemId' => 'ollama:ollama' , 'Value' => 1.0, 'Timestamp' => '2022-02-24' },
+    { 'FeedbackType' => 'star', 'UserId' => 'bob', 'ItemId' => 'huggingface:transformers' , 'Value' => 1.0, 'Timestamp' => '2022-02-25' },
+    { 'FeedbackType' => 'star', 'UserId' => 'bob', 'ItemId' => 'rasbt:llms-from-scratch', 'Value' => 1.0, 'Timestamp' => '2022-02-26' },
+    { 'FeedbackType' => 'star', 'UserId' => 'bob', 'ItemId' => 'vllm-project:vllm', 'Value' => 1.0, 'Timestamp' => '2022-02-27' },
+    { 'FeedbackType' => 'star', 'UserId' => 'bob', 'ItemId' => 'hiyouga:llama-factory', 'Value' => 1.0, 'Timestamp' => '2022-02-28' }
 ])
 ```
 
@@ -186,11 +216,11 @@ client.insert_feedback([
 $client = new Gorse("http://127.0.0.1:8088/", "api_key");
 
 $rowsAffected = $client->insertFeedback([
-    new Feedback("star", "bob", "vuejs:vue", "2022-02-24"),
-    new Feedback("star", "bob", "d3:d3", "2022-02-25"),
-    new Feedback("star", "bob", "dogfalo:materialize", "2022-02-26"),
-    new Feedback("star", "bob", "mozilla:pdf.js", "2022-02-27"),
-    new Feedback("star", "bob", "moment:moment", "2022-02-28")
+    new Feedback("star", "bob", "ollama:ollama", 1.0, "2022-02-24"),
+    new Feedback("star", "bob", "huggingface:transformers", 1.0, "2022-02-25"),
+    new Feedback("star", "bob", "rasbt:llms-from-scratch", 1.0, "2022-02-26"),
+    new Feedback("star", "bob", "vllm-project:vllm", 1.0, "2022-02-27"),
+    new Feedback("star", "bob", "hiyouga:llama-factory", 1.0, "2022-02-28")
 ]);
 ```
 
@@ -203,17 +233,17 @@ var client = new Gorse("http://127.0.0.1:8087", "api_key");
 
 client.InsertFeedback(new Feedback[]
 {
-    new Feedback{FeedbackType="star", UserId="bob", ItemId="vuejs:vue", Timestamp="2022-02-24"},
-    new Feedback{FeedbackType="star", UserId="bob", ItemId="d3:d3", Timestamp="2022-02-25"},
-    new Feedback{FeedbackType="star", UserId="bob", ItemId="dogfalo:materialize", Timestamp="2022-02-26"},
-    new Feedback{FeedbackType="star", UserId="bob", ItemId="mozilla:pdf.js", Timestamp="2022-02-27"},
-    new Feedback{FeedbackType="star", UserId="bob", ItemId="moment:moment", Timestamp="2022-02-28"},
+    new Feedback{FeedbackType="star", UserId="bob", ItemId="ollama:ollama", Value=1.0, Timestamp="2022-02-24"},
+    new Feedback{FeedbackType="star", UserId="bob", ItemId="huggingface:transformers", Value=1.0, Timestamp="2022-02-25"},
+    new Feedback{FeedbackType="star", UserId="bob", ItemId="rasbt:llms-from-scratch", Value=1.0, Timestamp="2022-02-26"},
+    new Feedback{FeedbackType="star", UserId="bob", ItemId="vllm-project:vllm", Value=1.0, Timestamp="2022-02-27"},
+    new Feedback{FeedbackType="star", UserId="bob", ItemId="hiyouga:llama-factory", Value=1.0, Timestamp="2022-02-28"},
 });
 ```
 
 :::
 
-Then, fetch 10 recommended items from Gorse. We can find that frontend-related repositories are recommended for Bob.
+Then, fetch 10 recommended items from Gorse.
 
 ::: code-tabs#example
 
@@ -250,44 +280,23 @@ client.getRecommend("bob");
 @tab Rust
 
 ```rust
-client.get_recommend("bob").await;
+client.get_recommend("bob", RecommendOptions::default()).await;
 ```
 
 @tab Ruby
 
 ```ruby
-client.get_recommend('10')
+client.get_recommend('bob')
 ```
 
 @tab PHP
 
 ```php
-$client->getRecommend('10');
+$client->getRecommend('bob');
 ```
 
 @tab .NET
 
 ```cs
-client.GetRecommend("10");
+client.GetRecommend("bob");
 ```
-
-:::
-
-```json
-[
-  "mbostock:d3",
-  "nt1m:material-framework",
-  "mdbootstrap:vue-bootstrap-with-material-design",
-  "justice47:f2-vue",
-  "10clouds:cyclejs-cookie",
-  "academicpages:academicpages.github.io",
-  "accenture:alexia",
-  "addyosmani:tmi",
-  "1wheel:d3-starterkit",
-  "acdlite:redux-promise"
-]
-```
-
-> The exact output might be different from the example since the playground dataset changes over time.
-
-[gitrec]: https://gitrec.gorse.io
