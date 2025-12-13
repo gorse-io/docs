@@ -7,13 +7,13 @@ These configuration items without default values must be filled. It's highly rec
 
 ## `[database]`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `data_store` | string |     | Database for data storage. |
-| `cache_store` | string |     | Database for cache storage. |
-| `table_prefix` | string | | Naming prefix for tables in databases. |
+| Key                  | Type   | Default        | Description                                          |
+|----------------------|--------|----------------|------------------------------------------------------|
+| `data_store`         | string |                | Database for data storage.                           |
+| `cache_store`        | string |                | Database for cache storage.                          |
+| `table_prefix`       | string |                | Naming prefix for tables in databases.               |
 | `cache_table_prefix` | string | `table_prefix` | Naming prefix for tables in cache storage databases. |
-| `data_table_prefix` | string | `table_prefix` | Naming prefix for tables in data storage databases. |
+| `data_table_prefix`  | string | `table_prefix` | Naming prefix for tables in data storage databases.  |
 
 The DSN (Database Source Name) format of the `data_store` and `cache_store` is as follows.
 
@@ -82,156 +82,210 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 
 :::
 
+`[database.mysql]`
+
+| Key               | Type   | Default              | Description                  |
+|-------------------|--------|----------------------|------------------------------|
+| `isolation_level` | string | `"READ-UNCOMMITTED"` | Transaction isolation level. |
+
 ## `[master]`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `host` | string | `"0.0.0.0"` | [Master node listening host for gRPC service (metadata exchange)](./concepts/how-it-works#architecture) |
-| `port` | integer | `8086` | [Master node listening port for gRPC service (metadata exchange)](./concepts/how-it-works#architecture) |
-| `http_host` | string | `"0.0.0.0"` | [Master node listening host for HTTP service (dashboard and metrics)](./gorse-dashboard#login) |
-| `http_port` | integer | `8088` | [Master node listening port for HTTP service (dashboard and metrics)](./gorse-dashboard#login) |
-| `n_jobs` | integer | `1` | [Number of working threads for the master node](./concepts/how-it-works#architecture) |
-| `meta_timeout` | integer | `10s` | [Metadata timeout](./concepts/how-it-works#architecture) |
-| `dashboard_user_name` | string |     | [Dashboard login username](./gorse-dashboard#login) |
-| `dashboard_password` | string |     | [Dashboard login password](./gorse-dashboard#login) |
+| Key                   | Type    | Default     | Description                                                         |
+|-----------------------|---------|-------------|---------------------------------------------------------------------|
+| `host`                | string  | `"0.0.0.0"` | Master node listening host for gRPC service (metadata exchange)     |
+| `port`                | integer | `8086`      | Master node listening port for gRPC service (metadata exchange)     |
+| `ssl_mode`            | boolean | `false`     | Enable SSL for the gRPC communication.                              |
+| `ssl_ca`              | string  |             | SSL certification authority for the gRPC communication.             |
+| `ssl_cert`            | string  |             | SSL certification for the gRPC communication.                       |
+| `ssl_key`             | string  |             | SSL certification key for the gRPC communication.                   |
+| `http_host`           | string  | `"0.0.0.0"` | Master node listening host for HTTP service (dashboard and metrics) |
+| `http_port`           | integer | `8088`      | Master node listening port for HTTP service (dashboard and metrics) |
+| `http_cors_domains`   | strings | `[]`        | AllowedDomains is a list of allowed values for Http Origin.         |
+| `http_cors_methods`   | strings | `[]`        | AllowedMethods is either empty or has a list of http methods names. |
+| `n_jobs`              | integer | `1`         | Number of working threads for the master node                       |
+| `meta_timeout`        | integer | `10s`       | Metadata timeout                                                    |
+| `dashboard_user_name` | string  |             | Dashboard login username                                            |
+| `dashboard_password`  | string  |             | Dashboard login password                                            |
+| `admin_api_key`       | string  |             | Secret key for admin APIs (SSL required).                           |
 
 ## `[server]`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `default_n` | integer | `10` | Default number of returned items |
-| `api_key` | string |     | [Secret key for RESTful APIs (SSL required)](./api/restful-api.html#authorization) |
-| `clock_error` | integer | `5s` | [Clock error in the cluster](./concepts/how-it-works#server-online-recommendation)  |
-| `auto_insert_user` | boolean | `true` | [Automatically insert new users when inserting new feedback](./concepts/how-it-works#server-online-recommendation) |
-| `auto_insert_item` | boolean | `true` | [Automatically insert new items when inserting new feedback](./concepts/how-it-works#server-online-recommendation) |
-| `cache_expire` | string | `10s` | [Server-side cache expire time](./concepts/how-it-works#server-online-recommendation)  |
+| Key                | Type    | Default | Description                                                |
+|--------------------|---------|---------|------------------------------------------------------------|
+| `default_n`        | integer | `10`    | Default number of returned items                           |
+| `api_key`          | string  |         | Secret key for RESTful APIs (SSL required)                 |
+| `clock_error`      | integer | `5s`    | Clock error in the cluster                                 |
+| `auto_insert_user` | boolean | `true`  | Automatically insert new users when inserting new feedback |
+| `auto_insert_item` | boolean | `true`  | Automatically insert new items when inserting new feedback |
+| `cache_expire`     | string  | `10s`   | Server-side cache expire time                              |
 
 ## `[recommend]`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `cache_size` | string | `100` | [Number of cached elements in cache store](./concepts/how-it-works#recommendation-flow) |
-| `cache_expire` | string | `72h` | [Recommended cache expire time](./concepts/how-it-works#recommendation-flow) |
+Global recommendation configuration.
 
-### `recommend.data_source`
+| Key               | Type    | Default | Description                                                |
+|-------------------|---------|---------|------------------------------------------------------------|
+| `cache_size`      | string  | `100`   | Number of cached elements in cache store                   |
+| `cache_expire`    | string  | `72h`   | Recommended cache expire time                              |
+| `context_size`    | integer | `100`   | The context size for online recommendations.               |
+| `active_user_ttl` | integer | `0`     | The time-to-live (days) of active users, 0 means disabled. |
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `positive_feedback_types` | string |     | [Types of positive feedback](./concepts/data-objects#positive-feedback-and-read-feedback) |
-| `read_feedback_types` | string |     | [Type of read feedback](./concepts/data-objects#positive-feedback-and-read-feedback) |
-| `positive_feedback_ttl` | string | `0` | [Time-to-live of positive feedback](./concepts/data-objects#time-to-live-1) |
-| `item_ttl` | string | `0` | [Time-to-live of items](./concepts/data-objects#time-to-live) |
+### `[recommend.data_source]`
+
+Configuration for [data source](./concepts/data-source) of recommenders.
+
+| Key                       | Type   | Default | Description                       |
+|---------------------------|--------|---------|-----------------------------------|
+| `positive_feedback_types` | string |         | Types of positive feedback        |
+| `read_feedback_types`     | string |         | Type of read feedback             |
+| `positive_feedback_ttl`   | string | `0`     | Time-to-live of positive feedback |
+| `item_ttl`                | string | `0`     | Time-to-live of items             |
 
 ### `[[recommend.non-personalized]]`
 
 Configuration for [non-personalized recommenders](concepts/non-personalized).
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `name` | string | | The name of non-personalized recommender |
-| `score` | string | | The score function in the [Expr](https://expr-lang.org/) language |
-| `filter ` | string | | The filter function in the [Expr](https://expr-lang.org/) language |
-
-### `[[recommend.user-to-user]]`
-
-Configuration for [user-to-user recommenders](concepts/user-to-user).
-
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `name` | string | | The name of user-to-user recommender |
-| `neighbor_type` | string | `"auto"` | [The type of neighbors for users](./concepts/algorithms#item-similarity) |
-| `enable_index` | boolean | `false` | [Enable approximate item neighbor searching using clustering index](./concepts/algorithms#clustering-index) |
-| `index_recall` | float | `0.8` | [Minimal recall for approximate item neighbor searching](./concepts/algorithms#clustering-index) |
-| `index_fit_epoch` | integer | `3` | [Maximal number of fit epochs for approximate item neighbor searching clustering index](./concepts/algorithms#clustering-index) |
+| Key       | Type   | Default | Description                              |
+|-----------|--------|---------|------------------------------------------|
+| `name`    | string |         | The name of non-personalized recommender |
+| `score`   | string |         | The score function in the Expr language  |
+| `filter ` | string |         | The filter function in the Expr language |
 
 ### `[[recommend.item-to-item]]`
 
 Configuration for [item-to-item recommenders](concepts/item-to-item).
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `name` | string | | The name of [item-to-item recommender](concepts/item-to-item.md) |
-| `type` | string | | The similarity type of neighbors. |
-| `column` | string | | The field used to calculate the similarity. |
+| Key      | Type   | Default | Description                                 |
+|----------|--------|---------|---------------------------------------------|
+| `name`   | string |         | The name of item-to-item recommender        |
+| `type`   | string |         | The similarity type of neighbors.           |
+| `column` | string |         | The field used to calculate the similarity. |
+
+### `[[recommend.user-to-user]]`
+
+Configuration for [user-to-user recommenders](concepts/user-to-user).
+
+| Key    | Type   | Default | Description                          |
+|--------|--------|---------|--------------------------------------|
+| `name` | string |         | The name of user-to-user recommender |
+| `type` | string |         | The similarity type of neighbors.    |
 
 ### `[[recommend.external]]`
 
 Configuration for [external recommenders](concepts/recommenders/external).
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `name` | string | | The name of [external recommender](concepts/external.md) |
-| `script` | string | | The script to fetch external recommended items |
+| Key      | Type   | Default | Description                                    |
+|----------|--------|---------|------------------------------------------------|
+| `name`   | string |         | The name of external recommender               |
+| `script` | string |         | The script to fetch external recommended items |
 
 ### `[recommend.collaborative]`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `model_fit_period` | integer | `60m` | [Period of model training](./concepts/how-it-works#master-neighbors-and-models) |
-| `model_search_period` | integer | `360m` | [Period of model search](./concepts/how-it-works#master-neighbors-and-models) |
-| `model_search_epoch` | integer | `100` | [Number of training epochs for each model in model search](./concepts/how-it-works#master-neighbors-and-models) |
-| `model_search_trials` | integer | `10` | [Number of trials for each model in model search](./concepts/how-it-works#master-neighbors-and-models) |
-| `enable_model_size_search` | boolean | `false` | [Enable searching models of different sizes, which consume more memory](./concepts/how-it-works#master-neighbors-and-models) |
-| `enable_index` | boolean | `false` | [Enable approximate collaborative filtering recommend using HNSW index](./concepts/algorithms#matrix-factorization) |
-| `index_recall` | float | `0.9` | [Minimal recall for approximate collaborative filtering recommend](./concepts/algorithms#matrix-factorization) |
-| `index_fit_epoch` | integer | `3` | [Maximal number of fit epochs for approximate collaborative filtering recommend HNSW index](./concepts/algorithms#matrix-factorization) |
+Configuration for the [collaborative filtering recommender](concepts/collaborative).
+
+| Key               | Type    | Default | Description                                              |
+|-------------------|---------|---------|----------------------------------------------------------|
+| `fit_period`      | string  | `60m`   | Period of model training                                 |
+| `fit_epoch`       | integer | `100`   | Number of training epochs for each model in model search |
+| `optimize_period` | string  | `360m`  | Period of model search                                   |
+| `optimize_trials` | integer | `10`    | Number of trials for each model in model search          |
+
+`[recommend.collaborative.early_stopping]`
+
+| Key        | Type    | Default | Description                                                            |
+|------------|---------|---------|------------------------------------------------------------------------|
+| `patience` | integer | `10`    | Number of epochs to wait if no improvement and then stop the training. |
 
 ### `[recommend.replacement]`
 
-Replacement configuration for replacing read items back to recommendations.
+[Replacement](./concepts/replacement) configuration for replacing read items back to recommendations.
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `enable_replacement` | boolean | `false` | Replace read items back to recommendations |
-| `positive_replacement_decay` | float | `0.8` | Decay the weights of replaced items from positive feedback |
-| `read_replacement_decay` | float | `0.6` | Decay the weights of replaced items from read feedback |
+| Key                          | Type    | Default | Description                                                |
+|------------------------------|---------|---------|------------------------------------------------------------|
+| `enable_replacement`         | boolean | `false` | Replace read items back to recommendations                 |
+| `positive_replacement_decay` | float   | `0.8`   | Decay the weights of replaced items from positive feedback |
+| `read_replacement_decay`     | float   | `0.6`   | Decay the weights of replaced items from read feedback     |
 
 ### `[recommend.ranker]`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `check_recommend_period` | integer | `1m` | [Period to check recommendation for users](./concepts/how-it-works#worker-offline-recommendation) |
-| `refresh_recommend_period` | integer | `24h` | [Period to refresh offline recommendation cache](./concepts/how-it-works#worker-offline-recommendation) |
-| `enable_latest_recommend` | boolean | `false` | [Enable latest recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
-| `enable_popular_recommend` | boolean | `false` | [Enable popular recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
-| `enable_user_based_recommend` | boolean | `false` | [Enable user-based similarity recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
-| `enable_item_based_recommend` | boolean | `false` | [Enable item-based similarity recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
-| `enable_collaborative_recommend` | boolean | `true` | [Enable collaborative filtering recommendation during offline recommendation](./concepts/how-it-works.html#worker-offline-recommendation) |
-| `enable_click_through_prediction` | boolean | `false` | [Enable click-though rate prediction during offline recommendation. Otherwise, results from multi-way recommendation would be merged randomly](./concepts/how-it-works.html#worker-offline-recommendation) |
-| `explore_recommend` | map | `{ popular = 0.0, latest = 0.0 }` | [The explore recommendation method is used to inject popular items or latest items into recommended result](./concepts/how-it-works.html#worker-offline-recommendation) |
+Configuration for [rankers](concepts/rankers).
+
+| Key               | Type    | Default      | Description                                                    |
+|-------------------|---------|--------------|----------------------------------------------------------------|
+| `type`            | string  | `"fm"`       | The type of the ranker.                                        |
+| `cache_expire`    | string  | `"120h"`     | The time period to refresh recommendation for inactive users.  |
+| `recommenders`    | strings | `["latest"]` | The recommenders used to fetch candidate items before ranking. |
+| `fit_period`      | string  | `"60m"`      | The time period for model fitting.                             |
+| `fit_epoch`       | integer | `100`        | The number of epochs for model fitting.                        |
+| `optimize_period` | string  | `"360m"`     | The time period for hyperparameter optimization.               |
+| `optimize_trials` | integer | `10`         | The number of trials for hyperparameter optimization.          |
+
+`[recommend.ranker.early_stopping]`
+
+| Key        | Type    | Default | Description                                                            |
+|------------|---------|---------|------------------------------------------------------------------------|
+| `patience` | integer | `10`    | Number of epochs to wait if no improvement and then stop the training. |
 
 ### `[recommend.fallback]`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `recommenders` | strings | `["latest"]` | [Source of recommendation when personalized recommendation exhausted](./concepts/how-it-works.html#server-online-recommendation) |
+Fallback recommendation configuration when ranker cannot provide enough recommendations.
+
+| Key            | Type    | Default      | Description                                                         |
+|----------------|---------|--------------|---------------------------------------------------------------------|
+| `recommenders` | strings | `["latest"]` | Source of recommendation when personalized recommendation exhausted |
+
+## `[tracing]`
+
+OpenTelemetry tracing configuration.
+
+| Key                  | Type    | Default                               | Description                        |
+|----------------------|---------|---------------------------------------|------------------------------------|
+| `enable_tracing`     | boolean | `false`                               | Enable tracing for REST APIs.      |
+| `exporter`           | string  | `"jaeger"`                            | The type of tracing exporters.     |
+| `collector_endpoint` | string  | `"http://localhost:14268/api/traces"` | The endpoint of tracing collector. |
+| `sampler`            | string  | `"always"`                            | The type of tracing sampler.       |
+| `ratio`              | float   | `1`                                   | The ratio of ratio based sampler.  |
 
 ## `[oidc]`
 
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| `enable` | boolean | `false` | Enable OpenID Connect (OIDC) authentication. |
-| `issuer` | string | | The issuer of the OAuth provider. |
-| `client_id` | string | | Public identifier of the OAuth application. |
-| `client_secret` | string | | Token access to the OAuth application. |
-| `redirect_url` | string | | URL used to redirect after authenticated. |
+Configure OpenID Connect (OIDC) authentication for [dashboard](./gorse-dashboard).
+
+| Key             | Type    | Default | Description                                  |
+|-----------------|---------|---------|----------------------------------------------|
+| `enable`        | boolean | `false` | Enable OpenID Connect (OIDC) authentication. |
+| `issuer`        | string  |         | The issuer of the OAuth provider.            |
+| `client_id`     | string  |         | Public identifier of the OAuth application.  |
+| `client_secret` | string  |         | Token access to the OAuth application.       |
+| `redirect_url`  | string  |         | URL used to redirect after authenticated.    |
 
 ## Environment Variables
 
 Part of configurations can be overwritten by environment variables.
 
-| Configuration | Environment Variable |
-| --- | --- |
-| `database.cache_store` | `GORSE_CACHE_STORE` |
-| `database.data_store` | `GORSE_DATA_STORE` |
-| `database.table_prefix` | `GORSE_TABLE_PREFIX` |
-| `database.cache_table_prefix` | `GORSE_CACHE_TABLE_PREFIX` |
-| `database.data_table_prefix` | `GORSE_DATA_TABLE_PREFIX` |
-| `master.port` | `GORSE_MASTER_PORT` |
-| `master.host` | `GORSE_MASTER_HOST` |
-| `master.http_port` | `GORSE_MASTER_HTTP_PORT` |
-| `master.http_host` | `GORSE_MASTER_HTTP_HOST` |
-| `master.n_jobs` | `GORSE_MASTER_JOBS` |
-| `master.dashboard_user_name` | `GORSE_DASHBOARD_USER_NAME` |
-| `master.dashboard_password` | `GORSE_DASHBOARD_PASSWORD` |
-| `server.api_key` | `GORSE_SERVER_API_KEY` |
+| Configuration                  | Environment Variable          |
+|--------------------------------|-------------------------------|
+| `database.cache_store`         | `GORSE_CACHE_STORE`           |
+| `database.data_store`          | `GORSE_DATA_STORE`            |
+| `database.table_prefix`        | `GORSE_TABLE_PREFIX`          |
+| `database.cache_table_prefix`  | `GORSE_CACHE_TABLE_PREFIX`    |
+| `database.data_table_prefix`   | `GORSE_DATA_TABLE_PREFIX`     |
+| `master.port`                  | `GORSE_MASTER_PORT`           |
+| `master.host`                  | `GORSE_MASTER_HOST`           |
+| `master.ssl_mode`              | `GORSE_MASTER_SSL_MODE`       |
+| `master.ssl_ca`                | `GORSE_MASTER_SSL_CA`         |
+| `master.ssl_cert`              | `GORSE_MASTER_SSL_CERT`       |
+| `master.ssl_key`               | `GORSE_MASTER_SSL_KEY`        |
+| `master.http_port`             | `GORSE_MASTER_HTTP_PORT`      |
+| `master.http_host`             | `GORSE_MASTER_HTTP_HOST`      |
+| `master.n_jobs`                | `GORSE_MASTER_JOBS`           |
+| `master.dashboard_user_name`   | `GORSE_DASHBOARD_USER_NAME`   |
+| `master.dashboard_password`    | `GORSE_DASHBOARD_PASSWORD`    |
+| `master.dashboard_auth_server` | `GORSE_DASHBOARD_AUTH_SERVER` |
+| `master.dashboard_redacted`    | `GORSE_DASHBOARD_REDACTED`    |
+| `master.admin_api_key`         | `GORSE_ADMIN_API_KEY`         |
+| `server.api_key`               | `GORSE_SERVER_API_KEY`        |
+| `oidc.enable`                  | `GORSE_OIDC_ENABLE`           |
+| `oidc.issuer`                  | `GORSE_OIDC_ISSUER`           |
+| `oidc.client_id`               | `GORSE_OIDC_CLIENT_ID`        |
+| `oidc.client_secret`           | `GORSE_OIDC_CLIENT_SECRET`    |
+| `oidc.redirect_url`            | `GORSE_OIDC_REDIRECT_URL`     |

@@ -6,15 +6,15 @@ icon: config_s
 
 这些没有默认值的配置项必须填写。强烈建议根据[配置模板](https://github.com/gorse-io/gorse/blob/release-0.4/config/config.toml)创建一个新的配置文件。*点击每个配置项的“描述”查看该配置项的详细用法。*
 
-## `database`
+## `[database]`
 
-配置项 | 类型 | 默认值 | 描述
---- | --- | --- | ---
-`data_store` | 字符串 |  | 用于数据存储的数据库，支持MySQL、PostgreSQL、ClickHouse和MongoDB。
-`cache_store` | 字符串 |  | 用于缓存存储的数据库，支持MySQL、PostgreSQL、MongoDB和Redis。
-`table_prefix` | 字符串 |  | 数据库中表（集合、键）的命名前缀。
-`cache_table_prefix` | 字符串 |  | 缓存存储数据库中表（集合、键）的命名前缀。如果为空，则使用`table_prefix` 。
-`data_table_prefix` | 字符串 |  | 数据存储数据库中表（集合、键）的命名前缀。如果为空，则使用`table_prefix` 。
+| 配置项               | 类型   | 默认值         | 描述                                   |
+|----------------------|--------|----------------|----------------------------------------|
+| `data_store`         | string |                | 用于数据存储的数据库。                  |
+| `cache_store`        | string |                | 用于缓存存储的数据库。                  |
+| `table_prefix`       | string |                | 数据库中表（集合、键）的命名前缀。         |
+| `cache_table_prefix` | string | `table_prefix` | 缓存存储数据库中表（集合、键）的命名前缀。 |
+| `data_table_prefix`  | string | `table_prefix` | 数据存储数据库中表（集合、键）的命名前缀。 |
 
 `data_store`和`cache_store`的DSN（Database Source Name）格式如下。
 
@@ -84,128 +84,196 @@ chhttps://user:password@host[:port]/database?param1=value1&...&paramN=valueN
 
 :::
 
-## `master`
+### `[database.mysql]`
 
-配置项 | 类型 | 默认值 | 描述
---- | --- | --- | ---
-`host` | 字符串 | `"0.0.0.0"` | [主节点 gRPC 服务监听IP（用于元数据交换）](./concepts/how-it-works#architecture)
-`port` | 整型 | `8086` | [主节点 gRPC 监听端口（用于元数据交换）](./concepts/how-it-works#architecture)
-`http_host` | 字符串 | `"0.0.0.0"` | [主节点 HTTP 服务监听IP（用于控制台和指标监控）](./gorse-dashboard#login)
-`http_port` | 整型 | `8088` | [主节点 HTTP 服务监听端口（用于控制台和指标监控）](./gorse-dashboard#login)
-`n_jobs` | 整型 | `1` | [主节点的工作线程数](./concepts/how-it-works#architecture)
-`meta_timeout` | 整型 | `10s` | [元数据超时时间](./concepts/how-it-works#architecture)
-`dashboard_user_name` | 字符串 |  | [控制台登录用户名](./gorse-dashboard#login)
-`dashboard_password` | 字符串 |  | [控制台登录密码](./gorse-dashboard#login)
+| 配置项            | 类型   | 默认值               | 描述          |
+|-------------------|--------|----------------------|---------------|
+| `isolation_level` | string | `"READ-UNCOMMITTED"` | 事务隔离级别。 |
 
-## `server`
+## `[master]`
 
-配置项 | 类型 | 默认值 | 描述
---- | --- | --- | ---
-`default_n` | 整型 | `10` | 默认返回条目数量
-`api_key` | 字符串 |  | [RESTful API 的密钥（需要 SSL）](./api/restful-api.html#authorization)
-`clock_error` | 整型 | `5s` | [集群中的时钟误差](./concepts/how-it-works#server-online-recommendation)
-`auto_insert_user` | 布尔值 | `true` | [插入新反馈时自动插入新用户](./concepts/how-it-works#server-online-recommendation)
-`auto_insert_item` | 布尔值 | `true` | [插入新反馈时自动插入新物品](./concepts/how-it-works#server-online-recommendation)
-`cache_expire` | 字符串 | `10s` | [服务节点本地缓存过期时间](./concepts/how-it-works#server-online-recommendation)
+| 配置项                | 类型    | 默认值      | 描述                                           |
+|-----------------------|---------|-------------|------------------------------------------------|
+| `host`                | string  | `"0.0.0.0"` | 主节点 gRPC 服务监听IP（用于元数据交换）         |
+| `port`                | integer | `8086`      | 主节点 gRPC 监听端口（用于元数据交换）           |
+| `ssl_mode`            | boolean | `false`     | 启用 gRPC 通信的 SSL。                          |
+| `ssl_ca`              | string  |             | gRPC 通信的 SSL 证书颁发机构。                  |
+| `ssl_cert`            | string  |             | gRPC 通信的 SSL 证书。                          |
+| `ssl_key`             | string  |             | gRPC 通信的 SSL 密钥。                          |
+| `http_host`           | string  | `"0.0.0.0"` | 主节点 HTTP 服务监听IP（用于控制台和指标监控）   |
+| `http_port`           | integer | `8088`      | 主节点 HTTP 服务监听端口（用于控制台和指标监控） |
+| `http_cors_domains`   | strings | `[]`        | 允许的 Http Origin 列表。                       |
+| `http_cors_methods`   | strings | `[]`        | 允许的 Http 方法列表。                          |
+| `n_jobs`              | integer | `1`         | 主节点的工作线程数                             |
+| `meta_timeout`        | integer | `10s`       | 元数据超时时间                                 |
+| `dashboard_user_name` | string  |             | 控制台登录用户名                               |
+| `dashboard_password`  | string  |             | 控制台登录密码                                 |
+| `admin_api_key`       | string  |             | 管理 API 的密钥（需要 SSL）。                     |
 
-## `recommend`
+## `[server]`
 
-配置项 | 类型 | 默认值 | 描述
---- | --- | --- | ---
-`cache_size` | 字符串 | `100` | [推荐缓存大小](./concepts/how-it-works#recommendation-flow)
-`cache_expire` | 字符串 | `72h` | [推荐缓存过期时间](./concepts/how-it-works#recommendation-flow)
+| 配置项             | 类型    | 默认值 | 描述                         |
+|--------------------|---------|--------|------------------------------|
+| `default_n`        | integer | `10`   | 默认返回条目数量。            |
+| `api_key`          | string  |        | RESTful API 的密钥（需要 SSL） |
+| `clock_error`      | integer | `5s`   | 集群中的时钟误差             |
+| `auto_insert_user` | boolean | `true` | 插入新反馈时自动插入新用户   |
+| `auto_insert_item` | boolean | `true` | 插入新反馈时自动插入新物品   |
+| `cache_expire`     | string  | `10s`  | 服务节点本地缓存过期时间     |
+
+## `[recommend]`
+
+| 配置项            | 类型    | 默认值 | 描述                               |
+|-------------------|---------|--------|------------------------------------|
+| `cache_size`      | string  | `100`  | 推荐缓存大小                       |
+| `cache_expire`    | string  | `72h`  | 推荐缓存过期时间                   |
+| `context_size`    | integer | `100`  | 在线推荐的上下文大小。              |
+| `active_user_ttl` | integer | `0`    | 活跃用户的生存时间（天），0 表示禁用。 |
 
 ### `recommend.data_source`
 
-配置项 | 类型 | 默认值 | 描述
---- | --- | --- | ---
-`positive_feedback_types` | 字符串 |  | [正向反馈的类型](./concepts/data-objects#positive-feedback-and-read-feedback)
-`read_feedback_types` | 字符串 |  | [已读反馈的类型](./concepts/data-objects#positive-feedback-and-read-feedback)
-`positive_feedback_ttl` | 字符串 | `0` | [正反馈的有效时间](./concepts/data-objects#time-to-live-1)
-`item_ttl` | 字符串 | `0` | [物品的有效时间](./concepts/data-objects#time-to-live)
+| 配置项                    | 类型   | 默认值 | 描述             |
+|---------------------------|--------|--------|------------------|
+| `positive_feedback_types` | string |        | 正向反馈的类型   |
+| `read_feedback_types`     | string |        | 已读反馈的类型   |
+| `positive_feedback_ttl`   | string | `0`    | 正反馈的有效时间 |
+| `item_ttl`                | string | `0`    | 物品的有效时间   |
 
-### `recommend.popular`
+### `[[recommend.non-personalized]]`
 
-配置项 | 类型 | 默认值 | 描述
---- | --- | --- | ---
-`popular_window` | 整型 | `4320h` | [以天为单位的热门物品的时间窗口](./concepts/algorithms#popular-items)
+[非个性化推荐器](concepts/non-personalized)的配置。
 
-### `recommend.user_neighbors`
+| 配置项    | 类型   | 默认值 | 描述                   |
+|-----------|--------|--------|------------------------|
+| `name`    | string |        | 非个性化推荐器的名称。  |
+| `score`   | string |        | Expr 语言中的评分函数。 |
+| `filter ` | string |        | Expr 语言中的过滤函数。 |
 
-配置项 | 类型 | 默认值 | 描述
---- | --- | --- | ---
-`neighbor_type` | 字符串 | `"auto"` | [相似用户算法](./concepts/algorithms#item-similarity)
-`enable_index` | 布尔值 | `false` | [使用聚类索引搜索相似用户](./concepts/algorithms#clustering-index)
-`index_recall` | 浮点 | `0.8` | [聚类索引的最小召回率](./concepts/algorithms#clustering-index)
-`index_fit_epoch` | 整型 | `3` | [聚类索引的最大拟合次数](./concepts/algorithms#clustering-index)
+### `[[recommend.item-to-item]]`
 
-### `recommend.item_neighbors`
+[物品到物品推荐器](concepts/item-to-item)的配置。
 
-配置项 | 类型 | 默认值 | 描述
---- | --- | --- | ---
-`neighbor_type` | 字符串 | `"auto"` | [相似物品算法](./concepts/algorithms#user-similarity)
-`enable_index` | 布尔值 | `false` | [使用聚类索引搜索相似物品](./concepts/algorithms#clustering-index)
-`index_recall` | 浮点 | `0.8` | [聚类索引的最小召回率](./concepts/algorithms#clustering-index)
-`index_fit_epoch` | 整型 | `3` | [聚类索引的最大拟合次数](./concepts/algorithms#clustering-index)
+| 配置项   | 类型   | 默认值 | 描述                    |
+|----------|--------|--------|-------------------------|
+| `name`   | string |        | 物品到物品推荐器的名称。 |
+| `type`   | string |        | 邻居的相似度类型。       |
+| `column` | string |        | 用于计算相似度的字段。   |
 
-### `recommend.collaborative`
+### `[[recommend.user-to-user]]`
 
-配置项 | 类型 | 默认值 | 描述
---- | --- | --- | ---
-`model_fit_period` | 整型 | `60m` | [模型训练周期](./concepts/how-it-works#master-neighbors-and-models)
-`model_search_period` | 整型 | `360m` | [模型搜索周期](./concepts/how-it-works#master-neighbors-and-models)
-`model_search_epoch` | 整型 | `100` | [模型搜索中每个模型的训练迭代数](./concepts/how-it-works#master-neighbors-and-models)
-`model_search_trials` | 整型 | `10` | [模型搜索中试验模型数](./concepts/how-it-works#master-neighbors-and-models)
-`enable_model_size_search` | 布尔值 | `false` | [启用搜索不同大小的模型，这会占用更多内存](./concepts/how-it-works#master-neighbors-and-models)
-`enable_index` | 布尔值 | `false` | [使用 HNSW 索引加速协同过滤推荐](./concepts/algorithms#matrix-factorization)
-`index_recall` | 浮点 | `0.9` | [HNSW最小召回率](./concepts/algorithms#matrix-factorization)
-`index_fit_epoch` | 整型 | `3` | [HNSW最大拟合次数](./concepts/algorithms#matrix-factorization)
+[用户到用户推荐器](concepts/user-to-user)的配置。
 
-### `recommend.replacement`
+| 配置项 | 类型   | 默认值 | 描述                    |
+|--------|--------|--------|-------------------------|
+| `name` | string |        | 用户到用户推荐器的名称。 |
+| `type` | string |        | 邻居的相似度类型。       |
 
-配置项 | 类型 | 默认值 | 描述
---- | --- | --- | ---
-`enable_replacement` | 布尔值 | `false` | [将历史物品放回推荐池](./concepts/how-it-works#replacement)
-`positive_replacement_decay` | 浮点 | `0.8` | [正向反馈物品放回衰减权重](./concepts/how-it-works#replacement)
-`read_replacement_decay` | 浮点 | `0.6` | [已读反馈物品放回衰减权重](./concepts/how-it-works#replacement)
+### `[[recommend.external]]`
 
-### `recommend.offline`
+[外部推荐器](concepts/recommenders/external)的配置。
 
-配置项 | 类型 | 默认值 | 描述
---- | --- | --- | ---
-`check_recommend_period` | 整型 | `1m` | [触发离线推荐的周期](./concepts/how-it-works#worker-offline-recommendation)
-`refresh_recommend_period` | 整型 | `24h` | [强制刷新离线推荐的周期](./concepts/how-it-works#worker-offline-recommendation)
-`enable_latest_recommend` | 布尔值 | `false` | [离线推荐时启用最新推荐](./concepts/how-it-works.html#worker-offline-recommendation)
-`enable_popular_recommend` | 布尔值 | `false` | [离线推荐时开启热门推荐](./concepts/how-it-works.html#worker-offline-recommendation)
-`enable_user_based_recommend` | 布尔值 | `false` | [在离线推荐期间启用基于相似用户的推荐](./concepts/how-it-works.html#worker-offline-recommendation)
-`enable_item_based_recommend` | 布尔值 | `false` | [在离线推荐期间启用基于相似物品的推荐](./concepts/how-it-works.html#worker-offline-recommendation)
-`enable_collaborative_recommend` | 布尔值 | `true` | [离线推荐时启用协同过滤推荐](./concepts/how-it-works.html#worker-offline-recommendation)
-`enable_click_through_prediction` | 布尔值 | `false` | [在离线推荐期间启用点击率预测。否则，多路推荐的结果将被随机合并](./concepts/how-it-works.html#worker-offline-recommendation)
-`explore_recommend` | 字段 | `{ popular = 0.0, latest = 0.0 }` | [在探索推荐阶段，将热门物品或最新物品注入推荐结果的比例](./concepts/how-it-works.html#worker-offline-recommendation)
+| 配置项   | 类型   | 默认值 | 描述                    |
+|----------|--------|--------|-------------------------|
+| `name`   | string |        | 外部推荐器的名称。       |
+| `script` | string |        | 获取外部推荐物品的脚本。 |
 
-### `recommend.online`
+### `[recommend.collaborative]`
 
-配置项 | 类型 | 默认值 | 描述
---- | --- | --- | ---
-`fallback_recommend` | 字符串 | `["latest"]` | [离线推荐耗尽时的兜底的推荐算法](./concepts/how-it-works.html#server-online-recommendation)
-`num_feedback_fallback_item_based` | 整型 | `10` | [在线相似物品推荐使用的用户正反馈数量](./concepts/how-it-works.html#server-online-recommendation)
+| 配置项            | 类型    | 默认值 | 描述                           |
+|-------------------|---------|--------|--------------------------------|
+| `fit_period`      | string  | `60m`  | 模型训练周期                   |
+| `fit_epoch`       | integer | `100`  | 模型搜索中每个模型的训练迭代数 |
+| `optimize_period` | string  | `360m` | 模型搜索周期                   |
+| `optimize_trials` | integer | `10`   | 模型搜索中试验模型数           |
+
+### `[recommend.collaborative.early_stopping]`
+
+| 配置项     | 类型    | 默认值 | 描述                             |
+|------------|---------|--------|----------------------------------|
+| `patience` | integer | `10`   | 如果没有改进，等待停止训练的轮数。 |
+
+### `[recommend.replacement]`
+
+将已读物品放回推荐结果的配置。
+
+| 配置项                       | 类型    | 默认值  | 描述                      |
+|------------------------------|---------|---------|---------------------------|
+| `enable_replacement`         | boolean | `false` | 将已读物品放回推荐结果。   |
+| `positive_replacement_decay` | float   | `0.8`   | 正向反馈物品放回衰减权重。 |
+| `read_replacement_decay`     | float   | `0.6`   | 已读反馈物品放回衰减权重。 |
+
+### `[recommend.ranker]`
+
+| 配置项            | 类型    | 默认值                                                                                                                    | 描述                            |
+|-------------------|---------|---------------------------------------------------------------------------------------------------------------------------|---------------------------------|
+| `type`            | string  | `"fm"`                                                                                                                    | 排序器的类型。                   |
+| `cache_expire`    | string  | `"120h"`                                                                                                                  | 刷新非活跃用户推荐的时间周期。   |
+| `recommenders`    | strings | `["latest", "collaborative", "non-personalized/most_starred_weekly", "item-to-item/neighbors", "user-to-user/neighbors"]` | 排序前用于获取候选物品的推荐器。 |
+| `fit_period`      | string  | `"60m"`                                                                                                                   | 模型训练周期。                   |
+| `fit_epoch`       | integer | `100`                                                                                                                     | 模型训练的迭代数。               |
+| `optimize_period` | string  | `"360m"`                                                                                                                  | 超参数优化的时间周期。           |
+| `optimize_trials` | integer | `10`                                                                                                                      | 超参数优化的试验次数。           |
+
+### `[recommend.ranker.early_stopping]`
+
+| 配置项     | 类型    | 默认值 | 描述                             |
+|------------|---------|--------|----------------------------------|
+| `patience` | integer | `10`   | 如果没有改进，等待停止训练的轮数。 |
+
+### `[recommend.fallback]`
+
+| 配置项         | 类型    | 默认值       | 描述                           |
+|----------------|---------|--------------|--------------------------------|
+| `recommenders` | strings | `["latest"]` | 离线推荐耗尽时的兜底的推荐算法 |
+
+## `[tracing]`
+
+| 配置项               | 类型    | 默认值                                | 描述                    |
+|----------------------|---------|---------------------------------------|-------------------------|
+| `enable_tracing`     | boolean | `false`                               | 启用 REST API 的追踪。   |
+| `exporter`           | string  | `"jaeger"`                            | 追踪导出器的类型。       |
+| `collector_endpoint` | string  | `"http://localhost:14268/api/traces"` | 追踪收集器的端点。       |
+| `sampler`            | string  | `"always"`                            | 追踪采样器的类型。       |
+| `ratio`              | float   | `1`                                   | 基于比率的采样器的比率。 |
+
+## `[oidc]`
+
+| 配置项          | 类型    | 默认值  | 描述                             |
+|-----------------|---------|---------|----------------------------------|
+| `enable`        | boolean | `false` | 启用 OpenID Connect (OIDC) 认证。 |
+| `issuer`        | string  |         | OAuth 提供商的发行者。            |
+| `client_id`     | string  |         | OAuth 应用程序的公共标识符。      |
+| `client_secret` | string  |         | OAuth 应用程序的令牌访问。        |
+| `redirect_url`  | string  |         | 认证后重定向的 URL。              |
 
 ## 环境变量
 
 部分配置可以被环境变量覆盖。
 
-配置项 | 环境变量
---- | ---
-`database.cache_store` | `GORSE_CACHE_STORE`
-`database.data_store` | `GORSE_DATA_STORE`
-`database.table_prefix` | `GORSE_TABLE_PREFIX`
-`database.cache_table_prefix` | `GORSE_CACHE_TABLE_PREFIX`
-`database.data_table_prefix` | `GORSE_DATA_TABLE_PREFIX`
-`master.port` | `GORSE_MASTER_PORT`
-`master.host` | `GORSE_MASTER_HOST`
-`master.http_port` | `GORSE_MASTER_HTTP_PORT`
-`master.http_host` | `GORSE_MASTER_HTTP_HOST`
-`master.n_jobs` | `GORSE_MASTER_JOBS`
-`master.dashboard_user_name` | `GORSE_DASHBOARD_USER_NAME`
-`master.dashboard_password` | `GORSE_DASHBOARD_PASSWORD`
-`server.api_key` | `GORSE_SERVER_API_KEY`
+| 配置项                         | 环境变量                      |
+|--------------------------------|-------------------------------|
+| `database.cache_store`         | `GORSE_CACHE_STORE`           |
+| `database.data_store`          | `GORSE_DATA_STORE`            |
+| `database.table_prefix`        | `GORSE_TABLE_PREFIX`          |
+| `database.cache_table_prefix`  | `GORSE_CACHE_TABLE_PREFIX`    |
+| `database.data_table_prefix`   | `GORSE_DATA_TABLE_PREFIX`     |
+| `master.port`                  | `GORSE_MASTER_PORT`           |
+| `master.host`                  | `GORSE_MASTER_HOST`           |
+| `master.ssl_mode`              | `GORSE_MASTER_SSL_MODE`       |
+| `master.ssl_ca`                | `GORSE_MASTER_SSL_CA`         |
+| `master.ssl_cert`              | `GORSE_MASTER_SSL_CERT`       |
+| `master.ssl_key`               | `GORSE_MASTER_SSL_KEY`        |
+| `master.http_port`             | `GORSE_MASTER_HTTP_PORT`      |
+| `master.http_host`             | `GORSE_MASTER_HTTP_HOST`      |
+| `master.n_jobs`                | `GORSE_MASTER_JOBS`           |
+| `master.dashboard_user_name`   | `GORSE_DASHBOARD_USER_NAME`   |
+| `master.dashboard_password`    | `GORSE_DASHBOARD_PASSWORD`    |
+| `master.dashboard_auth_server` | `GORSE_DASHBOARD_AUTH_SERVER` |
+| `master.dashboard_redacted`    | `GORSE_DASHBOARD_REDACTED`    |
+| `master.admin_api_key`         | `GORSE_ADMIN_API_KEY`         |
+| `server.api_key`               | `GORSE_SERVER_API_KEY`        |
+| `oidc.enable`                  | `GORSE_OIDC_ENABLE`           |
+| `oidc.issuer`                  | `GORSE_OIDC_ISSUER`           |
+| `oidc.client_id`               | `GORSE_OIDC_CLIENT_ID`        |
+| `oidc.client_secret`           | `GORSE_OIDC_CLIENT_SECRET`    |
+| `oidc.redirect_url`            | `GORSE_OIDC_REDIRECT_URL`     |
