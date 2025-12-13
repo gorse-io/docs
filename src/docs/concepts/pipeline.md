@@ -3,47 +3,17 @@ icon: pipeline
 ---
 # Pipeline
 
+Gorse is a multi-way recommender system. Different recommenders are combined to provide high-quality recommendations. The following diagram shows the complete pipeline of Gorse:
+
 ![](../../img/pipeline.drawio.svg)
 
 ## Default Pipeline
 
+There is a predefined recommender, latest items. If no pipeline is configured, Gorse will use the default pipeline:
+
 ![](../../img/default.drawio.svg)
 
-The workflow of Gorse is depicted in the following flowchart:
-
-```mermaid
-flowchart TD
-    database[(Database)]--user, items and feedback-->load[Load dataset]
-    load--latest and popular items-->cache[(Cache)]
-    find_users--User Neighbors-->cache
-    find_items--Item Neighbors-->cache
-    subgraph Master Node
-        load--dataset-->find_users[Find neighbors of users]
-        load--dataset-->find_items[Find neighbors of items]
-        load--dataset-->fit_mf[Fit MF]
-        load--dataset-->fit_fm[Fit FM]
-    end
-
-    cache2--cached recommendations-->api[RESTful APIs]
-    database2[(Database)]<--user, items and feedback-->api
-    subgraph Server Node
-        api<--popular and hidden items-->local_cache[Local Cache]
-    end
-
-    cache--user neighbors-->user_based(User Similarity-based\nRecommendation)
-    cache--item neighbors-->item_based(Item Similarity-based\nRecommendation)
-    cache--latest and popular items-->fm_predict
-    fm_predict--recommendation-->cache2[(Cache)]
-    subgraph Worker Node
-        user_based--recommendation-->fm_predict
-        item_based--recommendation-->fm_predict
-        mf_predict--recommendation-->fm_predict
-        fit_mf--MF model-->mf_predict[MF Recommendation]
-        fit_fm--FM model-->fm_predict[FM Recommendation]
-    end
-```
-
-<FontIcon icon="rectangle"/> represents components in each node.
+Latest items are recommended to all users. Latest items are easy to implement and can recommend fresh items to users. However, latest items ignore user preferences and cannot provide personalized recommendations. Therefore, it is recommended to configure a complete pipeline to improve recommendation quality.
 
 ## Architecture
 

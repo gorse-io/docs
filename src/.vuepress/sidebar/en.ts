@@ -15,8 +15,7 @@ export const enSidebar = sidebar({
       "children": [
         "binary",
         "docker",
-        "kubernetes",
-        "upgrade"
+        "kubernetes"
       ]
     },
     {

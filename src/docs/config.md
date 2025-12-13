@@ -95,7 +95,7 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 | `dashboard_user_name` | string |     | [Dashboard login username](./gorse-dashboard#login) |
 | `dashboard_password` | string |     | [Dashboard login password](./gorse-dashboard#login) |
 
-## `server`
+## `[server]`
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -106,7 +106,7 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 | `auto_insert_item` | boolean | `true` | [Automatically insert new items when inserting new feedback](./concepts/how-it-works#server-online-recommendation) |
 | `cache_expire` | string | `10s` | [Server-side cache expire time](./concepts/how-it-works#server-online-recommendation)  |
 
-## `recommend`
+## `[recommend]`
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -124,23 +124,29 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 
 ### `[[recommend.non-personalized]]`
 
+Configuration for [non-personalized recommenders](concepts/non-personalized).
+
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `name` | string | | The name of [non-personalized recommender](concepts/non-personalized.md) |
+| `name` | string | | The name of non-personalized recommender |
 | `score` | string | | The score function in the [Expr](https://expr-lang.org/) language |
 | `filter ` | string | | The filter function in the [Expr](https://expr-lang.org/) language |
 
 ### `[[recommend.user-to-user]]`
 
+Configuration for [user-to-user recommenders](concepts/user-to-user).
+
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `name` | string | | The name of [user-to-user recommender](concepts/user-to-user.md) |
+| `name` | string | | The name of user-to-user recommender |
 | `neighbor_type` | string | `"auto"` | [The type of neighbors for users](./concepts/algorithms#item-similarity) |
 | `enable_index` | boolean | `false` | [Enable approximate item neighbor searching using clustering index](./concepts/algorithms#clustering-index) |
 | `index_recall` | float | `0.8` | [Minimal recall for approximate item neighbor searching](./concepts/algorithms#clustering-index) |
 | `index_fit_epoch` | integer | `3` | [Maximal number of fit epochs for approximate item neighbor searching clustering index](./concepts/algorithms#clustering-index) |
 
 ### `[[recommend.item-to-item]]`
+
+Configuration for [item-to-item recommenders](concepts/item-to-item).
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -150,12 +156,14 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 
 ### `[[recommend.external]]`
 
+Configuration for [external recommenders](concepts/recommenders/external).
+
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
 | `name` | string | | The name of [external recommender](concepts/external.md) |
 | `script` | string | | The script to fetch external recommended items |
 
-### `recommend.collaborative`
+### `[recommend.collaborative]`
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -170,13 +178,15 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 
 ### `[recommend.replacement]`
 
+Replacement configuration for replacing read items back to recommendations.
+
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `enable_replacement` | boolean | `false` | [Replace historical items back to recommendations](./concepts/how-it-works#replacement) |
-| `positive_replacement_decay` | float | `0.8` | [Decay the weights of replaced items from positive feedbacks](./concepts/how-it-works#replacement) |
-| `read_replacement_decay` | float | `0.6` | [Decay the weights of replaced items from read feedbacks](./concepts/how-it-works#replacement) |
+| `enable_replacement` | boolean | `false` | Replace read items back to recommendations |
+| `positive_replacement_decay` | float | `0.8` | Decay the weights of replaced items from positive feedback |
+| `read_replacement_decay` | float | `0.6` | Decay the weights of replaced items from read feedback |
 
-### `recommend.offline`
+### `[recommend.ranker]`
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
