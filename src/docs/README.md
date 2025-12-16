@@ -8,21 +8,24 @@ Welcome to the official documents for the Gorse recommender system.
 ## Table of Contents
 
 - [Quick Start](quick-start.md)
-- Deploy
+- [Deploy](deploy/)
   - [Binary Deployment](deploy/binary.md)
   - [Docker Deployment](deploy/docker.md)
   - [Kubernetes Deployment](deploy/kubernetes.md)
 - [Configuration](config.md)
-- Concepts
-  - [Data Objects](concepts/data-objects.md)
-  - [Algorithms](concepts/algorithms.md)
-  - [Non-personalized Recommenders](concepts/non-personalized.md)
-  - [Item-to-Item Recommenders](concepts/item-to-item.md)
-  - [User-to-User Recommenders](concepts/user-to-user.md)
-  - [External Recommenders](concepts/external.md)
-  - [How It Works](concepts/how-it-works.md)
+- [Concepts](concepts/)
+  - [Data Source](concepts/data-source.md)
+  - [Pipeline](concepts/pipeline.md)
+  - [Recommenders](concepts/recommenders/)
+    - [Non-personalized Recommenders](concepts/recommenders/non-personalized.md)
+    - [Item-to-Item Recommenders](concepts/recommenders/item-to-item.md)
+    - [User-to-User Recommenders](concepts/recommenders/user-to-user.md)
+    - [Collaborative Recommenders](concepts/recommenders/collaborative.md)
+    - [External Recommenders](concepts/recommenders/external.md)
+  - [Ranking](concepts/ranking.md)
+  - [Replacement](concepts/replacement.md)
   - [Evaluation](concepts/evaluation.md)
-- API
+- [API](api/)
   - [RESTful API](api/restful-api.md)
   - [Go SDK](api/go-sdk.md)
   - [Python SDK](api/python-sdk.md)
@@ -33,7 +36,6 @@ Welcome to the official documents for the Gorse recommender system.
   - [Ruby SDK](api/ruby-sdk.md)
   - [.NET SDK](api/dotnet-sdk.md)
 - [Gorse Dashboard](gorse-dashboard.md)
-- [Benchmark](benchmark.md)
 - [Contribution Guide](contribution-guide.md)
 - [FAQ](faq.md)
 
