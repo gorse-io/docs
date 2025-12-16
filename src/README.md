@@ -60,6 +60,8 @@ docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
 
 The playground mode will download data from [GitRec](https://gitrec.gorse.io) and import it into Gorse. The dashboard is available at http://localhost:8088.
 
+![](https://github.com/gorse-io/dashboard/blob/master/assets/dashboard.png?raw=true)
+
 After the "Generate item-to-item recommendation" task is completed on the "Tasks" page, try to insert several feedbacks into Gorse. Suppose Bob is a developer who interested in LLM related repositories. We insert his star feedback to Gorse.
 
 ::: code-tabs#example

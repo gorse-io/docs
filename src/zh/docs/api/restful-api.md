@@ -18,7 +18,7 @@ curl -H "X-API-Key: *****"  http://127.0.0.1:8087/api/recommend/bob?n=10
 
 ::: tip
 
-API 密钥在配置文件中设置：
+API 密钥在配置文件的 [`[server]`](/docs/config#server) 部分设置：
 
 ```toml
 [server]
@@ -44,6 +44,17 @@ api_key = ""
 | category | query | string | 返回物品的类别。 |
 | user-id | query | string | 移除用户已读物品 |
 
+**Response:**
+
+```json
+[
+  {
+    "Id": "string",
+    "Score": 0
+  }
+]
+```
+
 :::
 
 ::: details `GET /api/feedback` 列出反馈。
@@ -56,6 +67,25 @@ api_key = ""
 | cursor | query | string | 下一页的游标 |
 | n | query | integer | 返回反馈的数量 |
 
+**Response:**
+
+```json
+{
+  "Cursor": "string",
+  "Feedback": [
+    {
+      "Comment": "string",
+      "FeedbackType": "string",
+      "ItemId": "string",
+      "Timestamp": "2000-01-01T00:00:00Z",
+      "Updated": "2000-01-01T00:00:00Z",
+      "UserId": "string",
+      "Value": 0
+    }
+  ]
+}
+```
+
 :::
 
 ::: details `PUT /api/feedback` 插入反馈。现有的反馈将被覆盖。
@@ -65,7 +95,30 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API 密钥 |
-| body | body | `[]Feedback` |  |
+
+**Body:**
+
+```json
+[
+  {
+    "Comment": "string",
+    "FeedbackType": "string",
+    "ItemId": "string",
+    "Timestamp": "2000-01-01T00:00:00Z",
+    "Updated": "2000-01-01T00:00:00Z",
+    "UserId": "string",
+    "Value": 0
+  }
+]
+```
+
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
 
 :::
 
@@ -76,7 +129,30 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API 密钥 |
-| body | body | `[]Feedback` |  |
+
+**Body:**
+
+```json
+[
+  {
+    "Comment": "string",
+    "FeedbackType": "string",
+    "ItemId": "string",
+    "Timestamp": "2000-01-01T00:00:00Z",
+    "Updated": "2000-01-01T00:00:00Z",
+    "UserId": "string",
+    "Value": 0
+  }
+]
+```
+
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
 
 :::
 
@@ -91,6 +167,25 @@ api_key = ""
 | cursor | query | string | 下一页的游标 |
 | n | query | integer | 返回反馈的数量 |
 
+**Response:**
+
+```json
+{
+  "Cursor": "string",
+  "Feedback": [
+    {
+      "Comment": "string",
+      "FeedbackType": "string",
+      "ItemId": "string",
+      "Timestamp": "2000-01-01T00:00:00Z",
+      "Updated": "2000-01-01T00:00:00Z",
+      "UserId": "string",
+      "Value": 0
+    }
+  ]
+}
+```
+
 :::
 
 ::: details `GET /api/feedback/{feedback-type}/{user-id}/{item-id}` 获取用户和物品之间指定类型的反馈。
@@ -103,6 +198,20 @@ api_key = ""
 | feedback-type | path | string | 反馈类型 |
 | user-id | path | string | 用户 ID |
 | item-id | path | string | 物品 ID |
+
+**Response:**
+
+```json
+{
+  "Comment": "string",
+  "FeedbackType": "string",
+  "ItemId": "string",
+  "Timestamp": "2000-01-01T00:00:00Z",
+  "Updated": "2000-01-01T00:00:00Z",
+  "UserId": "string",
+  "Value": 0
+}
+```
 
 :::
 
@@ -117,6 +226,14 @@ api_key = ""
 | user-id | path | string | 用户 ID |
 | item-id | path | string | 物品 ID |
 
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
+
 :::
 
 ::: details `GET /api/feedback/{user-id}/{item-id}` 列出用户和物品之间的反馈。
@@ -128,6 +245,22 @@ api_key = ""
 | X-API-Key | header | string | API 密钥 |
 | user-id | path | string | 用户 ID |
 | item-id | path | string | 物品 ID |
+
+**Response:**
+
+```json
+[
+  {
+    "Comment": "string",
+    "FeedbackType": "string",
+    "ItemId": "string",
+    "Timestamp": "2000-01-01T00:00:00Z",
+    "Updated": "2000-01-01T00:00:00Z",
+    "UserId": "string",
+    "Value": 0
+  }
+]
+```
 
 :::
 
@@ -141,17 +274,49 @@ api_key = ""
 | user-id | path | string | 用户 ID |
 | item-id | path | string | 物品 ID |
 
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
+
 :::
 
 ::: details `GET /api/health/live` 探测此节点的存活状态。服务器启动后返回 OK。
 
 **Parameters:** None
 
+**Response:**
+
+```json
+{
+  "CacheStoreConnected": false,
+  "CacheStoreError": {},
+  "DataStoreConnected": false,
+  "DataStoreError": {},
+  "Ready": false
+}
+```
+
 :::
 
 ::: details `GET /api/health/ready` 探测此节点的就绪状态。如果服务器能够处理请求，则返回 OK。
 
 **Parameters:** None
+
+**Response:**
+
+```json
+{
+  "CacheStoreConnected": false,
+  "CacheStoreError": {},
+  "DataStoreConnected": false,
+  "DataStoreError": {},
+  "Ready": false
+}
+```
 
 :::
 
@@ -162,7 +327,29 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API 密钥 |
-| body | body | `Item` |  |
+
+**Body:**
+
+```json
+{
+  "Categories": [
+    "string"
+  ],
+  "Comment": "string",
+  "IsHidden": false,
+  "ItemId": "string",
+  "Labels": {},
+  "Timestamp": "2000-01-01T00:00:00Z"
+}
+```
+
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
 
 :::
 
@@ -180,6 +367,17 @@ api_key = ""
 | category | query | string | 返回物品的类别 |
 | user-id | query | string | 移除用户已读物品 |
 
+**Response:**
+
+```json
+[
+  {
+    "Id": "string",
+    "Score": 0
+  }
+]
+```
+
 :::
 
 ::: details `GET /api/item/{item-id}` 获取一个物品。
@@ -190,6 +388,21 @@ api_key = ""
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API 密钥 |
 | item-id | path | string | 物品 ID. |
+
+**Response:**
+
+```json
+{
+  "Categories": [
+    "string"
+  ],
+  "Comment": "string",
+  "IsHidden": false,
+  "ItemId": "string",
+  "Labels": {},
+  "Timestamp": "2000-01-01T00:00:00Z"
+}
+```
 
 :::
 
@@ -202,6 +415,14 @@ api_key = ""
 | X-API-Key | header | string | API 密钥 |
 | item-id | path | string | 物品 ID |
 
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
+
 :::
 
 ::: details `PATCH /api/item/{item-id}` 修改一个物品。
@@ -212,7 +433,28 @@ api_key = ""
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API 密钥 |
 | item-id | path | string | 物品 ID |
-| body | body | `ItemPatch` |  |
+
+**Body:**
+
+```json
+{
+  "Categories": [
+    "string"
+  ],
+  "Comment": "string",
+  "IsHidden": false,
+  "Labels": {},
+  "Timestamp": "2000-01-01T00:00:00Z"
+}
+```
+
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
 
 :::
 
@@ -226,6 +468,14 @@ api_key = ""
 | item-id | path | string | 物品 ID |
 | category | path | string | 要插入的类别 |
 
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
+
 :::
 
 ::: details `DELETE /api/item/{item-id}/category/{category}` 从物品中删除一个类别。
@@ -238,6 +488,14 @@ api_key = ""
 | item-id | path | string | 物品 ID |
 | category | path | string | 要删除的类别 |
 
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
+
 :::
 
 ::: details `GET /api/item/{item-id}/feedback` 根据物品 ID 获取反馈。
@@ -248,6 +506,22 @@ api_key = ""
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API 密钥 |
 | item-id | path | string | 物品 ID |
+
+**Response:**
+
+```json
+[
+  {
+    "Comment": "string",
+    "FeedbackType": "string",
+    "ItemId": "string",
+    "Timestamp": "2000-01-01T00:00:00Z",
+    "Updated": "2000-01-01T00:00:00Z",
+    "UserId": "string",
+    "Value": 0
+  }
+]
+```
 
 :::
 
@@ -260,6 +534,22 @@ api_key = ""
 | X-API-Key | header | string | API 密钥 |
 | item-id | path | string | 物品 ID |
 | feedback-type | path | string | 反馈类型 |
+
+**Response:**
+
+```json
+[
+  {
+    "Comment": "string",
+    "FeedbackType": "string",
+    "ItemId": "string",
+    "Timestamp": "2000-01-01T00:00:00Z",
+    "Updated": "2000-01-01T00:00:00Z",
+    "UserId": "string",
+    "Value": 0
+  }
+]
+```
 
 :::
 
@@ -276,6 +566,17 @@ api_key = ""
 | category | query | string | 返回物品的类别 |
 | user-id | query | string | 移除用户已读物品 |
 
+**Response:**
+
+```json
+[
+  {
+    "Id": "string",
+    "Score": 0
+  }
+]
+```
+
 :::
 
 ::: details `GET /api/items` 列出物品。
@@ -288,6 +589,26 @@ api_key = ""
 | n | query | integer | 返回物品的数量 |
 | cursor | query | string | 下一页的游标 |
 
+**Response:**
+
+```json
+{
+  "Cursor": "string",
+  "Items": [
+    {
+      "Categories": [
+        "string"
+      ],
+      "Comment": "string",
+      "IsHidden": false,
+      "ItemId": "string",
+      "Labels": {},
+      "Timestamp": "2000-01-01T00:00:00Z"
+    }
+  ]
+}
+```
+
 :::
 
 ::: details `POST /api/items` 插入物品。
@@ -297,7 +618,31 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API 密钥 |
-| body | body | `[]Item` |  |
+
+**Body:**
+
+```json
+[
+  {
+    "Categories": [
+      "string"
+    ],
+    "Comment": "string",
+    "IsHidden": false,
+    "ItemId": "string",
+    "Labels": {},
+    "Timestamp": "2000-01-01T00:00:00Z"
+  }
+]
+```
+
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
 
 :::
 
@@ -313,6 +658,17 @@ api_key = ""
 | offset | query | integer | 返回物品的偏移量 |
 | user-id | query | string | 移除用户已读物品 |
 
+**Response:**
+
+```json
+[
+  {
+    "Id": "string",
+    "Score": 0
+  }
+]
+```
+
 :::
 
 ::: details `GET /api/non-personalized/{name}` 获取非个性化推荐。
@@ -326,6 +682,17 @@ api_key = ""
 | n | query | integer | 返回用户的数量 |
 | offset | query | integer | 返回用户的偏移量 |
 | user-id | query | string | 移除用户已读物品 |
+
+**Response:**
+
+```json
+[
+  {
+    "Id": "string",
+    "Score": 0
+  }
+]
+```
 
 :::
 
@@ -343,6 +710,14 @@ api_key = ""
 | n | query | integer | 返回物品的数量 |
 | offset | query | integer | 返回物品的偏移量 |
 
+**Response:**
+
+```json
+[
+  "string"
+]
+```
+
 :::
 
 ::: details `POST /api/session/recommend` 获取会话的推荐。
@@ -354,7 +729,32 @@ api_key = ""
 | X-API-Key | header | string | API 密钥 |
 | n | query | integer | 返回物品的数量 |
 | offset | query | integer | 返回物品的偏移量 |
-| body | body | `[]Feedback` |  |
+ 
+**Body:**
+
+```json
+[
+  {
+    "Comment": "string",
+    "FeedbackType": "string",
+    "ItemId": "string",
+    "Timestamp": "string",
+    "UserId": "string",
+    "Value": 0
+  }
+]
+```
+
+**Response:**
+
+```json
+[
+  {
+    "Id": "string",
+    "Score": 0
+  }
+]
+```
 
 :::
 
@@ -365,7 +765,24 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API 密钥 |
-| body | body | `User` |  |
+
+**Body:**
+
+```json
+{
+  "Comment": "string",
+  "Labels": {},
+  "UserId": "string"
+}
+```
+
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
 
 :::
 
@@ -381,6 +798,17 @@ api_key = ""
 | n | query | integer | 返回用户的数量 |
 | offset | query | integer | 返回用户的偏移量 |
 
+**Response:**
+
+```json
+[
+  {
+    "Id": "string",
+    "Score": 0
+  }
+]
+```
+
 :::
 
 ::: details `GET /api/user/{user-id}` 获取一个用户。
@@ -391,6 +819,16 @@ api_key = ""
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API 密钥 |
 | user-id | path | string | 用户 ID |
+
+**Response:**
+
+```json
+{
+  "Comment": "string",
+  "Labels": {},
+  "UserId": "string"
+}
+```
 
 :::
 
@@ -403,6 +841,14 @@ api_key = ""
 | X-API-Key | header | string | API 密钥 |
 | user-id | path | string | 用户 ID |
 
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
+
 :::
 
 ::: details `PATCH /api/user/{user-id}` 修改一个用户。
@@ -413,7 +859,23 @@ api_key = ""
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API 密钥 |
 | user-id | path | string | 用户 ID |
-| body | body | `UserPatch` |  |
+
+**Body:**
+
+```json
+{
+  "Comment": "string",
+  "Labels": {}
+}
+```
+
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
 
 :::
 
@@ -426,6 +888,22 @@ api_key = ""
 | X-API-Key | header | string | API 密钥 |
 | user-id | path | string | 用户 ID |
 
+**Response:**
+
+```json
+[
+  {
+    "Comment": "string",
+    "FeedbackType": "string",
+    "ItemId": "string",
+    "Timestamp": "2000-01-01T00:00:00Z",
+    "Updated": "2000-01-01T00:00:00Z",
+    "UserId": "string",
+    "Value": 0
+  }
+]
+```
+
 :::
 
 ::: details `GET /api/user/{user-id}/feedback/{feedback-type}` 根据用户 ID 和反馈类型获取反馈。
@@ -437,6 +915,22 @@ api_key = ""
 | X-API-Key | header | string | API 密钥 |
 | user-id | path | string | 用户 ID |
 | feedback-type | path | string | 反馈类型 |
+
+**Response:**
+
+```json
+[
+  {
+    "Comment": "string",
+    "FeedbackType": "string",
+    "ItemId": "string",
+    "Timestamp": "2000-01-01T00:00:00Z",
+    "Updated": "2000-01-01T00:00:00Z",
+    "UserId": "string",
+    "Value": 0
+  }
+]
+```
 
 :::
 
@@ -451,6 +945,17 @@ api_key = ""
 | n | query | integer | 返回用户的数量 |
 | offset | query | integer | 返回用户的偏移量 |
 
+**Response:**
+
+```json
+[
+  {
+    "Id": "string",
+    "Score": 0
+  }
+]
+```
+
 :::
 
 ::: details `GET /api/users` 列出用户。
@@ -463,6 +968,21 @@ api_key = ""
 | n | query | integer | 返回用户的数量 |
 | cursor | query | string | 下一页的游标 |
 
+**Response:**
+
+```json
+{
+  "Cursor": "string",
+  "Users": [
+    {
+      "Comment": "string",
+      "Labels": {},
+      "UserId": "string"
+    }
+  ]
+}
+```
+
 :::
 
 ::: details `POST /api/users` 插入用户。
@@ -472,6 +992,25 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API 密钥 |
-| body | body | `[]User` |  |
+
+**Body:**
+
+```json
+[
+  {
+    "Comment": "string",
+    "Labels": {},
+    "UserId": "string"
+  }
+]
+```
+
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
 
 :::

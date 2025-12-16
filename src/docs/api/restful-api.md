@@ -44,6 +44,17 @@ api_key = ""
 | category | query | string | Category of returned items. |
 | user-id | query | string | Remove read items of a user |
 
+**Response:**
+
+```json
+[
+  {
+    "Id": "string",
+    "Score": 0
+  }
+]
+```
+
 :::
 
 ::: details `GET /api/feedback` List feedbacks.
@@ -56,6 +67,25 @@ api_key = ""
 | cursor | query | string | Cursor for the next page |
 | n | query | integer | Number of returned feedback |
 
+**Response:**
+
+```json
+{
+  "Cursor": "string",
+  "Feedback": [
+    {
+      "Comment": "string",
+      "FeedbackType": "string",
+      "ItemId": "string",
+      "Timestamp": "2000-01-01T00:00:00Z",
+      "Updated": "2000-01-01T00:00:00Z",
+      "UserId": "string",
+      "Value": 0
+    }
+  ]
+}
+```
+
 :::
 
 ::: details `PUT /api/feedback` Insert feedbacks. Existed feedback will be overwritten.
@@ -65,7 +95,30 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| body | body | `[]Feedback` |  |
+
+**Body:**
+
+```json
+[
+  {
+    "Comment": "string",
+    "FeedbackType": "string",
+    "ItemId": "string",
+    "Timestamp": "2000-01-01T00:00:00Z",
+    "Updated": "2000-01-01T00:00:00Z",
+    "UserId": "string",
+    "Value": 0
+  }
+]
+```
+
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
 
 :::
 
@@ -76,7 +129,30 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| body | body | `[]Feedback` |  |
+
+**Body:**
+
+```json
+[
+  {
+    "Comment": "string",
+    "FeedbackType": "string",
+    "ItemId": "string",
+    "Timestamp": "2000-01-01T00:00:00Z",
+    "Updated": "2000-01-01T00:00:00Z",
+    "UserId": "string",
+    "Value": 0
+  }
+]
+```
+
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
 
 :::
 
@@ -91,6 +167,25 @@ api_key = ""
 | cursor | query | string | Cursor for the next page |
 | n | query | integer | Number of returned feedbacks |
 
+**Response:**
+
+```json
+{
+  "Cursor": "string",
+  "Feedback": [
+    {
+      "Comment": "string",
+      "FeedbackType": "string",
+      "ItemId": "string",
+      "Timestamp": "2000-01-01T00:00:00Z",
+      "Updated": "2000-01-01T00:00:00Z",
+      "UserId": "string",
+      "Value": 0
+    }
+  ]
+}
+```
+
 :::
 
 ::: details `GET /api/feedback/{feedback-type}/{user-id}/{item-id}` Get feedbacks between a user and a item with feedback type.
@@ -103,6 +198,20 @@ api_key = ""
 | feedback-type | path | string | Feedback type |
 | user-id | path | string | User ID |
 | item-id | path | string | Item ID |
+
+**Response:**
+
+```json
+{
+  "Comment": "string",
+  "FeedbackType": "string",
+  "ItemId": "string",
+  "Timestamp": "2000-01-01T00:00:00Z",
+  "Updated": "2000-01-01T00:00:00Z",
+  "UserId": "string",
+  "Value": 0
+}
+```
 
 :::
 
@@ -117,6 +226,14 @@ api_key = ""
 | user-id | path | string | User ID |
 | item-id | path | string | Item ID |
 
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
+
 :::
 
 ::: details `GET /api/feedback/{user-id}/{item-id}` List feedbacks between a user and a item.
@@ -128,6 +245,22 @@ api_key = ""
 | X-API-Key | header | string | API key |
 | user-id | path | string | User ID |
 | item-id | path | string | Item ID |
+
+**Response:**
+
+```json
+[
+  {
+    "Comment": "string",
+    "FeedbackType": "string",
+    "ItemId": "string",
+    "Timestamp": "2000-01-01T00:00:00Z",
+    "Updated": "2000-01-01T00:00:00Z",
+    "UserId": "string",
+    "Value": 0
+  }
+]
+```
 
 :::
 
@@ -141,17 +274,49 @@ api_key = ""
 | user-id | path | string | User ID |
 | item-id | path | string | Item ID |
 
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
+
 :::
 
 ::: details `GET /api/health/live` Probe the liveness of this node. Return OK once the server starts.
 
 **Parameters:** None
 
+**Response:**
+
+```json
+{
+  "CacheStoreConnected": false,
+  "CacheStoreError": {},
+  "DataStoreConnected": false,
+  "DataStoreError": {},
+  "Ready": false
+}
+```
+
 :::
 
 ::: details `GET /api/health/ready` Probe the readiness of this node. Return OK if the server is able to handle requests.
 
 **Parameters:** None
+
+**Response:**
+
+```json
+{
+  "CacheStoreConnected": false,
+  "CacheStoreError": {},
+  "DataStoreConnected": false,
+  "DataStoreError": {},
+  "Ready": false
+}
+```
 
 :::
 
@@ -162,7 +327,29 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| body | body | `Item` |  |
+
+**Body:**
+
+```json
+{
+  "Categories": [
+    "string"
+  ],
+  "Comment": "string",
+  "IsHidden": false,
+  "ItemId": "string",
+  "Labels": {},
+  "Timestamp": "2000-01-01T00:00:00Z"
+}
+```
+
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
 
 :::
 
@@ -180,6 +367,17 @@ api_key = ""
 | category | query | string | Category of returned items |
 | user-id | query | string | Remove read items of a user |
 
+**Response:**
+
+```json
+[
+  {
+    "Id": "string",
+    "Score": 0
+  }
+]
+```
+
 :::
 
 ::: details `GET /api/item/{item-id}` Get an item.
@@ -190,6 +388,21 @@ api_key = ""
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
 | item-id | path | string | Item ID. |
+
+**Response:**
+
+```json
+{
+  "Categories": [
+    "string"
+  ],
+  "Comment": "string",
+  "IsHidden": false,
+  "ItemId": "string",
+  "Labels": {},
+  "Timestamp": "2000-01-01T00:00:00Z"
+}
+```
 
 :::
 
@@ -202,6 +415,14 @@ api_key = ""
 | X-API-Key | header | string | API key |
 | item-id | path | string | Item ID |
 
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
+
 :::
 
 ::: details `PATCH /api/item/{item-id}` Modify an item.
@@ -212,7 +433,28 @@ api_key = ""
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
 | item-id | path | string | Item ID |
-| body | body | `ItemPatch` |  |
+
+**Body:**
+
+```json
+{
+  "Categories": [
+    "string"
+  ],
+  "Comment": "string",
+  "IsHidden": false,
+  "Labels": {},
+  "Timestamp": "2000-01-01T00:00:00Z"
+}
+```
+
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
 
 :::
 
@@ -226,6 +468,14 @@ api_key = ""
 | item-id | path | string | Item ID |
 | category | path | string | Category to insert |
 
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
+
 :::
 
 ::: details `DELETE /api/item/{item-id}/category/{category}` Delete a category from a item.
@@ -238,6 +488,14 @@ api_key = ""
 | item-id | path | string | Item ID |
 | category | path | string | Category to delete |
 
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
+
 :::
 
 ::: details `GET /api/item/{item-id}/feedback` Get feedbacks by item id.
@@ -248,6 +506,22 @@ api_key = ""
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
 | item-id | path | string | Item ID |
+
+**Response:**
+
+```json
+[
+  {
+    "Comment": "string",
+    "FeedbackType": "string",
+    "ItemId": "string",
+    "Timestamp": "2000-01-01T00:00:00Z",
+    "Updated": "2000-01-01T00:00:00Z",
+    "UserId": "string",
+    "Value": 0
+  }
+]
+```
 
 :::
 
@@ -260,6 +534,22 @@ api_key = ""
 | X-API-Key | header | string | API key |
 | item-id | path | string | Item ID |
 | feedback-type | path | string | Feedback type |
+
+**Response:**
+
+```json
+[
+  {
+    "Comment": "string",
+    "FeedbackType": "string",
+    "ItemId": "string",
+    "Timestamp": "2000-01-01T00:00:00Z",
+    "Updated": "2000-01-01T00:00:00Z",
+    "UserId": "string",
+    "Value": 0
+  }
+]
+```
 
 :::
 
@@ -276,6 +566,17 @@ api_key = ""
 | category | query | string | Category of returned items |
 | user-id | query | string | Remove read items of a user |
 
+**Response:**
+
+```json
+[
+  {
+    "Id": "string",
+    "Score": 0
+  }
+]
+```
+
 :::
 
 ::: details `GET /api/items` List items.
@@ -288,6 +589,26 @@ api_key = ""
 | n | query | integer | Number of returned items |
 | cursor | query | string | Cursor for the next page |
 
+**Response:**
+
+```json
+{
+  "Cursor": "string",
+  "Items": [
+    {
+      "Categories": [
+        "string"
+      ],
+      "Comment": "string",
+      "IsHidden": false,
+      "ItemId": "string",
+      "Labels": {},
+      "Timestamp": "2000-01-01T00:00:00Z"
+    }
+  ]
+}
+```
+
 :::
 
 ::: details `POST /api/items` Insert items.
@@ -297,7 +618,31 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| body | body | `[]Item` |  |
+
+**Body:**
+
+```json
+[
+  {
+    "Categories": [
+      "string"
+    ],
+    "Comment": "string",
+    "IsHidden": false,
+    "ItemId": "string",
+    "Labels": {},
+    "Timestamp": "2000-01-01T00:00:00Z"
+  }
+]
+```
+
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
 
 :::
 
@@ -313,6 +658,17 @@ api_key = ""
 | offset | query | integer | Offset of returned items |
 | user-id | query | string | Remove read items of a user |
 
+**Response:**
+
+```json
+[
+  {
+    "Id": "string",
+    "Score": 0
+  }
+]
+```
+
 :::
 
 ::: details `GET /api/non-personalized/{name}` Get non-personalized recommendations.
@@ -326,6 +682,17 @@ api_key = ""
 | n | query | integer | Number of returned users |
 | offset | query | integer | Offset of returned users |
 | user-id | query | string | Remove read items of a user |
+
+**Response:**
+
+```json
+[
+  {
+    "Id": "string",
+    "Score": 0
+  }
+]
+```
 
 :::
 
@@ -343,6 +710,14 @@ api_key = ""
 | n | query | integer | Number of returned items |
 | offset | query | integer | Offset of returned items |
 
+**Response:**
+
+```json
+[
+  "string"
+]
+```
+
 :::
 
 ::: details `POST /api/session/recommend` Get recommendation for session.
@@ -354,7 +729,32 @@ api_key = ""
 | X-API-Key | header | string | API key |
 | n | query | integer | Number of returned items |
 | offset | query | integer | Offset of returned items |
-| body | body | `[]Feedback` |  |
+
+**Body:**
+
+```json
+[
+  {
+    "Comment": "string",
+    "FeedbackType": "string",
+    "ItemId": "string",
+    "Timestamp": "string",
+    "UserId": "string",
+    "Value": 0
+  }
+]
+```
+
+**Response:**
+
+```json
+[
+  {
+    "Id": "string",
+    "Score": 0
+  }
+]
+```
 
 :::
 
@@ -365,7 +765,24 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| body | body | `User` |  |
+
+**Body:**
+
+```json
+{
+  "Comment": "string",
+  "Labels": {},
+  "UserId": "string"
+}
+```
+
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
 
 :::
 
@@ -381,6 +798,17 @@ api_key = ""
 | n | query | integer | Number of returned users |
 | offset | query | integer | Offset of returned users |
 
+**Response:**
+
+```json
+[
+  {
+    "Id": "string",
+    "Score": 0
+  }
+]
+```
+
 :::
 
 ::: details `GET /api/user/{user-id}` Get a user.
@@ -391,6 +819,16 @@ api_key = ""
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
 | user-id | path | string | User ID |
+
+**Response:**
+
+```json
+{
+  "Comment": "string",
+  "Labels": {},
+  "UserId": "string"
+}
+```
 
 :::
 
@@ -403,6 +841,14 @@ api_key = ""
 | X-API-Key | header | string | API key |
 | user-id | path | string | User ID |
 
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
+
 :::
 
 ::: details `PATCH /api/user/{user-id}` Modify a user.
@@ -413,7 +859,23 @@ api_key = ""
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
 | user-id | path | string | User ID |
-| body | body | `UserPatch` |  |
+
+**Body:**
+
+```json
+{
+  "Comment": "string",
+  "Labels": {}
+}
+```
+
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
 
 :::
 
@@ -426,6 +888,22 @@ api_key = ""
 | X-API-Key | header | string | API key |
 | user-id | path | string | User ID |
 
+**Response:**
+
+```json
+[
+  {
+    "Comment": "string",
+    "FeedbackType": "string",
+    "ItemId": "string",
+    "Timestamp": "2000-01-01T00:00:00Z",
+    "Updated": "2000-01-01T00:00:00Z",
+    "UserId": "string",
+    "Value": 0
+  }
+]
+```
+
 :::
 
 ::: details `GET /api/user/{user-id}/feedback/{feedback-type}` Get feedbacks by user id with feedback type.
@@ -437,6 +915,22 @@ api_key = ""
 | X-API-Key | header | string | API key |
 | user-id | path | string | User ID |
 | feedback-type | path | string | Feedback type |
+
+**Response:**
+
+```json
+[
+  {
+    "Comment": "string",
+    "FeedbackType": "string",
+    "ItemId": "string",
+    "Timestamp": "2000-01-01T00:00:00Z",
+    "Updated": "2000-01-01T00:00:00Z",
+    "UserId": "string",
+    "Value": 0
+  }
+]
+```
 
 :::
 
@@ -451,6 +945,17 @@ api_key = ""
 | n | query | integer | Number of returned users |
 | offset | query | integer | Offset of returned users |
 
+**Response:**
+
+```json
+[
+  {
+    "Id": "string",
+    "Score": 0
+  }
+]
+```
+
 :::
 
 ::: details `GET /api/users` List users.
@@ -463,6 +968,21 @@ api_key = ""
 | n | query | integer | Number of returned users |
 | cursor | query | string | Cursor for the next page |
 
+**Response:**
+
+```json
+{
+  "Cursor": "string",
+  "Users": [
+    {
+      "Comment": "string",
+      "Labels": {},
+      "UserId": "string"
+    }
+  ]
+}
+```
+
 :::
 
 ::: details `POST /api/users` Insert users.
@@ -472,7 +992,26 @@ api_key = ""
 | Name | In | Type | Description |
 | ---- | -- | ---- | ----------- |
 | X-API-Key | header | string | API key |
-| body | body | `[]User` |  |
+
+**Body:**
+
+```json
+[
+  {
+    "Comment": "string",
+    "Labels": {},
+    "UserId": "string"
+  }
+]
+```
+
+**Response:**
+
+```json
+{
+  "RowAffected": 0
+}
+```
 
 :::
 
