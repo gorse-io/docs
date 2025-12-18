@@ -57,94 +57,41 @@ Increasing cache size might improve recommendations since the recommender system
 
 ## How Gorse Works
 
-The master node loads data from the database. In the process of loading data, popular items and the latest items are written to the cache. Then, the master node searches for neighbors and training recommendation models. In the background, the random search is used to find the optimal recommendation model for current data. The worker nodes pull recommendation models from the master node and generate recommendations for each user. The server nodes provide RESTful APIs. Workers and servers connect to the master node via GRPC, which is configured in the configuration file.
+The pipeline is executed in a distributed manner. There are three types of nodes in Gorse: master, worker, and server.
 
-![](../../img/recommend.drawio.svg)
+### Master: Dataset, Neighbors, and Models
 
-```toml
-[master]
+A cluster has only one master node. Workers and servers connect to the master node via GRPC. The master node is responsible the following tasks:
 
-# GRPC port of the master node. The default value is 8086.
-port = 8086
+1. **Load dataset:** Load users, items, and feedback from the database. Non-personalized recommendations are updated during this process.
+2. **Generate user-to-user recommendation:** Calculate user similarities and store user neighbors in the cache database for each user-to-user recommender.
+3. **Generate item-to-item recommendation:** Calculate item similarities and store item neighbors in the cache database for each item-to-item recommender.
+4. **Train Collaborative Filtering Model:** Train matrix factorization models and store the models in the blob storage (local disk on the master node by default).
+5. **Train Click-Through Rate Prediction Model:** Train the factorization machine ranking model and store the model in the blob storage.
 
-# gRPC host of the master node. The default values is "0.0.0.0".
-host = "0.0.0.0"
+If the master node is down, workers and servers will still work but configuration changes and model updates will not be applied.
 
-# Number of working jobs in the master node. The default value is 1.
-n_jobs = 1
+### Worker: Recommendation
 
-# Meta information timeout. The default value is 10s.
-meta_timeout = "10s"
-```
+The retrieval and ranking process is executed by worker nodes. Workers connect to the master node to get configurations and models. Workers periodically generate offline recommendations for all users and store the results in the cache database by the following steps:
 
-The number of working jobs for the master node is set by `master.n_jobs`. For workers, the number of working jobs is set by the command line flag.
+1. For each user, get candidate items from all recommenders.
+2. Score and sort candidate items by the ranker.
+3. Replace read items back to recommendations if configured.
+4. Store the final recommendations in the cache database.
 
-## Recommendation Flow
+More workers can be added to speed up the offline recommendation process. If a worker node is down, other workers will take over its tasks.
 
-Gorse works like a waterfall. Users, items and feedbacks are the sources of water. Intermediate results will be cached in cache storage (eg. Redis) such as water falling from the first waterfall will be cached in the intermediate pool. After several stages, selected items are recommended to users.
+### Server: Filter and Fallback
 
-The intermediate cache is configurable. Increasing cache size might improve recommendations since the recommender system has more information on data but also consumes more cache storage. The expiration time of the cache should be traded off between freshness and CPU costs.
+The server node exposes RESTful APIs for data and recommendations. When a user requests recommendations, the server node performs the following steps:
 
-The recommendation flow will be introduced in the top-down method.
+1. Get offline recommendations from the cache database.
+2. Filter out items that have been read by the user.
+3. If not enough recommendations, get fallback recommendations from the recommenders.
+4. Return recommendations to the user.
 
-### Master: Neighbors and Models
-
-The master node is driven by data loading. Data loading happens in every `model_fit_period`. The latest items and popular items can be collected during loading data. Once data is loaded, the following tasks start.
-
-- **Find Neighbors:** User neighbors and item neighbors are found and cached.
-- **Fit MF and FM** The matrix factorization model and factorization machine model are trained and delivered to workers.
-- **Optimize MF and FM:** In every `model_search_period`, random search is used to optimize MF and FM. The model searcher will generate `model_search_trials` combinations of hyper-parameters and the model with the best score during `model_search_epoch` epoch is used in the next model training period. In most cases, there is no need to change these two options. By default, the model size is fixed, set `enable_model_size_search` to search larger models, which consumes more memory.
-
-```toml
-[recommend.collaborative]
-
-# The time period for model fitting. The default value is "60m".
-model_fit_period = "60m"
-
-# The time period for model searching. The default value is "360m".
-model_search_period = "360m"
-
-# The number of epochs for model searching. The default value is 100.
-model_search_epoch = 100
-
-# The number of trials for model searching. The default value is 10.
-model_search_trials = 10
-
-# Enable searching models of different sizes, which consume more memory. The default value is false.
-enable_model_size_search = false
-```
-
-Once data is loaded, neighbor searching and model training starts in parallel. After neighbor searching and model training is finished, model optimization starts if the last optimize time is `model_search_period` ago.
-
-### Worker: Offline Recommendation
-
-Workers nodes generate and write offline recommendations to the cache database. The worker node checks each user in every `check_recommend_period`. If a user's active time is greater than his or her latest offline recommendation cache or the cache is generated before `refresh_recommend_period`, the worker starts to refresh offline recommendations for this user.
-
-First, the worker collects candidates from the latest items, popular items, user similarity-based recommendations, item similarity-based recommendations and matrix factorization recommendations. Sources of candidates can be enabled or disabled in the configuration. Then, candidates are ranked by the factorization machine and read items are removed. If `enable_click_through_prediction` is `false`, candidates are ranked randomly. Finally, popular items and the latest items will be injected into recommendations with probabilities defined in `explore_recommend`. Offline recommendation results will be written to the cache.
-
-### Server: Online Recommendation
-
-The server node exposes RESTful APIs for data and recommendations.
-
-Recommendation APIs return recommendation results. For non-personalized recommendations (latest items, popular items or neighbors), the server node fetches cached recommendations from the cache database and sends responses. But the server node needs to do more work for personalized recommendations.
-
-- **Recommendation:** Offline recommendations by workers are written to responses and read items will be removed. But if the offline recommendation cache is consumed, fallback recommenders will be used. Recommenders in `fallback_recommend` will be tried in order.
-
-- **Session recommendation:** Session recommender generates recommendations for unregistered users based on user session-wise feedbacks. Session recommendations are generated by an item similarity-based algorithm based on the latest $n$ feedback and read items from feedback will be removed from recommendations. The number of user feedback is set by `num_feedback_fallback_item_based`.
-
-```toml
-[recommend.online]
-
-# The fallback recommendation method is used when cached recommendation drained out:
-#   item_based: Recommend similar items.
-#   popular: Recommend popular items.
-#   latest: Recommend latest items.
-# Recommenders are used in order. The default values is ["latest"].
-fallback_recommend = ["item_based", "latest"]
-
-# The number of feedback used in fallback item-based similar recommendation. The default values is 10.
-num_feedback_fallback_item_based = 10
-```
+Servers are stateless, thus more servers can be added to handle more requests.
 
 ### Clock Synchronization
 

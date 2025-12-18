@@ -167,6 +167,20 @@ $$
 - `optimize_trials` 是超参数优化的试验次数。默认为 `10`。
 - `early_stopping.patience` 是在没有改进多少个 epoch 后停止训练。默认为 `10`。
 
+## 示例
+
+在演示项目 [GitRec](https://gitrec.gorse.io/) 中，协同过滤配置如下：
+
+```toml
+[recommend.collaborative]
+fit_period = "60m"
+fit_epoch = 100
+optimize_period = "360m"
+optimize_trials = 10
+[recommend.collaborative.early_stopping]
+patience = 10
+```
+
 [^1]: Rendle, Steffen, et al. "BPR: Bayesian personalized ranking from implicit feedback." Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.
 
 [^2]: He, Xiangnan, et al. "Fast matrix factorization for online recommendation with implicit feedback." Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016.

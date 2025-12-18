@@ -8,7 +8,7 @@ export const zhSidebar = sidebar({
       "link": "quick-start"
     },
     {
-      "text": "部署",
+      "text": "部署指南",
       "icon": "start",
       "collapsible": true,
       "prefix": "deploy/",
@@ -29,9 +29,8 @@ export const zhSidebar = sidebar({
       "collapsible": true,
       "prefix": "concepts/",
       "children": [
-        "data-objects",
-        "algorithms",
-        "how-it-works",
+        "data-source",
+        "pipeline",
         {
           "text": "推荐算法",
           "icon": "recommend-fill",
@@ -45,14 +44,16 @@ export const zhSidebar = sidebar({
             "external"
           ]
         },
+        "ranking",
+        "replacement",
         "evaluation"
       ]
     },
     {
-      "text": "接口文档",
+      "text": "API",
       "icon": "api",
-      "prefix": "api/",
       "collapsible": true,
+      "prefix": "api/",
       "children": [
         "restful-api",
         "go-sdk",
@@ -66,7 +67,7 @@ export const zhSidebar = sidebar({
       ]
     },
     {
-      "text": "Gorse 控制台",
+      "text": "控制台",
       "icon": "dashboard",
       "link": "gorse-dashboard"
     },
