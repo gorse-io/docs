@@ -10,6 +10,35 @@ Gorse merges recommendation from multiple recommenders and ranks them to produce
 - `type` is the ranker type. The supported ranker is:
   - `none` means no ranking is performed.
   - `fm` uses factorization machines[^1] to rank recommended items.
+  - `llm` uses large language models (LLMs) to rank recommended items.
+- `prompt` is the prompt template used by LLM ranker. This field is required when `type` is `llm`. The template supports the following variables:
+  - `feedback` is the user's historical feedback.
+  - `items` is a list of recommended items to be ranked.
+::: details Type definitions of `feedback` and `items`.
+The type of `feedback` is:
+```go
+type FeedbackItem struct {
+	FeedbackType string
+	ItemId       string
+	IsHidden     bool
+	Categories   []string
+	Timestamp    time.Time
+	Labels       any
+	Comment      string
+}
+```
+The type of `items` is:
+```go
+type Item struct {
+	ItemId     string
+	IsHidden   bool
+	Categories []string
+	Timestamp  time.Time
+	Labels     any
+	Comment    string
+}
+```
+:::
 - `recommenders` are the names of recommenders whose recommendations are merged and ranked. Values should be one of the following:
   - `latest` uses the latest items recommender.
   - `collaborative` uses the collaborative filtering recommender.
@@ -76,4 +105,34 @@ x_i\sum^n_{j=1}v_{j,f}x_j-v_{i,f}x^2_i,&\text{if }\theta\text{ is }v_{i,f}
 \end{cases}
 $$
 
+### Large Language Models
+
+Recent studies have shown that large language models (LLMs) such as ChatGPT can effectively perform recommendation through prompt engineering[^2][^3]. Gorse leverages this capability by using LLMs to rank recommended items based on user feedback and item information.
+
+Before using the LLM ranker, OpenAI API must be configured in the [`[openai]`](../../docs/config#openai) of the configuration file. A prompt template must also be provided in the ranker configuration. An example prompt template for recommending GitHub repositories is as follows:
+
+````jinja
+You are a GitHub repository recommender system. Given a user is interested in the following repositories:
+{% for repo in feedback -%}
+- {{ repo.Comment }}
+{% endfor -%}
+Please sort the following repositories by the user's interests:
+```csv
+item_id,description
+{% for repo in items -%}
+{{ repo.ItemId }},{{ repo.Comment | replace(",", " ") | replace("\n", " ") }}
+{% endfor -%}
+```
+Return the sorted list of repository IDs in CSV format. For example:
+```csv
+{% for repo in items[:3] -%}
+{{ repo.ItemId }}
+{% endfor -%}
+```
+````
+
+`feedback` contains the user's recent feedback and `items` contains the list of recommended items to be ranked. The number of `feedback` items can be controlled by the `recommend.context_size`. The LLM ranker renders the prompt template and sends it to the OpenAI API. The response is then parsed to extract the ranked list of item IDs.
+
 [^1]: Rendle, Steffen. "Factorization machines." 2010 IEEE International conference on data mining. IEEE, 2010.
+[^2]: Liu, Junling, et al. "Is chatgpt a good recommender? a preliminary study." arXiv preprint arXiv:2304.10149 (2023).
+[^3]: Dai, Sunhao, et al. "Uncovering chatgpt’s capabilities in recommender systems." Proceedings of the 17th ACM Conference on Recommender Systems. 2023.

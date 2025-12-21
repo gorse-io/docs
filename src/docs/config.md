@@ -258,6 +258,18 @@ Configure OpenID Connect (OIDC) authentication for [dashboard](./gorse-dashboard
 | `client_secret` | string  |         | Token access to the OAuth application.       |
 | `redirect_url`  | string  |         | URL used to redirect after authenticated.    |
 
+## `[openai]`
+
+Configuration for OpenAI API, used by LLM ranker.
+
+| Key                     | Type    | Default | Description                                      |
+|-------------------------|---------|---------|--------------------------------------------------|
+| `base_url`              | string  |         | Base URL of OpenAI API.                          |
+| `auth_token`            | string  |         | API key of OpenAI API.                           |
+| `chat_completion_model` | string  |         | Name of chat completion model.                   |
+| `chat_completion_rpm`   | integer |         | Maximum requests per minute for chat completion. |
+| `chat_completion_tpm`   | integer |         | Maximum tokens per minute for chat completion.   |
+
 ## Environment Variables
 
 Part of configurations can be overwritten by environment variables.
