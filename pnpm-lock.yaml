@@ -7,13 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@vueuse/core':
-        specifier: ^14.2.0
-        version: 14.2.0(vue@3.5.24(typescript@5.9.3))
-      swiper:
-        specifier: ^12.1.0
-        version: 12.1.0
     devDependencies:
       '@vuepress/bundler-vite':
         specifier: 2.0.0-rc.26
@@ -2593,10 +2586,6 @@ packages:
   supports-color@8.1.1:
     resolution: {integrity: sha512-MpUEN2OodtUzxvKQl72cUF7RQ5EiHsGvSsVG0ia9c5RbWGL2CI4C7EpPS8UTBIplnlzZiNuV56w+FuNxy3ty2Q==}
     engines: {node: '>=10'}
-
-  swiper@12.1.0:
-    resolution: {integrity: sha512-BD4CpAOOyEvZ2f0CDx362ea+vmOwukVcmbsQx+0BhRIaBUz8wvcCd//E7RFmvBZCrfyqXCHUVqmgUwts6ywlxw==}
-    engines: {node: '>= 4.7.0'}
 
   swr@2.3.6:
     resolution: {integrity: sha512-wfHRmHWk/isGNMwlLGlZX5Gzz/uTgo0o2IRuTMcf4CPuPFJZlq0rDaKUx+ozB5nBOReNV1kiOyzMfj+MBMikLw==}
@@ -5695,8 +5684,6 @@ snapshots:
   supports-color@8.1.1:
     dependencies:
       has-flag: 4.0.0
-
-  swiper@12.1.0: {}
 
   swr@2.3.6(react@19.2.0):
     dependencies:

@@ -5,7 +5,6 @@ import GitHubLink from "./components/GitHubLink.js";
 import QQLink from "./components/QQLink.js";
 import TwitterLink from "./components/TwitterLink.js";
 import WeChatLink from "./components/WeChatLink.js";
-import Swiper from "./components/Swiper.vue";
 
 export default defineClientConfig({
   enhance: ({ app }) => {
@@ -14,6 +13,5 @@ export default defineClientConfig({
     app.component("QQLink", QQLink);
     app.component("TwitterLink", TwitterLink);
     app.component("WeChatLink", WeChatLink);
-    app.component("Swiper", Swiper);
   },
 });
