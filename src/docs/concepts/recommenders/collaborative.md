@@ -164,6 +164,9 @@ where $s^p_{kf}$ denotes the $(k, f)^\text{th}$ element of the $\mathbf{S}^p$ ca
 ## Configuration
 
 The configurations for collaborative filtering are all about model fitting and hyperparameter optimization.
+- `type` is the type of collaborative filtering algorithm. Defaults to `none`.
+  - `none`: Disable collaborative filtering.
+  - `mf`: Matrix factorization.
 - `fit_period` is the period for model fitting. Defaults to `60m`.
 - `fit_epoch` is the number of epochs for model fitting. Defaults to `100`.
 - `optimize_period` is the period for hyperparameter optimization. Defaults to `180m`.
@@ -176,6 +179,7 @@ In the demo project [GitRec](https://gitrec.gorse.io/), the collaborative filter
 
 ```toml
 [recommend.collaborative]
+type = "mf"
 fit_period = "60m"
 fit_epoch = 100
 optimize_period = "360m"

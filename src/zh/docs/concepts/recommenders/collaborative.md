@@ -161,6 +161,9 @@ $$
 ## 配置
 
 协同过滤的配置都是关于模型拟合和超参数优化的。
+- `type` 是协同过滤算法的类型。默认为 `none`。
+  - `none`：禁用协同过滤。
+  - `mf`：矩阵分解。
 - `fit_period` 是模型拟合的周期。默认为 `60m`。
 - `fit_epoch` 是模型拟合的 epoch 数。默认为 `100`。
 - `optimize_period` 是超参数优化的周期。默认为 `180m`。
@@ -173,6 +176,7 @@ $$
 
 ```toml
 [recommend.collaborative]
+type = "mf"
 fit_period = "60m"
 fit_epoch = 100
 optimize_period = "360m"

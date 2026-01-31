@@ -84,9 +84,20 @@ Document: https://github.com/mailru/go-clickhouse#dsn
 
 `[database.mysql]`
 
-| Key               | Type   | Default              | Description                  |
-|-------------------|--------|----------------------|------------------------------|
-| `isolation_level` | string | `"READ-UNCOMMITTED"` | Transaction isolation level. |
+| Key                 | Type    | Default              | Description                                        |
+|---------------------|---------|----------------------|----------------------------------------------------|
+| `isolation_level`   | string  | `"READ-UNCOMMITTED"` | Transaction isolation level.                       |
+| `max_open_conns`    | integer |                      | Maximum number of open connections to the database |
+| `max_idle_conns`    | integer |                      | Maximum number of idle connections to the database |
+| `conn_max_lifetime` | string  |                      | Maximum amount of time a connection may be reused  |
+
+`[database.postgres]`
+
+| Key                 | Type    | Default | Description                                        |
+|---------------------|---------|---------|----------------------------------------------------|
+| `max_open_conns`    | integer | `64`    | Maximum number of open connections to the database |
+| `max_idle_conns`    | integer | `64`    | Maximum number of idle connections to the database |
+| `conn_max_lifetime` | string  | `"1m"`  | Maximum amount of time a connection may be reused  |
 
 ## `[master]`
 
@@ -143,7 +154,7 @@ Configuration for [data source](./concepts/data-source) of recommenders.
 
 ### `[[recommend.non-personalized]]`
 
-Configuration for [non-personalized recommenders](concepts/non-personalized).
+Configuration for [non-personalized recommenders](concepts/recommenders/non-personalized).
 
 | Key       | Type   | Default | Description                              |
 |-----------|--------|---------|------------------------------------------|
@@ -153,7 +164,7 @@ Configuration for [non-personalized recommenders](concepts/non-personalized).
 
 ### `[[recommend.item-to-item]]`
 
-Configuration for [item-to-item recommenders](concepts/item-to-item).
+Configuration for [item-to-item recommenders](concepts/recommenders/item-to-item).
 
 | Key      | Type   | Default | Description                                 |
 |----------|--------|---------|---------------------------------------------|
@@ -163,7 +174,7 @@ Configuration for [item-to-item recommenders](concepts/item-to-item).
 
 ### `[[recommend.user-to-user]]`
 
-Configuration for [user-to-user recommenders](concepts/user-to-user).
+Configuration for [user-to-user recommenders](concepts/recommenders/user-to-user).
 
 | Key    | Type   | Default | Description                          |
 |--------|--------|---------|--------------------------------------|
@@ -181,10 +192,11 @@ Configuration for [external recommenders](concepts/recommenders/external).
 
 ### `[recommend.collaborative]`
 
-Configuration for the [collaborative filtering recommender](concepts/collaborative).
+Configuration for the [collaborative filtering recommender](concepts/recommenders/collaborative).
 
 | Key               | Type    | Default | Description                                              |
 |-------------------|---------|---------|----------------------------------------------------------|
+| `type`            | string  | `"none"`| The type of collaborative filtering (`none` or `mf`).     |
 | `fit_period`      | string  | `60m`   | Period of model training                                 |
 | `fit_epoch`       | integer | `100`   | Number of training epochs for each model in model search |
 | `optimize_period` | string  | `360m`  | Period of model search                                   |
@@ -208,7 +220,7 @@ Configuration for the [collaborative filtering recommender](concepts/collaborati
 
 ### `[recommend.ranker]`
 
-Configuration for [rankers](concepts/rankers).
+Configuration for [rankers](concepts/ranking).
 
 | Key               | Type    | Default      | Description                                                    |
 |-------------------|---------|--------------|----------------------------------------------------------------|
@@ -233,6 +245,67 @@ Fallback recommendation configuration when ranker cannot provide enough recommen
 | Key            | Type    | Default      | Description                                                         |
 |----------------|---------|--------------|---------------------------------------------------------------------|
 | `recommenders` | strings | `["latest"]` | Source of recommendation when personalized recommendation exhausted |
+
+## `[blob]`
+
+Configuration for the blob storage, which keeps trained models.
+
+| Key   | Type   | Default                 | Description          |
+|-------|--------|-------------------------|----------------------|
+| `uri` | string | `~/.gorse/var/lib/blob` | The URI of the blob. |
+
+The format of the URI is as follows:
+
+::: tabs
+
+@tab S3
+
+```bash
+s3://bucket/path
+```
+
+@tab GCS
+
+```bash
+gs://my-bucket/my-database
+```
+
+@tab Azure Blob
+
+```bash
+az://container/path
+```
+
+@tab Local
+
+```bash
+/path/without/prefix
+```
+
+:::
+
+`[blob.s3]`
+
+| Key                 | Type   | Default | Description         |
+|---------------------|--------|---------|---------------------|
+| `endpoint`          | string |         | Endpoint of AWS S3. |
+| `access_key_id`     | string |         | Access key ID.      |
+| `secret_access_key` | string |         | Secret access key.  |
+
+`[blob.gcs]`
+
+| Key                | Type   | Default | Description          |
+|--------------------|--------|---------|----------------------|
+| `credentials_file` | string |         | Path to credentials. |
+
+`[blob.azure]`
+
+| Key                 | Type   | Default | Description        |
+|---------------------|--------|---------|--------------------|
+| `endpoint`          | string |         | Endpoint.          |
+| `account_name`      | string |         | Account name.      |
+| `account_key`       | string |         | Account key.       |
+| `connection_string` | string |         | Connection string. |
 
 ## `[tracing]`
 
@@ -260,7 +333,7 @@ Configure OpenID Connect (OIDC) authentication for [dashboard](./gorse-dashboard
 
 ## `[openai]`
 
-Configuration for OpenAI API, used by LLM ranker.
+Configuration for OpenAI API, used by [LLM ranker](./concepts/ranking.md#large-language-models).
 
 | Key                     | Type    | Default | Description                                      |
 |-------------------------|---------|---------|--------------------------------------------------|
@@ -274,30 +347,39 @@ Configuration for OpenAI API, used by LLM ranker.
 
 Part of configurations can be overwritten by environment variables.
 
-| Configuration                  | Environment Variable          |
-|--------------------------------|-------------------------------|
-| `database.cache_store`         | `GORSE_CACHE_STORE`           |
-| `database.data_store`          | `GORSE_DATA_STORE`            |
-| `database.table_prefix`        | `GORSE_TABLE_PREFIX`          |
-| `database.cache_table_prefix`  | `GORSE_CACHE_TABLE_PREFIX`    |
-| `database.data_table_prefix`   | `GORSE_DATA_TABLE_PREFIX`     |
-| `master.port`                  | `GORSE_MASTER_PORT`           |
-| `master.host`                  | `GORSE_MASTER_HOST`           |
-| `master.ssl_mode`              | `GORSE_MASTER_SSL_MODE`       |
-| `master.ssl_ca`                | `GORSE_MASTER_SSL_CA`         |
-| `master.ssl_cert`              | `GORSE_MASTER_SSL_CERT`       |
-| `master.ssl_key`               | `GORSE_MASTER_SSL_KEY`        |
-| `master.http_port`             | `GORSE_MASTER_HTTP_PORT`      |
-| `master.http_host`             | `GORSE_MASTER_HTTP_HOST`      |
-| `master.n_jobs`                | `GORSE_MASTER_JOBS`           |
-| `master.dashboard_user_name`   | `GORSE_DASHBOARD_USER_NAME`   |
-| `master.dashboard_password`    | `GORSE_DASHBOARD_PASSWORD`    |
-| `master.dashboard_auth_server` | `GORSE_DASHBOARD_AUTH_SERVER` |
-| `master.dashboard_redacted`    | `GORSE_DASHBOARD_REDACTED`    |
-| `master.admin_api_key`         | `GORSE_ADMIN_API_KEY`         |
-| `server.api_key`               | `GORSE_SERVER_API_KEY`        |
-| `oidc.enable`                  | `GORSE_OIDC_ENABLE`           |
-| `oidc.issuer`                  | `GORSE_OIDC_ISSUER`           |
-| `oidc.client_id`               | `GORSE_OIDC_CLIENT_ID`        |
-| `oidc.client_secret`           | `GORSE_OIDC_CLIENT_SECRET`    |
-| `oidc.redirect_url`            | `GORSE_OIDC_REDIRECT_URL`     |
+| Configuration                  | Environment Variable              |
+|--------------------------------|-----------------------------------|
+| `database.cache_store`         | `GORSE_CACHE_STORE`               |
+| `database.data_store`          | `GORSE_DATA_STORE`                |
+| `database.table_prefix`        | `GORSE_TABLE_PREFIX`              |
+| `database.cache_table_prefix`  | `GORSE_CACHE_TABLE_PREFIX`        |
+| `database.data_table_prefix`   | `GORSE_DATA_TABLE_PREFIX`         |
+| `master.port`                  | `GORSE_MASTER_PORT`               |
+| `master.host`                  | `GORSE_MASTER_HOST`               |
+| `master.ssl_mode`              | `GORSE_MASTER_SSL_MODE`           |
+| `master.ssl_ca`                | `GORSE_MASTER_SSL_CA`             |
+| `master.ssl_cert`              | `GORSE_MASTER_SSL_CERT`           |
+| `master.ssl_key`               | `GORSE_MASTER_SSL_KEY`            |
+| `master.http_port`             | `GORSE_MASTER_HTTP_PORT`          |
+| `master.http_host`             | `GORSE_MASTER_HTTP_HOST`          |
+| `master.n_jobs`                | `GORSE_MASTER_JOBS`               |
+| `master.dashboard_user_name`   | `GORSE_DASHBOARD_USER_NAME`       |
+| `master.dashboard_password`    | `GORSE_DASHBOARD_PASSWORD`        |
+| `master.dashboard_auth_server` | `GORSE_DASHBOARD_AUTH_SERVER`     |
+| `master.dashboard_redacted`    | `GORSE_DASHBOARD_REDACTED`        |
+| `master.admin_api_key`         | `GORSE_ADMIN_API_KEY`             |
+| `server.api_key`               | `GORSE_SERVER_API_KEY`            |
+| `oidc.enable`                  | `GORSE_OIDC_ENABLE`               |
+| `oidc.issuer`                  | `GORSE_OIDC_ISSUER`               |
+| `oidc.client_id`               | `GORSE_OIDC_CLIENT_ID`            |
+| `oidc.client_secret`           | `GORSE_OIDC_CLIENT_SECRET`        |
+| `oidc.redirect_url`            | `GORSE_OIDC_REDIRECT_URL`         |
+| `blob.uri`                     | `GORSE_BLOB_URI`                  |
+| `blob.s3.endpoint`             | `S3_ENDPOINT`                     |
+| `blob.s3.access_key_id`        | `S3_ACCESS_KEY_ID`                |
+| `blob.s3.secret_access_key`    | `S3_SECRET_ACCESS_KEY`            |
+| `blob.gcs.credentials_file`    | `GCS_CREDENTIALS_FILE`            |
+| `blob.azure.endpoint`          | `AZURE_STORAGE_ENDPOINT`          |
+| `blob.azure.account_name`      | `AZURE_STORAGE_ACCOUNT_NAME`      |
+| `blob.azure.account_key`       | `AZURE_STORAGE_ACCOUNT_KEY`       |
+| `blob.azure.connection_string` | `AZURE_STORAGE_CONNECTION_STRING` |
