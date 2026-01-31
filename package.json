@@ -32,5 +32,9 @@
     "onlyBuiltDependencies": [
       "esbuild"
     ]
+  },
+  "dependencies": {
+    "@vueuse/core": "^14.2.0",
+    "swiper": "^12.1.0"
   }
 }

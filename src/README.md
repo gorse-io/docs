@@ -15,40 +15,48 @@ actions:
 
 features:
   - title: Multi-source
-    icon: si-glyph-multifunction-knife
-    details: Recommend items from latest, user-to-user, item-to-item and collaborative filtering and etc.
-
-  - title: AutoML
-    icon: brightness-auto
-    details: Search the best recommendation model automatically.
-
-  - title: Distributed
     icon: cluster
-    details: Support horizontal scaling in the recommendation stage after single node training.
+    details: Recommend items from latest, user-to-user, item-to-item and collaborative filtering and etc.
+    link: docs/concepts/recommenders/
+
+  - title: Multimodal
+    icon: si-glyph-multifunction-knife
+    details: Support multimodal content (text, images, videos, etc.) via embedding.
+    link: docs/concepts/data-source.md#describe-items-via-labels
+
+  - title: AI-powered
+    icon: brightness-auto
+    details: Support both classical recommenders and LLM-based recommenders.
+    link: docs/concepts/ranking.md
+
+  - title: GUI dashboard
+    icon: dashboard
+    details: Provide GUI dashboard for recommendation pipeline editing, and data management.
+    link: docs/dashboard/recflow.md
 
   - title: RESTful APIs
     icon: http
     details: Expose RESTful APIs for data CRUD and recommendation requests.
+    link: docs/api/restful-api.md
 
   - title: Cross database
     icon: database
     details: Support Redis, MySQL, Postgres, MongoDB, and ClickHouse.
+    link: docs/config.md#database
 
   - title: Online evaluation
     icon: chart
-    details: Analyze online recommendation performance from recently user feedback.
-
-  - title: GUI dashboard
-    icon: dashboard
-    details: Provide GUI dashboard for data management and system monitoring.
+    details: Analyze online recommendation performance from recent user feedback.
+    link: docs/concepts/evaluation.md
 
   - title: Open source
     icon: open-source-fill
     details: The codebase is released under Apache 2 license and driven by the community.
+    link: https://github.com/gorse-io/gorse/blob/master/LICENSE
 
 ---
 
-Gorse is an open-source recommendation system written in Go. Gorse aims to be a universal open-source recommender system that can be easily introduced into a wide variety of online services. By importing items, users and interaction data into Gorse, the system will automatically train models to generate recommendations for each user.
+Gorse is an AI powered open-source recommender system written in Go. Gorse aims to be a universal open-source recommender system that can be easily integrated into a wide variety of online services. By importing items, users and interaction data into Gorse, the system will automatically train models to generate recommendations for each user.
 
 # Quick Start
 
@@ -60,7 +68,7 @@ docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
 
 The playground mode will download data from [GitRec](https://gitrec.gorse.io) and import it into Gorse. The dashboard is available at http://localhost:8088.
 
-![](https://github.com/gorse-io/dashboard/blob/master/assets/dashboard.png?raw=true)
+<Swiper :items="['/img/dashboard/overview.png', '/img/dashboard/tasks.png', '/img/dashboard/recflow.png']" />
 
 After the "Generate item-to-item recommendation" task is completed on the "Tasks" page, try to insert several feedbacks into Gorse. Suppose Bob is a developer who interested in LLM related repositories. We insert his star feedback to Gorse.
 

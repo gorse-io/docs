@@ -4,7 +4,7 @@ icon: home
 title: 主页
 heroImage: "/logo.png"
 heroText: Gorse
-tagline: 一个使用Go语言开发的开源推荐系统。
+tagline: 一个使用Go语言开发的开源智能推荐系统。
 actions:
   - text: 文档
     link: /zh/docs/
@@ -13,29 +13,44 @@ actions:
     link: "https://gitrec.gorse.io"
 features:
   - title: 多源
-    icon: si-glyph-multifunction-knife
-    details: 从热门、最新、基于用户、基于项目和协作过滤中推荐物品。
-  - title: 自动机器学习
-    icon: brightness-auto
-    details: 在后台自动搜索最佳的推荐模型。
-  - title: 分布式预测
     icon: cluster
-    details: 在单节点训练后的推荐阶段支持水平伸缩。
+    details: 从最新、基于用户、基于物品和协同过滤等方式推荐物品。
+    link: docs/concepts/recommenders/
+
+  - title: 多模态
+    icon: si-glyph-multifunction-knife
+    details: 通过嵌入支持多模态内容（文本、图像、视频等）。
+    link: docs/concepts/data-source.md#describe-items-via-labels
+
+  - title: AI 驱动
+    icon: brightness-auto
+    details: 支持传统推荐算法和基于大语言模型的推荐算法。
+    link: docs/concepts/ranking.md
+
+  - title: GUI 仪表盘
+    icon: dashboard
+    details: 提供用于推荐流程编辑和数据管理的 GUI 仪表盘。
+    link: docs/dashboard/recflow.md
+
   - title: RESTful APIs
     icon: http
-    details: 为数据CRUD和推荐请求暴露RESTful API。
-  - title: 多数据源支持
+    details: 提供用于数据增删改查和推荐请求的 RESTful API。
+    link: docs/api/restful-api.md
+
+  - title: 跨数据库
     icon: database
-    details: 支持使用Redis、MySQL、Postgres、MongoDB和ClickHouse作为后端存储。
+    details: 支持 Redis、MySQL、Postgres、MongoDB 和 ClickHouse。
+    link: docs/config.md#database
+
   - title: 在线评估
     icon: chart
-    details: 根据最近插入的反馈分析在线推荐的效果。
-  - title: 仪表盘
-    icon: dashboard
-    details: 提供数据管理、系统监控、集群状态检查的GUI界面。
+    details: 根据最近的用户反馈分析在线推荐效果。
+    link: docs/concepts/evaluation.md
+
   - title: 开源
     icon: open-source-fill
-    details: 代码库是在Apache 2许可下发布的、由社区驱动的。
+    details: 代码库基于 Apache 2 许可证发布，由社区驱动。
+    link: https://github.com/gorse-io/gorse/blob/master/LICENSE
 ---
 
 Gorse是一个用Go语言编写的开源推荐系统。Gorse的目标是成为一个通用的开源推荐系统，可以很容易地被引入到各种各样的在线服务中。通过将物品、用户和交互数据导入到Gorse中，系统将自动训练模型，为每个用户生成推荐。
@@ -61,6 +76,8 @@ docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
 :::
 
 Playground模式将从[GitRec]下载数据并导入到Gorse中。仪表板可以通过http://localhost:8088访问。
+
+<Swiper :items="['/img/dashboard/overview.png', '/img/dashboard/tasks.png', '/img/dashboard/recflow.png']" />
 
 在“任务”页面上完成“查找临近的物品”任务后，尝试向Gorse插入一些反馈。假设Bob是GitHub中几个人工智能仓库的开发人员。我们把他的star行为的反馈写入Gorse。
 
@@ -282,43 +299,31 @@ client.getRecommend("bob");
 @tab Rust
 
 ```rust
-client.get_recommend("bob").await;
+use gorse_rs::{RecommendOptions, Gorse};
+
+let client = Gorse::new("http://127.0.0.1:8088", "");
+client.get_recommend("bob", RecommendOptions::default()).await;
 ```
 
 @tab Ruby
 
 ```ruby
-client.get_recommend('10')
+client.get_recommend('bob')
 ```
 
 @tab PHP
 
 ```php
-$client->getRecommend('10');
+$client->getRecommend('bob');
 ```
 
 @tab .NET
 
 ```cs
-client.GetRecommend("10");
+client.GetRecommend("bob");
 ```
 
 :::
-
-```json
-[
-  "mbostock:d3",
-  "nt1m:material-framework",
-  "mdbootstrap:vue-bootstrap-with-material-design",
-  "justice47:f2-vue",
-  "10clouds:cyclejs-cookie",
-  "academicpages:academicpages.github.io",
-  "accenture:alexia",
-  "addyosmani:tmi",
-  "1wheel:d3-starterkit",
-  "acdlite:redux-promise"
-]
-```
 
 > 最终的输出可能与示例不同，因为playground数据集会随时间而变化。
 
