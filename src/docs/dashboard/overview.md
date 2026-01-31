@@ -1,17 +1,17 @@
 ---
-icon: dashboard
+icon: home
 ---
-# Gorse Dashboard
+# Overview
 
-The master node provides the Gorse dashboard, which can be accessed through the HTTP port (the default value is `8088`) of the master node. The HTTP host and the HTTP port are specified in the [`[master]`](./config#master) section of configuration file.
+The master node provides the Gorse dashboard, which can be accessed through the HTTP port (the default value is `8088`) of the master node. The HTTP host and the HTTP port are specified in the [`[master]`](../config#master) section of configuration file.
 
 ## Authorization
 
 The default configuration allows access to the console without authorization.
 
-- **Username and password:** The username and password for the dashboard can be set In the [`[master]`](./config#master) section of configuration file. A login page will appear when accessing the dashboard if the username and password are set.
+- **Username and password:** The username and password for the dashboard can be set In the [`[master]`](../config#master) section of configuration file. A login page will appear when accessing the dashboard if the username and password are set.
 
-- **OpenID Connect:** Enable and config the [`[oidc]`](./config#oidc) section of configuration file. You will be redirected to the identity provider for authentication when accessing the dashboard if OpenID Connect is enabled.
+- **OpenID Connect:** Enable and config the [`[oidc]`](../config#oidc) section of configuration file. You will be redirected to the identity provider for authentication when accessing the dashboard if OpenID Connect is enabled.
 
 ## Guide
 
@@ -64,6 +64,10 @@ In the advance page of the dashboard, you can perform the following operations:
 | Import Item | 1. Click the "Import Item" button to navigate to the "Import Item" page.<br>2. Click "Browse" to select a JSON lines file containing item data.<br>3. Click "Confirm Import" to start importing items from the selected file. |
 | Import Feedback | 1. Click the "Import Feedback" button to navigate to the "Import Feedback" page.<br>2. Click "Browse" to select a JSON lines file containing feedback data.<br>3. Click "Confirm Import" to start importing feedback from the selected file. |
 | Purge Database | Click the "Purge Database" button to delete all data in the database.<br>This operation is irreversible, so please proceed with caution. |
+
+### Recommendation Flow
+
+The [Recommendation Flow](./recflow.md) interface allows visually modifying the current recommendation flow.
 
 ### System Settings
 

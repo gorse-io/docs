@@ -321,7 +321,7 @@ OpenTelemetry 追踪配置。
 
 ## `[oidc]`
 
-为[仪表盘](./gorse-dashboard.md)配置 OpenID Connect (OIDC) 认证。
+为[仪表盘](./dashboard/overview.md)配置 OpenID Connect (OIDC) 认证。
 
 | 键               | 类型      | 默认值     | 描述                           |
 |-----------------|---------|---------|------------------------------|

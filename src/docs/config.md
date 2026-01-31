@@ -321,7 +321,7 @@ OpenTelemetry tracing configuration.
 
 ## `[oidc]`
 
-Configure OpenID Connect (OIDC) authentication for [dashboard](./gorse-dashboard).
+Configure OpenID Connect (OIDC) authentication for [dashboard](./dashboard/overview.md).
 
 | Key             | Type    | Default | Description                                  |
 |-----------------|---------|---------|----------------------------------------------|

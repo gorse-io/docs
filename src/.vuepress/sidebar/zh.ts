@@ -69,7 +69,11 @@ export const zhSidebar = sidebar({
     {
       "text": "控制台",
       "icon": "dashboard",
-      "link": "gorse-dashboard"
+      "prefix": "dashboard/",
+      "children": [
+        "overview",
+        "recflow",
+      ]
     },
     {
       "text": "贡献指南",

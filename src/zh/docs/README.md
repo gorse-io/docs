@@ -35,7 +35,7 @@ icon: explore
     - [PHP SDK](api/php-sdk.md)
     - [Ruby SDK](api/ruby-sdk.md)
     - [.NET SDK](api/dotnet-sdk.md)
-- [控制台](gorse-dashboard.md)
+- [控制台](dashboard/overview.md)
 - [贡献指南](contribution-guide.md)
 - [常见问题](faq.md)
 

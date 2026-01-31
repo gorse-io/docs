@@ -67,9 +67,13 @@ export const enSidebar = sidebar({
       ]
     },
     {
-      "text": "Gorse Dashboard",
+      "text": "Dashboard",
       "icon": "dashboard",
-      "link": "gorse-dashboard"
+      "prefix": "dashboard/",
+      "children": [
+        "overview",
+        "recflow",
+      ]
     },
     {
       "text": "Contribution Guide",

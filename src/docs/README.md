@@ -35,7 +35,7 @@ Welcome to the official documents for the Gorse recommender system.
   - [PHP SDK](api/php-sdk.md)
   - [Ruby SDK](api/ruby-sdk.md)
   - [.NET SDK](api/dotnet-sdk.md)
-- [Gorse Dashboard](gorse-dashboard.md)
+- [Dashboard](dashboard/overview.md)
 - [Contribution Guide](contribution-guide.md)
 - [FAQ](faq.md)
 

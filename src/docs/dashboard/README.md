@@ -1,0 +1,6 @@
+---
+icon: dashboard
+---
+# Dashboard
+
+<Catalog />

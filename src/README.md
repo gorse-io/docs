@@ -4,7 +4,7 @@ icon: home
 title: Home
 heroImage: /logo.png
 heroText: Gorse
-tagline: Gorse open-source recommender system engine written in Go
+tagline: AI powered open-source recommender system engine written in Go
 actions:
   - text: Documentation
     link: /docs/
