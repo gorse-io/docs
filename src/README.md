@@ -10,6 +10,9 @@ actions:
     link: /docs/
     type: primary
 
+  - text: Playground
+    link: https://play.gorse.io
+
   - text: Live Demo
     link: https://gitrec.gorse.io
 

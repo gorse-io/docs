@@ -69,6 +69,7 @@ export const zhSidebar = sidebar({
     {
       "text": "控制台",
       "icon": "dashboard",
+      "collapsible": true,
       "prefix": "dashboard/",
       "children": [
         "overview",

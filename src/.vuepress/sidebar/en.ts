@@ -69,6 +69,7 @@ export const enSidebar = sidebar({
     {
       "text": "Dashboard",
       "icon": "dashboard",
+      "collapsible": true,
       "prefix": "dashboard/",
       "children": [
         "overview",

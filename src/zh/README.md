@@ -9,6 +9,8 @@ actions:
   - text: 文档
     link: /zh/docs/
     type: primary
+  - text: 试用
+    link: https://play.gorse.io
   - text: 在线示例
     link: "https://gitrec.gorse.io"
 features:
