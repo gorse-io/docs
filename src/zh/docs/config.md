@@ -194,13 +194,13 @@ chhttps://user:password@host[:port]/database?param1=value1&...&paramN=valueN
 
 [协同过滤推荐器](concepts/recommenders/collaborative.md)的配置。
 
-| 键                 | 类型      | 默认值    | 描述             |
-|-------------------|---------|--------|----------------|
-| `type`            | string  | `"none"`| 协同过滤的类型（`none` 或 `mf`）。 |
-| `fit_period`      | string  | `60m`  | 模型训练周期         |
-| `fit_epoch`       | integer | `100`  | 模型搜索中每个模型的训练轮数 |
-| `optimize_period` | string  | `360m` | 模型搜索周期         |
-| `optimize_trials` | integer | `10`   | 模型搜索的试验次数      |
+| 键                 | 类型      | 默认值      | 描述                      |
+|-------------------|---------|----------|-------------------------|
+| `type`            | string  | `"none"` | 协同过滤的类型（`none` 或 `mf`）。 |
+| `fit_period`      | string  | `60m`    | 模型训练周期                  |
+| `fit_epoch`       | integer | `100`    | 模型搜索中每个模型的训练轮数          |
+| `optimize_period` | string  | `360m`   | 模型搜索周期                  |
+| `optimize_trials` | integer | `10`     | 模型搜索的试验次数               |
 
 `[recommend.collaborative.early_stopping]`
 
@@ -371,4 +371,6 @@ OpenTelemetry 追踪配置。
 | `blob.azure.account_name`      | `AZURE_STORAGE_ACCOUNT_NAME`      |
 | `blob.azure.account_key`       | `AZURE_STORAGE_ACCOUNT_KEY`       |
 | `blob.azure.connection_string` | `AZURE_STORAGE_CONNECTION_STRING` |
-
+| `openai.base_url`              | `OPENAI_BASE_URL`                 |
+| `openai.auth_token`            | `OPENAI_AUTH_TOKEN`               |
+| `openai.chat_completion_model` | `OPENAI_CHAT_COMPLETION_MODEL`    |

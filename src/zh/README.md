@@ -61,21 +61,9 @@ Gorse是一个用Go语言编写的开源推荐系统。Gorse的目标是成为�
 
 Playground模式是为初学者准备的。只需通过以下命令为GitHub仓库设置一个推荐系统。
 
-::: code-tabs#setup
-
-@tab:active Bash
-
-```bash
-curl -fsSL https://gorse.io/playground | bash
-```
-
-@tab Docker
-
 ```bash
 docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
 ```
-
-:::
 
 Playground模式将从[GitRec]下载数据并导入到Gorse中。仪表板可以通过http://localhost:8088访问。
 
