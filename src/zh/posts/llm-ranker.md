@@ -65,14 +65,14 @@ docker run -p 8088:8088 \
 
 ## 排序准确率评估
 
-控制台中的预览确保大语言模型可以返回正确的格式，但是排序的准确率需要使用*gorse-benchmark*工具进行评估。
+控制台中的预览确保大语言模型可以返回正确的格式，但是排序的准确率需要使用*gorse-cli*工具进行评估。
 
-1. 从代码仓库编译[gorse-benchmark](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-benchmark)
-1. *gorse-benchmark*暂时不支持流程编辑器定义的推荐流程，因此需要将推荐工作流的配置写入配置文件中。另外，数据库的访问方式也需要通过配置文件或者环境变量提供。
+1. 从代码仓库编译[gorse-cli](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-cli)
+1. *gorse-cli*暂时不支持流程编辑器定义的推荐流程，因此需要将推荐工作流的配置写入配置文件中。另外，数据库的访问方式也需要通过配置文件或者环境变量提供。
 3. 运行以下命令评估大语言模型排序的准确率：
 
 ```bash
-./gorse-benchmark llm --config config.toml -s 1
+./gorse-cli bench-llm --config config.toml -s 1
 ```
 
 `-s`参数指定每个用户的训练样本数量。划分训练集和测试集的时候，对于每个用户，首先将反馈按照时间从最新到最旧排序，然后取最新反馈作为测试集，后续的`s`条反馈作为训练集，剩余的反馈不参与训练。在评估排序能力时，对于每个用户，随机选择99个未反馈物品与测试集物品一起排序，计算NDCG@10，数值越大表示排序准确率越高。
