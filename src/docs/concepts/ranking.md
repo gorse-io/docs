@@ -10,9 +10,10 @@ Gorse merges recommendation from multiple recommenders and ranks them to produce
 - `type` is the ranker type. The supported ranker is:
   - `none` means no ranking is performed.
   - `fm` uses factorization machines[^1] to rank recommended items.
-  - `llm` uses large language models (LLMs) to rank recommended items.
-- `prompt` is the prompt template used by LLM ranker. This field is required when `type` is `llm`. The template supports the following variables:
+  - `llm` uses LLM-based rerankers[^2] to rank recommended items.
+- `query_template` is the query template used by LLM-based reranker. This field is required when `type` is `llm`. The template supports the following variables:
   - `feedback` is the user's historical feedback.
+- `document_template` is the document template used by LLM-based reranker. This field is required when `type` is `llm`. The template supports the following variables:
   - `items` is a list of recommended items to be ranked.
 ::: details Type definitions of `feedback` and `items`.
 The type of `feedback` is:
@@ -105,34 +106,31 @@ x_i\sum^n_{j=1}v_{j,f}x_j-v_{i,f}x^2_i,&\text{if }\theta\text{ is }v_{i,f}
 \end{cases}
 $$
 
-### Large Language Models
+### LLM-based Rerankers
 
-Recent studies have shown that large language models (LLMs) such as ChatGPT can effectively perform recommendation through prompt engineering[^2][^3]. Gorse leverages this capability by using LLMs to rank recommended items based on user feedback and item information.
+Recent studies have shown that large language models (LLMs) such as ChatGPT can effectively perform recommendation through prompt engineering[^3][^4]. Gorse leverages this capability by using LLM-based rerankers[^2] to rank recommended items based on user feedback and item information.
 
-Before using the LLM ranker, OpenAI API must be configured in the [`[openai]`](../../docs/config#openai) of the configuration file. A prompt template must also be provided in the ranker configuration. An example prompt template for recommending GitHub repositories is as follows:
+Before using the LLM-based reranker, reranker API must be configured in the [`[recommend.ranker.reranker_api]`](../../docs/config#recommendrankerreranker_api) of the configuration file. Query template and document Template must also be provided in the ranker configuration. An example for recommending GitHub repositories is as follows:
 
-````jinja
+- Query Template
+
+```jinja
 You are a GitHub repository recommender system. Given a user is interested in the following repositories:
 {% for repo in feedback -%}
 - {{ repo.Comment }}
 {% endfor -%}
-Please sort the following repositories by the user's interests:
-```csv
-item_id,description
-{% for repo in items -%}
-{{ repo.ItemId }},{{ repo.Comment | replace(",", " ") | replace("\n", " ") }}
-{% endfor -%}
+Please sort repositories by the user's interests.
 ```
-Return the sorted list of repository IDs in CSV format. For example:
-```csv
-{% for repo in items[:3] -%}
-{{ repo.ItemId }}
-{% endfor -%}
-```
-````
 
-`feedback` contains the user's recent feedback and `items` contains the list of recommended items to be ranked. The number of `feedback` items can be controlled by the `recommend.context_size`. The LLM ranker renders the prompt template and sends it to the OpenAI API. The response is then parsed to extract the ranked list of item IDs.
+- Document Template
+
+```jinja
+{{ item.Comment | replace(",", " ") | replace("\n", " ") }}
+```
+
+`feedback` contains the user's recent feedback and `items` contains the list of recommended items to be ranked. The number of `feedback` items can be controlled by the `recommend.context_size`. The LLM-based reranker renders the query template and document templates, then sends them to the reranker API. The response is then parsed to extract the ranked list of item IDs.
 
 [^1]: Rendle, Steffen. "Factorization machines." 2010 IEEE International conference on data mining. IEEE, 2010.
-[^2]: Liu, Junling, et al. "Is chatgpt a good recommender? a preliminary study." arXiv preprint arXiv:2304.10149 (2023).
-[^3]: Dai, Sunhao, et al. "Uncovering chatgpt’s capabilities in recommender systems." Proceedings of the 17th ACM Conference on Recommender Systems. 2023.
+[^2]: Nogueira, Rodrigo, et al. "Document ranking with a pretrained sequence-to-sequence model." Findings of the association for computational linguistics: EMNLP 2020. 2020.
+[^3]: Liu, Junling, et al. "Is chatgpt a good recommender? a preliminary study." arXiv preprint arXiv:2304.10149 (2023).
+[^4]: Dai, Sunhao, et al. "Uncovering chatgpt’s capabilities in recommender systems." Proceedings of the 17th ACM Conference on Recommender Systems. 2023.

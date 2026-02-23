@@ -231,12 +231,24 @@ chhttps://user:password@host[:port]/database?param1=value1&...&paramN=valueN
 | `fit_epoch`       | integer | `100`        | 模型拟合的轮数。         |
 | `optimize_period` | string  | `"360m"`     | 超参数优化的时间周期。      |
 | `optimize_trials` | integer | `10`         | 超参数优化的试验次数。      |
+| `query_template`  | string  |              | 大语言模型重排器查询模板。          |
+| `document_template`| string |              | 大语言模型重排器文档模板。          |
 
 `[recommend.ranker.early_stopping]`
 
 | 键          | 类型      | 默认值  | 描述                 |
 |------------|---------|------|--------------------|
 | `patience` | integer | `10` | 如果没有改进，等待多少轮后停止训练。 |
+
+`[recommend.ranker.reranker_api]`
+
+[大语言模型重排器](./concepts/ranking.md#大语言模型重排)的配置。
+
+| 键           | 类型   | 默认值 | 描述                                         |
+|--------------|--------|---------|----------------------------------------------|
+| `auth_token` | string |         | Reranker API 密钥。                |
+| `model`      | string |         | Reranker 模型。                              |
+| `url`        | string |         | Reranker API 的 URL（Jina 风格）。 |
 
 ### `[recommend.fallback]`
 
@@ -374,3 +386,6 @@ OpenTelemetry 追踪配置。
 | `openai.base_url`              | `OPENAI_BASE_URL`                 |
 | `openai.auth_token`            | `OPENAI_AUTH_TOKEN`               |
 | `openai.chat_completion_model` | `OPENAI_CHAT_COMPLETION_MODEL`    |
+| `recommend.ranker.reranker_api.url` | `RERANKER_URL`                 |
+| `recommend.ranker.reranker_api.model` | `RERANKER_MODEL`               |
+| `recommend.ranker.reranker_api.auth_token` | `RERANKER_AUTH_TOKEN`           |

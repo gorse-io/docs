@@ -36,17 +36,13 @@ Double-click the External API node to see the preview UI for external API recomm
 
 After entering a User ID and clicking the run button, the preview UI will call the external API to retrieve and display recommendation results.
 
-### LLM Ranker Preview
+### LLM-based Reranker Template Preview
 
-Double-click the Ranker node and select the type as LLM to see the preview UI for Large Language Model ranking.
+Double-click the Ranker node and select the type as LLM to see the preview UI for the LLM-based reranker template.
 
 ![=600x](../../img/dashboard/llm.png)
 
-After entering a User ID and clicking the run button, the preview UI will read the user's recent feedback and the latest items, and use the prompt template to render the prompt. The rendered prompt is sent to the Large Language Model, which ranks the latest items based on recent feedback and displays the ranking results.
-
-::: tip
-The LLM ranker preview is mainly used to check if the format of the LLM output meets expectations. If the returned format is incorrect or a lot of ranking content is missing, the ranking effect cannot be discussed.
-:::
+After entering a User ID and clicking the run button, the preview UI will read the user's recent feedback and the latest items, and use the query template and document template to render the content sent to the reranker API.
 
 ## Save and Clear
 

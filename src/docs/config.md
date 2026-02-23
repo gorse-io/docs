@@ -231,12 +231,24 @@ Configuration for [rankers](concepts/ranking).
 | `fit_epoch`       | integer | `100`        | The number of epochs for model fitting.                        |
 | `optimize_period` | string  | `"360m"`     | The time period for hyperparameter optimization.               |
 | `optimize_trials` | integer | `10`         | The number of trials for hyperparameter optimization.          |
+| `query_template`  | string  |              | Query template for LLM-based reranker.                                 |
+| `document_template`| string  |              | Documents template for LLM-based reranker.                             |
 
 `[recommend.ranker.early_stopping]`
 
 | Key        | Type    | Default | Description                                                            |
 |------------|---------|---------|------------------------------------------------------------------------|
 | `patience` | integer | `10`    | Number of epochs to wait if no improvement and then stop the training. |
+
+`[recommend.ranker.reranker_api]`
+
+Configuration for [LLM-based reranker](./concepts/ranking.md#llm-based-rerankers).
+
+| Key          | Type   | Default | Description                                                  |
+|--------------|--------|---------|--------------------------------------------------------------|
+| `auth_token` | string |         | Auth token for the reranker API.                             |
+| `model`      | string |         | The reranker model.                                          |
+| `url`        | string |         | URL for the reranker API (Jina style). |
 
 ### `[recommend.fallback]`
 
@@ -331,6 +343,7 @@ Configure OpenID Connect (OIDC) authentication for [dashboard](./dashboard/overv
 | `client_secret` | string  |         | Token access to the OAuth application.       |
 | `redirect_url`  | string  |         | URL used to redirect after authenticated.    |
 
+<!--
 ## `[openai]`
 
 Configuration for OpenAI API, used by [LLM ranker](./concepts/ranking.md#large-language-models).
@@ -342,6 +355,7 @@ Configuration for OpenAI API, used by [LLM ranker](./concepts/ranking.md#large-l
 | `chat_completion_model` | string  |         | Name of chat completion model.                   |
 | `chat_completion_rpm`   | integer |         | Maximum requests per minute for chat completion. |
 | `chat_completion_tpm`   | integer |         | Maximum tokens per minute for chat completion.   |
+-->
 
 ## Environment Variables
 
@@ -386,3 +400,6 @@ Part of configurations can be overwritten by environment variables.
 | `openai.base_url`              | `OPENAI_BASE_URL`                 |
 | `openai.auth_token`            | `OPENAI_AUTH_TOKEN`               |
 | `openai.chat_completion_model` | `OPENAI_CHAT_COMPLETION_MODEL`    |
+| `recommend.ranker.reranker_api.url` | `RERANKER_URL`                 |
+| `recommend.ranker.reranker_api.model` | `RERANKER_MODEL`               |
+| `recommend.ranker.reranker_api.auth_token` | `RERANKER_AUTH_TOKEN`           |

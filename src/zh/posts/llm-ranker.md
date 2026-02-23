@@ -6,93 +6,101 @@ category:
 tag:
   - 教程
 ---
-# 使用大语言模型排序推荐
+# 使用大语言模型排序推荐结果
 
-Gorse推荐系统在[v0.5.2](https://github.com/gorse-io/gorse/releases/tag/v0.5.2)到[v0.5.4](https://github.com/gorse-io/gorse/releases/tag/v0.5.4)版本引入了[可视化编排推荐流程](../docs/dashboard/recflow.md)和[大语言模型排序](../docs/concepts/ranking.md)两大新功能。本文将介绍如何结合这两项功能，使用可视化流程编辑器创建一个使用大语言模型进行排序的推荐流程。
+Gorse 推荐系统在 [v0.5.2](https://github.com/gorse-io/gorse/releases/tag/v0.5.2) 到 [v0.5.5](https://github.com/gorse-io/gorse/releases/tag/v0.5.5) 版本引入了[可视化编排推荐流程](../docs/dashboard/recflow.md)和 [大语言模型重排](../docs/concepts/ranking.md) 两大新功能。本文将介绍如何结合这两项功能，使用可视化流程编辑器创建一个使用大语言模型重排器进行排序的推荐流程。
 
 ## 准备工作
 
-首先需要准备好兼容OpenAI API的大语言模型服务，在本文发布的时间点，[英伟达](https://build.nvidia.com/)提供了免费的大模型推理服务值得尝试。
+首先需要准备好兼容 Jina 重排序 API 的服务，本文以阿里云百炼提供的重排序服务为例。
 
-如果您已经部署好了Gorse推荐系统，那么以[英伟达](https://build.nvidia.com/)为例，需要将API地址、API密钥和模型名称添加到配置文件的以下字段中：
+如果您已经部署好了 Gorse 推荐系统，需要将 API 地址、API 密钥和模型名称添加到配置文件的以下字段中：
 
 ```toml
-[openai]
+[recommend.ranker.reranker_api]
 
-# Base URL of OpenAI API.
-base_url = "https://integrate.api.nvidia.com/v1"
+# URL for the reranker API, supports Jina style.
+url = "https://dashscope.aliyuncs.com/compatible-api/v1/reranks"
 
-# API key of OpenAI API.
-auth_token = "NVIDIA_API_KEY"
+# Auth token for the reranker API.
+auth_token = "RERANKER_API_KEY"
 
-# Name of chat completion model.
-chat_completion_model = "openai/gpt-oss-120b"
+# The reranker model.
+model = "qwen3-rerank"
 ```
 
 也可以将这些字段通过环境变量覆盖：
 
 ```bash
-OPENAI_BASE_URL="https://integrate.api.nvidia.com/v1"
-OPENAI_AUTH_TOKEN="NVIDIA_API_KEY"
-OPENAI_CHAT_COMPLETION_MODEL="openai/gpt-oss-120b"
+GORSE_RERANKER_URL="https://dashscope.aliyuncs.com/compatible-api/v1/reranks"
+GORSE_RERANKER_AUTH_TOKEN="RERANKER_API_KEY"
+GORSE_RERANKER_MODEL="qwen3-rerank"
 ```
 
-没有部署过Gorse也不用担心，可以启动一个临时的Gorse实例来体验这些功能：
+没有部署过 Gorse 也不用担心，可以启动一个临时的 Gorse 实例来体验这些功能：
 
 ```bash
 docker run -p 8088:8088 \
-  -e OPENAI_BASE_URL="https://integrate.api.nvidia.com/v1" \
-  -e OPENAI_AUTH_TOKEN="NVIDIA_API_KEY" \
-  -e OPENAI_CHAT_COMPLETION_MODEL="openai/gpt-oss-120b" \
+  -e GORSE_RERANKER_URL="https://dashscope.aliyuncs.com/compatible-api/v1/reranks" \
+  -e GORSE_RERANKER_AUTH_TOKEN="RERANKER_API_KEY" \
+  -e GORSE_RERANKER_MODEL="qwen3-rerank" \
   zhenghaoz/gorse-in-one --playground
 ```
 
 ## 可视化编排
 
-进入控制台（默认端口8088），点击左侧导航栏的*RecFlow*，进入推荐流程编辑器页面：
+进入控制台（默认端口 8088），点击左侧导航栏的 *RecFlow*，进入推荐流程编辑器页面：
 
 ![](../../img/dashboard/recflow.png)
 
-推荐流程的起点为数据源节点，终点为推荐节点，详细的节点介绍请参考[推荐流程文档](../docs/dashboard/recflow.md)，本文我们只关心基于大语言模型的排序节点。受限于上下文长度，大语言模型没有办法对全体物品进行排序，因此先由多种召回推荐算法（如协同过滤、相似物品等）召回一批候选物品，这些候选物品合并后由排序节点进行排序。
+推荐流程的起点为数据源节点，终点为推荐节点，详细的节点介绍请参考[推荐流程文档](../docs/dashboard/recflow.md)，本文我们只关心基于 LLM 的排序节点。受限于上下文长度，LLM 没有办法对全体物品进行排序，因此先由多种召回推荐算法（如协同过滤、相似物品等）召回一批候选物品，这些候选物品合并后由排序节点进行排序。
 
-双击排序节点，选择类型为*LLM*，即可看到大语言模型排序的配置界面：
+双击排序节点，选择类型为 *LLM*，即可看到大语言模型重排的配置界面：
 
 ![=600x](../../img/dashboard/llm.png)
 
-大语言模型排序需要一个提示词模板，使用交互历史和候选集渲染Jinja2模板，然后将渲染好的提示词发送给大语言模型。大模型的返回格式要求为CSV，每行包含物品ID。输入用户ID后点击运行按钮，预览功能将读取用户最近的反馈和最新物品，使用提示词模板渲染提示词。将渲染好的提示词发送给大预言模型。
+大语言模型重排器需要一个查询模板和一个文档模板，使用交互历史和候选集渲染 Jinja2 模板，然后将渲染好的提示词发送给 Reranker API。输入用户 ID 后点击运行按钮，预览功能将读取用户最近的反馈和最新物品，使用模板渲染将发送给 Reranker API 的内容。
 
-保存推荐流程后，Gorse将加载流程编辑器定义的推荐流程，而不是配置文件中的推荐流程。备用节点在大模型排序中尤为重要，当大语言模型无法提供排序服务时，Gorse将使用备用节点的推荐结果。
+保存推荐流程后，Gorse 将加载流程编辑器定义的推荐流程，而不是配置文件中的推荐流程。备用节点在 大语言模型重排器 中尤为重要，当 LLM 无法提供排序服务时，Gorse 将使用备用节点的推荐结果。
 
 ## 排序准确率评估
 
-控制台中的预览确保大语言模型可以返回正确的格式，但是排序的准确率需要使用*gorse-cli*工具进行评估。
+大语言模型重排的准确率需要使用 *gorse-cli* 工具进行评估。
 
-1. 从代码仓库编译[gorse-cli](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-cli)
-1. *gorse-cli*暂时不支持流程编辑器定义的推荐流程，因此需要将推荐工作流的配置写入配置文件中。另外，数据库的访问方式也需要通过配置文件或者环境变量提供。
-3. 运行以下命令评估大语言模型排序的准确率：
+1. 从代码仓库编译 [gorse-cli](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-cli)
+2. *gorse-cli* 暂时不支持流程编辑器定义的推荐流程，因此需要将推荐工作流的配置写入配置文件中。另外，数据库的访问方式也需要通过配置文件或者环境变量提供。
+3. 运行以下命令评估 大语言模型重排器 的准确率：
 
 ```bash
-./gorse-cli bench-llm --config config.toml -s 1
+./gorse-cli bench-llm --config config.toml
 ```
 
-`-s`参数指定每个用户的训练样本数量。划分训练集和测试集的时候，对于每个用户，首先将反馈按照时间从最新到最旧排序，然后取最新反馈作为测试集，后续的`s`条反馈作为训练集，剩余的反馈不参与训练。在评估排序能力时，对于每个用户，随机选择99个未反馈物品与测试集物品一起排序，计算NDCG@10，数值越大表示排序准确率越高。
+此工具会读取用户的历史反馈，将反馈按照8:2的比例划分为训练集和测试集。针对每个用户，使用训练集中的正反馈渲染查询，使用测试集中的反馈（包括正反馈和负反馈）渲染文档，最后使用 GAUC[^1] 计算排序准确率：
 
-将协同过滤和多种大语言模型在playground数据集上的评测结果绘制如下：
+$$
+GAUC = \frac{\sum_{u\in U} n_u \cdot AUC_u}{\sum_{u\in U} n_u}
+$$
 
-::: echarts 大模型排序准确率对比
+其中 $AUC_u$ 是用户 $u$ 的 AUC，$n_u$ 是用户 $u$ 的测试集反馈数量。
+
+开源的重排序模型并不是很多，本文只选择了当前看起来最先进的 Qwen3-Reranker 模型进行评测，并与因子分解机进行对比，数据集为 playground。为了观察大语言模型重排在不同训练样本数量下的表现，我们按照用户的训练集反馈数量将用户划分为五个组，分别计算每个组的 GAUC，结果如下：
+
+::: echarts 大语言模型重排准确率对比
 
 ```json
 {
   "legend": {
-    "data": ["协同过滤", "FM", "gpt-oss-120b", "deepseek-v3.2"]
+    "data": ["协同过滤", "FM", "Qwen3-Reranker-8B", "Qwen3-Reranker-4B", "Qwen3-Reranker-0.6B"]
   },
   "xAxis": {
     "name": "训练样本数量",
-    "data": [1, 5, 10, 20, 50]
+    "data": ["1-100", "101-200", "201-300", "301-400", "401-500"],
+    "type": "category"
   },
   "yAxis": {
-    "name": "NDCG@10",
-    "type": "value"
+    "name": "GAUC",
+    "type": "value",
+    "min": 0.4
   },
   "tooltip": {
     "trigger": "item",
@@ -100,23 +108,23 @@ docker run -p 8088:8088 \
   },
   "series": [
     {
-      "name": "协同过滤",
-      "data": [0.1454, 0.2130, 0.2671, 0.2895, 0.3082],
-      "type": "bar"
-    },
-    {
       "name": "FM",
-      "data": [0.1924, 0.1937, 0.1926, 0.1924, 0.1932],
+      "data": [0.54675, 0.55576, 0.57201, 0.60794, 0.61463],
       "type": "bar"
     },
     {
-      "name": "gpt-oss-120b",
-      "data": [0.1456, 0.1964, 0.2998, 0.3086, 0.3060],
+      "name": "Qwen3-Reranker-8B",
+      "data": [0.56780, 0.55635, 0.49727, 0.53735, 0.54233],
       "type": "bar"
     },
     {
-      "name": "deepseek-v3.2",
-      "data": [0.1330, 0.1837, 0.1882, 0.2052, 0.2145],
+      "name": "Qwen3-Reranker-4B",
+      "data": [0.54130, 0.53804, 0.48226, 0.53537, 0.59649],
+      "type": "bar"
+    },
+    {
+      "name": "Qwen3-Reranker-0.6B",
+      "data": [0.51439, 0.54621, 0.46890, 0.54301, 0.49056],
       "type": "bar"
     }
   ]
@@ -124,16 +132,14 @@ docker run -p 8088:8088 \
 ```
 :::
 
-本文对比了协同过滤（矩阵分解）、gpt-oss-120b和deepseek-v3.2三种排序算法在不同训练样本数量下的NDCG@10。大语言模型在训练样本数量较少时显著优于协同过滤，随着训练样本数量的增加，协同过滤和大语言模型的差距逐渐缩小。当样本数量达到50时，协同过滤的排序准确指标已经高于gpt-oss-120b，但仍然低于deepseek-v3.2。实验结果对大模型排序的使用有以下启示：
+实验结果显示：
 
-1. 大语言模型在冷启动场景下具有显著优势，可以有效提升推荐系统的排序能力。
-2. 排序任务使用120B参数量级的大语言模型已经可以取得不错的效果，更大参数量级的模型提升有限。
-3. 随着训练数据的积累，大模型排序的优势逐渐减小，需要根据测试结果选择合适的排序算法。
-
-::: note 点击率预测模型去哪里了？
-细心的读者不难发现，负责排序任务的点击率预测模型怎么不在本文的对比中出现？这是因为点击率预测模型预测的是用户点击（产生正反馈）的概率，并不是为排序任务而优化，使用排序指标评估点击率预测模型并不公平。使用协同过滤和大模型排序进行对比是无奈之举，不过已经足够说明大模型排序在推荐系统中的潜力。
-:::
+1. **重排模型在冷启动场景下具有显著优势**：在样本数量较少时，Qwen3-Reranker-8B 的表现优于 FM 模型，说明专门训练的重排模型可以有效提升冷启动性能。
+2. **传统模型随数据积累表现更佳**：随着训练数据量的增加，FM 模型的 GAUC 稳步提升，并最终超过了重排模型。这说明在数据充足的情况下，针对特定数据训练的传统模型仍然非常强大。
+3. **模型规模对效果有直接影响**：Qwen3-Reranker-8B 在大多数情况下优于其 4B 和 0.6B 版本，说明模型规模对于重排质量的提升至关重要。
 
 ## 未来展望
 
-本文只是对大模型排序非常初步的探索，我们后续会用更丰富的指标在更多的场景下测试更多的大语言模型。未来也会探索微调中小规模的大语言模型是否能进一步提升其排序能力，敬请期待！
+本文只是对大语言模型重排非常初步的探索，我们后续会用更丰富的指标在更多的场景下测试更多的模型。未来也会探索微调大语言模型是否能进一步提升其排序能力，敬请期待！
+
+[^1]: Zhou, Chang, et al. "Predict click-through rates with deep interest network model in e-commerce advertising." 2024 5th International Conference on Information Science, Parallel and Distributed Systems (ISPDS). IEEE, 2024.
