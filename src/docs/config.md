@@ -148,6 +148,7 @@ Configuration for [data source](./concepts/data-source) of recommenders.
 | Key                       | Type   | Default | Description                       |
 |---------------------------|--------|---------|-----------------------------------|
 | `positive_feedback_types` | string |         | Types of positive feedback        |
+| `negative_feedback_types` | string |         | Types of negative feedback (highest priority) |
 | `read_feedback_types`     | string |         | Type of read feedback             |
 | `positive_feedback_ttl`   | string | `0`     | Time-to-live of positive feedback |
 | `item_ttl`                | string | `0`     | Time-to-live of items             |

@@ -148,6 +148,7 @@ chhttps://user:password@host[:port]/database?param1=value1&...&paramN=valueN
 | 键                         | 类型     | 默认值 | 描述        |
 |---------------------------|--------|-----|-----------|
 | `positive_feedback_types` | string |     | 积极反馈的类型   |
+| `negative_feedback_types` | string |     | 负反馈的类型（最高优先级）   |
 | `read_feedback_types`     | string |     | 已读反馈的类型   |
 | `positive_feedback_ttl`   | string | `0` | 积极反馈的生存时间 |
 | `item_ttl`                | string | `0` | 物品的生存时间   |
