@@ -64,14 +64,14 @@ After saving the recommendation flow, Gorse will load the recommendation flow de
 
 ## Evaluation
 
-The accuracy of the LLM-based reranker needs to be evaluated using the *gorse-cli* tool.
+The accuracy of the LLM-based reranker needs to be evaluated using the *gorse-bench* tool.
 
-1. Compile [gorse-cli](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-cli) from Gorse repository.
-2. *gorse-cli* temporarily does not support recommendation flows defined by the RecFlow editor, so the recommendation workflow configuration needs to be written into the configuration file. Additionally, database access methods also need to be provided via the configuration file or environment variables.
+1. Compile [gorse-bench](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-bench) from Gorse repository.
+2. *gorse-bench* temporarily does not support recommendation flows defined by the RecFlow editor, so the recommendation workflow configuration needs to be written into the configuration file. Additionally, database access methods also need to be provided via the configuration file or environment variables.
 3. Run the following command to evaluate the performance of an LLM-based reranker:
 
 ```bash
-./gorse-cli bench-llm --config config.toml
+./gorse-bench llm --config config.toml
 ```
 
 This tool will read the user's historical feedback and split the feedback into training and test sets in an 8:2 ratio. For each user, the query is rendered using positive feedback from the training set, and documents are rendered using feedback from the test set (including both positive and negative feedback). Finally, Group AUC (GAUC)[^1] is used to calculate the ranking accuracy:

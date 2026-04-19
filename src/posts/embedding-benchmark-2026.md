@@ -7,7 +7,7 @@ tag:
 ---
 # Benchmark Text Embedding Models for RecSys in 2026
 
-In the 2025 post [Text Embedding Benchmark for Recommender Systems](./embedding-benchmark.md), we benchmarked the performance of text embedding models in similarity-based recommendations. Within six months of that post's publication, Alibaba Cloud and Google launched a new generation of open-source text embedding models: [qwen3-embedding](https://github.com/QwenLM/Qwen3-Embedding) by Alibaba Cloud and [embeddinggemma](https://ai.google.dev/gemma/docs/embeddinggemma) by Google. Recently, the [gorse-cli](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-cli) also added a benchmarking feature for text embedding models. This post will use [gorse-cli](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-cli) and the playground dataset to conduct a comprehensive benchmark of popular open-source text embedding models.
+In the 2025 post [Text Embedding Benchmark for Recommender Systems](./embedding-benchmark.md), we benchmarked the performance of text embedding models in similarity-based recommendations. Within six months of that post's publication, Alibaba Cloud and Google launched a new generation of open-source text embedding models: [qwen3-embedding](https://github.com/QwenLM/Qwen3-Embedding) by Alibaba Cloud and [embeddinggemma](https://ai.google.dev/gemma/docs/embeddinggemma) by Google. Recently, the [gorse-bench](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-bench) also added a benchmarking feature for text embedding models. This post will use [gorse-bench](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-bench) and the playground dataset to conduct a comprehensive benchmark of popular open-source text embedding models.
 
 ## Evaluation: 1-shot Similarity-based Recommendation
 
@@ -39,10 +39,10 @@ OPENAI_BASE_URL="https://integrate.api.nvidia.com/v1"
 OPENAI_AUTH_TOKEN="NVIDIA_API_KEY"
 ```
 
-Compile [gorse-cli](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-cli) from Gorse repository and run the following command to evaluate the performance of the text embedding model:
+Compile [gorse-bench](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-bench) from Gorse repository and run the following command to evaluate the performance of the text embedding model:
 
 ```bash
-./gorse-cli bench-embedding --config ./config/config.toml \
+./gorse-bench embedding --config ./config/config.toml \
   --text-column item.Comment \
   --embedding-model qwen3-embedding:0.6b \
   --embedding-dimensions 1024 \
@@ -146,4 +146,4 @@ For text embedding models for recommender systems in 2026, we offer the followin
 - **Cost-Efficiency/Private Deployment**: [qwen3-embedding:4b](https://huggingface.co/Qwen/Qwen3-Embedding-4B) is the current king of cost-efficiency. It achieves recommendation accuracy comparable to commercial models with fewer parameters.
 - **Low Latency/Edge**: [qwen3-embedding:0.6b](https://huggingface.co/Qwen/Qwen3-Embedding-0.6B) with 64 or 128-dimension is the best lightweight solution.
 
-While this post provides some guidance, it is recommended to use [gorse-cli](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-cli) to evaluate on your own dataset to choose the text embedding model that best fits your specific business scenario.
+While this post provides some guidance, it is recommended to use [gorse-bench](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-bench) to evaluate on your own dataset to choose the text embedding model that best fits your specific business scenario.
