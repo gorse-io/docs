@@ -65,14 +65,14 @@ docker run -p 8088:8088 \
 
 ## 排序准确率评估
 
-大语言模型重排的准确率需要使用 *gorse-cli* 工具进行评估。
+大语言模型重排的准确率需要使用 *gorse-bench* 工具进行评估。
 
-1. 从代码仓库编译 [gorse-cli](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-cli)
-2. *gorse-cli* 暂时不支持流程编辑器定义的推荐流程，因此需要将推荐工作流的配置写入配置文件中。另外，数据库的访问方式也需要通过配置文件或者环境变量提供。
+1. 从代码仓库编译 [gorse-bench](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-bench)
+2. *gorse-bench* 暂时不支持流程编辑器定义的推荐流程，因此需要将推荐工作流的配置写入配置文件中。另外，数据库的访问方式也需要通过配置文件或者环境变量提供。
 3. 运行以下命令评估 大语言模型重排器 的准确率：
 
 ```bash
-./gorse-cli bench-llm --config config.toml
+./gorse-bench llm --config config.toml
 ```
 
 此工具会读取用户的历史反馈，将反馈按照8:2的比例划分为训练集和测试集。针对每个用户，使用训练集中的正反馈渲染查询，使用测试集中的反馈（包括正反馈和负反馈）渲染文档，最后使用 GAUC[^1] 计算排序准确率：

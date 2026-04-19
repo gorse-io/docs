@@ -8,7 +8,7 @@ tag:
 ---
 # 2026年哪个本文嵌入模型最适合推荐系统
 
-在2025年的文章[推荐场景下文本嵌入模型性能对比](./embedding-benchmark.md)中，我们评估了本文嵌入模型在相似推荐上的表现。在文章发布之后的半年内，阿里云和谷歌相继推出了新一代的开源本文嵌入模型，分别是阿里云的[qwen3-embedding](https://github.com/QwenLM/Qwen3-Embedding)和谷歌的[embeddinggemma](https://ai.google.dev/gemma/docs/embeddinggemma)。最近[gorse-cli](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-cli)工具也新增了文本嵌入模型的基准测试功能，本文将使用[gorse-cli](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-cli)和playground数据集，对热门的开源本文嵌入模型进行一次全面的评测。
+在2025年的文章[推荐场景下文本嵌入模型性能对比](./embedding-benchmark.md)中，我们评估了本文嵌入模型在相似推荐上的表现。在文章发布之后的半年内，阿里云和谷歌相继推出了新一代的开源本文嵌入模型，分别是阿里云的[qwen3-embedding](https://github.com/QwenLM/Qwen3-Embedding)和谷歌的[embeddinggemma](https://ai.google.dev/gemma/docs/embeddinggemma)。最近[gorse-bench](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-bench)工具也新增了文本嵌入模型的基准测试功能，本文将使用[gorse-bench](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-bench)和playground数据集，对热门的开源本文嵌入模型进行一次全面的评测。
 
 ## 评估方法：基于相似度的单样本推荐
 
@@ -40,10 +40,10 @@ OPENAI_BASE_URL="https://integrate.api.nvidia.com/v1"
 OPENAI_AUTH_TOKEN="NVIDIA_API_KEY"
 ```
 
-从代码仓库编译好[gorse-cli](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-cli)运行以下命令评估文本嵌入模型的准确率：
+从代码仓库编译好[gorse-bench](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-bench)运行以下命令评估文本嵌入模型的准确率：
 
 ```bash
-./gorse-cli bench-embedding --config ./config/config.toml \
+./gorse-bench embedding --config ./config/config.toml \
   --text-column item.Comment \
   --embedding-model qwen3-embedding:0.6b \
   --embedding-dimensions 1024 \
@@ -147,4 +147,4 @@ OPENAI_AUTH_TOKEN="NVIDIA_API_KEY"
 - **追求高性价比/私有化部署**：[qwen3-embedding:4b](https://huggingface.co/Qwen/Qwen3-Embedding-4B)是目前的性价比之王。它以较小的参数量实现了媲美商业模型的推荐精度。
 - **低延迟/端侧场景**：[qwen3-embedding:0.6b](https://huggingface.co/Qwen/Qwen3-Embedding-0.6B)结合64或128维向量，是最佳的轻量化方案。
 
-即使本文提供了一些建议，但是在实际选型时，建议使用[gorse-cli](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-cli)在自己的数据集上进行评测，以选择最适合自己业务场景的文本嵌入模型。
+即使本文提供了一些建议，但是在实际选型时，建议使用[gorse-bench](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-bench)在自己的数据集上进行评测，以选择最适合自己业务场景的文本嵌入模型。
