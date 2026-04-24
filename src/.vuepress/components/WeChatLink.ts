@@ -1,8 +1,9 @@
-import { defineComponent, h, ref } from "vue";
+import { defineComponent, h, onBeforeUnmount, onMounted, ref } from "vue";
 
 export default defineComponent({
   name: "WeChatLink",
   setup() {
+    const containerRef = ref<HTMLElement | null>(null);
     const showPopup = ref(false);
 
     const togglePopup = () => {
@@ -13,10 +14,32 @@ export default defineComponent({
       showPopup.value = false;
     };
 
+    const handleDocumentClick = (event: MouseEvent) => {
+      const target = event.target;
+
+      if (
+        showPopup.value &&
+        target instanceof Node &&
+        containerRef.value &&
+        !containerRef.value.contains(target)
+      ) {
+        closePopup();
+      }
+    };
+
+    onMounted(() => {
+      document.addEventListener("click", handleDocumentClick);
+    });
+
+    onBeforeUnmount(() => {
+      document.removeEventListener("click", handleDocumentClick);
+    });
+
     return () =>
       h(
         "div",
         {
+          ref: containerRef,
           class: "vp-nav-item vp-action wechat-container",
           style: { position: "relative" },
         },
@@ -42,11 +65,7 @@ export default defineComponent({
                     right: "0",
                     marginTop: "8px",
                     padding: "16px",
-                    backgroundColor: "#fff",
-                    borderRadius: "8px",
-                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
                     zIndex: "100",
-                    textAlign: "center",
                   },
                 },
                 [
@@ -62,30 +81,12 @@ export default defineComponent({
                   h(
                     "div",
                     {
-                      style: {
-                        marginTop: "8px",
-                        fontSize: "14px",
-                        color: "#666",
-                      },
+                      class: "wechat-popup-text",
                     },
                     "扫码关注公众号"
                   ),
                 ]
               )
-            : null,
-          showPopup.value
-            ? h("div", {
-                class: "wechat-popup-overlay",
-                style: {
-                  position: "fixed",
-                  top: "0",
-                  left: "0",
-                  right: "0",
-                  bottom: "0",
-                  zIndex: "99",
-                },
-                onClick: closePopup,
-              })
             : null,
         ]
       );

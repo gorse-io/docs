@@ -79,6 +79,13 @@ Feedback represents events that happened between users and items, which can be p
 
 The feedback value is used to represent the strength of the feedback. For example, a 5-star rating system can be represented by feedback values from 1 to 5. If the feedback value is not available, it can be set to 0.
 
+### Positive and Read Feedback
+
+Before inserting feedback into the Gorse recommender system, it is necessary to define which of the user's behaviors are positive feedback and which are read feedback. Read feedback is relatively easy to define, as it can be recorded as read feedback when a user has seen the recommended item. However, the definition of positive feedback depends more on the specific scenario. For TikTok, users can be considered as positive feedback if they “like” or “share” the current video. For YouTube, users can be considered as positive feedback if they watch the video to a certain proportion of completion, “like“ the video, or "share" the video. To summarize, positive feedback and read feedback are defined by the following rules.
+
+- **Read Feedback:** The user sees the item.
+- **Positive feedback:** The user action that is expected to do by the service provider.
+
 ### Negative Feedback
 
 Negative feedback represents explicit user dislike or disinterest in an item. Unlike read feedback (which indicates the user simply viewed an item), negative feedback explicitly tells the recommender system that the user does not want to see similar items in the future.
@@ -91,27 +98,12 @@ Common examples of negative feedback include:
 Negative feedback has the **highest priority** in the recommendation system. When a user gives negative feedback to an item:
 - The item will never be recommended to that user again
 - Similar items will be deprioritized in recommendations
-- The feedback is immediately effective (no delay like hidden items)
 
 To configure negative feedback, add the feedback type to `negative_feedback_types` in the configuration:
-
-```toml
-[recommend.data_source]
-positive_feedback_types = ["star", "like"]
-negative_feedback_types = ["dislike", "not_interested"]
-read_feedback_types = ["read"]
-```
 
 ::: warning
 Negative feedback should be used sparingly. Only configure truly negative actions as negative feedback. Actions like "skip" or "close" should be treated as read feedback, not negative feedback.
 :::
-
-### Positive and Read Feedback
-
-Before inserting feedback into the Gorse recommender system, it is necessary to define which of the user's behaviors are positive feedback and which are read feedback. Read feedback is relatively easy to define, as it can be recorded as read feedback when a user has seen the recommended item. However, the definition of positive feedback depends more on the specific scenario. For TikTok, users can be considered as positive feedback if they “like” or “share” the current video. For YouTube, users can be considered as positive feedback if they watch the video to a certain proportion of completion, “like“ the video, or "share" the video. To summarize, positive feedback and read feedback are defined by the following rules.
-
-- **Read Feedback:** The user sees the item.
-- **Positive feedback:** The user action that is expected to do by the service provider.
 
 ### Insert Feedback
 
@@ -188,8 +180,8 @@ The `write−back−type` and `write−back−delay` parameters of the recommend
 There are several configuration options related to data source in Gorse:
 
 - `positive_feedback_types`: A list of feedback types that are considered positive feedback.
-- `negative_feedback_types`: A list of feedback types that are considered negative feedback (highest priority).
 - `read_feedback_types`: A list of feedback types that are considered read feedback.
+- `negative_feedback_types`: A list of feedback types that are considered negative feedback.
 - `positive_feedback_ttl`: Time-to-live for positive feedback in days. After this period, positive feedback will be ignored in recommendations. Default value: `0` (no expiration).
 - `item_ttl`: Time-to-live for items in days. After this period, items will be automatically hidden from recommendations. Default value: `0` (no expiration).
 
