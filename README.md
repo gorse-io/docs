@@ -1,6 +1,5 @@
 # Gorse Docs
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/2480ea13-f8c7-4c84-aa77-51f105ac5bbf/deploy-status)](https://app.netlify.com/sites/gorse-io/deploys)
 
 Official documents for Gorse recommender system.
 

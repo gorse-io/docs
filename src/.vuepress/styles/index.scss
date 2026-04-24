@@ -1,1 +1,36 @@
 // place your custom styles here
+
+// WeChat popup styles
+.wechat-container {
+  position: relative;
+}
+
+.wechat-popup {
+  animation: fadeIn 0.2s ease-in-out;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 8px;
+  background: var(--vp-c-bg);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+  text-align: center;
+}
+
+.wechat-popup img {
+  border-radius: 4px;
+}
+
+.wechat-popup-text {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--vp-c-text-mute);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

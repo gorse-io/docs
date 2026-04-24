@@ -86,6 +86,25 @@ Before inserting feedback into the Gorse recommender system, it is necessary to 
 - **Read Feedback:** The user sees the item.
 - **Positive feedback:** The user action that is expected to do by the service provider.
 
+### Negative Feedback
+
+Negative feedback represents explicit user dislike or disinterest in an item. Unlike read feedback (which indicates the user simply viewed an item), negative feedback explicitly tells the recommender system that the user does not want to see similar items in the future.
+
+Common examples of negative feedback include:
+- **Dislike button**: User clicks a "dislike" or "thumbs down" button
+- **Not interested**: User selects "not interested" or "hide this" option
+- **Explicit removal**: User removes an item from their recommendations
+
+Negative feedback has the **highest priority** in the recommendation system. When a user gives negative feedback to an item:
+- The item will never be recommended to that user again
+- Similar items will be deprioritized in recommendations
+
+To configure negative feedback, add the feedback type to `negative_feedback_types` in the configuration:
+
+::: warning
+Negative feedback should be used sparingly. Only configure truly negative actions as negative feedback. Actions like "skip" or "close" should be treated as read feedback, not negative feedback.
+:::
+
 ### Insert Feedback
 
 There are two ways to insert feedback into the Gorse recommender system: inserting new feedback and updating existing feedback. Inserting new feedback is done via the `PUT /api/feedback` API, while updating existing feedback is done via the `POST /api/feedback` API. Both APIs accept a list of feedback in JSON format.
@@ -162,6 +181,7 @@ There are several configuration options related to data source in Gorse:
 
 - `positive_feedback_types`: A list of feedback types that are considered positive feedback.
 - `read_feedback_types`: A list of feedback types that are considered read feedback.
+- `negative_feedback_types`: A list of feedback types that are considered negative feedback.
 - `positive_feedback_ttl`: Time-to-live for positive feedback in days. After this period, positive feedback will be ignored in recommendations. Default value: `0` (no expiration).
 - `item_ttl`: Time-to-live for items in days. After this period, items will be automatically hidden from recommendations. Default value: `0` (no expiration).
 
@@ -171,11 +191,12 @@ TTL is used to automatically remove old feedback and items from the recommender 
 
 ## Example
 
-In the demo project [GitRec](https://gitrec.gorse.io/), the following configuration is used to define positive feedback as "star", "like", and "read" with a value greater than or equal to 3. Read feedback is defined as "read". Both positive feedback and items do not expire.
+In the demo project [GitRec](https://gitrec.gorse.io/), the following configuration is used to define positive feedback as "star", "like", and "read" with a value greater than or equal to 3. Read feedback is defined as "read". Negative feedback is defined as "dislike". Both positive feedback and items do not expire.
 
 ```toml
 [recommend.data_source]
 positive_feedback_types = ["star","like","read>=3"]
+negative_feedback_types = ["dislike"]
 read_feedback_types = ["read"]
 positive_feedback_ttl = 0
 item_ttl = 0
