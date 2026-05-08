@@ -25,7 +25,7 @@ export default hopeTheme({
       navbarLayout: {
         start: ["Brand"],
         center: ["Links"],
-        end: ["Language", "HuggingFaceLink", "GitHubLink", "TwitterLink", "DiscordLink", "Outlook", "Search"],
+        end: ["Language", "GitHubLink", "HuggingFaceLink", "TwitterLink", "DiscordLink", "Outlook", "Search"],
       },
 
       // sidebar
@@ -50,7 +50,7 @@ export default hopeTheme({
       navbarLayout: {
         start: ["Brand"],
         center: ["Links"],
-        end: ["Language", "HuggingFaceLink", "GitHubLink", "WeChatLink", "QQLink", "Outlook", "Search"],
+        end: ["Language", "GitHubLink", "HuggingFaceLink", "WeChatLink", "QQLink", "Outlook", "Search"],
       },
 
       // sidebar
