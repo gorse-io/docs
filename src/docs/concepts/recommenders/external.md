@@ -13,22 +13,7 @@ An external recommender has two fields:
 - `name` is used to uniquely identify an external recommender.
 - `script` is used to access the external HTTP endpoint and convert the result into an array of item IDs. Item IDs that do not exist in the recommender system will be ignored.
 
-Gorse integrates QuickJS to execute the JavaScript. The ability to access environment variables and send HTTP requests has been added. Contributions to add more capabilities are welcome.
-
-### Accessing Environment Variables
-
-In the JavaScript script, you can access environment variables using `env.VARIABLE_NAME`. For instance, to access an environment variable named `API_KEY`, you can use the following code:
-
-```javascript
-const apiKey = env.API_KEY;
-```
-
-::: note
-
-- All environment variables are of the string type.
-- If an environment variable does not exist, accessing it will return `undefined`.
-
-:::
+Gorse integrates QuickJS to execute the JavaScript. The ability to send HTTP requests has been added. Contributions to add more capabilities are welcome.
 
 ### Fetch API
 

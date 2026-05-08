@@ -13,22 +13,7 @@ shortTitle: 外部 API
 - `name` 用于唯一标识外部推荐算法。
 - `script` 用于访问外部 HTTP 端点并将结果转换为物品 ID 数组。推荐系统中不存在的物品 ID 将被忽略。
 
-Gorse 集成了 QuickJS 来执行 JavaScript。已添加访问环境变量和发送 HTTP 请求的功能。欢迎贡献以添加更多功能。
-
-### 访问环境变量
-
-在 JavaScript 脚本中，您可以使用 `env.VARIABLE_NAME` 访问环境变量。例如，要访问名为 `API_KEY` 的环境变量，可以使用以下代码：
-
-```javascript
-const apiKey = env.API_KEY;
-```
-
-::: note
-
-- 所有环境变量都是字符串类型。
-- 如果环境变量不存在，访问它将返回 `undefined`。
-
-:::
+Gorse 集成了 QuickJS 来执行 JavaScript。已添加发送 HTTP 请求的功能。欢迎贡献以添加更多功能。
 
 ### Fetch API
 
