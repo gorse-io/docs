@@ -25,7 +25,7 @@ export default hopeTheme({
       navbarLayout: {
         start: ["Brand"],
         center: ["Links"],
-        end: ["Language", "GitHubLink", "TwitterLink", "DiscordLink", "Outlook", "Search"],
+        end: ["Language", "HuggingFaceLink", "GitHubLink", "TwitterLink", "DiscordLink", "Outlook", "Search"],
       },
 
       // sidebar
@@ -50,7 +50,7 @@ export default hopeTheme({
       navbarLayout: {
         start: ["Brand"],
         center: ["Links"],
-        end: ["Language", "GitHubLink", "WeChatLink", "QQLink", "Outlook", "Search"],
+        end: ["Language", "HuggingFaceLink", "GitHubLink", "WeChatLink", "QQLink", "Outlook", "Search"],
       },
 
       // sidebar
@@ -153,7 +153,7 @@ export default hopeTheme({
     },
 
     icon: {
-      assets: "https://at.alicdn.com/t/c/font_3748819_2tew92pp94w.css",
+      assets: "https://at.alicdn.com/t/c/font_3748819_38n6x0qbyn.css",
     },
 
     // Install @vuepress/plugin-pwa and uncomment these if you want a PWA
