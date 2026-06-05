@@ -8,22 +8,9 @@ icon: terminal
 
 ## Installation
 
-### Homebrew
+::: code-tabs#install
 
-On macOS or Linux, install `gorse-cli` from the official [Gorse Homebrew tap](https://github.com/gorse-io/homebrew-tap):
-
-```bash
-brew tap gorse-io/tap
-brew install gorse-cli
-```
-
-You can also install it without tapping first:
-
-```bash
-brew install gorse-io/tap/gorse-cli
-```
-
-### Install script
+@tab:active Linux
 
 Install the latest `gorse-cli` release with the install script:
 
@@ -40,6 +27,41 @@ curl -fsSL https://gorse.io/install.sh | INSTALL_DIR="$HOME/.local/bin" sh
 # Install a specific version
 curl -fsSL https://gorse.io/install.sh | GORSE_CLI_VERSION=v0.5.8 sh
 ```
+
+If you use Homebrew on Linux, you can also install `gorse-cli` from the official [Gorse Homebrew tap](https://github.com/gorse-io/homebrew-tap):
+
+```bash
+brew install gorse-io/tap/gorse-cli
+```
+
+@tab macOS
+
+Install `gorse-cli` from the official [Gorse Homebrew tap](https://github.com/gorse-io/homebrew-tap):
+
+```bash
+brew tap gorse-io/tap
+brew install gorse-cli
+```
+
+You can also install it without tapping first:
+
+```bash
+brew install gorse-io/tap/gorse-cli
+```
+
+Alternatively, install with the install script:
+
+```bash
+curl -fsSL https://gorse.io/install.sh | sh
+```
+
+To install a specific release:
+
+```bash
+curl -fsSL https://gorse.io/install.sh | GORSE_CLI_VERSION=v0.5.8 sh
+```
+
+:::
 
 The install script supports Linux on `amd64`, `arm64`, and `riscv64`, and macOS on `arm64`. The installed binary is named `gorse-cli`.
 

@@ -8,22 +8,9 @@ icon: terminal
 
 ## 安装
 
-### Homebrew
+::: code-tabs#install
 
-在 macOS 或 Linux 上，可以通过官方 [Gorse Homebrew tap](https://github.com/gorse-io/homebrew-tap) 安装 `gorse-cli`：
-
-```bash
-brew tap gorse-io/tap
-brew install gorse-cli
-```
-
-也可以不提前 tap，直接安装：
-
-```bash
-brew install gorse-io/tap/gorse-cli
-```
-
-### 安装脚本
+@tab:active Linux
 
 使用安装脚本安装最新版本的 `gorse-cli`：
 
@@ -40,6 +27,41 @@ curl -fsSL https://gorse.io/install.sh | INSTALL_DIR="$HOME/.local/bin" sh
 # 安装指定版本
 curl -fsSL https://gorse.io/install.sh | GORSE_CLI_VERSION=v0.5.8 sh
 ```
+
+如果你在 Linux 上使用 Homebrew，也可以通过官方 [Gorse Homebrew tap](https://github.com/gorse-io/homebrew-tap) 安装 `gorse-cli`：
+
+```bash
+brew install gorse-io/tap/gorse-cli
+```
+
+@tab macOS
+
+通过官方 [Gorse Homebrew tap](https://github.com/gorse-io/homebrew-tap) 安装 `gorse-cli`：
+
+```bash
+brew tap gorse-io/tap
+brew install gorse-cli
+```
+
+也可以不提前 tap，直接安装：
+
+```bash
+brew install gorse-io/tap/gorse-cli
+```
+
+或者使用安装脚本安装：
+
+```bash
+curl -fsSL https://gorse.io/install.sh | sh
+```
+
+安装指定版本：
+
+```bash
+curl -fsSL https://gorse.io/install.sh | GORSE_CLI_VERSION=v0.5.8 sh
+```
+
+:::
 
 安装脚本支持 Linux 的 `amd64`、`arm64`、`riscv64`，以及 macOS 的 `arm64`。安装后的二进制名称为 `gorse-cli`。
 
