@@ -4,7 +4,7 @@ icon: terminal
 
 # Gorse CLI
 
-`gorse-cli` is a command line tool for managing a Gorse cluster. It provides terminal access to common dashboard and administration workflows, including cluster status, task progress, data inspection, recommendation preview, recommendation pipeline configuration, and backup or restore operations.
+`gorse-cli` is a command line tool for managing Gorse clusters. It provides terminal access to common dashboard and administration operations, including cluster status, task progress, data inspection, recommendation preview, recommendation pipeline configuration, and backup or restore operations.
 
 ## Installation
 
@@ -12,58 +12,27 @@ icon: terminal
 
 @tab:active Linux
 
-Install the latest `gorse-cli` release with the install script:
-
 ```bash
 curl -fsSL https://gorse.io/install.sh | sh
 ```
 
-By default, the script installs `gorse-cli` to `/usr/local/bin`. You can override the install directory or install a specific release:
-
-```bash
-# Install to a custom directory
-curl -fsSL https://gorse.io/install.sh | INSTALL_DIR="$HOME/.local/bin" sh
-
-# Install a specific version
-curl -fsSL https://gorse.io/install.sh | GORSE_CLI_VERSION=v0.5.8 sh
-```
-
-If you use Homebrew on Linux, you can also install `gorse-cli` from the official [Gorse Homebrew tap](https://github.com/gorse-io/homebrew-tap):
-
-```bash
-brew install gorse-io/tap/gorse-cli
-```
-
 @tab macOS
-
-Install `gorse-cli` from the official [Gorse Homebrew tap](https://github.com/gorse-io/homebrew-tap):
 
 ```bash
 brew tap gorse-io/tap
 brew install gorse-cli
 ```
 
-You can also install it without tapping first:
+@tab Windows
 
-```bash
-brew install gorse-io/tap/gorse-cli
-```
-
-Alternatively, install with the install script:
-
-```bash
-curl -fsSL https://gorse.io/install.sh | sh
-```
-
-To install a specific release:
-
-```bash
-curl -fsSL https://gorse.io/install.sh | GORSE_CLI_VERSION=v0.5.8 sh
+```powershell
+scoop bucket add gorse https://github.com/gorse-io/scoop-bucket
+scoop install gorse-cli
 ```
 
 :::
 
-The install script supports Linux on `amd64`, `arm64`, and `riscv64`, and macOS on `arm64`. The installed binary is named `gorse-cli`.
+The install script supports Linux on AMD64, ARM64, and RISCV64, and macOS on ARM64. Windows installation uses [Scoop](https://scoop.sh/). The installed binary is named `gorse-cli`.
 
 ## Authentication
 

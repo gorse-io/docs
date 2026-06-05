@@ -4,7 +4,7 @@ icon: terminal
 
 # Gorse CLI
 
-`gorse-cli` 是用于管理 Gorse 集群的命令行工具。它把常见的控制台和运维操作带到终端中，包括查看集群状态、任务进度、用户和物品数据、推荐结果、推荐流程配置，以及数据备份和恢复。
+`gorse-cli` 是用于管理 Gorse 集群的命令行工具。它把常见的控制台和运维操作集成到终端中，包括查看集群状态、任务进度、用户和物品数据、推荐结果、推荐流程配置，以及数据备份和恢复。
 
 ## 安装
 
@@ -12,72 +12,41 @@ icon: terminal
 
 @tab:active Linux
 
-使用安装脚本安装最新版本的 `gorse-cli`：
-
 ```bash
 curl -fsSL https://gorse.io/install.sh | sh
 ```
 
-默认情况下，脚本会把 `gorse-cli` 安装到 `/usr/local/bin`。你也可以指定安装目录或安装特定版本：
-
-```bash
-# 安装到自定义目录
-curl -fsSL https://gorse.io/install.sh | INSTALL_DIR="$HOME/.local/bin" sh
-
-# 安装指定版本
-curl -fsSL https://gorse.io/install.sh | GORSE_CLI_VERSION=v0.5.8 sh
-```
-
-如果你在 Linux 上使用 Homebrew，也可以通过官方 [Gorse Homebrew tap](https://github.com/gorse-io/homebrew-tap) 安装 `gorse-cli`：
-
-```bash
-brew install gorse-io/tap/gorse-cli
-```
-
 @tab macOS
-
-通过官方 [Gorse Homebrew tap](https://github.com/gorse-io/homebrew-tap) 安装 `gorse-cli`：
 
 ```bash
 brew tap gorse-io/tap
 brew install gorse-cli
 ```
 
-也可以不提前 tap，直接安装：
+@tab Windows
 
-```bash
-brew install gorse-io/tap/gorse-cli
-```
-
-或者使用安装脚本安装：
-
-```bash
-curl -fsSL https://gorse.io/install.sh | sh
-```
-
-安装指定版本：
-
-```bash
-curl -fsSL https://gorse.io/install.sh | GORSE_CLI_VERSION=v0.5.8 sh
+```powershell
+scoop bucket add gorse https://github.com/gorse-io/scoop-bucket
+scoop install gorse-cli
 ```
 
 :::
 
-安装脚本支持 Linux 的 `amd64`、`arm64`、`riscv64`，以及 macOS 的 `arm64`。安装后的二进制名称为 `gorse-cli`。
+安装脚本支持 AMD64、ARM64、RISCV64 架构的Linux，以及 ARM64 架构的 macOS。Windows 安装使用 [Scoop](https://scoop.sh/)。安装后的二进制名称为 `gorse-cli`。
 
 ## 认证
 
-大多数命令都需要 Gorse master 的 HTTP 地址和管理员 API Key。你可以通过以下三种方式提供认证信息。
+大多数命令都需要 Gorse master 节点的 HTTP 地址和管理员 API 密钥。你可以通过以下三种方式提供认证信息。
 
 ### 保存上下文
 
-上下文会把 endpoint 和 API Key 保存到系统 keyring，并将该上下文设为当前上下文：
+上下文会把 master 节点地址和 API 密钥保存到本地，并将该上下文设为当前上下文：
 
 ```bash
 gorse-cli context add local --endpoint http://localhost:8088
 ```
 
-如果没有传入 `--api-key`，命令会提示输入 API Key。后续命令会自动使用当前上下文：
+如果没有传入 `--api-key`，命令会提示输入 API 密钥。后续命令会自动使用当前上下文：
 
 ```bash
 gorse-cli context current
@@ -116,7 +85,7 @@ gorse-cli stats \
 # 列出集群节点
 gorse-cli cluster-info
 
-# 查看全局统计信息
+# 查看统计信息
 gorse-cli stats
 
 # 查看任务进度
@@ -125,7 +94,7 @@ gorse-cli ps
 
 ## 数据查看
 
-`get` 命令用于读取用户、物品、反馈和分类。
+`get` 命令用于读取用户、物品、反馈和类别。
 
 ```bash
 # 列出用户或物品
@@ -136,7 +105,7 @@ gorse-cli get items -n 20
 gorse-cli get user <user-id>
 gorse-cli get item <item-id>
 
-# 列出物品分类
+# 列出物品类别
 gorse-cli get categories
 ```
 
@@ -158,7 +127,7 @@ gorse-cli get feedback --type like --user <user-id> --item <item-id>
 
 ## 推荐结果预览
 
-`recommend` 命令可以在终端中预览控制台推荐接口的结果。
+`recommend` 命令可以在终端中预览推荐接口的结果。
 
 ```bash
 # 最新物品，可按分类过滤
@@ -173,12 +142,12 @@ gorse-cli recommend item-to-user <user-id> -n 10
 # 使用指定推荐器和名称给用户推荐物品
 gorse-cli recommend item-to-user <user-id> collaborative similar -n 10
 
-# 物品到物品和用户到用户邻居
+# 相似物品和相似用户
 gorse-cli recommend item-to-item similar <item-id> -n 10
 gorse-cli recommend user-to-user similar <user-id> -n 10
 ```
 
-可以重复传入 `--category` 以按多个分类过滤：
+可以重复传入 `--category` 以按多个类别过滤：
 
 ```bash
 gorse-cli recommend item-to-user <user-id> --category news --category sports
@@ -244,19 +213,19 @@ gorse-cli restore backup.bin
 | `gorse-cli context current` | 显示当前上下文。 |
 | `gorse-cli context delete <name>` | 删除保存的上下文。 |
 | `gorse-cli cluster-info` | 列出集群节点。 |
-| `gorse-cli stats` | 显示全局统计信息。 |
+| `gorse-cli stats` | 显示统计信息。 |
 | `gorse-cli ps` | 列出任务进度。 |
 | `gorse-cli get users` | 列出用户。 |
 | `gorse-cli get user <user-id>` | 显示单个用户。 |
 | `gorse-cli get items` | 列出物品。 |
 | `gorse-cli get item <item-id>` | 显示单个物品。 |
 | `gorse-cli get feedback` | 列出或过滤反馈。 |
-| `gorse-cli get categories` | 列出物品分类。 |
+| `gorse-cli get categories` | 列出物品类别。 |
 | `gorse-cli recommend latest` | 获取最新物品。 |
 | `gorse-cli recommend non-personalized <name>` | 获取非个性化推荐。 |
 | `gorse-cli recommend item-to-user <user-id> [recommender] [name]` | 给用户推荐物品。 |
-| `gorse-cli recommend item-to-item <name> <item-id>` | 获取物品到物品推荐。 |
-| `gorse-cli recommend user-to-user <name> <user-id>` | 获取用户到用户推荐。 |
+| `gorse-cli recommend item-to-item <name> <item-id>` | 获取相似物品。 |
+| `gorse-cli recommend user-to-user <name> <user-id>` | 获取相似用户。 |
 | `gorse-cli pipeline get` | 获取推荐流程配置。 |
 | `gorse-cli pipeline schema` | 获取推荐流程 Schema。 |
 | `gorse-cli pipeline patch <json-patch>` | 修改推荐流程配置值。 |
