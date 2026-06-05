@@ -8,6 +8,23 @@ icon: terminal
 
 ## 安装
 
+### Homebrew
+
+在 macOS 或 Linux 上，可以通过官方 [Gorse Homebrew tap](https://github.com/gorse-io/homebrew-tap) 安装 `gorse-cli`：
+
+```bash
+brew tap gorse-io/tap
+brew install gorse-cli
+```
+
+也可以不提前 tap，直接安装：
+
+```bash
+brew install gorse-io/tap/gorse-cli
+```
+
+### 安装脚本
+
 使用安装脚本安装最新版本的 `gorse-cli`：
 
 ```bash

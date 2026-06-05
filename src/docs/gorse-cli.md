@@ -8,6 +8,23 @@ icon: terminal
 
 ## Installation
 
+### Homebrew
+
+On macOS or Linux, install `gorse-cli` from the official [Gorse Homebrew tap](https://github.com/gorse-io/homebrew-tap):
+
+```bash
+brew tap gorse-io/tap
+brew install gorse-cli
+```
+
+You can also install it without tapping first:
+
+```bash
+brew install gorse-io/tap/gorse-cli
+```
+
+### Install script
+
 Install the latest `gorse-cli` release with the install script:
 
 ```bash
