@@ -36,6 +36,7 @@ Welcome to the official documents for the Gorse recommender system.
   - [Ruby SDK](api/ruby-sdk.md)
   - [.NET SDK](api/dotnet-sdk.md)
 - [Dashboard](dashboard/overview.md)
+- [CLI](gorse-cli.md)
 - [Contribution Guide](contribution-guide.md)
 - [FAQ](faq.md)
 

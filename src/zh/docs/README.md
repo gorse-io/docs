@@ -36,6 +36,7 @@ icon: explore
     - [Ruby SDK](api/ruby-sdk.md)
     - [.NET SDK](api/dotnet-sdk.md)
 - [控制台](dashboard/overview.md)
+- [命令行工具](gorse-cli.md)
 - [贡献指南](contribution-guide.md)
 - [常见问题](faq.md)
 
