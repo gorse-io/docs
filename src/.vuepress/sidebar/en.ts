@@ -77,6 +77,11 @@ export const enSidebar = sidebar({
       ]
     },
     {
+      "text": "CLI",
+      "icon": "terminal",
+      "link": "gorse-cli"
+    },
+    {
       "text": "Contribution Guide",
       "icon": "pullrequest",
       "link": "contribution-guide"

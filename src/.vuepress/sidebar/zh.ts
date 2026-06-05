@@ -77,6 +77,11 @@ export const zhSidebar = sidebar({
       ]
     },
     {
+      "text": "命令行工具",
+      "icon": "terminal",
+      "link": "gorse-cli"
+    },
+    {
       "text": "贡献指南",
       "icon": "pullrequest",
       "link": "contribution-guide"
