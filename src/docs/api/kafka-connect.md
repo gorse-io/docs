@@ -110,3 +110,69 @@ Use field overrides when Kafka messages use nested or custom names. For example,
   "topic.events.field.value": "score"
 }
 ```
+
+To insert users from a topic with custom label fields, map the source user ID and labels paths to Gorse fields:
+
+```json
+{
+  "connector.class": "io.gorse.gorse4j.connect.GorseSinkConnector",
+  "tasks.max": "1",
+  "topics": "profiles",
+  "gorse.endpoint": "http://gorse-server:8088",
+  "gorse.api.key": "api_key",
+  "topic.profiles.entity": "user",
+  "topic.profiles.field.user_id": "profile.id",
+  "topic.profiles.field.labels": "profile.labels",
+  "topic.profiles.field.comment": "profile.bio"
+}
+```
+
+A record from the `profiles` topic can then be written as:
+
+```json
+{
+  "profile": {
+    "id": "u1",
+    "labels": {
+      "role": "member",
+      "country": "US"
+    },
+    "bio": "optional"
+  }
+}
+```
+
+To insert items from a topic with custom labels, map the item ID, labels, categories, timestamp, and other optional fields as needed:
+
+```json
+{
+  "connector.class": "io.gorse.gorse4j.connect.GorseSinkConnector",
+  "tasks.max": "1",
+  "topics": "products",
+  "gorse.endpoint": "http://gorse-server:8088",
+  "gorse.api.key": "api_key",
+  "topic.products.entity": "item",
+  "topic.products.field.item_id": "product.id",
+  "topic.products.field.labels": "product.attributes",
+  "topic.products.field.categories": "product.categories",
+  "topic.products.field.timestamp": "product.created_at",
+  "topic.products.field.comment": "product.description"
+}
+```
+
+A record from the `products` topic can then be written as:
+
+```json
+{
+  "product": {
+    "id": "i1",
+    "attributes": {
+      "brand": "gorse",
+      "category": "book"
+    },
+    "categories": ["book"],
+    "created_at": "2024-01-01T00:00:00Z",
+    "description": "optional"
+  }
+}
+```
