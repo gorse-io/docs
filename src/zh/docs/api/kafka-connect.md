@@ -1,5 +1,5 @@
 ---
-icon: pipeline
+icon: Kafka
 ---
 # Kafka Connect
 
@@ -7,16 +7,38 @@ icon: pipeline
 
 ## 安装 connector
 
-下载或构建 connector JAR，并将它和运行时依赖一起放入 Kafka Connect worker 的 `plugin.path` 目录。
+使用 Maven 从 Maven Central 下载 connector，并将它和运行时依赖一起复制到 Kafka Connect worker 的 `plugin.path` 目录。
 
 ```bash
-git clone https://github.com/gorse-io/gorse4j.git
-cd gorse4j
-mvn -pl gorse-kafka-connect -am package dependency:copy-dependencies -DincludeScope=runtime
+PLUGIN_DIR=/usr/local/share/kafka/plugins/gorse-kafka-connect
+VERSION=0.5.1
 
-mkdir -p /usr/local/share/kafka/plugins/gorse-kafka-connect
-cp gorse-kafka-connect/target/gorse-kafka-connect-*.jar /usr/local/share/kafka/plugins/gorse-kafka-connect/
-cp gorse-kafka-connect/target/dependency/*.jar /usr/local/share/kafka/plugins/gorse-kafka-connect/
+mkdir -p "$PLUGIN_DIR"
+WORK_DIR=$(mktemp -d)
+
+cat > "$WORK_DIR/pom.xml" <<EOF
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>local</groupId>
+  <artifactId>gorse-kafka-connect-installer</artifactId>
+  <version>1.0.0</version>
+  <dependencies>
+    <dependency>
+      <groupId>io.gorse</groupId>
+      <artifactId>gorse-kafka-connect</artifactId>
+      <version>${VERSION}</version>
+    </dependency>
+  </dependencies>
+</project>
+EOF
+
+mvn -f "$WORK_DIR/pom.xml" dependency:copy-dependencies \
+  -DincludeScope=runtime \
+  -DoutputDirectory="$PLUGIN_DIR"
+
+rm -rf "$WORK_DIR"
 ```
 
 然后在 worker 配置中加载插件目录：

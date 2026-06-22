@@ -56,7 +56,6 @@ export const enSidebar = sidebar({
       "prefix": "api/",
       "children": [
         "restful-api",
-        "kafka-connect",
         "go-sdk",
         "python-sdk",
         "typescript-sdk",
@@ -64,7 +63,8 @@ export const enSidebar = sidebar({
         "rust-sdk",
         "php-sdk",
         "ruby-sdk",
-        "dotnet-sdk"
+        "dotnet-sdk",
+        "kafka-connect"
       ]
     },
     {
