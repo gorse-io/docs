@@ -56,6 +56,7 @@ export const enSidebar = sidebar({
       "prefix": "api/",
       "children": [
         "restful-api",
+        "kafka-connect",
         "go-sdk",
         "python-sdk",
         "typescript-sdk",
