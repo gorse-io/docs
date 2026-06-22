@@ -3,43 +3,17 @@ icon: Kafka
 ---
 # Kafka Connect
 
-[`gorse-kafka-connect`](https://github.com/gorse-io/gorse4j/tree/main/gorse-kafka-connect) 模块提供了 Kafka Connect sink connector，用于将 Kafka topic 中的用户、物品和反馈数据导入 Gorse。
+::: warning
+
+Kafka Connect正在开发中，欢迎贡献代码：https://github.com/gorse-io/gorse4j
+
+:::
+
+[![Maven Central](https://img.shields.io/maven-central/v/io.gorse/gorse-kafka-connect)](https://mvnrepository.com/artifact/io.gorse/gorse-kafka-connect)[![GitHub](https://img.shields.io/github/license/gorse-io/gorse4j)](https://github.com/gorse-io/gorse4j)
 
 ## 安装 connector
 
-使用 Maven 从 Maven Central 下载 connector，并将它和运行时依赖一起复制到 Kafka Connect worker 的 `plugin.path` 目录。
-
-```bash
-PLUGIN_DIR=/usr/local/share/kafka/plugins/gorse-kafka-connect
-VERSION=0.5.1
-
-mkdir -p "$PLUGIN_DIR"
-WORK_DIR=$(mktemp -d)
-
-cat > "$WORK_DIR/pom.xml" <<EOF
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>local</groupId>
-  <artifactId>gorse-kafka-connect-installer</artifactId>
-  <version>1.0.0</version>
-  <dependencies>
-    <dependency>
-      <groupId>io.gorse</groupId>
-      <artifactId>gorse-kafka-connect</artifactId>
-      <version>${VERSION}</version>
-    </dependency>
-  </dependencies>
-</project>
-EOF
-
-mvn -f "$WORK_DIR/pom.xml" dependency:copy-dependencies \
-  -DincludeScope=runtime \
-  -DoutputDirectory="$PLUGIN_DIR"
-
-rm -rf "$WORK_DIR"
-```
+下载 [`io.gorse:gorse-kafka-connect:0.5.1`](https://mvnrepository.com/artifact/io.gorse/gorse-kafka-connect/0.5.1)，并将 connector JAR 和运行时依赖放入 Kafka Connect worker 的 `plugin.path` 目录，例如 `/usr/local/share/kafka/plugins/gorse-kafka-connect`。
 
 然后在 worker 配置中加载插件目录：
 

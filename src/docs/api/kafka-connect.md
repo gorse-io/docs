@@ -3,43 +3,17 @@ icon: Kafka
 ---
 # Kafka Connect
 
-The [`gorse-kafka-connect`](https://github.com/gorse-io/gorse4j/tree/main/gorse-kafka-connect) module provides a Kafka Connect sink connector for importing users, items, and feedback from Kafka topics into Gorse.
+::: warning
+
+Kafka Connect is under development. Pull requests are welcomed: https://github.com/gorse-io/gorse4j
+
+:::
+
+[![Maven Central](https://img.shields.io/maven-central/v/io.gorse/gorse-kafka-connect)](https://mvnrepository.com/artifact/io.gorse/gorse-kafka-connect)[![GitHub](https://img.shields.io/github/license/gorse-io/gorse4j)](https://github.com/gorse-io/gorse4j)
 
 ## Install the connector
 
-Use Maven to download the connector from Maven Central and copy it, together with its runtime dependencies, to a directory listed by the Kafka Connect worker's `plugin.path`.
-
-```bash
-PLUGIN_DIR=/usr/local/share/kafka/plugins/gorse-kafka-connect
-VERSION=0.5.1
-
-mkdir -p "$PLUGIN_DIR"
-WORK_DIR=$(mktemp -d)
-
-cat > "$WORK_DIR/pom.xml" <<EOF
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>local</groupId>
-  <artifactId>gorse-kafka-connect-installer</artifactId>
-  <version>1.0.0</version>
-  <dependencies>
-    <dependency>
-      <groupId>io.gorse</groupId>
-      <artifactId>gorse-kafka-connect</artifactId>
-      <version>${VERSION}</version>
-    </dependency>
-  </dependencies>
-</project>
-EOF
-
-mvn -f "$WORK_DIR/pom.xml" dependency:copy-dependencies \
-  -DincludeScope=runtime \
-  -DoutputDirectory="$PLUGIN_DIR"
-
-rm -rf "$WORK_DIR"
-```
+Download [`io.gorse:gorse-kafka-connect:0.5.1`](https://mvnrepository.com/artifact/io.gorse/gorse-kafka-connect/0.5.1) and place the connector JAR, together with its runtime dependencies, in a directory listed by the Kafka Connect worker's `plugin.path`, for example `/usr/local/share/kafka/plugins/gorse-kafka-connect`.
 
 Then configure the worker to load the plugin directory:
 
