@@ -52,6 +52,8 @@ curl -X PUT http://localhost:8083/connectors/gorse-feedback-sink/config \
 | `gorse.batch.size` | Maximum records per write request. The default is `500`. |
 | `field.<field>` | Global comma-separated source field paths for a Gorse field. |
 | `topic.<topic>.field.<field>` | Topic-level source field paths for a Gorse field. |
+| `field.labels.<labelName>` | Global source field path used to compose one Gorse label. |
+| `topic.<topic>.field.labels.<labelName>` | Topic-level source field path used to compose one Gorse label. |
 
 ## Record format
 
@@ -111,7 +113,7 @@ Use field overrides when Kafka messages use nested or custom names. For example,
 }
 ```
 
-To insert users from a topic with custom label fields, map the source user ID and labels paths to Gorse fields:
+To insert users from a topic with custom label fields, map each source label path to a Gorse label name:
 
 ```json
 {
@@ -122,7 +124,9 @@ To insert users from a topic with custom label fields, map the source user ID an
   "gorse.api.key": "api_key",
   "topic.profiles.entity": "user",
   "topic.profiles.field.user_id": "profile.id",
-  "topic.profiles.field.labels": "profile.labels",
+  "topic.profiles.field.labels.role": "profile.role",
+  "topic.profiles.field.labels.country": "profile.country",
+  "topic.profiles.field.labels.source": "context.source",
   "topic.profiles.field.comment": "profile.bio"
 }
 ```
@@ -133,16 +137,19 @@ A record from the `profiles` topic can then be written as:
 {
   "profile": {
     "id": "u1",
-    "labels": {
-      "role": "member",
-      "country": "US"
-    },
+    "role": "member",
+    "country": "US",
     "bio": "optional"
+  },
+  "context": {
+    "source": "web"
   }
 }
 ```
 
-To insert items from a topic with custom labels, map the item ID, labels, categories, timestamp, and other optional fields as needed:
+The connector writes the record above with `Labels` set to `{ "role": "member", "country": "US", "source": "web" }`.
+
+To insert items from a topic with custom labels, map the item ID, label fields, categories, timestamp, and other optional fields as needed:
 
 ```json
 {
@@ -153,7 +160,8 @@ To insert items from a topic with custom labels, map the item ID, labels, catego
   "gorse.api.key": "api_key",
   "topic.products.entity": "item",
   "topic.products.field.item_id": "product.id",
-  "topic.products.field.labels": "product.attributes",
+  "topic.products.field.labels.brand": "product.brand",
+  "topic.products.field.labels.category": "product.category",
   "topic.products.field.categories": "product.categories",
   "topic.products.field.timestamp": "product.created_at",
   "topic.products.field.comment": "product.description"
@@ -166,13 +174,13 @@ A record from the `products` topic can then be written as:
 {
   "product": {
     "id": "i1",
-    "attributes": {
-      "brand": "gorse",
-      "category": "book"
-    },
+    "brand": "gorse",
+    "category": "book",
     "categories": ["book"],
     "created_at": "2024-01-01T00:00:00Z",
     "description": "optional"
   }
 }
 ```
+
+The connector writes the record above with `Labels` set to `{ "brand": "gorse", "category": "book" }`.
