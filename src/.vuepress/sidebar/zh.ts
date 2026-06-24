@@ -63,7 +63,8 @@ export const zhSidebar = sidebar({
         "rust-sdk",
         "php-sdk",
         "ruby-sdk",
-        "dotnet-sdk"
+        "dotnet-sdk",
+        "kafka-connect"
       ]
     },
     {
