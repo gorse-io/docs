@@ -11,9 +11,9 @@ Kafka Connect is under development. Pull requests are welcomed: https://github.c
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.gorse/gorse-kafka-connect)](https://mvnrepository.com/artifact/io.gorse/gorse-kafka-connect)[![GitHub](https://img.shields.io/github/license/gorse-io/gorse4j)](https://github.com/gorse-io/gorse4j)
 
-## Install the connector
+## Install the Connector
 
-Download [`io.gorse:gorse-kafka-connect:0.5.1`](https://mvnrepository.com/artifact/io.gorse/gorse-kafka-connect/0.5.1) and place the connector JAR, together with its runtime dependencies, in a directory listed by the Kafka Connect worker's `plugin.path`, for example `/usr/local/share/kafka/plugins/gorse-kafka-connect`.
+Download [`io.gorse:gorse-kafka-connect`](https://mvnrepository.com/artifact/io.gorse/gorse-kafka-connect) and place the connector JAR, together with its runtime dependencies, in a directory listed by the Kafka Connect worker's `plugin.path`, for example `/usr/local/share/kafka/plugins/gorse-kafka-connect`.
 
 Then configure the worker to load the plugin directory:
 
@@ -23,7 +23,7 @@ plugin.path=/usr/local/share/kafka/plugins
 
 Restart the Kafka Connect worker after changing `plugin.path`.
 
-## Create a sink connector
+## Create a Sink Connector
 
 Use the connector class `io.gorse.gorse4j.connect.GorseSinkConnector`. The connector can infer the target Gorse entity from topic names containing `user`, `item`, or `feedback`; set `gorse.entity` or `topic.<topic>.entity` when the topic name cannot be inferred.
 
@@ -41,23 +41,23 @@ curl -X PUT http://localhost:8083/connectors/gorse-feedback-sink/config \
   }'
 ```
 
-## Connector options
+## Connector Options
 
 | Option | Description |
 | --- | --- |
-| `gorse.endpoint` | Gorse server endpoint, for example `http://gorse-server:8088`. |
-| `gorse.api.key` | API key passed to Gorse. |
+| `gorse.endpoint` | Gorse server endpoint. |
+| `gorse.api.key` | Gorse API key. |
 | `gorse.entity` | Default entity type for all topics: `user`, `item`, or `feedback`. |
 | `topic.<topic>.entity` | Entity type override for a specific topic. |
 | `gorse.batch.size` | Maximum records per write request. The default is `500`. |
-| `field.<field>` | Global comma-separated source field paths for a Gorse field. |
+| `field.<field>` | Global source field paths for a Gorse field. |
 | `topic.<topic>.field.<field>` | Topic-level source field paths for a Gorse field. |
-| `field.labels.<labelName>` | Global source field path used to compose one Gorse label. |
-| `topic.<topic>.field.labels.<labelName>` | Topic-level source field path used to compose one Gorse label. |
+| `field.labels.<labelName>` | Global source field path used to compose labels. |
+| `topic.<topic>.field.labels.<labelName>` | Topic-level source field path used to compose labels. |
 
-## Record format
+## Record Format
 
-Kafka record values may be JSON objects, JSON arrays, maps, structs, or arrays/collections of records. By default, the connector recognizes both Gorse API field names and common lower-camel or snake-case variants.
+Kafka record values may be JSON objects, JSON arrays, maps, structs, or arrays/collections of records. By default, the connector recognizes both Gorse record field names and common lower-camel or snake-case variants.
 
 For feedback:
 
@@ -96,7 +96,13 @@ For items:
 }
 ```
 
-Use field overrides when Kafka messages use nested or custom names. For example, this maps an `events` topic into Gorse feedback:
+### Field Mapping
+
+Use field mapping when Kafka messages use nested or custom names.
+
+#### Feedback
+
+For example, this maps an `events` topic into Gorse feedback:
 
 ```json
 {
@@ -112,6 +118,8 @@ Use field overrides when Kafka messages use nested or custom names. For example,
   "topic.events.field.value": "score"
 }
 ```
+
+#### Users
 
 To insert users from a topic with custom label fields, map each source label path to a Gorse label name:
 
@@ -148,6 +156,8 @@ A record from the `profiles` topic can then be written as:
 ```
 
 The connector writes the record above with `Labels` set to `{ "role": "member", "country": "US", "source": "web" }`.
+
+#### Items
 
 To insert items from a topic with custom labels, map the item ID, label fields, categories, timestamp, and other optional fields as needed:
 
