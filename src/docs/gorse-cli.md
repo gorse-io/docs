@@ -10,20 +10,26 @@ icon: terminal
 
 ::: code-tabs#install
 
-@tab:active Linux
+@tab:active Linux/macOS
 
 ```bash
 curl -fsSL https://gorse.io/install.sh | sh
 ```
 
-@tab macOS
+@tab Windows
+
+```powershell
+irm https://gorse.io/install.ps1 | iex
+```
+
+@tab Homebrew
 
 ```bash
 brew tap gorse-io/tap
 brew install gorse-cli
 ```
 
-@tab Windows
+@tab Scoop
 
 ```powershell
 scoop bucket add gorse https://github.com/gorse-io/scoop-bucket
@@ -32,7 +38,7 @@ scoop install gorse-cli
 
 :::
 
-The install script supports Linux on AMD64, ARM64, and RISCV64, and macOS on ARM64. Windows installation uses [Scoop](https://scoop.sh/). The installed binary is named `gorse-cli`.
+The Bash install script supports Linux on AMD64, ARM64, and RISCV64, and macOS on ARM64. The PowerShell install script supports Windows on AMD64 and ARM64. You can also install `gorse-cli` with [Homebrew](https://brew.sh/) or [Scoop](https://scoop.sh/).
 
 ## Authentication
 

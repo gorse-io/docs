@@ -10,20 +10,26 @@ icon: terminal
 
 ::: code-tabs#install
 
-@tab:active Linux
+@tab:active Linux/macOS
 
 ```bash
 curl -fsSL https://gorse.io/install.sh | sh
 ```
 
-@tab macOS
+@tab Windows
+
+```powershell
+irm https://gorse.io/install.ps1 | iex
+```
+
+@tab Homebrew
 
 ```bash
 brew tap gorse-io/tap
 brew install gorse-cli
 ```
 
-@tab Windows
+@tab Scoop
 
 ```powershell
 scoop bucket add gorse https://github.com/gorse-io/scoop-bucket
@@ -32,7 +38,7 @@ scoop install gorse-cli
 
 :::
 
-安装脚本支持 AMD64、ARM64、RISCV64 架构的Linux，以及 ARM64 架构的 macOS。Windows 安装使用 [Scoop](https://scoop.sh/)。安装后的二进制名称为 `gorse-cli`。
+Bash 安装脚本支持 AMD64、ARM64、RISCV64 架构的 Linux，以及 ARM64 架构的 macOS。PowerShell 安装脚本支持 AMD64 和 ARM64 架构的 Windows。也可以使用 [Homebrew](https://brew.sh/) 或 [Scoop](https://scoop.sh/) 安装 `gorse-cli`。
 
 ## 认证
 
