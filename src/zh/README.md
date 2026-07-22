@@ -108,7 +108,7 @@ curl -X POST http://127.0.0.1:8088/api/feedback \
 @tab Go
 
 ```go
-import "github.com/zhenghaoz/gorse/client"
+import client "github.com/gorse-io/gorse-go"
 
 gorse := client.NewGorseClient("http://127.0.0.1:8088", "")
 
@@ -279,7 +279,7 @@ curl http://127.0.0.1:8088/api/recommend/bob?n=10
 @tab Go
 
 ```go
-gorse.GetRecommend("bob", "", 10)
+gorse.GetRecommend("bob", "", client.RecommendOptions{N: 10})
 ```
 
 @tab Python

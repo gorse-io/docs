@@ -14,7 +14,7 @@ The Go SDK is under development, and APIs might be changed in later versions. Pu
 ## Install
 
 ```bash
-go get github.com/zhenghaoz/gorse-io/gorse-go
+go get github.com/gorse-io/gorse-go
 ```
 
 ## Usage
@@ -58,6 +58,6 @@ func main() {
     })
 
     // Get recommendation.
-    gorse.GetRecommend("bob", "", 10)
+    gorse.GetRecommend("bob", "", client.RecommendOptions{N: 10})
 }
 ```
