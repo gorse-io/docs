@@ -8,7 +8,7 @@ tag:
   - SIMD
 ---
 
-# Go 1.27 SIMD 性能测试：能否替代 GoAT 生成的 AVX512 实现？
+# Go 1.27 SIMD 性能测试：能否替代 GoAT 生成的 AVX512 汇编？
 
 Go 1.27 引入了实验性的 [`simd`](https://pkg.go.dev/simd) 包，为整数和浮点数提供了可移植、与向量宽度无关的 SIMD 类型和运算。一直以来，Gorse 为了加速模型训练和推理中的向量计算，使用 [GoAT](https://github.com/gorse-io/goat) 将 C 语言编译生成的 SIMD 指令转换为 Go 汇编。`simd` 包让同一套 Go 代码在不同指令集上运行成为可能，但它的性能能否接近 [GoAT](https://github.com/gorse-io/goat) 借助 LLVM 生成汇编实现？
 
