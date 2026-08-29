@@ -14,9 +14,9 @@ Go 1.27 引入了实验性的 [`simd`](https://pkg.go.dev/simd) 包，为整数�
 
 我们在 Gorse `common/floats` 包中使用 Go SIMD 实现了[部分向量运算](https://github.com/gorse-io/gorse/blob/master/common/floats/floats_simd.go)，也添加了对应的[基准测试](https://github.com/gorse-io/gorse/blob/master/common/floats/floats_simd_test.go)。本文将对比四种实现的性能：
 
-- 不使用 SIMD 特性的基础实现，也就是普通 Go 标量循环。
-- 由 C 代码编译并通过 GoAT 转换得到的 AVX 和 AVX512 汇编。
-- 使用 Go 1.27 实验性 `simd` 包编写的实现。
+- 不使用 SIMD 特性的[基础实现](https://github.com/gorse-io/gorse/blob/master/common/floats/floats.go)，也就是普通 Go 标量循环。
+- 由 C 代码编译并通过 GoAT 转换得到的 [AVX](https://github.com/gorse-io/gorse/blob/master/common/floats/floats_avx.s) 和 [AVX512](https://github.com/gorse-io/gorse/blob/master/common/floats/floats_avx512.s) 汇编。
+- 使用 Go 1.27 实验性 `simd` 包编写的[实现](https://github.com/gorse-io/gorse/blob/master/common/floats/floats_simd.go)。
 
 ## 实验环境与方法
 

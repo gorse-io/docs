@@ -14,9 +14,9 @@ Go 1.27 introduced the experimental [`simd`](https://pkg.go.dev/simd) package, w
 
 We implemented [several vector operations](https://github.com/gorse-io/gorse/blob/master/common/floats/floats_simd.go) with Go SIMD in Gorse's `common/floats` package and added the corresponding [benchmarks](https://github.com/gorse-io/gorse/blob/master/common/floats/floats_simd_test.go). This post compares the performance of four implementations:
 
-- A baseline implementation that does not use SIMD features—in other words, an ordinary scalar loop in Go.
-- AVX and AVX512 assembly compiled from C and converted by GoAT.
-- An implementation written with Go 1.27's experimental `simd` package.
+- A [baseline implementation](https://github.com/gorse-io/gorse/blob/master/common/floats/floats.go) that does not use SIMD features—in other words, an ordinary scalar loop in Go.
+- [AVX](https://github.com/gorse-io/gorse/blob/master/common/floats/floats_avx.s) and [AVX512](https://github.com/gorse-io/gorse/blob/master/common/floats/floats_avx512.s) assembly compiled from C and converted by GoAT.
+- An [implementation](https://github.com/gorse-io/gorse/blob/master/common/floats/floats_simd.go) written with Go 1.27's experimental `simd` package.
 
 ## Test Environment and Methodology
 
