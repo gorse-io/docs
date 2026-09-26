@@ -9,6 +9,10 @@ tag:
 
 In 2025, we benchmarked the performance of text embedding models in similarity-based recommendations. Within six months of that benchmark's publication, Alibaba Cloud and Google launched a new generation of open-source text embedding models: [qwen3-embedding](https://github.com/QwenLM/Qwen3-Embedding) by Alibaba Cloud and [embeddinggemma](https://ai.google.dev/gemma/docs/embeddinggemma) by Google. Recently, the [gorse-bench](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-bench) tool also added benchmark features for text embedding models. In this post, we use [gorse-bench](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-bench) and the playground dataset to conduct a comprehensive evaluation of popular open-source text embedding models.
 
+## Dataset
+
+This benchmark uses the GitHub playground dataset from [GitRec](https://gitrec.gorse.io/). The dataset contains GitHub users, repositories, and interactions between users and repositories. Each repository's description is stored in `item.Comment` and used as the text input for the embedding models. To import the dataset, follow the [Gorse-in-one playground instructions](https://gorse.io/docs/quick-start.html#option-1-setup-gorse-in-one-node-via-playground) in the Quick Start guide.
+
 ## Evaluation: 1-shot Similarity-based Recommendation
 
 The 2026 benchmark uses a methodology closer to actual recommendation scenarios. The specific steps are as follows:
