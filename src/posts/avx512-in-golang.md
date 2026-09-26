@@ -8,7 +8,7 @@ tag:
 
 # How to Use AVX512 in Golang via C Compiler
 
-AVX512 is the latest generation of SIMD instructions released by Intel, which can process 512 bits of data in one instruction cycle, equivalent to 16 single-precision floating point numbers or 8 double-precision floating point numbers. The training and inference process of recommendation models in [Gorse](https://gorse.io/) requires a lot of vector computation, and AVX512 can theoretically bring some acceleration effect. Unfortunately, the Go compiler does not automatically generate SIMD instructions.
+AVX512 is the latest generation of SIMD instructions released by Intel, which can process 512 bits of data in one instruction cycle, equivalent to 16 single-precision floating point numbers or 8 double-precision floating point numbers. The training and inference process of recommendation models in [Gorse](../README.md) requires a lot of vector computation, and AVX512 can theoretically bring some acceleration effect. Unfortunately, the Go compiler does not automatically generate SIMD instructions.
 
 [MinIO](https://github.com/minio) had open-sourced a tool to convert Intel assembly to Go assembly [c2goasm](https://github.com/minio/c2goasm). First, the vectorized functions are implemented in C, and the assembly containing the SIMD instructions is compiled by Clang. Then, since [Go assembly](https://go.dev/doc/asm) [supports AVX512](https://github.com/golang/go/wiki/AVX512), the functions implemented by SIMD can be called through Go assembly. The c2goasm solution is very effective, however, the project has not been updated for almost 4 years, and after testing it cannot handle AVX512 instructions.
 

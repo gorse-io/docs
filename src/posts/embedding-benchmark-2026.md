@@ -11,7 +11,7 @@ In 2025, we benchmarked the performance of text embedding models in similarity-b
 
 ## Dataset
 
-This benchmark uses the GitHub playground dataset from [GitRec](https://gitrec.gorse.io/). The dataset contains GitHub users, repositories, and interactions between users and repositories. Each repository's description is stored in `item.Comment` and used as the text input for the embedding models. Follow the [Quick Start guide](https://gorse.io/docs/quick-start.html#option-1-setup-gorse-in-one-node-via-playground) to import the dataset.
+This benchmark uses the GitHub playground dataset from [GitRec](https://gitrec.gorse.io/). The dataset contains GitHub users, repositories, and interactions between users and repositories. Each repository's description is stored in `item.Comment` and used as the text input for the embedding models. Follow the [Quick Start guide](../docs/quick-start.md#option-1-setup-gorse-in-one-node-via-playground) to import the dataset.
 
 ## Evaluation: 1-shot Similarity-based Recommendation
 
