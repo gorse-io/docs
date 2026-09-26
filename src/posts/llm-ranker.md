@@ -66,6 +66,8 @@ After saving the recommendation flow, Gorse will load the recommendation flow de
 
 The accuracy of the LLM-based reranker needs to be evaluated using the *gorse-bench* tool.
 
+This evaluation uses the GitHub playground dataset from [GitRec](https://gitrec.gorse.io/). The dataset contains GitHub users, repositories, and interactions between users and repositories. Follow the [Quick Start guide](https://gorse.io/docs/quick-start.html#option-1-setup-gorse-in-one-node-via-playground) to import the dataset.
+
 1. Compile [gorse-bench](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-bench) from Gorse repository.
 2. *gorse-bench* temporarily does not support recommendation flows defined by the RecFlow editor, so the recommendation workflow configuration needs to be written into the configuration file. Additionally, database access methods also need to be provided via the configuration file or environment variables.
 3. Run the following command to evaluate the performance of an LLM-based reranker:

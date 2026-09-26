@@ -10,6 +10,10 @@ tag:
 
 阿里云和谷歌相继推出了新一代的开源文本嵌入模型，分别是阿里云的[qwen3-embedding](https://github.com/QwenLM/Qwen3-Embedding)和谷歌的[embeddinggemma](https://ai.google.dev/gemma/docs/embeddinggemma)。最近[gorse-bench](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-bench)工具也新增了文本嵌入模型的基准测试功能，本文将使用[gorse-bench](https://github.com/gorse-io/gorse/tree/master/cmd/gorse-bench)和playground数据集，对热门的开源文本嵌入模型进行一次全面的评测。
 
+## 数据集
+
+本文使用来自 [GitRec](https://gitrec.gorse.io/) 的 GitHub playground 数据集。该数据集包含 GitHub 用户、GitHub 仓库以及用户和仓库之间的交互记录。每个仓库的描述存储在 `item.Comment` 中，并作为文本嵌入模型的输入。请按照[快速上手](https://gorse.io/docs/quick-start.html#option-1-setup-gorse-in-one-node-via-playground)导入该数据集。
+
 ## 评估方法：基于相似度的单样本推荐
 
 在2026年的评测使用了更贴近实际推荐场景的评测方法，具体步骤如下：
