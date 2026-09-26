@@ -12,7 +12,7 @@ tag:
 
 ## 数据集
 
-本文使用来自 [GitRec](https://gitrec.gorse.io/) 的 GitHub playground 数据集。该数据集包含 GitHub 用户、GitHub 仓库以及用户和仓库之间的交互记录。每个仓库的描述存储在 `item.Comment` 中，并作为文本嵌入模型的输入。请按照快速上手指南中的 [Gorse-in-one playground 教程](https://gorse.io/docs/quick-start.html#option-1-setup-gorse-in-one-node-via-playground)导入该数据集。
+本文使用来自 [GitRec](https://gitrec.gorse.io/) 的 GitHub playground 数据集。该数据集包含 GitHub 用户、GitHub 仓库以及用户和仓库之间的交互记录。每个仓库的描述存储在 `item.Comment` 中，并作为文本嵌入模型的输入。请按照[快速上手](https://gorse.io/docs/quick-start.html#option-1-setup-gorse-in-one-node-via-playground)导入该数据集。
 
 ## 评估方法：基于相似度的单样本推荐
 
