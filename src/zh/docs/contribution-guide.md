@@ -33,7 +33,6 @@ go test -v ./...
 `MYSQL_URI` | `mysql://root:password@tcp(127.0.0.1:3306)/`
 `POSTGRES_URI` | `postgres://gorse:gorse_pass@127.0.0.1/`
 `MONGO_URI` | `mongodb://root:password@127.0.0.1:27017/`
-`CLICKHOUSE_URI` | `clickhouse://127.0.0.1:8123/`
 `REDIS_URI` | `redis://127.0.0.1:6379/`
 `ORACLE_URI` | `oracle://system:password@127.0.0.1:1521/XE`
 

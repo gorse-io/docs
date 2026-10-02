@@ -16,7 +16,7 @@ For the multi-node scenario, binary deployment is not recommended.
 Gorse depends on the following software:
 
 - Cache storage database, one of *MySQL*, *PostgreSQL*, *MongoDB* or *Redis*.
-- Data storage database, one of *MySQL*, *PostgreSQL*, *ClickHouse* or *MongoDB*.
+- Data storage database, one of *MySQL*, *PostgreSQL* or *MongoDB*.
 
 The minimal versions of dependent software are as follows:
 
@@ -25,7 +25,6 @@ The minimal versions of dependent software are as follows:
 | Redis      | 5.0             | Kvrocks >= 2.14.0  |
 | MySQL      | 5.7             | MariaDB >= 10.2    |
 | PostgreSQL | 10.0            |                    |
-| ClickHouse | 21.10           |                    |
 | MongoDB    | 4.0             |                    |
 
 ## Run Gorse-in-one

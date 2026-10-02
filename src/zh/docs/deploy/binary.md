@@ -17,7 +17,7 @@ icon: console
 Gorse 依赖于以下软件：
 
 - 缓存存储数据库， *MySQL* 、 *PostgreSQL* 、 *MongoDB*或*Redis*之一。
-- 数据存储数据库， *MySQL* 、 *PostgreSQL* 、 *ClickHouse*或*MongoDB*之一。
+- 数据存储数据库， *MySQL* 、 *PostgreSQL*或*MongoDB*之一。
 
 依赖软件的最低版本如下：
 
@@ -26,7 +26,6 @@ Gorse 依赖于以下软件：
 Redis | 5.0 |
 MySQL | 5.7 | MariaDB &gt;= 10.2
 PostgresSQL | 10.0 |
-ClickHouse | 21.10 |
 MongoDB | 4.0 |
 
 ## 运行gorse-in-one

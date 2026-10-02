@@ -65,21 +65,6 @@ mongodb+srv://server.example.com/
 
 文档: https://www.mongodb.com/docs/manual/reference/connection-string/
 
-@tab ClickHouse
-
-```bash
-# HTTP 连接 (选项 1)
-clickhouse://user:password@host[:port]/database?param1=value1&...&paramN=valueN
-
-# HTTP 连接 (选项 2)
-chhttp://user:password@host[:port]/database?param1=value1&...&paramN=valueN
-
-# HTTPS 连接
-chhttps://user:password@host[:port]/database?param1=value1&...&paramN=valueN
-```
-
-文档: https://github.com/mailru/go-clickhouse#dsn
-
 :::
 
 `[database.mysql]`

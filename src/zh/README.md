@@ -41,7 +41,7 @@ features:
 
   - title: 跨数据库
     icon: database
-    details: 支持 Redis、MySQL、Postgres、MongoDB 和 ClickHouse。
+    details: 支持 Redis、MySQL、Postgres 和 MongoDB。
     link: docs/config.md#database
 
   - title: 在线评估
