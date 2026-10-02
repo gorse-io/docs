@@ -44,7 +44,7 @@ features:
 
   - title: Cross database
     icon: database
-    details: Support Redis, MySQL, Postgres, MongoDB, and ClickHouse.
+    details: Support Redis, MySQL, Postgres, and MongoDB.
     link: docs/config.md#database
 
   - title: Online evaluation

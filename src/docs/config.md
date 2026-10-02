@@ -65,21 +65,6 @@ mongodb+srv://server.example.com/
 
 Document: https://www.mongodb.com/docs/manual/reference/connection-string/
 
-@tab ClickHouse
-
-```bash
-# HTTP Connection (Option 1)
-clickhouse://user:password@host[:port]/database?param1=value1&...&paramN=valueN
-
-# HTTP Connection (Option 2)
-chhttp://user:password@host[:port]/database?param1=value1&...&paramN=valueN
-
-# HTTPS Connection
-chhttps://user:password@host[:port]/database?param1=value1&...&paramN=valueN
-```
-
-Document: https://github.com/mailru/go-clickhouse#dsn
-
 :::
 
 `[database.mysql]`
