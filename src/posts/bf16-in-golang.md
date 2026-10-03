@@ -11,10 +11,16 @@ In the era of large language models, low-precision floating-point numbers are no
 
 ## Introduction to BF16
 
-```
-+------------+-----------------+-----------------+
-| 1 sign bit | 8 exponent bits | 7 mantissa bits |
-+------------+-----------------+-----------------+
+```mermaid
+---
+config:
+  packet:
+    bitsPerRow: 16
+---
+packet
++1: "Sign"
++8: "Exponent"
++7: "Mantissa"
 ```
 
 BF16 consists of 1 sign bit, 8 exponent bits, and 7 mantissa bits. Compared to FP32, it has the same number of exponent bits but significantly fewer mantissa bits. As a result, BF16 maintains the same dynamic range as FP32 (approximately $±3.4×10³⁸$), sacrificing some precision (around $2⁻⁷$) for a larger exponent range. The larger exponent range effectively avoids gradient overflow and underflow, making it suitable for backpropagation in deep learning. Additionally, it has strong compatibility with FP32, simplifying hardware design. BF16 is used to replace FP32 in model training and inference scenarios, reducing memory usage and bandwidth requirements while increasing the number of data processed by SIMD instructions in a single operation.
