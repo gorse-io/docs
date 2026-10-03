@@ -17,7 +17,6 @@ tag:
 config:
   packet:
     bitsPerRow: 16
-    showBits: false
 ---
 packet
 +1: "符号位"
