@@ -135,13 +135,13 @@ Gorse 支持 Jina/Cohere 风格的文本重排 API。它通过 `POST` 请求发�
 
 以下接口兼容这一基础文本重排协议：
 
-| 服务 | 重排接口地址 | 说明 |
-|------|--------------|------|
-| [Jina AI](https://jina.ai/reranker/) | `https://api.jina.ai/v1/rerank` | 使用文本重排模型。 |
-| [Cohere](https://docs.cohere.com/reference/rerank) | `https://api.cohere.com/v2/rerank` | 使用 Rerank API，而不是 Chat API。 |
-| [阿里云百炼](https://help.aliyun.com/zh/model-studio/text-rerank-api) | `/compatible-api/v1/reranks` | 使用 `qwen3-rerank` 和对应地域、工作空间的兼容接口，而不是原生 text-rerank 接口。 |
-| [硅基流动](https://docs.siliconflow.cn/docs/api/rerank-post) | `https://api.siliconflow.cn/v1/rerank` | 使用平台提供的文本重排模型。 |
-| [vLLM](https://github.com/vllm-project/vllm/blob/main/examples/pooling/score/rerank_api_online.py) | `http://localhost:8000/rerank` | 将地址替换为实际部署地址，并使用服务提供的重排模型名称。 |
+| 服务 | 重排接口地址 |
+|------|--------------|
+| [Jina AI](https://jina.ai/reranker/) | `https://api.jina.ai/v1/rerank` |
+| [Cohere](https://docs.cohere.com/reference/rerank) | `https://api.cohere.com/v2/rerank` |
+| [阿里云百炼](https://help.aliyun.com/zh/model-studio/text-rerank-api) | `/compatible-api/v1/reranks` |
+| [硅基流动](https://docs.siliconflow.cn/docs/api/rerank-post) | `https://api.siliconflow.cn/v1/rerank` |
+| [vLLM](https://github.com/vllm-project/vllm/blob/main/examples/pooling/score/rerank_api_online.py) | `http://localhost:8000/rerank` |
 
 `url` 必须填写**包含路径的完整重排接口地址**，而不是 API 基础地址。例如，除了上面的查询和文档模板，还可以配置 Jina AI：
 

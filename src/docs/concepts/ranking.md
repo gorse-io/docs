@@ -136,13 +136,13 @@ Gorse supports the Jina/Cohere-style text reranking API. It sends a `POST` reque
 
 The following interfaces are compatible with this basic text reranking protocol:
 
-| Service | Reranking endpoint | Notes |
-|---------|--------------------|-------|
-| [Jina AI](https://jina.ai/reranker/) | `https://api.jina.ai/v1/rerank` | Use a text reranking model. |
-| [Cohere](https://docs.cohere.com/reference/rerank) | `https://api.cohere.com/v2/rerank` | Use the Rerank API, not the Chat API. |
-| [Alibaba Cloud Model Studio](https://help.aliyun.com/en/model-studio/text-rerank-api) | `/compatible-api/v1/reranks` | Use `qwen3-rerank` and the compatible endpoint for your region and workspace, not the native text-rerank endpoint. |
-| [SiliconFlow](https://docs.siliconflow.cn/docs/api/rerank-post) | `https://api.siliconflow.cn/v1/rerank` | Use a text reranking model available on the platform. |
-| [vLLM](https://github.com/vllm-project/vllm/blob/main/examples/pooling/score/rerank_api_online.py) | `http://localhost:8000/rerank` | Replace the address with your deployment and use its served reranking model name. |
+| Service | Reranking endpoint |
+|---------|--------------------|
+| [Jina AI](https://jina.ai/reranker/) | `https://api.jina.ai/v1/rerank` |
+| [Cohere](https://docs.cohere.com/reference/rerank) | `https://api.cohere.com/v2/rerank` |
+| [Alibaba Cloud Model Studio](https://help.aliyun.com/en/model-studio/text-rerank-api) | `/compatible-api/v1/reranks` |
+| [SiliconFlow](https://docs.siliconflow.cn/docs/api/rerank-post) | `https://api.siliconflow.cn/v1/rerank` |
+| [vLLM](https://github.com/vllm-project/vllm/blob/main/examples/pooling/score/rerank_api_online.py) | `http://localhost:8000/rerank` |
 
 Set `url` to the **complete reranking endpoint**, including the path, rather than an API base URL. For example, configure Jina AI as follows, in addition to the query and document templates above:
 
