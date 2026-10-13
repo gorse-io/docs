@@ -142,6 +142,7 @@ Gorse 支持 Jina/Cohere 风格的文本重排 API。它通过 `POST` 请求发�
 | [阿里云百炼](https://help.aliyun.com/zh/model-studio/text-rerank-api) | `/compatible-api/v1/reranks` |
 | [硅基流动](https://docs.siliconflow.cn/docs/api/rerank-post) | `https://api.siliconflow.cn/v1/rerank` |
 | [vLLM](https://github.com/vllm-project/vllm/blob/main/examples/pooling/score/rerank_api_online.py) | `http://localhost:8000/rerank` |
+| [llama.cpp (llama-server)](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md) | `http://localhost:8080/v1/rerank` |
 
 `url` 必须填写**包含路径的完整重排接口地址**，而不是 API 基础地址。例如，除了上面的查询和文档模板，还可以配置 Jina AI：
 

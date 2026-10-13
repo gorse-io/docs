@@ -143,6 +143,7 @@ The following interfaces are compatible with this basic text reranking protocol:
 | [Alibaba Cloud Model Studio](https://help.aliyun.com/en/model-studio/text-rerank-api) | `/compatible-api/v1/reranks` |
 | [SiliconFlow](https://docs.siliconflow.cn/docs/api/rerank-post) | `https://api.siliconflow.cn/v1/rerank` |
 | [vLLM](https://github.com/vllm-project/vllm/blob/main/examples/pooling/score/rerank_api_online.py) | `http://localhost:8000/rerank` |
+| [llama.cpp (llama-server)](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md) | `http://localhost:8080/v1/rerank` |
 
 Set `url` to the **complete reranking endpoint**, including the path, rather than an API base URL. For example, configure Jina AI as follows, in addition to the query and document templates above:
 
