@@ -130,6 +130,31 @@ Please sort repositories by the user's interests.
 
 `feedback` contains the user's recent feedback and `items` contains the list of recommended items to be ranked. The number of `feedback` items can be controlled by the `recommend.context_size`. The LLM-based reranker renders the query template and document templates, then sends them to the reranker API. The response is then parsed to extract the ranked list of item IDs.
 
+#### API Compatibility
+
+Gorse supports the Jina/Cohere-style text reranking API. It sends a `POST` request with `model`, `query`, and a string array of `documents`, authenticates with `Authorization: Bearer <auth_token>`, and reads the document `index` and `relevance_score` from the top-level `results` array.
+
+The following interfaces are compatible with this basic text reranking protocol:
+
+| Service | Reranking endpoint | Notes |
+|---------|--------------------|-------|
+| [Jina AI](https://jina.ai/reranker/) | `https://api.jina.ai/v1/rerank` | Use a text reranking model. |
+| [Cohere](https://docs.cohere.com/reference/rerank) | `https://api.cohere.com/v2/rerank` | Use the Rerank API, not the Chat API. |
+| [Alibaba Cloud Model Studio](https://help.aliyun.com/en/model-studio/text-rerank-api) | `/compatible-api/v1/reranks` | Use `qwen3-rerank` and the compatible endpoint for your region and workspace, not the native text-rerank endpoint. |
+| [SiliconFlow](https://docs.siliconflow.cn/docs/api/rerank-post) | `https://api.siliconflow.cn/v1/rerank` | Use a text reranking model available on the platform. |
+| [vLLM](https://github.com/vllm-project/vllm/blob/main/examples/pooling/score/rerank_api_online.py) | `http://localhost:8000/rerank` | Replace the address with your deployment and use its served reranking model name. |
+
+Set `url` to the **complete reranking endpoint**, including the path, rather than an API base URL. For example, configure Jina AI as follows, in addition to the query and document templates above:
+
+```toml
+[recommend.ranker.reranker_api]
+auth_token = "<JINA_API_KEY>"
+model = "jina-reranker-v2-base-multilingual"
+url = "https://api.jina.ai/v1/rerank"
+```
+
+Compatibility here refers to the basic text request and ranking response, not every provider-specific option. Gorse does not send multimodal documents or provider-specific parameters such as reranking instructions and truncation settings. A service advertising OpenAI compatibility is not necessarily compatible with this reranking protocol; interfaces with different authentication, request fields, or response formats require an adapter.
+
 [^1]: Rendle, Steffen. "Factorization machines." 2010 IEEE International conference on data mining. IEEE, 2010.
 [^2]: Nogueira, Rodrigo, et al. "Document ranking with a pretrained sequence-to-sequence model." Findings of the association for computational linguistics: EMNLP 2020. 2020.
 [^3]: Liu, Junling, et al. "Is chatgpt a good recommender? a preliminary study." arXiv preprint arXiv:2304.10149 (2023).

@@ -129,6 +129,31 @@ Please sort repositories by the user's interests.
 
 `feedback` 包含用户最近的反馈，`items` 包含要排序的推荐物品列表。`feedback` 的数量可以通过 `recommend.context_size` 控制。大语言模型重排器渲染查询模板和文档模板，然后将其发送到 Reranker API。然后解析响应以提取排序后的物品 ID 列表。
 
+#### API 兼容性
+
+Gorse 支持 Jina/Cohere 风格的文本重排 API。它通过 `POST` 请求发送 `model`、`query` 和字符串数组 `documents`，使用 `Authorization: Bearer <auth_token>` 认证，并从响应顶层的 `results` 数组中读取文档的 `index` 和 `relevance_score`。
+
+以下接口兼容这一基础文本重排协议：
+
+| 服务 | 重排接口地址 | 说明 |
+|------|--------------|------|
+| [Jina AI](https://jina.ai/reranker/) | `https://api.jina.ai/v1/rerank` | 使用文本重排模型。 |
+| [Cohere](https://docs.cohere.com/reference/rerank) | `https://api.cohere.com/v2/rerank` | 使用 Rerank API，而不是 Chat API。 |
+| [阿里云百炼](https://help.aliyun.com/zh/model-studio/text-rerank-api) | `/compatible-api/v1/reranks` | 使用 `qwen3-rerank` 和对应地域、工作空间的兼容接口，而不是原生 text-rerank 接口。 |
+| [硅基流动](https://docs.siliconflow.cn/docs/api/rerank-post) | `https://api.siliconflow.cn/v1/rerank` | 使用平台提供的文本重排模型。 |
+| [vLLM](https://github.com/vllm-project/vllm/blob/main/examples/pooling/score/rerank_api_online.py) | `http://localhost:8000/rerank` | 将地址替换为实际部署地址，并使用服务提供的重排模型名称。 |
+
+`url` 必须填写**包含路径的完整重排接口地址**，而不是 API 基础地址。例如，除了上面的查询和文档模板，还可以配置 Jina AI：
+
+```toml
+[recommend.ranker.reranker_api]
+auth_token = "<JINA_API_KEY>"
+model = "jina-reranker-v2-base-multilingual"
+url = "https://api.jina.ai/v1/rerank"
+```
+
+这里的兼容性仅指基础文本请求和排序响应，并不涵盖所有服务专属选项。Gorse 不发送多模态文档，也不发送重排指令、截断设置等服务专属参数。声明兼容 OpenAI 的服务不一定兼容这一重排协议；认证方式、请求字段或响应格式不同的接口需要通过适配器接入。
+
 [^1]: Rendle, Steffen. "Factorization machines." 2010 IEEE International conference on data mining. IEEE, 2010.
 [^2]: Liu, Junling, et al. "Is chatgpt a good recommender? a preliminary study." arXiv preprint arXiv:2304.10149 (2023).
 [^3]: Dai, Sunhao, et al. "Uncovering chatgpt’s capabilities in recommender systems." Proceedings of the 17th ACM Conference on Recommender Systems. 2023.
