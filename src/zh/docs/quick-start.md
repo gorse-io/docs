@@ -73,27 +73,64 @@ docker compose restart master
 
 假设 Bob 是一位对 LLM 相关仓库感兴趣的开发人员。我们通过 RESTful API 将他的星标反馈插入 Gorse。
 
+::: tabs
+
+@tab:active Linux/macOS
+
 ```bash
-read -d '' JSON << EOF
+JSON=$(cat <<'EOF'
 [
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"ollama:ollama\", \"Value\": 1, \"Timestamp\": \"2022-02-24\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"huggingface:transformers\", \"Value\": 1, \"Timestamp\": \"2022-02-25\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"asbt:llms-from-scratch\", \"Value\": 1, \"Timestamp\": \"2022-02-26\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"vllm-project:vllm\", \"Value\": 1, \"Timestamp\": \"2022-02-27\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"hiyouga:llama-factory\", \"Value\": 1, \"Timestamp\": \"2022-02-28\" }
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "ollama:ollama", "Value": 1, "Timestamp": "2022-02-24" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "huggingface:transformers", "Value": 1, "Timestamp": "2022-02-25" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "asbt:llms-from-scratch", "Value": 1, "Timestamp": "2022-02-26" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "vllm-project:vllm", "Value": 1, "Timestamp": "2022-02-27" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "hiyouga:llama-factory", "Value": 1, "Timestamp": "2022-02-28" }
 ]
 EOF
+)
 
 curl -X POST http://localhost:8087/api/feedback \
    -H 'Content-Type: application/json' \
    -d "$JSON"
 ```
 
+@tab Windows
+
+```powershell
+$JSON = @'
+[
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "ollama:ollama", "Value": 1, "Timestamp": "2022-02-24" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "huggingface:transformers", "Value": 1, "Timestamp": "2022-02-25" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "asbt:llms-from-scratch", "Value": 1, "Timestamp": "2022-02-26" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "vllm-project:vllm", "Value": 1, "Timestamp": "2022-02-27" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "hiyouga:llama-factory", "Value": 1, "Timestamp": "2022-02-28" }
+]
+'@
+
+Invoke-RestMethod -Method Post -Uri "http://localhost:8087/api/feedback" `
+    -ContentType "application/json" `
+    -Body $JSON
+```
+
+:::
+
 然后，从 Gorse 获取 10 个推荐物品。
+
+::: tabs
+
+@tab:active Linux/macOS
 
 ```bash
 curl http://localhost:8087/api/recommend/bob?n=10
 ```
+
+@tab Windows
+
+```powershell
+Invoke-RestMethod -Uri "http://localhost:8087/api/recommend/bob?n=10"
+```
+
+:::
 
 ::: tip
 对于 Gorse-in-one，请访问 http://localhost:8088 获取 RESTful API，对于 Gorse 集群，请访问 http://localhost:8087。

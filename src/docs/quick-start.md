@@ -73,27 +73,64 @@ Open http://localhost:8088 in browser and the dashboard summarizes all status an
 
 Suppose Bob is a developers who interested in LLM related repositories. We insert his star feedback to Gorse via the RESTful API.
 
+::: tabs
+
+@tab:active Linux/macOS
+
 ```bash
-read -d '' JSON << EOF
+JSON=$(cat <<'EOF'
 [
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"ollama:ollama\", \"Value\": 1, \"Timestamp\": \"2022-02-24\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"huggingface:transformers\", \"Value\": 1, \"Timestamp\": \"2022-02-25\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"asbt:llms-from-scratch\", \"Value\": 1, \"Timestamp\": \"2022-02-26\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"vllm-project:vllm\", \"Value\": 1, \"Timestamp\": \"2022-02-27\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"hiyouga:llama-factory\", \"Value\": 1, \"Timestamp\": \"2022-02-28\" }
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "ollama:ollama", "Value": 1, "Timestamp": "2022-02-24" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "huggingface:transformers", "Value": 1, "Timestamp": "2022-02-25" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "asbt:llms-from-scratch", "Value": 1, "Timestamp": "2022-02-26" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "vllm-project:vllm", "Value": 1, "Timestamp": "2022-02-27" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "hiyouga:llama-factory", "Value": 1, "Timestamp": "2022-02-28" }
 ]
 EOF
+)
 
 curl -X POST http://localhost:8087/api/feedback \
    -H 'Content-Type: application/json' \
    -d "$JSON"
 ```
 
+@tab Windows
+
+```powershell
+$JSON = @'
+[
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "ollama:ollama", "Value": 1, "Timestamp": "2022-02-24" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "huggingface:transformers", "Value": 1, "Timestamp": "2022-02-25" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "asbt:llms-from-scratch", "Value": 1, "Timestamp": "2022-02-26" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "vllm-project:vllm", "Value": 1, "Timestamp": "2022-02-27" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "hiyouga:llama-factory", "Value": 1, "Timestamp": "2022-02-28" }
+]
+'@
+
+Invoke-RestMethod -Method Post -Uri "http://localhost:8087/api/feedback" `
+    -ContentType "application/json" `
+    -Body $JSON
+```
+
+:::
+
 Then, fetch 10 recommended items from Gorse.
+
+::: tabs
+
+@tab:active Linux/macOS
 
 ```bash
 curl http://localhost:8087/api/recommend/bob?n=10
 ```
+
+@tab Windows
+
+```powershell
+Invoke-RestMethod -Uri "http://localhost:8087/api/recommend/bob?n=10"
+```
+
+:::
 
 ::: tip
 Access http://localhost:8088 for RESTful API of Gorse-in-one, and http://localhost:8087 for RESTful API of Gorse cluster.
