@@ -91,18 +91,9 @@ curl -X POST --data-binary @github.bin http://localhost:8088/api/restore
 Invoke-WebRequest -UseBasicParsing -Uri "https://cdn.gorse.io/example/github.bin.gz" -OutFile "github.bin.gz"
 
 # Decompress sample data.
-$inputStream = [System.IO.File]::OpenRead((Join-Path $PWD "github.bin.gz"))
-$gzipStream = [System.IO.Compression.GZipStream]::new($inputStream, [System.IO.Compression.CompressionMode]::Decompress)
-try {
-    $outputStream = [System.IO.File]::Create((Join-Path $PWD "github.bin"))
-    try {
-        $gzipStream.CopyTo($outputStream)
-    } finally {
-        $outputStream.Dispose()
-    }
-} finally {
-    $gzipStream.Dispose()
-}
+$gzip = [IO.Compression.GZipStream]::new([IO.File]::OpenRead("$PWD/github.bin.gz"), [IO.Compression.CompressionMode]::Decompress)
+$output = [IO.File]::Create("$PWD/github.bin")
+try { $gzip.CopyTo($output) } finally { $output.Dispose(); $gzip.Dispose() }
 
 # Import sample data.
 Invoke-RestMethod -Method Post -Uri "http://localhost:8088/api/restore" `
