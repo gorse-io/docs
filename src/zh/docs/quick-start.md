@@ -32,6 +32,10 @@ docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
 
 1. 下载 [docker-compose.yml](https://github.com/gorse-io/gorse/blob/master/docker-compose.yml) 和配置文件 [config.toml](https://github.com/gorse-io/gorse/blob/master/config/config.toml)。
 
+::: tabs
+
+@tab:active Linux/macOS
+
 ```bash
 # 创建一个新目录
 mkdir github
@@ -42,6 +46,21 @@ wget https://raw.githubusercontent.com/gorse-io/gorse/master/docker-compose.yml
 wget https://raw.githubusercontent.com/gorse-io/gorse/master/config/config.toml -P config
 ```
 
+@tab Windows
+
+```powershell
+# 创建一个新目录
+New-Item -ItemType Directory -Path github
+Set-Location github
+New-Item -ItemType Directory -Path config
+
+# 下载 docker-compose.yml 和 config.toml
+Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/gorse-io/gorse/master/docker-compose.yml" -OutFile "docker-compose.yml"
+Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/gorse-io/gorse/master/config/config.toml" -OutFile "config/config.toml"
+```
+
+:::
+
 2. 使用 Docker Compose 搭建 Gorse 集群。
 
 ```bash
@@ -49,6 +68,10 @@ docker compose up -d
 ```
 
 3. 下载转储文件 [github.bin.gz](https://cdn.gorse.io/example/github.bin.gz) 并导入 Gorse。该数据集包含 GitHub 用户、GitHub 仓库以及用户和仓库之间的交互记录。
+
+::: tabs
+
+@tab:active Linux/macOS
 
 ```bash
 # 下载示例数据。
@@ -60,6 +83,25 @@ gzip -d github.bin.gz
 # 导入示例数据。
 curl -X POST --data-binary @github.bin http://localhost:8088/api/restore
 ```
+
+@tab Windows
+
+```powershell
+# 下载示例数据。
+Invoke-WebRequest -UseBasicParsing -Uri "https://cdn.gorse.io/example/github.bin.gz" -OutFile "github.bin.gz"
+
+# 解压示例数据。
+$gzip = [IO.Compression.GZipStream]::new([IO.File]::OpenRead("$PWD/github.bin.gz"), [IO.Compression.CompressionMode]::Decompress)
+$output = [IO.File]::Create("$PWD/github.bin")
+try { $gzip.CopyTo($output) } finally { $output.Dispose(); $gzip.Dispose() }
+
+# 导入示例数据。
+Invoke-RestMethod -Method Post -Uri "http://localhost:8088/api/restore" `
+    -ContentType "application/octet-stream" `
+    -InFile "github.bin"
+```
+
+:::
 
 4. 重新启动主节点以立即重新加载导入的数据。
 
@@ -73,27 +115,64 @@ docker compose restart master
 
 假设 Bob 是一位对 LLM 相关仓库感兴趣的开发人员。我们通过 RESTful API 将他的星标反馈插入 Gorse。
 
+::: tabs
+
+@tab:active Linux/macOS
+
 ```bash
-read -d '' JSON << EOF
+JSON=$(cat <<'EOF'
 [
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"ollama:ollama\", \"Value\": 1, \"Timestamp\": \"2022-02-24\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"huggingface:transformers\", \"Value\": 1, \"Timestamp\": \"2022-02-25\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"asbt:llms-from-scratch\", \"Value\": 1, \"Timestamp\": \"2022-02-26\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"vllm-project:vllm\", \"Value\": 1, \"Timestamp\": \"2022-02-27\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"hiyouga:llama-factory\", \"Value\": 1, \"Timestamp\": \"2022-02-28\" }
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "ollama:ollama", "Value": 1, "Timestamp": "2022-02-24" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "huggingface:transformers", "Value": 1, "Timestamp": "2022-02-25" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "asbt:llms-from-scratch", "Value": 1, "Timestamp": "2022-02-26" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "vllm-project:vllm", "Value": 1, "Timestamp": "2022-02-27" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "hiyouga:llama-factory", "Value": 1, "Timestamp": "2022-02-28" }
 ]
 EOF
+)
 
 curl -X POST http://localhost:8087/api/feedback \
    -H 'Content-Type: application/json' \
    -d "$JSON"
 ```
 
+@tab Windows
+
+```powershell
+$JSON = @'
+[
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "ollama:ollama", "Value": 1, "Timestamp": "2022-02-24" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "huggingface:transformers", "Value": 1, "Timestamp": "2022-02-25" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "asbt:llms-from-scratch", "Value": 1, "Timestamp": "2022-02-26" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "vllm-project:vllm", "Value": 1, "Timestamp": "2022-02-27" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "hiyouga:llama-factory", "Value": 1, "Timestamp": "2022-02-28" }
+]
+'@
+
+Invoke-RestMethod -Method Post -Uri "http://localhost:8087/api/feedback" `
+    -ContentType "application/json" `
+    -Body $JSON
+```
+
+:::
+
 然后，从 Gorse 获取 10 个推荐物品。
+
+::: tabs
+
+@tab:active Linux/macOS
 
 ```bash
 curl http://localhost:8087/api/recommend/bob?n=10
 ```
+
+@tab Windows
+
+```powershell
+Invoke-RestMethod -Uri "http://localhost:8087/api/recommend/bob?n=10"
+```
+
+:::
 
 ::: tip
 对于 Gorse-in-one，请访问 http://localhost:8088 获取 RESTful API，对于 Gorse 集群，请访问 http://localhost:8087。

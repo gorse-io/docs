@@ -32,6 +32,10 @@ There is an example [docker-compose.yml](https://github.com/gorse-io/gorse/blob/
 
 1. Download [docker-compose.yml](https://github.com/gorse-io/gorse/blob/master/docker-compose.yml) and the config file [config.toml](https://github.com/gorse-io/gorse/blob/master/config/config.toml).
 
+::: tabs
+
+@tab:active Linux/macOS
+
 ```bash
 # Create a new directory
 mkdir github
@@ -42,6 +46,21 @@ wget https://raw.githubusercontent.com/gorse-io/gorse/master/docker-compose.yml
 wget https://raw.githubusercontent.com/gorse-io/gorse/master/config/config.toml -P config
 ```
 
+@tab Windows
+
+```powershell
+# Create a new directory
+New-Item -ItemType Directory -Path github
+Set-Location github
+New-Item -ItemType Directory -Path config
+
+# Download docker-compose.yml and config.toml
+Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/gorse-io/gorse/master/docker-compose.yml" -OutFile "docker-compose.yml"
+Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/gorse-io/gorse/master/config/config.toml" -OutFile "config/config.toml"
+```
+
+:::
+
 2. Setup the Gorse cluster using Docker Compose.
 
 ```bash
@@ -49,6 +68,10 @@ docker compose up -d
 ```
 
 3. Download the dump file [github.bin.gz](https://cdn.gorse.io/example/github.bin.gz) and import to Gorse. This dataset consists of GitHub users, GitHub repositories and interactions between users and repositories.
+
+::: tabs
+
+@tab:active Linux/macOS
 
 ```bash
 # Download sample data.
@@ -60,6 +83,25 @@ gzip -d github.bin.gz
 # Import sample data.
 curl -X POST --data-binary @github.bin http://localhost:8088/api/restore
 ```
+
+@tab Windows
+
+```powershell
+# Download sample data.
+Invoke-WebRequest -UseBasicParsing -Uri "https://cdn.gorse.io/example/github.bin.gz" -OutFile "github.bin.gz"
+
+# Decompress sample data.
+$gzip = [IO.Compression.GZipStream]::new([IO.File]::OpenRead("$PWD/github.bin.gz"), [IO.Compression.CompressionMode]::Decompress)
+$output = [IO.File]::Create("$PWD/github.bin")
+try { $gzip.CopyTo($output) } finally { $output.Dispose(); $gzip.Dispose() }
+
+# Import sample data.
+Invoke-RestMethod -Method Post -Uri "http://localhost:8088/api/restore" `
+    -ContentType "application/octet-stream" `
+    -InFile "github.bin"
+```
+
+:::
 
 4. Restart the master node to reload imported data immediately.
 
@@ -73,27 +115,64 @@ Open http://localhost:8088 in browser and the dashboard summarizes all status an
 
 Suppose Bob is a developers who interested in LLM related repositories. We insert his star feedback to Gorse via the RESTful API.
 
+::: tabs
+
+@tab:active Linux/macOS
+
 ```bash
-read -d '' JSON << EOF
+JSON=$(cat <<'EOF'
 [
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"ollama:ollama\", \"Value\": 1, \"Timestamp\": \"2022-02-24\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"huggingface:transformers\", \"Value\": 1, \"Timestamp\": \"2022-02-25\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"asbt:llms-from-scratch\", \"Value\": 1, \"Timestamp\": \"2022-02-26\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"vllm-project:vllm\", \"Value\": 1, \"Timestamp\": \"2022-02-27\" },
-    { \"FeedbackType\": \"star\", \"UserId\": \"bob\", \"ItemId\": \"hiyouga:llama-factory\", \"Value\": 1, \"Timestamp\": \"2022-02-28\" }
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "ollama:ollama", "Value": 1, "Timestamp": "2022-02-24" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "huggingface:transformers", "Value": 1, "Timestamp": "2022-02-25" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "asbt:llms-from-scratch", "Value": 1, "Timestamp": "2022-02-26" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "vllm-project:vllm", "Value": 1, "Timestamp": "2022-02-27" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "hiyouga:llama-factory", "Value": 1, "Timestamp": "2022-02-28" }
 ]
 EOF
+)
 
 curl -X POST http://localhost:8087/api/feedback \
    -H 'Content-Type: application/json' \
    -d "$JSON"
 ```
 
+@tab Windows
+
+```powershell
+$JSON = @'
+[
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "ollama:ollama", "Value": 1, "Timestamp": "2022-02-24" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "huggingface:transformers", "Value": 1, "Timestamp": "2022-02-25" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "asbt:llms-from-scratch", "Value": 1, "Timestamp": "2022-02-26" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "vllm-project:vllm", "Value": 1, "Timestamp": "2022-02-27" },
+    { "FeedbackType": "star", "UserId": "bob", "ItemId": "hiyouga:llama-factory", "Value": 1, "Timestamp": "2022-02-28" }
+]
+'@
+
+Invoke-RestMethod -Method Post -Uri "http://localhost:8087/api/feedback" `
+    -ContentType "application/json" `
+    -Body $JSON
+```
+
+:::
+
 Then, fetch 10 recommended items from Gorse.
+
+::: tabs
+
+@tab:active Linux/macOS
 
 ```bash
 curl http://localhost:8087/api/recommend/bob?n=10
 ```
+
+@tab Windows
+
+```powershell
+Invoke-RestMethod -Uri "http://localhost:8087/api/recommend/bob?n=10"
+```
+
+:::
 
 ::: tip
 Access http://localhost:8088 for RESTful API of Gorse-in-one, and http://localhost:8087 for RESTful API of Gorse cluster.
