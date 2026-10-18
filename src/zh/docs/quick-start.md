@@ -32,6 +32,10 @@ docker run -p 8088:8088 zhenghaoz/gorse-in-one --playground
 
 1. 下载 [docker-compose.yml](https://github.com/gorse-io/gorse/blob/master/docker-compose.yml) 和配置文件 [config.toml](https://github.com/gorse-io/gorse/blob/master/config/config.toml)。
 
+::: tabs
+
+@tab:active Linux/macOS
+
 ```bash
 # 创建一个新目录
 mkdir github
@@ -42,6 +46,21 @@ wget https://raw.githubusercontent.com/gorse-io/gorse/master/docker-compose.yml
 wget https://raw.githubusercontent.com/gorse-io/gorse/master/config/config.toml -P config
 ```
 
+@tab Windows
+
+```powershell
+# 创建一个新目录
+New-Item -ItemType Directory -Path github
+Set-Location github
+New-Item -ItemType Directory -Path config
+
+# 下载 docker-compose.yml 和 config.toml
+Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/gorse-io/gorse/master/docker-compose.yml" -OutFile "docker-compose.yml"
+Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/gorse-io/gorse/master/config/config.toml" -OutFile "config/config.toml"
+```
+
+:::
+
 2. 使用 Docker Compose 搭建 Gorse 集群。
 
 ```bash
@@ -49,6 +68,10 @@ docker compose up -d
 ```
 
 3. 下载转储文件 [github.bin.gz](https://cdn.gorse.io/example/github.bin.gz) 并导入 Gorse。该数据集包含 GitHub 用户、GitHub 仓库以及用户和仓库之间的交互记录。
+
+::: tabs
+
+@tab:active Linux/macOS
 
 ```bash
 # 下载示例数据。
@@ -60,6 +83,34 @@ gzip -d github.bin.gz
 # 导入示例数据。
 curl -X POST --data-binary @github.bin http://localhost:8088/api/restore
 ```
+
+@tab Windows
+
+```powershell
+# 下载示例数据。
+Invoke-WebRequest -UseBasicParsing -Uri "https://cdn.gorse.io/example/github.bin.gz" -OutFile "github.bin.gz"
+
+# 解压示例数据。
+$inputStream = [System.IO.File]::OpenRead((Join-Path $PWD "github.bin.gz"))
+$gzipStream = [System.IO.Compression.GZipStream]::new($inputStream, [System.IO.Compression.CompressionMode]::Decompress)
+try {
+    $outputStream = [System.IO.File]::Create((Join-Path $PWD "github.bin"))
+    try {
+        $gzipStream.CopyTo($outputStream)
+    } finally {
+        $outputStream.Dispose()
+    }
+} finally {
+    $gzipStream.Dispose()
+}
+
+# 导入示例数据。
+Invoke-RestMethod -Method Post -Uri "http://localhost:8088/api/restore" `
+    -ContentType "application/octet-stream" `
+    -InFile "github.bin"
+```
+
+:::
 
 4. 重新启动主节点以立即重新加载导入的数据。
 

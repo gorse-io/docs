@@ -32,6 +32,10 @@ There is an example [docker-compose.yml](https://github.com/gorse-io/gorse/blob/
 
 1. Download [docker-compose.yml](https://github.com/gorse-io/gorse/blob/master/docker-compose.yml) and the config file [config.toml](https://github.com/gorse-io/gorse/blob/master/config/config.toml).
 
+::: tabs
+
+@tab:active Linux/macOS
+
 ```bash
 # Create a new directory
 mkdir github
@@ -42,6 +46,21 @@ wget https://raw.githubusercontent.com/gorse-io/gorse/master/docker-compose.yml
 wget https://raw.githubusercontent.com/gorse-io/gorse/master/config/config.toml -P config
 ```
 
+@tab Windows
+
+```powershell
+# Create a new directory
+New-Item -ItemType Directory -Path github
+Set-Location github
+New-Item -ItemType Directory -Path config
+
+# Download docker-compose.yml and config.toml
+Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/gorse-io/gorse/master/docker-compose.yml" -OutFile "docker-compose.yml"
+Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/gorse-io/gorse/master/config/config.toml" -OutFile "config/config.toml"
+```
+
+:::
+
 2. Setup the Gorse cluster using Docker Compose.
 
 ```bash
@@ -49,6 +68,10 @@ docker compose up -d
 ```
 
 3. Download the dump file [github.bin.gz](https://cdn.gorse.io/example/github.bin.gz) and import to Gorse. This dataset consists of GitHub users, GitHub repositories and interactions between users and repositories.
+
+::: tabs
+
+@tab:active Linux/macOS
 
 ```bash
 # Download sample data.
@@ -60,6 +83,34 @@ gzip -d github.bin.gz
 # Import sample data.
 curl -X POST --data-binary @github.bin http://localhost:8088/api/restore
 ```
+
+@tab Windows
+
+```powershell
+# Download sample data.
+Invoke-WebRequest -UseBasicParsing -Uri "https://cdn.gorse.io/example/github.bin.gz" -OutFile "github.bin.gz"
+
+# Decompress sample data.
+$inputStream = [System.IO.File]::OpenRead((Join-Path $PWD "github.bin.gz"))
+$gzipStream = [System.IO.Compression.GZipStream]::new($inputStream, [System.IO.Compression.CompressionMode]::Decompress)
+try {
+    $outputStream = [System.IO.File]::Create((Join-Path $PWD "github.bin"))
+    try {
+        $gzipStream.CopyTo($outputStream)
+    } finally {
+        $outputStream.Dispose()
+    }
+} finally {
+    $gzipStream.Dispose()
+}
+
+# Import sample data.
+Invoke-RestMethod -Method Post -Uri "http://localhost:8088/api/restore" `
+    -ContentType "application/octet-stream" `
+    -InFile "github.bin"
+```
+
+:::
 
 4. Restart the master node to reload imported data immediately.
 
