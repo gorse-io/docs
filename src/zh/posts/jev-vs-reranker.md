@@ -6,13 +6,11 @@ category:
 tag:
   - 人工智能
 ---
-# Jev 和 Reranker 谁更适合推荐系统？
+# 决策模型和重排序模型谁更适合推荐排序？
 
-在[使用大语言模型排序推荐结果](./llm-ranker.md)一文中，我们尝试将用户的历史兴趣转换为查询，再使用 Reranker 对候选物品进行排序。随着 Jev 及其相关决策模型的出现，推荐系统又多了一种选择：把“用户是否会喜欢这个物品”作为一个判断任务，直接使用模型返回的概率排序。
+在[使用大语言模型排序推荐结果](./llm-ranker.md)一文中，我们尝试将用户的历史兴趣转换为查询，再使用重排序模型对候选物品进行排序。随着 Jev 及其相关决策模型的出现，推荐系统又多了一种选择：把“用户是否会喜欢这个物品”作为一个判断任务，直接使用模型返回的概率排序。
 
-这两种方法都可以接收用户历史和候选物品的文本描述，也都不需要先在业务数据上训练一个排序模型。那么，面向相关性排序的 Reranker 和面向判断任务的决策模型，谁更适合推荐系统？本文使用 Gorse 的 `gorse-bench` 工具，在 MovieLens 100K 数据集上比较它们的排序效果。
-
-本次结果中，OpenJev-GGUF 的 GAUC 最高，为 **0.6463**，其次是 Clef-Flash-GGUF 的 **0.6163**，Qwen3-Reranker-8B-GGUF 为 **0.5911**。这里测试的是开放权重的 Jev 风格决策模型，**没有测试 TypeSafe 官方托管的 Jev**。各次运行实际纳入评估的用户也略有差异，因此这些数值适合作为选型线索，还不能视为严格的同用户对照实验。
+这两种方法都可以根据用户历史兴趣的文本描述对候选物品进行排序，而不需要先在业务数据上训练一个排序模型。那么，面向相关性排序的重排序模型和面向判断任务的决策模型，谁更适合推荐系统？本文使用 Gorse 的 `gorse-bench` 工具，在 MovieLens 100K 数据集上比较它们的排序效果。
 
 ## 两种排序方式有什么区别
 
@@ -20,12 +18,81 @@ Reranker 接收一个查询和多个文档，输出文档相对于查询的相�
 
 [Jev](https://docs.typesafe.ai/introduction/quickstart) 的接口接收一个共享的 `state` 和一组 `questions`，为每个问题返回结构化结果。它支持选择、评分和名为 `noul` 的真假判断；其中 `noul` 返回 0 到 1 之间的数值，表示命题为真的概率。Gorse 使用这一类判断为候选物品打分。
 
-| 对比项 | Reranker | Jev 风格决策接口 |
-| --- | --- | --- |
-| 用户历史 | 渲染为 `query` | 渲染为共享的 `state` |
-| 候选物品 | 每个物品对应一个 `document` | 每个物品对应一个 `noul` 问题 |
-| 返回值 | `relevance_score` | 每个问题的 `noul` 概率 |
-| Gorse 排序方式 | 按相关性分数从高到低排序 | 按概率从高到低排序 |
+下面以物品 ID 为 `1` 和 `2` 的两部候选电影为例，以终端记录的形式对比两种接口，每段 curl 命令后紧接对应的 JSON 返回结果。命令适用于 Bash，请将 API 地址、密钥和模型名替换为实际服务配置。返回内容仅展示排序相关字段，分数为示意值。
+
+::: code-tabs
+
+@tab:active 重排序模型API
+
+```bash
+$ curl --request POST 'http://localhost:8080/v1/rerank' \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data-binary @- <<'JSON'
+{
+  "model": "Qwen3-Reranker-8B-GGUF",
+  "query": "A user likes the following movies:\n- The Lion King (1994). A animation, children's, musical movie.\nPlease recommend more movies.",
+  "documents": [
+    "Toy Story (1995). A animation, children's, comedy movie.",
+    "GoldenEye (1995). A action, adventure, thriller movie."
+  ]
+}
+JSON
+
+{
+  "model": "Qwen3-Reranker-8B-GGUF",
+  "results": [
+    {
+      "index": 0,
+      "relevance_score": 0.87
+    },
+    {
+      "index": 1,
+      "relevance_score": 0.24
+    }
+  ]
+}
+```
+
+@tab 决策模型API
+
+```bash
+$ curl --request POST 'http://localhost:8080/v1/systemone' \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data-binary @- <<'JSON'
+{
+  "model": "OpenJev-GGUF",
+  "state": "A user likes the following movies:\n- The Lion King (1994). A animation, children's, musical movie.\nPlease recommend more movies.",
+  "questions": {
+    "1": {
+      "type": "noul",
+      "instructions": "Toy Story (1995). A animation, children's, comedy movie."
+    },
+    "2": {
+      "type": "noul",
+      "instructions": "GoldenEye (1995). A action, adventure, thriller movie."
+    }
+  }
+}
+JSON
+
+{
+  "model": "OpenJev-GGUF",
+  "answers": {
+    "1": {
+      "type": "noul",
+      "noul": 0.91
+    },
+    "2": {
+      "type": "noul",
+      "noul": 0.35
+    }
+  }
+}
+```
+
+:::
 
 Gorse 的两种实现共用模板渲染逻辑。Reranker 通过响应中的文档索引匹配物品；决策接口则以物品 ID 作为问题 ID，取回相应概率，再排序。两者都可以一次提交一个用户的多个候选物品，接口调用方式本身并不能说明哪一种推理更快。
 
@@ -82,17 +149,19 @@ $$
 
 本次保存了 9 个模型的逐用户 CSV，字段分别为历史正反馈数量 `Feedback`、测试候选数量 `Candidates` 和用户 AUC。下面按 `Candidates` 加权重新汇总 GAUC，保留四位小数；其中 8 个模型与 `result.txt` 中的汇总一致，OpenJev 的结果由 CSV 补充计算。
 
-| 模型 | GAUC | 评估用户数 | 测试候选数合计 |
-| --- | ---: | ---: | ---: |
-| OpenJev-GGUF | **0.6463** | 673 | 10,794 |
-| Clef-Flash-GGUF | **0.6163** | 680 | 11,026 |
-| Qwen3-Reranker-8B-GGUF | 0.5911 | 682 | 11,038 |
-| Qwen3-Reranker-4B-GGUF | 0.5877 | 683 | 11,039 |
-| Kev-4B-GGUF | 0.5852 | 681 | 11,029 |
-| Clef-GGUF | 0.5782 | 683 | 10,912 |
-| Bespoke-Nimble-9B-v3-GGUF | 0.5771 | 680 | 11,027 |
-| lev-GGUF | 0.5714 | 682 | 11,043 |
-| Qwen3-Reranker-0.6B-GGUF | 0.5135 | 681 | 11,029 |
+| 模型 | 参数量 | GAUC |
+| --- | ---: | ---: |
+| [OpenJev-GGUF](https://huggingface.co/ggml-org/OpenJev-GGUF) | 27B | **0.6463** |
+| [Clef-Flash-GGUF](https://huggingface.co/Cloudflare/clef-flash) | 9B | **0.6163** |
+| [Qwen3-Reranker-8B-GGUF](https://huggingface.co/Qwen/Qwen3-Reranker-8B) | 8B | 0.5911 |
+| [Qwen3-Reranker-4B-GGUF](https://huggingface.co/Qwen/Qwen3-Reranker-4B) | 4B | 0.5877 |
+| [Kev-4B-GGUF](https://huggingface.co/ggml-org/Kev-4B-GGUF) | 4B | 0.5852 |
+| [Clef-GGUF](https://huggingface.co/Cloudflare/clef) | 27B | 0.5782 |
+| [Bespoke-Nimble-9B-v3-GGUF](https://huggingface.co/ggml-org/Bespoke-Nimble-9B-v3-GGUF) | 9B | 0.5771 |
+| [lev-GGUF](https://huggingface.co/ggml-org/lev-GGUF) | 4B | 0.5714 |
+| [Qwen3-Reranker-0.6B-GGUF](https://huggingface.co/Qwen/Qwen3-Reranker-0.6B) | 0.6B | 0.5135 |
+
+参数量采用模型标称规模，B 表示十亿参数，点击模型名称可查看对应模型页面。
 
 在各自导出的评估样本上，OpenJev 的 GAUC 比 Qwen3-Reranker-8B 高约 0.0552，Clef-Flash 高约 0.0252。这说明 Jev 风格的决策模型值得加入推荐排序模型的候选名单。
 
