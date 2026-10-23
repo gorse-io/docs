@@ -6,8 +6,6 @@ icon: terminal
 
 `gorse-cli` 是用于管理 Gorse 集群的命令行工具。它把常见的控制台和运维操作集成到终端中，包括查看集群状态、任务进度、用户和物品数据、推荐结果、推荐流程配置，以及数据备份和恢复。
 
-源代码和版本发布由独立仓库 [gorse-io/cli](https://github.com/gorse-io/cli) 维护。
-
 ## 安装
 
 ::: code-tabs#install
@@ -40,19 +38,7 @@ scoop install gorse-cli
 
 :::
 
-Bash 安装脚本支持 AMD64、ARM64、LOONG64、RISCV64 架构的 Linux，以及 ARM64 架构的 macOS。PowerShell 安装脚本支持 AMD64 和 ARM64 架构的 Windows。也可以使用 [Homebrew](https://brew.sh/) 或 [Scoop](https://scoop.sh/) 安装 `gorse-cli`。
-
-### 从源码构建
-
-安装仓库 `go.mod` 要求的 Go 版本后，执行：
-
-```bash
-git clone https://github.com/gorse-io/cli.git
-cd cli
-go build -o gorse-cli ./cmd/gorse-cli
-```
-
-Windows 下改用 `go build -o gorse-cli.exe ./cmd/gorse-cli`。将生成的可执行文件加入 `PATH` 后，即可在任意目录使用。
+Bash 安装脚本支持 AMD64、ARM64、RISCV64 架构的 Linux，以及 ARM64 架构的 macOS。PowerShell 安装脚本支持 AMD64 和 ARM64 架构的 Windows。也可以使用 [Homebrew](https://brew.sh/) 或 [Scoop](https://scoop.sh/) 安装 `gorse-cli`。
 
 ## 认证
 

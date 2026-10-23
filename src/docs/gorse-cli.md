@@ -6,8 +6,6 @@ icon: terminal
 
 `gorse-cli` is a command line tool for managing Gorse clusters. It provides terminal access to common dashboard and administration operations, including cluster status, task progress, data inspection, recommendation preview, recommendation pipeline configuration, and backup or restore operations.
 
-The source code and releases are maintained in the standalone [gorse-io/cli](https://github.com/gorse-io/cli) repository.
-
 ## Installation
 
 ::: code-tabs#install
@@ -40,19 +38,7 @@ scoop install gorse-cli
 
 :::
 
-The Bash install script supports Linux on AMD64, ARM64, LOONG64, and RISCV64, and macOS on ARM64. The PowerShell install script supports Windows on AMD64 and ARM64. You can also install `gorse-cli` with [Homebrew](https://brew.sh/) or [Scoop](https://scoop.sh/).
-
-### Build from source
-
-With the Go version required by the repository's `go.mod` installed:
-
-```bash
-git clone https://github.com/gorse-io/cli.git
-cd cli
-go build -o gorse-cli ./cmd/gorse-cli
-```
-
-On Windows, use `go build -o gorse-cli.exe ./cmd/gorse-cli` instead. Add the binary to your `PATH` to use it from any directory.
+The Bash install script supports Linux on AMD64, ARM64, and RISCV64, and macOS on ARM64. The PowerShell install script supports Windows on AMD64 and ARM64. You can also install `gorse-cli` with [Homebrew](https://brew.sh/) or [Scoop](https://scoop.sh/).
 
 ## Authentication
 
