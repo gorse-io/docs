@@ -1,5 +1,5 @@
 const INSTALL_SCRIPT_URL =
-  "https://raw.githubusercontent.com/gorse-io/gorse/master/cmd/gorse-cli/install.ps1";
+  "https://raw.githubusercontent.com/gorse-io/cli/main/install.ps1";
 
 const SCRIPT_HEADERS = {
   "Content-Type": "text/plain; charset=utf-8",
