@@ -1,16 +1,15 @@
 ---
-icon: robot
 date: 2026-10-22
 category:
-  - Technical Insights
+  - technical
 tag:
-  - Artificial Intelligence
+  - AI/ML
 ---
-# Decision Models vs. Rerankers: Which Is Better for Recommendation Ranking?
+# Decision Models vs. Rerankers in Recommendation Ranking
 
-In [Build Recommender System with LLM-based Reranker](./llm-ranker.md), we explored turning a user’s past interests into a query and using a reranker to rank candidate items. With the emergence of Jev and related decision models, recommender systems have another option: treat “Will this user like this item?” as a judgment task and rank items directly by the probabilities returned by the model.
+In [Build Recommender System with LLM-based Reranker](./llm-ranker.md), we explored turning a user’s past interests into a query and using a reranker to rank candidate items. With the emergence of decision models such as Jev, recommender systems have another option: treat “Will this user like this item?” as a judgment task and rank items directly by the probabilities returned by the decision model.
 
-Both approaches can rank candidate items using text descriptions of a user’s past interests and profile, without first training a ranking model on application-specific data. So which is better suited to recommender systems: rerankers trained for relevance ranking, or decision models trained for judgment tasks? This article compares their ranking performance on the MovieLens 100K dataset using Gorse’s `gorse-bench` tool.
+Both approaches can rank candidate items using text descriptions of a user’s past interests and profile, without first training a ranking model on self-maintained data. So which is better suited to recommender systems: rerankers trained for relevance ranking, or decision models trained for judgment tasks? This post compares their ranking performance on the MovieLens 100K dataset using Gorse’s `gorse-bench` tool.
 
 ## How the Two Types of Models Differ
 
@@ -20,7 +19,7 @@ The following examples show requests and responses for decision models and reran
 
 ::: code-tabs
 
-@tab:active Decision Model API
+@tab:active Decision API
 
 ```bash
 $ curl --request POST 'http://localhost:8080/v1/systemone' \
@@ -94,7 +93,7 @@ JSON
 
 ## Dataset and Evaluation Method
 
-We use the MovieLens 100K movie ratings dataset. The local dataset contains 943 users, 1,682 movies, and 100,000 ratings on a scale from 1 to 5. The experiment treats ratings of 4 or higher as positive feedback and all other rated entries as negative samples:
+We use the MovieLens 100K dataset. The dataset contains 943 users, 1,682 movies, and 100,000 ratings on a scale from 1 to 5. The experiment treats ratings of 4 or higher as positive feedback and all other rated entries as negative samples:
 
 ```toml
 [recommend.data_source]
@@ -104,7 +103,7 @@ read_feedback_types = ["rating"]
 
 ::: info
 
-To reproduce the experiment, start with the [base configuration file](https://github.com/gorse-io/gorse/blob/master/client/config.toml), which does not include reranker or decision model settings. Download the [ready-to-import dataset](https://cdn.gorse.io/example/github.bin.gz) and follow the [Quick Start](../docs/quick-start.md) to import it.
+To reproduce the experiment, start with the [base configuration file](https://github.com/gorse-io/gorse/blob/master/client/config.toml), which does not include reranker or decision API settings. Download the [ready-to-import dataset](https://cdn.gorse.io/example/github.bin.gz) and follow the [Quick Start](../docs/quick-start.md) to import it.
 
 :::
 
@@ -112,7 +111,7 @@ All models run on llama.cpp and use Q4_K_M quantization. The rerankers and decis
 
 ::: code-tabs
 
-@tab:active Decision Model Configuration
+@tab:active Decision API Configuration
 
 ```toml
 [recommend.ranker.decision_api]
@@ -129,7 +128,7 @@ Please recommend more movies.
 instructions_template = '{{ item.Comment }}. A{% for category in item.Categories %}{% if not loop.first %},{% endif %} {{ category | lower }}{% endfor %} movie.'
 ```
 
-@tab Reranker Configuration
+@tab Reranker API Configuration
 
 ```toml
 [recommend.ranker.reranker_api]
@@ -284,8 +283,8 @@ OpenJev’s GAUC is approximately 0.0552 higher than Qwen3-Reranker-8B’s, whil
 
 **First, rerankers are the safest choice.** In this experiment, Qwen3-Reranker-4B outperforms most decision models, including Clef, a 27B-parameter model that ranks highly on the [decision model leaderboard](https://clef-evals.workers-ai-mle.workers.dev/). This may be because rerankers are trained specifically for ranking tasks, whereas decision models are trained on data covering more general scenarios and may not perform best on ranking tasks.
 
-**Second, decision model performance depends on the specific model.** OpenJev and Clef-Flash perform well in this experiment. Clef-Flash significantly outperforms Qwen3-Reranker-8B, which has a similar parameter count, as well as Clef from the same company. Both Clef-Flash and Nimble are fine-tuned from Qwen 3.5 9B, but their different fine-tuning datasets lead to very different performance on recommendation tasks.
+**Second, decision model performance depends on the specific model.** OpenJev and Clef-Flash perform well in this experiment. Clef-Flash significantly outperforms Qwen3-Reranker-8B, which has a similar parameter size, as well as Clef from the same company. Both Clef-Flash and Nimble are fine-tuned from Qwen 3.5 9B, but their different fine-tuning datasets lead to very different performance on recommendation tasks.
 
 ::: warning
-Decision-model-based ranking is still experimental. It can only be configured through the configuration file; the graphical interface does not yet support editing these settings.
+Decision-model-based ranking is still experimental. It can only be configured through the configuration file; the web dashboard does not yet support editing these settings.
 :::

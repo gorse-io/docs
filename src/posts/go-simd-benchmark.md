@@ -1,5 +1,4 @@
 ---
-icon: cpu
 date: 2026-08-28
 category:
   - technical
