@@ -12,100 +12,103 @@ tag:
 
 于是我们开发了[clap.cpp](https://github.com/gorse-io/clap.cpp) ——一个使用 C++20 和 [GGML](https://github.com/ggml-org/ggml) 实现的音频向量模型推理引擎。它支持 CLAP、CLaMP3、MERT、MuQ 和 MuQ-MuLan 等模型，提供命令行、HTTP 服务以及 Python、Rust、Node.js 接口，并支持 Metal、Vulkan、CUDA 和 ROCM 硬件加速。
 
-## 先选模型，再选检索方式
+## 支持模型列表
 
-不同模型输出的向量不能因为维度相同就混在一起使用。首先要区分两类需求：
+项目目前支持的模型如下：
 
-- **音频与音频检索**：输入一段音乐，寻找声音或音乐特征相近的内容，可以使用音频编码器。
-- **文本与音频检索**：输入一句描述，寻找对应的音频，需要使用具有对齐文本、音频表示的模型。
+| 模型 | 文本 | 音频 | 维度 | 采样率 | 模型权重许可证 |
+| --- | --- | --- | --- | --- | --- |
+| [CLAP](https://huggingface.co/laion/larger_clap_music) | ✅ | ✅ | 512 | 48 kHz | [Apache-2.0](https://huggingface.co/laion/larger_clap_music) |
+| [CLaMP3](https://github.com/sanderwood/clamp3) | ✅ | ✅ | 768 | 24 kHz | [MIT](https://huggingface.co/sander-wood/clamp3) |
+| [MERT v1 95M](https://huggingface.co/m-a-p/MERT-v1-95M) | ❌ | ✅ | 768 | 24 kHz | [CC-BY-NC-4.0](https://huggingface.co/m-a-p/MERT-v1-95M) |
+| [MERT v1 330M](https://huggingface.co/m-a-p/MERT-v1-330M) | ❌ | ✅ | 1,024 | 24 kHz | [CC-BY-NC-4.0](https://huggingface.co/m-a-p/MERT-v1-330M) |
+| [MERT v2 FullSong](https://huggingface.co/m-a-p/MERT-v2-FullSong) / [30s](https://huggingface.co/m-a-p/MERT-v2-30s) | ❌ | ✅ | 1,024 | 24 kHz | [CC-BY-NC-4.0](https://huggingface.co/m-a-p/MERT-v2-FullSong) |
+| [MuQ](https://huggingface.co/OpenMuQ/MuQ-large-msd-iter) | ❌ | ✅ | 1,024 | 24 kHz | [CC-BY-NC-4.0](https://huggingface.co/OpenMuQ/MuQ-large-msd-iter) |
+| [MuQ-MuLan](https://huggingface.co/OpenMuQ/MuQ-MuLan-large) | ✅ | ✅ | 512 | 24 kHz | [CC-BY-NC-4.0](https://huggingface.co/OpenMuQ/MuQ-MuLan-large) |
 
-项目目前支持的模型如下，维度和采样率以对应模型为准：
+CLAP 和 MuQ-MuLan 将文本和音频映射到同一个向量空间，可以用于跨文本和音频检索，而剩余模型只能用于音频检索。每个模型原生支持的音频采样率也不同，clap.cpp会自动重采样。
 
-| 模型 | 文本输入 | 音频输入 | 向量维度 | 音频采样率 |
-| --- | --- | --- | --- | --- |
-| CLAP | 支持 | 支持 | 512 | 48 kHz |
-| CLaMP3 | 支持 | 支持 | 768 | 24 kHz |
-| MERT v1 95M | 不支持 | 支持 | 768 | 24 kHz |
-| MERT v1 330M | 不支持 | 支持 | 1,024 | 24 kHz |
-| MERT v2 FullSong / 30s | 不支持 | 支持 | 1,024 | 24 kHz |
-| MuQ | 不支持 | 支持 | 1,024 | 24 kHz |
-| MuQ-MuLan | 支持 | 支持 | 512 | 24 kHz |
+clap.cpp 的模型文件格式为 GGUF，这些模型的 GGUF 版本可以从 [Audio-Embedding-GGUF](https://huggingface.co/collections/gorse-io/audio-embedding-gguf)获取，每个模型提供 F16、Q8、Q4_K_M 三种量化版本，使用过程中需要遵循模型权重许可证。
 
-例如，需要“用文字找音乐”时，可以从 CLAP、CLaMP3 或 MuQ-MuLan 入手；只做音乐相似检索时，也可以评估 MERT 或 MuQ。模型支持文本输入不代表它对任意语言、流派和描述都同样有效，仍应使用业务数据验证检索质量。
+## 在代码中向量化音频和文本
 
-已经转换好的模型可以从 [Gorse 的音频嵌入 GGUF 集合](https://huggingface.co/collections/gorse-io/audio-embedding-gguf)获取。请使用项目适配的模型文件，而不是把任意模型改成 `.gguf` 扩展名；代码许可证与模型权重许可证也应分别检查。
+音频向量模型的参数量通常较少，对于较短的音频，本地推理就已足够。clap.cpp 提供 Python、Rust 和 Node.js 绑定。
 
-## 从命令行开始
 
-下面以源码编译的 CPU 版本为例。需要 Git、支持 C++20 的编译器和 CMake 3.20 或更高版本。克隆时必须初始化子模块：
+::: code-tabs
 
-```bash
-git clone --recursive https://github.com/gorse-io/clap.cpp.git
-cd clap.cpp
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF
-cmake --build build --config Release --parallel 4
-```
+@tab:active Python
 
-下面的命令按 Linux 下的构建目录编写。下载一个支持文本和音频的 CLAP GGUF，将其保存为当前目录下的 `model.gguf`，并准备一段 `music.flac`：
 
 ```bash
-./build/clap embedding --model model.gguf --text 'A jazz quartet.'
-./build/clap embedding --model model.gguf --audio music.flac
+pip install clap-cpp
 ```
 
-这两条命令分别输出一个 JSON 向量。文本和音频使用同一个模型，才能在它对齐的空间中比较。MERT 和 MuQ 等仅支持音频的模型不能用于第一条命令。
+@tab Rust
 
-也可以指定 CPU 和线程数，便于控制批处理任务的资源占用：
 
 ```bash
-./build/clap embedding --model model.gguf --audio music.flac --device cpu --threads 4
+cargo add clap-cpp
 ```
 
-命令行适合快速验证模型和处理少量文件。大量文件逐个启动进程会反复加载模型，此时更适合使用语言绑定或长驻服务。
-
-## 使用 Python 比较文本和音频
-
-Python 包的名称是 `clap-cpp`，导入路径是 `clap_cpp`：
+@tab Node.js
 
 ```bash
-python3 -m pip install clap-cpp
+npm install clap-cpp
 ```
 
-下面的示例加载一次模型，分别编码文本和音频，再计算余弦相似度。`model.gguf` 同样需要是支持两种输入的模型，模型权重不会在安装 Python 包时自动下载。
+:::
+
+
+下面的示例加载一次模型，分别编码文本和音频，生成可用于余弦相似度比较的向量。
+
+::: code-tabs
+
+@tab:active Python
 
 ```python
-import math
-
 from clap_cpp import CLAP
 
-
-def cosine(left, right):
-    if len(left) != len(right):
-        raise ValueError("Embedding dimensions do not match")
-    dot = sum(a * b for a, b in zip(left, right))
-    norm = math.sqrt(sum(a * a for a in left)) * math.sqrt(
-        sum(b * b for b in right)
-    )
-    return dot / norm if norm else 0.0
-
-
-with CLAP("model.gguf", threads=4) as model:
-    text_embedding = model.encode_text("A jazz quartet.")
-    audio_embedding = model.encode_audio("music.flac")
-    print("dimension:", model.projection_dimension)
-    print("cosine similarity:", cosine(text_embedding, audio_embedding))
+with CLAP("larger_clap_general-q4_k_m.gguf") as model:
+    text_embedding = model.encode_text("Sound of a dog")
+    audio_embedding = model.encode_audio("dog.wav")
 ```
 
-`encode_text` 和 `encode_audio` 返回 `list[float]`，因此这个例子不需要 NumPy。示例显式计算向量范数，不假设所有模型的输出都已经归一化。余弦相似度是排序信号，不是“这首歌属于爵士乐的概率”，也不宜直接套用跨模型通用的判断阈值。
+@tab Rust
 
-Python 绑定通过标准库 `ctypes` 调用原生 C API，基础包不依赖 PyTorch，也不需要额外运行 `clap` 进程。其他语言可以参阅项目的 [Rust](https://github.com/gorse-io/clap.cpp/tree/main/rust) 和 [Node.js](https://github.com/gorse-io/clap.cpp/tree/main/node) 绑定。
+```rust
+use clap_cpp::CLAP;
 
-## 启动嵌入服务
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut model = CLAP::new("larger_clap_general-q4_k_m.gguf", 4)?;
+    let text_embedding = model.encode_text("Sound of a dog")?;
+    let audio_embedding = model.encode_audio("dog.wav", 0)?;
+    Ok(())
+}
+```
 
-如果应用不方便直接链接原生库，可以启动 HTTP 服务。模型在启动时加载，而不是每次请求都重新加载：
+@tab Node.js
+
+```javascript
+const { CLAP } = require("clap-cpp");
+
+const model = new CLAP("larger_clap_general-q4_k_m.gguf");
+try {
+  const textEmbedding = model.encodeText("Sound of a dog");
+  const audioEmbedding = model.encodeAudio("dog.wav");
+} finally {
+  model.close();
+}
+```
+
+:::
+
+## 通过 HTTP 向量化音频和文本
+
+clap.cpp 也提供了 HTTP 服务：
 
 ```bash
-./build/clap serve --model model.gguf --host 127.0.0.1 --port 8080
+clap serve --model larger_clap_general-q4_k_m.gguf --host 127.0.0.1 --port 8080
 ```
 
 文本嵌入接口采用 OpenAI 兼容的请求形式：
@@ -113,68 +116,33 @@ Python 绑定通过标准库 `ctypes` 调用原生 C API，基础包不依赖 Py
 ```bash
 curl http://127.0.0.1:8080/v1/embeddings \
   -H 'Content-Type: application/json' \
-  -d '{"model":"model.gguf","input":["A jazz quartet.","A solo piano."],"encoding_format":"float"}'
+  -d '{"model":"larger_clap_general-q4_k_m.gguf","input":["Sound of a dog","Sound of vaccum cleaner"],"encoding_format":"float"}'
 ```
 
-这里的 `model` 是已加载 GGUF 的**文件名**，不是完整路径，也不是 Hugging Face 仓库名称。返回的向量位于 `data` 数组中。
-
-音频请求使用 `input_audio` 内容块，数据是完整音频文件的标准 Base64 编码。这是项目的音频输入扩展，不应假设所有兼容文本嵌入接口的客户端都能直接发送这种请求：
-
-```python
-import base64
-import json
-import urllib.request
-
-with open("music.flac", "rb") as audio:
-    data = base64.b64encode(audio.read()).decode("ascii")
-
-payload = {
-    "model": "model.gguf",
-    "input": [
-        {"content": [{"type": "input_audio", "input_audio": {"data": data}}]}
-    ],
-}
-request = urllib.request.Request(
-    "http://127.0.0.1:8080/v1/embeddings",
-    data=json.dumps(payload).encode("utf-8"),
-    headers={"Content-Type": "application/json"},
-    method="POST",
-)
-with urllib.request.urlopen(request) as response:
-    result = json.load(response)
-    print(result["data"][0]["embedding"])
-```
-
-本地服务默认监听回环地址。需要对外提供服务时，应在部署层配置访问控制、TLS 和请求限制，而不是直接把推理端口暴露到公网。
-
-## 量化与硬件加速的边界
-
-clap.cpp 提供 `Q8_0` 和混合精度的 `Q4_K_M` 量化预设，可以从 F32/F16 模型生成量化文件：
+音频请求使用 `input_audio` 内容块，数据是完整音频文件的标准 Base64 编码：
 
 ```bash
-./build/clap quantize --type Q8_0 model.gguf model-q8.gguf
-./build/clap quantize --type Q4_K_M model.gguf model-q4.gguf
+audio_data="$(base64 < music.flac | tr -d '\r\n')"
+
+curl http://127.0.0.1:8080/v1/embeddings \
+  -H 'Content-Type: application/json' \
+  --data-binary @- <<JSON
+{
+  "model": "larger_clap_general-q4_k_m.gguf",
+  "input": [
+    {
+      "content": [
+        {
+          "type": "input_audio",
+          "input_audio": {"data": "${audio_data}"}
+        }
+      ]
+    }
+  ]
+}
+JSON
 ```
 
-输出文件必须不存在，且不能把已经量化的模型再次作为输入。量化并不是把所有权重统一改成同一种低精度类型：不满足条件的张量会保留原类型，`Q4_K_M` 还会对部分敏感权重使用更高精度。量化后的文件大小、运行内存、推理速度和检索质量需要分别测量，不能仅凭名称推断加速比例。
+## 结语
 
-硬件支持同样需要区分“编译了某个后端”和“模型的全部计算都在 GPU 上执行”。项目提供设备枚举和设备选择，各架构共用支持 GPU 调度的计算路径，但实际卸载范围取决于后端、算子、精度要求和编译选项，部分计算仍可能在 CPU 上完成。具体安装方式和系统运行库要求请参阅 [Python 绑定文档](https://github.com/gorse-io/clap.cpp/tree/main/python)，不要把安装 GPU 包等同于端到端 GPU 加速或确定的性能收益。
-
-## 如何接到推荐系统中
-
-音频向量可以作为推荐系统的一路内容信号，而不是替代全部推荐逻辑。一条可行的接入流程是：
-
-1. **离线编码**：使用固定模型和预处理策略，为音乐库生成音频向量，同时记录模型版本和音频片段策略。
-2. **建立索引**：将向量连同歌曲 ID 存入向量数据库，按余弦相似度等适合该表示的度量建立检索索引。
-3. **生成候选**：用用户正在听的歌曲进行相似歌曲召回；使用支持跨模态的模型时，也可以用文本描述召回音乐。
-4. **融合排序**：结合用户行为、协同过滤、流行度以及业务约束，对候选集合做进一步排序。
-
-对于尚未积累交互数据的新歌曲，内容向量可以提供一条候选召回路径；但“声音相似”不等于“用户喜欢”，仍需通过离线评估和线上实验验证效果。更换模型、量化方案或音频处理策略时，应重新评估是否需要重建整个向量索引，不能只替换查询侧模型。
-
-这是一种推荐系统集成思路，并不意味着 Gorse 已经内置上述完整音频处理流程。clap.cpp 负责生成向量，向量存储、候选融合和个性化排序仍由应用选择和组织。
-
-## 小结
-
-clap.cpp 把多种音频嵌入模型放进同一个原生推理项目，让命令行验证、进程内调用和 HTTP 服务能够共用模型与输入处理能力。对于音乐搜索和推荐应用，可以先选择合适的模型，用少量真实音频验证检索效果，再决定量化、硬件加速和服务部署方式。
-
-项目地址：[gorse-io/clap.cpp](https://github.com/gorse-io/clap.cpp)。
+[MAEB: Massive Audio Embedding Benchmark](https://huggingface.co/blog/AdnanElAssadi/maeb) 的研究结果表明，音频向量模型在语言任务上的表现和声学任务上的表现不可兼得，这意味着音频向量模型的选择相比文本向量模型需要更谨慎的评估。在未来，我们还会更新这些主流的音频向量模型在推荐系统中的表现对比。
