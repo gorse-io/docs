@@ -36,6 +36,12 @@ scoop bucket add gorse https://github.com/gorse-io/scoop-bucket
 scoop install gorse-cli
 ```
 
+@tab npm
+
+```bash
+npm install -g @gorse/cli
+```
+
 :::
 
 The Bash install script supports Linux on AMD64, ARM64, and RISCV64, and macOS on ARM64. The PowerShell install script supports Windows on AMD64 and ARM64. You can also install `gorse-cli` with [Homebrew](https://brew.sh/) or [Scoop](https://scoop.sh/).
