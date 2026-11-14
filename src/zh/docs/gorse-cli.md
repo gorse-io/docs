@@ -44,8 +44,6 @@ npm install -g @gorse/cli
 
 :::
 
-使用 npm 安装需要 Node.js 18 或更高版本。
-
 Bash 安装脚本支持 AMD64、ARM64、RISCV64 架构的 Linux，以及 ARM64 架构的 macOS。PowerShell 安装脚本支持 AMD64 和 ARM64 架构的 Windows。也可以使用 [Homebrew](https://brew.sh/) 或 [Scoop](https://scoop.sh/) 安装 `gorse-cli`。
 
 ## 认证

@@ -44,8 +44,6 @@ npm install -g @gorse/cli
 
 :::
 
-Installation with npm requires Node.js 18 or later.
-
 The Bash install script supports Linux on AMD64, ARM64, and RISCV64, and macOS on ARM64. The PowerShell install script supports Windows on AMD64 and ARM64. You can also install `gorse-cli` with [Homebrew](https://brew.sh/) or [Scoop](https://scoop.sh/).
 
 ## Authentication
