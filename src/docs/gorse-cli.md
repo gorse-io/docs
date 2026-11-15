@@ -46,6 +46,14 @@ npm install -g @gorse/cli
 
 The Bash install script supports Linux on AMD64, ARM64, and RISCV64, and macOS on ARM64. The PowerShell install script supports Windows on AMD64 and ARM64. You can also install `gorse-cli` with [Homebrew](https://brew.sh/) or [Scoop](https://scoop.sh/).
 
+## Shell Completion
+
+For shell completion setup instructions, replace `<shell>` with `bash`, `zsh`, `fish`, or `powershell` and run:
+
+```bash
+gorse-cli completion <shell> --help
+```
+
 ## Authentication
 
 Most commands need the Gorse master HTTP endpoint and the admin API key. You can provide them in three ways.

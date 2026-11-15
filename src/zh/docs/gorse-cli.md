@@ -46,6 +46,14 @@ npm install -g @gorse/cli
 
 Bash 安装脚本支持 AMD64、ARM64、RISCV64 架构的 Linux，以及 ARM64 架构的 macOS。PowerShell 安装脚本支持 AMD64 和 ARM64 架构的 Windows。也可以使用 [Homebrew](https://brew.sh/) 或 [Scoop](https://scoop.sh/) 安装 `gorse-cli`。
 
+## Shell 自动补全
+
+将 `<shell>` 替换为 `bash`、`zsh`、`fish` 或 `powershell`，运行以下命令查看自动补全的配置说明：
+
+```bash
+gorse-cli completion <shell> --help
+```
+
 ## 认证
 
 大多数命令都需要 Gorse master 节点的 HTTP 地址和管理员 API 密钥。你可以通过以下三种方式提供认证信息。
