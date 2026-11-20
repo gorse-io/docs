@@ -35,7 +35,14 @@ func TestStackUnwind(t *testing.T) {
 @tab Gemini 4 Argon (High)
 
 ```go
-
+func TestAdd(t *testing.T) {
+	a := int64(1)
+	b := int64(2)
+	c := add(a, b)
+	assert.Equal(t, a+b, c)
+	_ = trace.Start(io.Discard)
+	trace.Stop()
+}
 ```
 
 @tab Gemini 4 Hydrogen (XHigh)
