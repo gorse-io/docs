@@ -12,43 +12,61 @@ Go 语言是一款热门的编程语言，但是在 Go 语言中直接使用 Go 
 
 ## Go 汇编栈空间分配 BUG
 
-```
-Please write a minimal test in tests/universal_test.go that produces the crashes reported in this issue: https://github.com/gorse-io/goat/pull/56
-```
-
 ## 主流大语言模型的表现
+
+> Please write a minimal test case with least code in tests/ that produces the crashes reported in this issue: https://github.com/gorse-io/goat/pull/56
+
+### Gemini
 
 ::: tabs
 
 @tab:active Gemini 4 Neon (XHigh)
 
 ```go
-func TestStackUnwinding(t *testing.T) {
+func TestStackUnwind(t *testing.T) {
 	fr := trace.NewFlightRecorder(trace.FlightRecorderConfig{})
-	if err := fr.Start(); err != nil {
-		t.Fatal(err)
-	}
+	assert.NoError(t, fr.Start())
 	defer fr.Stop()
-
-	res := add(1, 2)
-	trace.Log(t.Context(), "", "")
-	assert.Equal(t, int64(3), res)
+	assert.Equal(t, int64(3), add(1, 2))
+	runtime.GC()
 }
 ```
 
+@tab Gemini 4 Argon (High)
+
 ```go
-TEXT ·add(SB), $0-24
-	MOVD a+0(FP), R0
-	MOVD b+8(FP), R1
-	WORD $0xd10043ff       // sub	sp, sp, #16
-	WORD $0xf90007e0       // str	x0, [sp, #8]
-	WORD $0xf90003e1       // str	x1, [sp]
-	WORD $0xf94007e8       // ldr	x8, [sp, #8]
-	WORD $0xf94003e9       // ldr	x9, [sp]
-	WORD $0x8b090100       // add	x0, x8, x9
-	WORD $0x910043ff       // add	sp, sp, #16
-	MOVD R0, result+16(FP)
-	RET
+
+```
+
+@tab Gemini 4 Hydrogen (XHigh)
+
+```go
+
+```
+
+@tab Gemini 3.8 (Flash)
+
+```go
+
 ```
 
 :::
+
+### Claude
+
+### GPT
+
+### 其他模型
+
+## 总结
+
+| 模型 | CLI | 是否复现 |
+|-|-|-|
+| Gemini 4 Neon (XHigh) | Antigravity | ✅ |
+| Gemini 4 Argon (High) | Antigravity | |
+| Gemini 4 Hydrogen (XHigh) | Antigravity | |
+| Gemini 3.8 (Flash) | Antigravity | |
+| GPT-6.2-Astra xhigh | Codex | |
+| GPT-6.2-Sol xhigh | Codex | |
+| GPT-6.1-Astra xhigh | Codex | |
+| GPT-6.1-Sol xhigh | Codex | |
