@@ -275,12 +275,43 @@ void fill_stack(void)
 
 之所以会触发崩溃，是因为 Go 的协程初始栈空间较小（仅 2 KB），函数入口本应由 Go 汇编器根据 `TEXT` 声明的栈帧大小插入栈空间检查并在不足时触发栈增长（`runtime.morestack`）。但由于 GoAT 错误地将 `fill_stack` 的栈帧声明为 `$0`，绕过了栈增长检查；函数体直接将 `SP` 下移 4096 字节并全部填入 `-1`（`0xff`），导致栈越界写穿，破坏了相邻内存（例如前一行 `go func() { select {} }()` 分配在附近的其他协程栈或运行时数据结构）。随后 `runtime.GC()` 扫描各协程的栈时读到被 `0xff` 污染的栈帧或指针，便会立刻触发运行时崩溃。
 
+```graphviz
+digraph StackOverflow {
+  graph [rankdir=LR, bgcolor="white", pad=0.2, ranksep=0.45];
+  node [shape=plain, fontname="sans-serif", fontsize=12, fontcolor="#334155"];
+  edge [fontname="sans-serif", fontsize=11, penwidth=1.5];
+
+  mem [label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#cbd5e1">
+      <TR><TD WIDTH="180" BORDER="0"><B>协程栈池内存布局</B></TD></TR>
+      <TR><TD BORDER="0">高地址</TD></TR>
+      <TR>
+        <TD PORT="cur" BGCOLOR="#fef2f2"><B>当前协程栈</B><BR/><FONT POINT-SIZE="10" COLOR="#64748b">2 KB</FONT></TD>
+      </TR>
+      <TR>
+        <TD BORDER="0"><FONT POINT-SIZE="10" COLOR="#b91c1c"><B>▼ 越界写穿 2 KB 栈底边界 ▼</B></FONT></TD>
+      </TR>
+      <TR>
+        <TD PORT="adj" BGCOLOR="#fee2e2"><B>相邻协程栈</B><BR/><FONT POINT-SIZE="10" COLOR="#991b1b">2 KB</FONT></TD>
+      </TR>
+      <TR><TD BORDER="0">低地址（栈向下增长）</TD></TR>
+    </TABLE>
+  >];
+
+  gc [shape=box, style="rounded,filled", color="#b91c1c", fillcolor="#b91c1c",
+      fontcolor="white", width=2.8, label="runtime.GC()\n扫描所有活跃协程栈"];
+
+  mem:adj:e -> gc:w [dir=back, label="读到非法 PC → 崩溃", color="#b91c1c", fontcolor="#b91c1c"];
+}
+```
+
 ✅ **Claude Sonet 5.5 (High)** 也采用了一样的复现方式。
 
 ### 其他模型
 
 | 模型          | CLI     | 是否复现 |
 |---------------|---------|----------|
+| Qwen4-Max     | Qoder   |          |
 | Kimi K3 Max   | Copilot | ❌        |
 | Grok 4.7 High | Copilot | ✅        |
 
