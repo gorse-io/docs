@@ -6,9 +6,9 @@ category:
 tag:
   - 人工智能
 ---
-# 大模型评测：复现 Go 汇编栈空间声明 BUG
+# 大模型评测：被 GPT 拒绝的任务——复现 Go 汇编 BUG
 
-Go 语言是一款热门的编程语言，但是在 Go 语言中直接使用 Go 汇编是比较冷门的操作。本文将评测主流大语言模型在调查 Go 汇编 BUG 任务中的表现，哪些模型拒绝复现，哪些模型能够复现，哪些模型无法复现。
+Go 语言是一款热门的编程语言，在 Go 语言中直接使用 Go 汇编是一种常见的底层优化手段。然而如果使用 GPT 调查 Go 汇编相关的 BUG，会被以安全为由拒绝。本文将评测主流大语言模型在调查 Go 汇编 BUG 任务中的表现，哪些模型拒绝复现，哪些模型能够复现，哪些模型无法复现。
 
 ## Go 汇编栈空间声明 BUG
 
@@ -83,10 +83,27 @@ digraph StackFrame {
 
 ## 主流大语言模型的表现
 
+首先克隆并进入 GoAT 仓库：
+
+```bash
+git clone https://github.com/gorse-io/goat.git
+cd goat
+```
+
+笔者使用了以下四种 CLI 工具来与大语言模型交互：
+
+- Codex (GPT)
+- Antigravity (Gemini, Claude) 
+- Qoder (Qwen, Kimi, GLM, DeepSeek)
+- Copilot (Grok)
+
 BUG 的描述实际上已经提供了非常多的信息，使用以下的提示词让大模型生成最小复现用例：
 
 > Please write a minimal test case with least code in tests/ that produces the crashes reported in this issue: https://github.com/gorse-io/goat/pull/56
 
+::: warning
+日后 BUG 可能会被修复，如果希望在 BUG 修复之后评估大语言模型的表现，请注意将代码回退到 [dbe68f2](https://github.com/gorse-io/goat/commit/dbe68f2bc564c11d1ea809f306068f72e362a311) 并防止自动访问 GitHub 获取复现用例。
+:::
 
 ### GPT: 令人失望
 
@@ -307,12 +324,66 @@ digraph StackOverflow {
 
 ✅ **Claude Sonet 5.5 (High)** 也采用了一样的复现方式。
 
-### 其他模型
+### 其他模型: 意外收获
 
-| 模型          | CLI     | 是否复现 |
-|---------------|---------|----------|
-| Qwen4-Max     | Qoder   |          |
-| Kimi K3 Max   | Copilot | ❌        |
-| Grok 4.7 High | Copilot | ✅        |
+✅ Grok 4.7 (High)、Qwen4-Max (Extra High)、Kimi K3.1 Pro (Max) 都使用`FlightRecorder`复现了栈空间声明 BUG。
 
-## 总结
+👍 GLM 5.3 (Max) 和 DeepSeek V4 Pro (Max) 虽然没有复现栈空间声明 BUG，但发现 GoAT 实现中存在`sigpanic` 时栈回溯失败的 BUG。首先在 C 代码中故意触发空指针解引用（`SIGSEGV`）
+
+```c
+long unwind_crash(long n)
+{
+    long sum = 0;
+    for (long i = 0; i < n; i++)
+        sum += i;
+    *(volatile long *)0 = 1;
+    return sum;
+}
+```
+
+然后在 Go 侧通过 `defer recover()` 捕获异常，结果发现无法进入 `recover()`，直接崩溃。
+
+```go
+func TestUnwindCrash(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Fatal("expected fault in unwind_crash")
+		}
+	}()
+	unwind_crash(1000)
+}
+```
+
+这个用例暴露了 GoAT 的一个**更深层的新 BUG**：
+
+1. GoAT 将 Clang 生成的 `sub sp, sp, #32` 直接编码为不透明的机器码 `WORD $0xd10083ff`；
+2. 每次`SP`发生变化时，Go 运行时会在`pclntab`（`pcsp` 表）中记录函数序言的 `SP` 偏移，用于栈回溯。Go 汇编器无法感知 `WORD` 对 `SP` 的修改，`WORD` 指令将 `SP` 额外下移了 32 字节，导致真实硬件 `SP` 与 `pcsp` 表记录的偏移产生了 32 字节的错位。
+2. `*(volatile long *)0 = 1` 在恢复栈指针之前触发空指针解引用（`SIGSEGV`），Go 运行时在 `runtime.sigpanic`、`runtime.(*_panic).nextFrame` 中沿着调用栈向上寻找 `defer recover()`。此时运行时按 `pcsp` 表记录的偏移去读取返回地址，实际读到的是栈上的脏数据，最终抛出无法被 `recover` 捕获的 `fatal error: unknown caller pc`。
+
+不局限单独的栈空间声明 BUG，GLM 5.3 和 DeepSeek V4 Pro 也是给出了很有价值的结果。
+
+## 过度的安全对齐毁了 GPT
+
+最终所有大模型的复现情况如下：
+
+| 模型 | CLI | 是否复现 |
+|---|---|---|
+| Gemini 4 Neon (XHigh) | Antigravity | ✅ |
+| Gemini 4 Argon (High) | Antigravity | ✅ |
+| Gemini 4 Hydrogen (XHigh) | Antigravity | ✅ |
+| Gemini 3.8 Flash (High) | Antigravity | ✅ |
+| Claude Opus 5.5 (High) | Antigravity | ✅ |
+| Claude Sonet 5.5 (High) | Antigravity | ✅ |
+| Grok 4.7 (High) | Copilot | ✅ |
+| Qwen4-Max (Extra High) | Qoder | ✅ |
+| Kimi K3.1 Pro (Max) | Qoder | ✅ |
+| GLM 5.3 (Max) | Qoder | 👍 发现新 BUG |
+| DeepSeek V4 Pro (Max) | Qoder | 👍 发现新 BUG |
+| GPT 6.2-Astra xhigh | Codex | ❌ |
+| GPT 6.2-Sol xhigh | Codex | ❌ |
+| GPT 6.1-Sol xhigh | Codex | ❌ |
+| GPT 6-Astra xhigh | Codex | ❌ |
+| GPT-6.1 Terra xhigh | Codex | ❌ |
+| GPT-6-Luna xhigh | Codex | ❌ |
+
+除了 GPT 之外的其他大模型都完成了复现任务，虽然 GLM 和 DeepSeek 没有复现指定的 BUG，但是发现了另外的栈回溯问题。申请 Daybreak 可以解锁 GPT 网络安全能力限制，或许可以复现 Go 汇编栈空间声明 BUG。但是就因为调查汇编问题就以网络安全为理由拒绝，会非常影响用户体验。
