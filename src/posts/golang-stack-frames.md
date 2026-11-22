@@ -1,16 +1,15 @@
 ---
-icon: go
 date: 2026-11-20
 category:
   - Tech Share
 tag:
   - AI
 ---
-# LLM Benchmark: The Task GPT Refused — Reproducing a Go Assembly Bug
+# LLM Showdown: After GPT Refused to Reproduce a Go Assembly Bug
 
-Go is a widely used programming language, and writing Go assembly directly is a common low-level optimization technique. However, if you ask GPT to investigate a Go assembly bug, it refuses on cybersecurity grounds. This post benchmarks mainstream large language models on reproducing a Go assembly bug—showing which models refuse, which succeed, and which fail.
+Go is a widely used programming language, and writing Go assembly in hand is a common low-level optimization technique. However, if you ask GPT to investigate a Go assembly bug, it refuses on cybersecurity grounds. This post compares mainstream LLM on reproducing a Go assembly bug—showing which models refuse, which succeed, and which fail.
 
-## The Go Assembly Stack Frame Declaration Bug
+## Stack Frame Declaration Bug
 
 [GoAT](https://github.com/gorse-io/goat) is a tool that transpiles C code into Go assembly, used in [Gorse](https://github.com/gorse-io/gorse) to generate Go SIMD assembly. In April 2026, [@sfc-gh-ravisharma](https://github.com/sfc-gh-ravisharma) reported a bug in [gorse-io/goat#56](https://github.com/gorse-io/goat/pull/56) where GoAT computed incorrect stack frame sizes for Go assembly functions.
 
@@ -44,7 +43,7 @@ digraph StackFrame {
       <TR><TD COLSPAN="2" BORDER="0"><B>Stack Memory Layout</B></TD></TR>
       <TR><TD COLSPAN="2" BORDER="0">High Address</TD></TR>
       <TR>
-        <TD WIDTH="110" SIDES="TB"><B>Return Value</B><BR/><FONT POINT-SIZE="10" COLOR="#64748b">8 bytes</FONT></TD>
+        <TD WIDTH="140" SIDES="TB"><B>Return Value</B><BR/><FONT POINT-SIZE="10" COLOR="#64748b">8 bytes</FONT></TD>
         <TD WIDTH="180" BGCOLOR="#f8fafc"><FONT FACE="Courier">result+16(FP)</FONT></TD>
       </TR>
       <TR>
@@ -90,7 +89,7 @@ git clone https://github.com/gorse-io/goat.git
 cd goat
 ```
 
-I used four CLI tools to interact with the models:
+I used four coding agent CLIs:
 
 - Codex (GPT)
 - Antigravity (Gemini, Claude)
@@ -102,7 +101,7 @@ The PR description already provides plenty of context. I used the following prom
 > Please write a minimal test case with least code in tests/ that produces the crashes reported in this issue: https://github.com/gorse-io/goat/pull/56
 
 ::: warning
-This bug may be fixed in the future. If you want to benchmark LLMs after the fix lands, make sure to check out commit [dbe68f2](https://github.com/gorse-io/goat/commit/dbe68f2bc564c11d1ea809f306068f72e362a311) and prevent the agent from fetching reproduction cases from GitHub automatically.
+This bug may be fixed in the future. If you want to compare LLMs after the fix lands, make sure to check out commit [dbe68f2](https://github.com/gorse-io/goat/commit/dbe68f2bc564c11d1ea809f306068f72e362a311) and prevent the agent from fetching reproduction cases from GitHub automatically.
 :::
 
 ### GPT: Disappointing
@@ -357,7 +356,7 @@ func TestUnwindCrash(t *testing.T) {
 This test case exposes a **deeper, separate bug** in GoAT:
 
 1. GoAT encodes Clang's `sub sp, sp, #32` directly as an opaque machine instruction (`WORD $0xd10083ff`).
-2. Whenever `SP` changes, the Go toolchain records the `SP` delta in `pclntab` (the `pcsp` table) for stack unwinding. Because the Go assembler cannot see that `WORD` modifies `SP`, that instruction shifts `SP` down by an extra 32 bytes, creating a 32-byte discrepancy between the real hardware `SP` and the offset recorded in the `pcsp` table.
+2. Whenever `SP` changes, the Go toolchain records the `SP` delta in `pclntab` (the `pcsp` table) for stack unwinding. Because the Go assembler cannot understand that `WORD` modifies `SP`, that instruction shifts `SP` down by an extra 32 bytes, creating a 32-byte discrepancy between the real hardware `SP` and the offset recorded in the `pcsp` table.
 3. `*(volatile long *)0 = 1` triggers a null pointer dereference (`SIGSEGV`) before `SP` is restored. As the Go runtime walks up the stack through `runtime.sigpanic` and `runtime.(*_panic).nextFrame` looking for `defer recover()`, it reads the return address using the `pcsp` offset, lands on garbage stack data instead of the real caller PC, and aborts with an unrecoverable `fatal error: unknown caller pc`.
 
 Looking beyond the original stack frame declaration bug, GLM 5.3 and DeepSeek V4 Pro still delivered genuinely valuable findings.
