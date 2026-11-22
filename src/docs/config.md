@@ -11,6 +11,7 @@ These configuration items without default values must be filled. It's highly rec
 |----------------------|--------|----------------|------------------------------------------------------|
 | `data_store`         | string |                | Database for data storage.                           |
 | `cache_store`        | string |                | Database for cache storage.                          |
+| `vector_store`       | string | Local xvec directory | Database for vector indices; supports xvec, Qdrant, Weaviate and Milvus. |
 | `table_prefix`       | string |                | Naming prefix for tables in databases.               |
 | `cache_table_prefix` | string | `table_prefix` | Naming prefix for tables in cache storage databases. |
 | `data_table_prefix`  | string | `table_prefix` | Naming prefix for tables in data storage databases.  |
@@ -83,6 +84,93 @@ Document: https://www.mongodb.com/docs/manual/reference/connection-string/
 | `max_open_conns`    | integer | `64`    | Maximum number of open connections to the database |
 | `max_idle_conns`    | integer | `64`    | Maximum number of idle connections to the database |
 | `conn_max_lifetime` | string  | `"1m"`  | Maximum amount of time a connection may be reused  |
+
+### Vector database
+
+Set `database.vector_store` to the connection URI of the vector database. Gorse uses it for collaborative filtering and item-to-item/user-to-user vector indices. By default, Gorse uses an embedded xvec database in the `vectors` directory under its data directory (`~/.gorse/var/lib/vectors` unless the data directory is overridden).
+
+The following examples are configuration fragments; choose one backend and add `vector_store` to the existing `[database]` section.
+
+::: tabs
+
+@tab xvec
+
+```toml
+[database]
+vector_store = "xvec://vectors"
+```
+
+xvec is embedded and does not require a separate database service. The path after `xvec://` is a local directory; relative paths are resolved from the working directory. Use a persistent directory when running Gorse in a container. For an absolute path, use `xvec:///var/lib/gorse/vectors`.
+
+@tab Qdrant
+
+```toml
+[database]
+vector_store = "qdrant://localhost:6334"
+```
+
+Use Qdrant's gRPC port, not its HTTP port. Optional query parameters are `apiKey`, `useTLS`, `skipCompatibilityCheck`, `poolSize`, `keepAliveTime`, `keepAliveTimeout` and `versionCheckTimeout`:
+
+```text
+qdrant://<host>:6334?apiKey=<key>&useTLS=true&poolSize=3&keepAliveTime=10&keepAliveTimeout=2&versionCheckTimeout=1m
+```
+
+`keepAliveTime` and `keepAliveTimeout` are in seconds; `versionCheckTimeout` is a duration string.
+
+@tab Weaviate
+
+```toml
+[database]
+vector_store = "weaviate://localhost:8080"
+```
+
+Use `weaviate://` for HTTP or `weaviates://` for HTTPS. Optional query parameters are `apiKey`, `timeout` and `startupTimeout`; both timeouts are duration strings:
+
+```text
+weaviates://<host>:443?apiKey=<key>&timeout=30s&startupTimeout=5s
+```
+
+@tab Milvus
+
+```toml
+[database]
+vector_store = "milvus://localhost:19530"
+```
+
+The URI supports a username/password, an optional database name, and the `apiKey` and `enableTLSAuth` query parameters:
+
+```text
+milvus://<username>:<password>@<host>:19530/<dbName>?enableTLSAuth=true
+milvus://<host>:19530/<dbName>?apiKey=<key>&enableTLSAuth=true
+```
+
+:::
+
+The connection URI can also be set with the `GORSE_VECTOR_STORE` environment variable. Percent-encode special characters in URI credentials and query parameter values.
+
+### `[database.vector]`
+
+Quantization settings for vector collections.
+
+| Key                 | Type    | Default | Description |
+|---------------------|---------|---------|-------------|
+| `quantization_type` | string  | `""`    | Quantization type: `""` (no additional quantization), `"sq"` (scalar), `"pq"` (product), or `"rq"` (backend-specific rotational quantization). |
+| `quantization_bits` | integer | `0`     | Quantization bits; `0` uses the backend default. |
+
+`rq` maps to TurboQuant in Qdrant, rotational quantization in Weaviate, and RaBitQ in Milvus. Supported types and bit widths depend on the backend and database version. The xvec backend currently supports only `quantization_type = ""`; leave `quantization_bits = 0` for xvec.
+
+For example, to enable 8-bit scalar quantization with Qdrant:
+
+```toml
+[database]
+vector_store = "qdrant://localhost:6334"
+
+[database.vector]
+quantization_type = "sq"
+quantization_bits = 8
+```
+
+These options can also be set with `GORSE_VECTOR_QUANTIZATION_TYPE` and `GORSE_VECTOR_QUANTIZATION_BITS`.
 
 ## `[master]`
 

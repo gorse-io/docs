@@ -11,6 +11,7 @@ icon: config_s
 |----------------------|--------|----------------|-----------------|
 | `data_store`         | string |                | 用于数据存储的数据库。     |
 | `cache_store`        | string |                | 用于缓存存储的数据库。     |
+| `vector_store`       | string | 本地 xvec 目录 | 用于向量索引的数据库，支持 xvec、Qdrant、Weaviate 和 Milvus。 |
 | `table_prefix`       | string |                | 数据库中表的命名约定。     |
 | `cache_table_prefix` | string | `table_prefix` | 缓存存储数据库中表的命名约定。 |
 | `data_table_prefix`  | string | `table_prefix` | 数据存储数据库中表的命名约定。 |
@@ -83,6 +84,93 @@ mongodb+srv://server.example.com/
 | `max_open_conns`    | integer | `64`   | 数据库的最大打开连接数。 |
 | `max_idle_conns`    | integer | `64`   | 数据库的最大空闲连接数。 |
 | `conn_max_lifetime` | string  | `"1m"` | 连接可重用的最长时间。  |
+
+### 向量数据库
+
+通过 `database.vector_store` 设置向量数据库的连接 URI。Gorse 使用它存储协同过滤以及物品到物品、用户到用户推荐的向量索引。默认使用嵌入式 xvec 数据库，存储在数据目录下的 `vectors` 目录中（未覆盖数据目录时为 `~/.gorse/var/lib/vectors`）。
+
+以下示例均为配置片段；选择一种后端，将 `vector_store` 添加到已有的 `[database]` 配置节中。
+
+::: tabs
+
+@tab xvec
+
+```toml
+[database]
+vector_store = "xvec://vectors"
+```
+
+xvec 是嵌入式数据库，无需单独部署数据库服务。`xvec://` 后的路径为本地目录，相对路径相对于工作目录解析。在容器中运行 Gorse 时，应使用持久化目录。绝对路径示例为 `xvec:///var/lib/gorse/vectors`。
+
+@tab Qdrant
+
+```toml
+[database]
+vector_store = "qdrant://localhost:6334"
+```
+
+使用 Qdrant 的 gRPC 端口，而不是 HTTP 端口。可选查询参数为 `apiKey`、`useTLS`、`skipCompatibilityCheck`、`poolSize`、`keepAliveTime`、`keepAliveTimeout` 和 `versionCheckTimeout`：
+
+```text
+qdrant://<host>:6334?apiKey=<key>&useTLS=true&poolSize=3&keepAliveTime=10&keepAliveTimeout=2&versionCheckTimeout=1m
+```
+
+`keepAliveTime` 和 `keepAliveTimeout` 的单位为秒，`versionCheckTimeout` 为时长字符串。
+
+@tab Weaviate
+
+```toml
+[database]
+vector_store = "weaviate://localhost:8080"
+```
+
+`weaviate://` 使用 HTTP，`weaviates://` 使用 HTTPS。可选查询参数为 `apiKey`、`timeout` 和 `startupTimeout`，其中两个超时参数均为时长字符串：
+
+```text
+weaviates://<host>:443?apiKey=<key>&timeout=30s&startupTimeout=5s
+```
+
+@tab Milvus
+
+```toml
+[database]
+vector_store = "milvus://localhost:19530"
+```
+
+URI 支持用户名和密码、可选的数据库名称，以及 `apiKey` 和 `enableTLSAuth` 查询参数：
+
+```text
+milvus://<username>:<password>@<host>:19530/<dbName>?enableTLSAuth=true
+milvus://<host>:19530/<dbName>?apiKey=<key>&enableTLSAuth=true
+```
+
+:::
+
+也可以通过 `GORSE_VECTOR_STORE` 环境变量设置连接 URI。URI 凭据和查询参数值中的特殊字符需要进行百分号编码。
+
+### `[database.vector]`
+
+向量集合的量化配置。
+
+| 键                  | 类型    | 默认值 | 描述 |
+|---------------------|---------|--------|------|
+| `quantization_type` | string  | `""`   | 量化类型：`""`（不进行额外量化）、`"sq"`（标量量化）、`"pq"`（乘积量化）或 `"rq"`（后端特定的旋转量化）。 |
+| `quantization_bits` | integer | `0`    | 量化位数；`0` 表示使用后端默认值。 |
+
+`rq` 在 Qdrant 中映射为 TurboQuant，在 Weaviate 中映射为旋转量化，在 Milvus 中映射为 RaBitQ。支持的类型和位数取决于后端及数据库版本。xvec 后端目前仅支持 `quantization_type = ""`，使用 xvec 时请保留 `quantization_bits = 0`。
+
+例如，为 Qdrant 启用 8 位标量量化：
+
+```toml
+[database]
+vector_store = "qdrant://localhost:6334"
+
+[database.vector]
+quantization_type = "sq"
+quantization_bits = 8
+```
+
+也可以通过 `GORSE_VECTOR_QUANTIZATION_TYPE` 和 `GORSE_VECTOR_QUANTIZATION_BITS` 环境变量设置这些选项。
 
 ## `[master]`
 
